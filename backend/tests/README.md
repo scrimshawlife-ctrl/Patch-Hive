@@ -2,14 +2,26 @@
 
 Comprehensive test suite for the PatchHive backend, focusing on deterministic patch generation and ABX-Core v1.2 compliance.
 
+## Test Coverage Summary
+
+**88 Total Tests** across 3 categories:
+- ✅ **33 Patch Engine Tests** - Deterministic generation, SEED provenance
+- ✅ **34 Database Model Tests** - SQLAlchemy ORM validation
+- ✅ **21 API Endpoint Tests** - FastAPI HTTP endpoints (19 passing, 2 xfail)
+
+**Status**: 84 passing | 2 xfail | 2 pre-existing failures
+
 ## Test Structure
 
 ```
 tests/
-├── conftest.py           # Pytest fixtures and test database setup
+├── conftest.py                   # Pytest fixtures and test database setup
 ├── unit/
-│   └── test_patch_engine.py  # Patch generation engine tests (33 tests)
-└── integration/          # Integration tests (TODO)
+│   ├── test_patch_engine.py      # Patch generation engine tests (33 tests)
+│   └── test_models.py            # Database model tests (34 tests)
+├── api/
+│   └── test_racks_api.py         # Rack API endpoint tests (21 tests)
+└── integration/                  # Integration tests (TODO)
 ```
 
 ## Running Tests
@@ -18,7 +30,7 @@ tests/
 
 ```bash
 # Install test dependencies
-pip install pytest pytest-cov
+pip install pytest pytest-cov httpx email-validator
 
 # Install backend dependencies
 pip install -r requirements.txt  # or use pyproject.toml
@@ -37,7 +49,13 @@ python3 -m pytest tests/ -v
 # Run only patch engine tests
 python3 -m pytest tests/unit/test_patch_engine.py -v
 
-# Run only determinism tests
+# Run only database model tests
+python3 -m pytest tests/unit/test_models.py -v
+
+# Run only API endpoint tests
+python3 -m pytest tests/api/ -v
+
+# Run specific test class
 python3 -m pytest tests/unit/test_patch_engine.py::TestDeterminism -v
 
 # Run specific test
@@ -102,6 +120,37 @@ Tests `PatchEngineConfig` settings.
 - `test_max_patches_limit` - Respects max_patches setting
 - `test_config_defaults` - Default configuration values
 - `test_config_custom_values` - Custom configuration handling
+
+### 7. **API Endpoint Tests** (21 tests)
+Tests FastAPI HTTP endpoints using TestClient.
+
+**Rack CRUD Operations** (17 tests):
+- `test_create_rack_minimal` - Create rack with one module
+- `test_create_rack_with_name` - Create with custom metadata
+- `test_create_rack_with_multiple_modules` - Multi-module racks
+- `test_create_rack_invalid_case` - Validation error handling (xfail)
+- `test_create_rack_overlapping_modules` - Module overlap detection (xfail)
+- `test_list_racks_empty` - Empty list handling
+- `test_list_racks` - List multiple racks
+- `test_list_racks_pagination` - Pagination support
+- `test_list_racks_filter_public` - Filter by is_public
+- `test_get_rack` - Get specific rack with details
+- `test_get_rack_not_found` - 404 handling
+- `test_update_rack_name` - Update metadata
+- `test_update_rack_description` - Update description
+- `test_update_rack_tags` - Update tags
+- `test_update_rack_public` - Toggle public status
+- `test_update_rack_modules` - Replace module configuration
+- `test_update_rack_not_found` - Update 404 handling
+- `test_delete_rack` - Delete with cascade verification
+- `test_delete_rack_not_found` - Delete 404 handling
+
+**System Endpoints** (2 tests):
+- `test_health_check` - GET /health endpoint
+- `test_root` - GET / API information endpoint
+
+**Known Issues**:
+- 2 tests marked xfail due to production bug: `RackValidationError` objects not JSON serializable
 
 ## Test Database
 
