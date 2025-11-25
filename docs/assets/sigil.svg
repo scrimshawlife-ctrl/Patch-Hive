@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="600" viewBox="0 0 200 600" xmlns="http://www.w3.org/2000/svg">
+  <!-- PatchHive Sigil: The Patch Sigil (Vertical Rune) -->
+  <!-- Oscillator → Filter → Amplifier fused into single techno-glyph -->
+
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="600" fill="#020407"/>
+
+  <!-- Crown: 6-dot hive cluster -->
+  <circle cx="100" cy="40" r="4" fill="#7FF7FF" filter="url(#glow)"/>
+  <circle cx="85" cy="50" r="3" fill="#7FF7FF" opacity="0.8"/>
+  <circle cx="115" cy="50" r="3" fill="#7FF7FF" opacity="0.8"/>
+  <circle cx="90" cy="62" r="3" fill="#7FF7FF" opacity="0.8"/>
+  <circle cx="110" cy="62" r="3" fill="#7FF7FF" opacity="0.8"/>
+  <circle cx="100" cy="72" r="4" fill="#7FF7FF" filter="url(#glow)"/>
+
+  <!-- Vertical spine line -->
+  <line x1="100" y1="80" x2="100" y2="560" stroke="#7FF7FF" stroke-width="2" filter="url(#glow)"/>
+
+  <!-- Oscillator section (top) - sine wave form -->
+  <path d="M 100,100 Q 120,120 120,140 Q 120,160 100,180 Q 80,160 80,140 Q 80,120 100,100"
+        fill="none" stroke="#7FF7FF" stroke-width="2.5" filter="url(#glow)"/>
+  <circle cx="100" cy="140" r="6" fill="#7FF7FF" opacity="0.5"/>
+
+  <!-- VCO marker dots -->
+  <circle cx="70" cy="130" r="2" fill="#7FF7FF"/>
+  <circle cx="130" cy="130" r="2" fill="#7FF7FF"/>
+  <circle cx="70" cy="150" r="2" fill="#7FF7FF"/>
+  <circle cx="130" cy="150" r="2" fill="#7FF7FF"/>
+
+  <!-- Filter section (middle) - chevron cascade -->
+  <path d="M 70,240 L 100,260 L 130,240" fill="none" stroke="#7FF7FF" stroke-width="2.5" stroke-linecap="round"/>
+  <path d="M 75,270 L 100,285 L 125,270" fill="none" stroke="#7FF7FF" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 80,295 L 100,307 L 120,295" fill="none" stroke="#7FF7FF" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Filter resonance arc -->
+  <circle cx="100" cy="275" r="20" fill="none" stroke="#7FF7FF" stroke-width="1" opacity="0.4"/>
+
+  <!-- Amplifier section (bottom) - expanding triangle -->
+  <path d="M 100,370 L 85,420 L 115,420 Z" fill="none" stroke="#7FF7FF" stroke-width="2.5" filter="url(#glow)"/>
+  <path d="M 100,390 L 90,420" stroke="#7FF7FF" stroke-width="1.5" opacity="0.6"/>
+  <path d="M 100,390 L 110,420" stroke="#7FF7FF" stroke-width="1.5" opacity="0.6"/>
+
+  <!-- VCA control line -->
+  <line x1="100" y1="420" x2="100" y2="450" stroke="#7FF7FF" stroke-width="2"/>
+
+  <!-- Output terminal -->
+  <circle cx="100" cy="470" r="10" fill="none" stroke="#7FF7FF" stroke-width="2.5" filter="url(#glow)"/>
+  <circle cx="100" cy="470" r="5" fill="#7FF7FF" opacity="0.6"/>
+
+  <!-- Signal flow arrows (subtle) -->
+  <path d="M 100,190 L 95,200 M 100,190 L 105,200" stroke="#7FF7FF" stroke-width="1.5" opacity="0.5"/>
+  <path d="M 100,320 L 95,330 M 100,320 L 105,330" stroke="#7FF7FF" stroke-width="1.5" opacity="0.5"/>
+  <path d="M 100,430 L 95,440 M 100,430 L 105,440" stroke="#7FF7FF" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- Modulation side-chains (CV inputs) -->
+  <line x1="40" y1="140" x2="80" y2="140" stroke="#7FF7FF" stroke-width="1" opacity="0.5" stroke-dasharray="3,2"/>
+  <line x1="40" y1="275" x2="80" y2="275" stroke="#7FF7FF" stroke-width="1" opacity="0.5" stroke-dasharray="3,2"/>
+  <line x1="40" y1="395" x2="85" y2="405" stroke="#7FF7FF" stroke-width="1" opacity="0.5" stroke-dasharray="3,2"/>
+
+  <!-- Base: grounding hex -->
+  <polygon points="100,520 115,528 115,544 100,552 85,544 85,528"
+           fill="none" stroke="#7FF7FF" stroke-width="2" filter="url(#glow)"/>
+  <circle cx="100" cy="536" r="3" fill="#7FF7FF"/>
+</svg>

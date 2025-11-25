@@ -1,6 +1,16 @@
+<div align="center">
+  <img src="docs/assets/header-banner.svg" alt="PatchHive Header" width="100%">
+</div>
+
 # PatchHive
 
 **Eurorack System Design and Patch Exploration Platform**
+
+<div align="center">
+  <img src="docs/assets/logo-primary.svg" alt="PatchHive Logo" width="200">
+</div>
+
+<br>
 
 PatchHive is a modular web application that helps users design, catalog, share, and explore Eurorack modular synthesizer systems and their possible patches. Built following Applied Alchemy Labs (AAL) architecture principles with ABX-Core v1.2 compliance.
 
