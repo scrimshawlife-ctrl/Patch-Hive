@@ -1,0 +1,109 @@
+"""
+FastAPI routes for Module management.
+"""
+from typing import Optional
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy.orm import Session
+
+from core import get_db
+from .models import Module
+from .schemas import ModuleCreate, ModuleUpdate, ModuleResponse, ModuleListResponse
+
+router = APIRouter()
+
+
+@router.post("/", response_model=ModuleResponse, status_code=201)
+def create_module(module: ModuleCreate, db: Session = Depends(get_db)):
+    """Create a new module."""
+    db_module = Module(
+        brand=module.brand,
+        name=module.name,
+        hp=module.hp,
+        module_type=module.module_type,
+        power_12v_ma=module.power_12v_ma,
+        power_neg12v_ma=module.power_neg12v_ma,
+        power_5v_ma=module.power_5v_ma,
+        io_ports=[port.model_dump() for port in module.io_ports],
+        tags=module.tags,
+        description=module.description,
+        manufacturer_url=module.manufacturer_url,
+        source=module.source,
+        source_reference=module.source_reference,
+    )
+    db.add(db_module)
+    db.commit()
+    db.refresh(db_module)
+    return db_module
+
+
+@router.get("/", response_model=ModuleListResponse)
+def list_modules(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    brand: Optional[str] = None,
+    module_type: Optional[str] = None,
+    hp_min: Optional[int] = None,
+    hp_max: Optional[int] = None,
+    tag: Optional[str] = None,
+    db: Session = Depends(get_db),
+):
+    """List modules with optional filters."""
+    query = db.query(Module)
+
+    # Apply filters
+    if brand:
+        query = query.filter(Module.brand.ilike(f"%{brand}%"))
+    if module_type:
+        query = query.filter(Module.module_type == module_type)
+    if hp_min is not None:
+        query = query.filter(Module.hp >= hp_min)
+    if hp_max is not None:
+        query = query.filter(Module.hp <= hp_max)
+    if tag:
+        query = query.filter(Module.tags.contains([tag]))
+
+    total = query.count()
+    modules = query.offset(skip).limit(limit).all()
+
+    return ModuleListResponse(total=total, modules=modules)
+
+
+@router.get("/{module_id}", response_model=ModuleResponse)
+def get_module(module_id: int, db: Session = Depends(get_db)):
+    """Get a specific module by ID."""
+    module = db.query(Module).filter(Module.id == module_id).first()
+    if not module:
+        raise HTTPException(status_code=404, detail="Module not found")
+    return module
+
+
+@router.patch("/{module_id}", response_model=ModuleResponse)
+def update_module(module_id: int, module_update: ModuleUpdate, db: Session = Depends(get_db)):
+    """Update a module."""
+    db_module = db.query(Module).filter(Module.id == module_id).first()
+    if not db_module:
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    # Update fields if provided
+    update_data = module_update.model_dump(exclude_unset=True)
+    if "io_ports" in update_data and update_data["io_ports"] is not None:
+        update_data["io_ports"] = [port.model_dump() for port in module_update.io_ports]
+
+    for field, value in update_data.items():
+        setattr(db_module, field, value)
+
+    db.commit()
+    db.refresh(db_module)
+    return db_module
+
+
+@router.delete("/{module_id}", status_code=204)
+def delete_module(module_id: int, db: Session = Depends(get_db)):
+    """Delete a module."""
+    db_module = db.query(Module).filter(Module.id == module_id).first()
+    if not db_module:
+        raise HTTPException(status_code=404, detail="Module not found")
+
+    db.delete(db_module)
+    db.commit()
+    return None
