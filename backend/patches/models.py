@@ -1,0 +1,65 @@
+"""
+SQLAlchemy models for patches (connection graphs between modules).
+"""
+from datetime import datetime
+from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, JSON
+from sqlalchemy.orm import relationship
+
+from core.database import Base
+
+
+class Patch(Base):
+    """
+    A patch represents a specific configuration of cable connections between modules.
+    Stores connections as a graph, along with metadata about generation and categorization.
+    """
+
+    __tablename__ = "patches"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Association with rack
+    rack_id = Column(Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True)
+
+    # Metadata
+    name = Column(String(200), nullable=False)  # Auto-generated or user-specified
+    category = Column(
+        String(50), nullable=False, index=True
+    )  # "pad", "lead", "bass", "percussion", "fx", "generative", "utility"
+    description = Column(Text, nullable=True)
+
+    # Connection graph
+    # Format: [
+    #   {
+    #     "from_module_id": 1,
+    #     "from_port": "Audio Out",
+    #     "to_module_id": 2,
+    #     "to_port": "Audio In",
+    #     "cable_type": "audio"  # "audio", "cv", "gate", "clock"
+    #   },
+    #   ...
+    # ]
+    connections = Column(JSON, nullable=False, default=list)
+
+    # Patch engine metadata (SEED principle - full traceability)
+    generation_seed = Column(Integer, nullable=False)
+    generation_version = Column(
+        String(20), nullable=False
+    )  # Patch engine version that generated this
+    engine_config = Column(JSON, nullable=True)  # Config parameters used during generation
+
+    # Waveform visualization
+    waveform_svg_path = Column(String(500), nullable=True)  # Path to SVG file
+    waveform_params = Column(JSON, nullable=True)  # Parameters used to generate waveform
+
+    # Sharing
+    is_public = Column(Boolean, default=False, nullable=False)
+
+    # Timestamps
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    # Relationships
+    rack = relationship("Rack", back_populates="patches")
+    votes = relationship("Vote", back_populates="patch", cascade="all, delete-orphan")
+    comments = relationship("Comment", back_populates="patch", cascade="all, delete-orphan")
