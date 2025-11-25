@@ -1,0 +1,74 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main, develop, 'claude/**' ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  lint-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install linting tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install flake8 black isort mypy
+
+    - name: Check code formatting with Black
+      working-directory: ./backend
+      run: |
+        black --check --diff . || echo "::warning::Code formatting issues found. Run 'black .' to fix."
+      continue-on-error: true
+
+    - name: Check import sorting with isort
+      working-directory: ./backend
+      run: |
+        isort --check-only --diff . || echo "::warning::Import sorting issues found. Run 'isort .' to fix."
+      continue-on-error: true
+
+    - name: Lint with flake8
+      working-directory: ./backend
+      run: |
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Exit-zero treats all errors as warnings
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=120 --statistics
+
+  lint-frontend:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./frontend
+      run: npm ci
+
+    - name: Lint with ESLint
+      working-directory: ./frontend
+      run: npm run lint || echo "::warning::Linting issues found"
+      continue-on-error: true
+
+    - name: Check TypeScript types
+      working-directory: ./frontend
+      run: npm run type-check || echo "::warning::TypeScript errors found"
+      continue-on-error: true

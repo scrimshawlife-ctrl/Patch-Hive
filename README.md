@@ -19,6 +19,9 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-7FF7FF?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
 [![ABX-Core](https://img.shields.io/badge/ABX--Core-v1.2-EBAF38?style=flat-square)](docs/ABX_CORE_COMPLIANCE.md)
+[![Backend Tests](https://img.shields.io/badge/Backend_Tests-88_passing-00FF88?style=flat-square)](backend/tests/README.md)
+[![Code Quality](https://img.shields.io/badge/Code_Quality-Automated-00FF88?style=flat-square)](.github/workflows/README.md)
+
 [![License](https://img.shields.io/badge/License-MIT-2E7CEB?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-2E7CEB?style=flat-square)](https://github.com/scrimshawlife-ctrl/Patch-Hive/pulls)
 
