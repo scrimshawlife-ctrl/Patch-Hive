@@ -10,9 +10,76 @@
   <img src="docs/assets/logo-primary.svg" alt="PatchHive Logo" width="200">
 </div>
 
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3.11+-7FF7FF?style=flat-square&logo=python&logoColor=white)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.2+-7FF7FF?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.104+-7FF7FF?style=flat-square&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![React](https://img.shields.io/badge/React-18.2+-7FF7FF?style=flat-square&logo=react&logoColor=white)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-7FF7FF?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
+
+[![ABX-Core](https://img.shields.io/badge/ABX--Core-v1.2-EBAF38?style=flat-square)](docs/ABX_CORE_COMPLIANCE.md)
+[![License](https://img.shields.io/badge/License-MIT-2E7CEB?style=flat-square)](LICENSE)
+[![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-2E7CEB?style=flat-square)](https://github.com/scrimshawlife-ctrl/Patch-Hive/pulls)
+
+</div>
+
 <br>
 
 PatchHive is a modular web application that helps users design, catalog, share, and explore Eurorack modular synthesizer systems and their possible patches. Built following Applied Alchemy Labs (AAL) architecture principles with ABX-Core v1.2 compliance.
+
+<div align="center">
+
+**[🎛️ Live Demo](#) • [📖 Documentation](docs/) • [🐛 Report Bug](../../issues) • [✨ Request Feature](../../issues)**
+
+</div>
+
+---
+
+## ✨ Key Highlights
+
+<table>
+<tr>
+<td width="50%">
+
+### 🔧 **Modular Architecture**
+Clean domain separation following ABX-Core v1.2 principles. Every component is composable and deterministic.
+
+</td>
+<td width="50%">
+
+### 🎲 **Deterministic Generation**
+Same rack + same seed = identical patches every time. Full reproducibility guaranteed.
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+### 🔗 **Signal Flow Engine**
+Rule-based patch generation analyzing VCOs, VCFs, VCAs, and modulation sources.
+
+</td>
+<td width="50%">
+
+### 📊 **Full Provenance**
+SEED enforcement: every module, rack, and patch tracks its source and generation metadata.
+
+</td>
+</tr>
+</table>
+
+---
+
+## 🎬 Demo
+
+<div align="center">
+
+**🚧 Screenshots and demo video coming soon 🚧**
+
+*UI components are implemented. Visual documentation in progress.*
+
+</div>
 
 ---
 
