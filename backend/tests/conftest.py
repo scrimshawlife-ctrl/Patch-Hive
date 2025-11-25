@@ -10,6 +10,7 @@ from core.database import Base
 from modules.models import Module
 from cases.models import Case
 from racks.models import Rack, RackModule
+from patches.models import Patch  # Import to ensure patches table is created
 from community.models import User, Vote, Comment  # Import to ensure tables are created
 
 
@@ -55,7 +56,7 @@ def sample_vco(db_session: Session) -> Module:
             {"name": "CV In", "type": "cv_in"},
             {"name": "Audio Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -81,7 +82,7 @@ def sample_vcf(db_session: Session) -> Module:
             {"name": "Resonance CV", "type": "cv_in"},
             {"name": "Audio Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -106,7 +107,7 @@ def sample_vca(db_session: Session) -> Module:
             {"name": "CV In", "type": "cv_in"},
             {"name": "Audio Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -131,7 +132,7 @@ def sample_envelope(db_session: Session) -> Module:
             {"name": "Trigger In", "type": "trigger_in"},
             {"name": "Envelope Out", "type": "cv_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -155,7 +156,7 @@ def sample_lfo(db_session: Session) -> Module:
             {"name": "Rate CV", "type": "cv_in"},
             {"name": "LFO Out", "type": "cv_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -181,7 +182,7 @@ def sample_sequencer(db_session: Session) -> Module:
             {"name": "CV Out", "type": "cv_out"},
             {"name": "Gate Out", "type": "gate_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -204,7 +205,7 @@ def sample_noise(db_session: Session) -> Module:
         io_ports=[
             {"name": "Noise Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -228,7 +229,7 @@ def sample_effect(db_session: Session) -> Module:
             {"name": "FX In", "type": "audio_in"},
             {"name": "FX Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -255,7 +256,7 @@ def sample_mixer(db_session: Session) -> Module:
             {"name": "Ch4 In", "type": "audio_in"},
             {"name": "Mix Out", "type": "audio_out"},
         ],
-        
+        source="test",
     )
     db_session.add(module)
     db_session.commit()
@@ -290,7 +291,7 @@ def sample_case(db_session: Session) -> Case:
         power_neg12v_ma=1000,
         power_5v_ma=1000,
         description="Test case",
-        
+        source="test",
     )
     db_session.add(case)
     db_session.commit()
