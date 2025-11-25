@@ -1,0 +1,232 @@
+/**
+ * PatchHive 404 Not Found Page Styles
+ * Broken patch cable, error sparks, signal loss
+ */
+
+.not-found-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #020407;
+  padding: 2rem;
+}
+
+.not-found-content {
+  text-align: center;
+  max-width: 600px;
+}
+
+/* Broken patch cable SVG */
+.broken-patch {
+  display: block;
+  margin: 0 auto 2rem;
+}
+
+/* Cable animations */
+.cable-left {
+  animation: cable-drift-left 3s ease-in-out infinite;
+}
+
+.cable-right {
+  animation: cable-drift-right 3s ease-in-out infinite;
+}
+
+@keyframes cable-drift-left {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(-5px) translateY(-3px);
+  }
+}
+
+@keyframes cable-drift-right {
+  0%, 100% {
+    transform: translateX(0) translateY(0);
+  }
+  50% {
+    transform: translateX(5px) translateY(-3px);
+  }
+}
+
+/* Error sparks animation */
+.spark {
+  animation: spark-flash 1.5s ease-in-out infinite;
+}
+
+.spark-1 {
+  animation-delay: 0s;
+}
+
+.spark-2 {
+  animation-delay: 0.3s;
+}
+
+.spark-3 {
+  animation-delay: 0.6s;
+}
+
+.spark-4 {
+  animation-delay: 0.9s;
+}
+
+@keyframes spark-flash {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+/* Error title */
+.error-title {
+  color: #7FF7FF;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+  animation: title-pulse 2s ease-in-out infinite;
+}
+
+@keyframes title-pulse {
+  0%, 100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+    text-shadow: 0 0 20px #7FF7FF;
+  }
+}
+
+/* Error description */
+.error-description {
+  color: #7FF7FF;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0 0 2rem;
+  opacity: 0.8;
+}
+
+/* Navigation buttons */
+.error-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: #7FF7FF;
+  color: #020407;
+  border: 2px solid #7FF7FF;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: #7FF7FF;
+  box-shadow: 0 0 20px rgba(127, 247, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #FF1EA0;
+  border: 2px solid #FF1EA0;
+}
+
+.btn-secondary:hover {
+  background: #FF1EA0;
+  color: #020407;
+  box-shadow: 0 0 20px rgba(255, 30, 160, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Technical error details */
+.error-details {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  background: rgba(127, 247, 255, 0.05);
+  border: 1px solid rgba(127, 247, 255, 0.2);
+  border-radius: 4px;
+}
+
+.error-details code {
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: #FF1EA0;
+  letter-spacing: 0.05em;
+  opacity: 0.8;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .not-found-container {
+    padding: 1rem;
+  }
+
+  .broken-patch {
+    width: 300px;
+    height: 300px;
+  }
+
+  .error-title {
+    font-size: 2rem;
+  }
+
+  .error-description {
+    font-size: 0.875rem;
+  }
+
+  .error-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+  }
+
+  .error-details code {
+    font-size: 0.625rem;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cable-left,
+  .cable-right,
+  .spark,
+  .error-title {
+    animation: none !important;
+  }
+
+  .btn-primary:hover,
+  .btn-secondary:hover {
+    transform: none;
+  }
+}
