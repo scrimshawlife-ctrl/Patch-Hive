@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- PatchHive Discord Bot Avatar
+       512×512px for Discord bot profile
+  -->
+
+  <defs>
+    <filter id="bot-glow">
+      <feGaussianBlur stdDeviation="6" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <linearGradient id="bot-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7FF7FF"/>
+      <stop offset="50%" stop-color="#FF1EA0"/>
+      <stop offset="100%" stop-color="#7FF7FF"/>
+    </linearGradient>
+
+    <style>
+      @keyframes signal-pulse {
+        0%, 100% { opacity: 0.5; }
+        50% { opacity: 1; }
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" fill="#020407"/>
+
+  <!-- Outer hexagon frame -->
+  <polygon
+    points="256,80 376,140 376,260 256,320 136,260 136,140"
+    fill="none"
+    stroke="url(#bot-gradient)"
+    stroke-width="10"
+    filter="url(#bot-glow)"/>
+
+  <!-- Inner bot body hexagon -->
+  <polygon
+    points="256,130 336,170 336,250 256,290 176,250 176,170"
+    fill="#1C2128"
+    stroke="#7FF7FF"
+    stroke-width="4"/>
+
+  <!-- Bot "face" elements -->
+
+  <!-- Left eye (hexagon) -->
+  <g transform="translate(206, 200)">
+    <polygon
+      points="20,0 35,8 35,24 20,32 5,24 5,8"
+      fill="#7FF7FF"
+      filter="url(#bot-glow)"/>
+  </g>
+
+  <!-- Right eye (hexagon) -->
+  <g transform="translate(266, 200)">
+    <polygon
+      points="20,0 35,8 35,24 20,32 5,24 5,8"
+      fill="#7FF7FF"
+      filter="url(#bot-glow)"/>
+  </g>
+
+  <!-- Signal antenna -->
+  <g>
+    <line x1="256" y1="80" x2="256" y2="40" stroke="#7FF7FF" stroke-width="4"/>
+    <circle cx="256" cy="35" r="8" fill="#FF1EA0" filter="url(#bot-glow)">
+      <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.5;1;0.5" dur="2s" repeatCount="indefinite"/>
+    </circle>
+
+    <!-- Signal waves -->
+    <circle cx="256" cy="35" r="16" fill="none" stroke="#FF1EA0" stroke-width="2" opacity="0.4">
+      <animate attributeName="r" values="12;24;12" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.6;0;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+
+  <!-- Mouth/display panel (waveform) -->
+  <rect x="196" y="245" width="120" height="30" fill="#020407" stroke="#7FF7FF" stroke-width="2" rx="4"/>
+  <path
+    d="M 206 260 Q 226 250, 236 260 T 256 260 T 276 260 T 296 260"
+    fill="none"
+    stroke="#7FF7FF"
+    stroke-width="2"
+    opacity="0.8"/>
+
+  <!-- Bot "shoulders" - connection ports -->
+  <g opacity="0.8">
+    <!-- Left port -->
+    <circle cx="156" cy="220" r="12" fill="none" stroke="#FF1EA0" stroke-width="3"/>
+    <circle cx="156" cy="220" r="5" fill="#FF1EA0"/>
+
+    <!-- Right port -->
+    <circle cx="356" cy="220" r="12" fill="none" stroke="#FF1EA0" stroke-width="3"/>
+    <circle cx="356" cy="220" r="5" fill="#FF1EA0"/>
+  </g>
+
+  <!-- Data streams (decorative) -->
+  <g opacity="0.3">
+    <line x1="136" y1="180" x2="120" y2="165" stroke="#7FF7FF" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="376" y1="180" x2="392" y2="165" stroke="#7FF7FF" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="136" y1="220" x2="120" y2="235" stroke="#7FF7FF" stroke-width="2" stroke-dasharray="4,4"/>
+    <line x1="376" y1="220" x2="392" y2="235" stroke="#7FF7FF" stroke-width="2" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Bottom signal indicator -->
+  <g transform="translate(256, 340)">
+    <circle cx="0" cy="0" r="8" fill="#00FF88" filter="url(#bot-glow)">
+      <animate attributeName="r" values="6;9;6" dur="1.5s" repeatCount="indefinite"/>
+    </circle>
+    <text x="0" y="24" font-family="monospace" font-size="14" fill="#7FF7FF" text-anchor="middle" font-weight="bold">BOT</text>
+  </g>
+
+  <!-- Corner hex accents -->
+  <g opacity="0.4">
+    <!-- Top left -->
+    <polygon points="60,60 70,65 70,75 60,80 50,75 50,65" fill="none" stroke="#7FF7FF" stroke-width="2"/>
+
+    <!-- Top right -->
+    <polygon points="452,60 462,65 462,75 452,80 442,75 442,65" fill="none" stroke="#7FF7FF" stroke-width="2"/>
+
+    <!-- Bottom left -->
+    <polygon points="60,432 70,437 70,447 60,452 50,447 50,437" fill="none" stroke="#FF1EA0" stroke-width="2"/>
+
+    <!-- Bottom right -->
+    <polygon points="452,432 462,437 462,447 452,452 442,447 442,437" fill="none" stroke="#FF1EA0" stroke-width="2"/>
+  </g>
+
+  <!-- ABX compliance badge (bottom) -->
+  <g transform="translate(256, 460)">
+    <rect x="-40" y="-12" width="80" height="24" fill="#020407" stroke="#7FF7FF" stroke-width="2" rx="4"/>
+    <text x="0" y="5" font-family="monospace" font-size="12" fill="#7FF7FF" text-anchor="middle" font-weight="bold">ABX v1.2</text>
+  </g>
+</svg>

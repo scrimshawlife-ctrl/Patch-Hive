@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1152" height="256" viewBox="0 0 1152 256" xmlns="http://www.w3.org/2000/svg">
+  <!-- PatchHive Discord Custom Emojis
+       Each emoji is 128×128px in a grid
+       Export each as separate 128×128 PNG for Discord upload
+  -->
+
+  <defs>
+    <style>
+      .emoji-bg { fill: #020407; }
+      .emoji-stroke { stroke: #7FF7FF; stroke-width: 3; fill: none; }
+      .emoji-fill { fill: #7FF7FF; }
+      .emoji-accent { fill: #FF1EA0; }
+    </style>
+  </defs>
+
+  <!-- Grid guides (remove when exporting) -->
+  <g stroke="#333" stroke-width="1" opacity="0.2">
+    <line x1="128" y1="0" x2="128" y2="256"/>
+    <line x1="256" y1="0" x2="256" y2="256"/>
+    <line x1="384" y1="0" x2="384" y2="256"/>
+    <line x1="512" y1="0" x2="512" y2="256"/>
+    <line x1="640" y1="0" x2="640" y2="256"/>
+    <line x1="768" y1="0" x2="768" y2="256"/>
+    <line x1="896" y1="0" x2="896" y2="256"/>
+    <line x1="1024" y1="0" x2="1024" y2="256"/>
+    <line x1="0" y1="128" x2="1152" y2="128"/>
+  </g>
+
+  <!-- 1. :patchhive: - Mini hex logo -->
+  <g id="patchhive-emoji" transform="translate(0, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,32 94,48 94,80 64,96 34,80 34,48" class="emoji-stroke"/>
+    <polygon points="64,52 79,60 79,76 64,84 49,76 49,60" class="emoji-fill" opacity="0.3"/>
+    <circle cx="64" cy="68" r="8" class="emoji-fill"/>
+  </g>
+
+  <!-- 2. :vco: - Oscillator emoji -->
+  <g id="vco-emoji" transform="translate(128, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,32 94,48 94,80 64,96 34,80 34,48" class="emoji-stroke"/>
+    <path d="M 44 68 Q 54 48, 64 68 T 84 68" class="emoji-accent" stroke-width="3" fill="none"/>
+  </g>
+
+  <!-- 3. :vcf: - Filter emoji -->
+  <g id="vcf-emoji" transform="translate(256, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,32 94,48 94,80 64,96 34,80 34,48" class="emoji-stroke"/>
+    <path d="M 44 58 L 64 68 L 84 88" class="emoji-accent" stroke-width="3" fill="none"/>
+    <circle cx="64" cy="68" r="3" class="emoji-accent"/>
+  </g>
+
+  <!-- 4. :vca: - Amplifier emoji -->
+  <g id="vca-emoji" transform="translate(384, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,32 94,48 94,80 64,96 34,80 34,48" class="emoji-stroke"/>
+    <polygon points="48,78 64,48 80,78" class="emoji-accent" fill="none" stroke-width="3"/>
+  </g>
+
+  <!-- 5. :patch: - Patch cable emoji -->
+  <g id="patch-emoji" transform="translate(512, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <circle cx="44" cy="44" r="12" class="emoji-stroke"/>
+    <circle cx="84" cy="84" r="12" class="emoji-stroke"/>
+    <path d="M 44 56 Q 54 68, 64 64 T 84 72" class="emoji-accent" stroke-width="4" fill="none"/>
+  </g>
+
+  <!-- 6. :seed: - SEED emoji -->
+  <g id="seed-emoji" transform="translate(640, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <text x="64" y="80" font-family="monospace" font-size="48" font-weight="bold" fill="#7FF7FF" text-anchor="middle">S</text>
+    <circle cx="64" cy="64" r="42" class="emoji-stroke" opacity="0.5"/>
+  </g>
+
+  <!-- 7. :upvote: - Upvote emoji -->
+  <g id="upvote-emoji" transform="translate(768, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,38 84,68 44,68" class="emoji-fill"/>
+    <rect x="54" y="68" width="20" height="22" class="emoji-fill"/>
+  </g>
+
+  <!-- 8. :downvote: - Downvote emoji -->
+  <g id="downvote-emoji" transform="translate(896, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,90 44,60 84,60" class="emoji-accent"/>
+    <rect x="54" y="38" width="20" height="22" class="emoji-accent"/>
+  </g>
+
+  <!-- 9. :signal: - Signal active emoji -->
+  <g id="signal-emoji" transform="translate(1024, 0)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <circle cx="64" cy="64" r="8" fill="#00FF88"/>
+    <circle cx="64" cy="64" r="18" fill="none" stroke="#00FF88" stroke-width="2" opacity="0.6"/>
+    <circle cx="64" cy="64" r="28" fill="none" stroke="#00FF88" stroke-width="2" opacity="0.3"/>
+  </g>
+
+  <!-- Row 2 -->
+
+  <!-- 10. :module: - Generic module emoji -->
+  <g id="module-emoji" transform="translate(0, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <rect x="38" y="38" width="52" height="52" class="emoji-stroke" rx="4"/>
+    <circle cx="52" cy="52" r="4" class="emoji-accent"/>
+    <circle cx="76" cy="52" r="4" class="emoji-accent"/>
+    <circle cx="52" cy="76" r="4" class="emoji-accent"/>
+    <circle cx="76" cy="76" r="4" class="emoji-accent"/>
+  </g>
+
+  <!-- 11. :rack: - Rack emoji -->
+  <g id="rack-emoji" transform="translate(128, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <rect x="28" y="48" width="72" height="32" class="emoji-stroke" rx="2"/>
+    <rect x="36" y="54" width="16" height="20" fill="#7FF7FF" opacity="0.3"/>
+    <rect x="56" y="54" width="16" height="20" fill="#FF1EA0" opacity="0.3"/>
+    <rect x="76" y="54" width="16" height="20" fill="#7FF7FF" opacity="0.3"/>
+  </g>
+
+  <!-- 12. :hex: - Hexagon emoji -->
+  <g id="hex-emoji" transform="translate(256, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <polygon points="64,32 94,48 94,80 64,96 34,80 34,48" class="emoji-fill"/>
+  </g>
+
+  <!-- 13. :cv: - CV signal emoji -->
+  <g id="cv-emoji" transform="translate(384, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <text x="64" y="80" font-family="monospace" font-size="36" font-weight="bold" fill="#7FF7FF" text-anchor="middle">CV</text>
+  </g>
+
+  <!-- 14. :gate: - Gate emoji -->
+  <g id="gate-emoji" transform="translate(512, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <rect x="38" y="78" width="12" height="-40" class="emoji-accent"/>
+    <rect x="54" y="78" width="12" height="-15" class="emoji-accent"/>
+    <rect x="70" y="78" width="12" height="-30" class="emoji-accent"/>
+    <rect x="86" y="78" width="12" height="-50" class="emoji-accent"/>
+  </g>
+
+  <!-- 15. :waveform: - Waveform emoji -->
+  <g id="waveform-emoji" transform="translate(640, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <path d="M 28 64 Q 38 38, 48 64 T 68 64 T 88 64 T 100 64" class="emoji-stroke" stroke-width="4"/>
+  </g>
+
+  <!-- 16. :community: - Community emoji -->
+  <g id="community-emoji" transform="translate(768, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <circle cx="50" cy="54" r="10" class="emoji-fill"/>
+    <circle cx="78" cy="54" r="10" class="emoji-fill"/>
+    <circle cx="64" cy="74" r="10" class="emoji-accent"/>
+    <path d="M 40 68 Q 50 78, 64 80 T 88 68" class="emoji-stroke" stroke-width="3"/>
+  </g>
+
+  <!-- 17. :abx: - ABX-Core emoji -->
+  <g id="abx-emoji" transform="translate(896, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <text x="64" y="80" font-family="monospace" font-size="40" font-weight="bold" fill="#7FF7FF" text-anchor="middle">⬡</text>
+    <text x="64" y="100" font-family="monospace" font-size="14" fill="#FF1EA0" text-anchor="middle">ABX</text>
+  </g>
+
+  <!-- 18. :deterministic: - Deterministic emoji -->
+  <g id="deterministic-emoji" transform="translate(1024, 128)">
+    <rect class="emoji-bg" width="128" height="128"/>
+    <circle cx="44" cy="64" r="8" class="emoji-fill"/>
+    <circle cx="64" cy="64" r="8" class="emoji-accent"/>
+    <circle cx="84" cy="64" r="8" class="emoji-fill"/>
+    <line x1="52" y1="64" x2="56" y2="64" stroke="#7FF7FF" stroke-width="3"/>
+    <line x1="72" y1="64" x2="76" y2="64" stroke="#FF1EA0" stroke-width="3"/>
+    <path d="M 34 44 L 94 44 L 94 84 L 34 84 Z" class="emoji-stroke" opacity="0.3"/>
+  </g>
+</svg>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- PatchHive Discord Server Icon
+       Optimized for Discord (512×512px, clear at small sizes)
+  -->
+
+  <defs>
+    <filter id="icon-glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#020407"/>
+
+  <!-- Outer hexagon frame -->
+  <polygon
+    points="256,106 356,161 356,271 256,326 156,271 156,161"
+    fill="none"
+    stroke="#7FF7FF"
+    stroke-width="8"
+    filter="url(#icon-glow)"/>
+
+  <!-- Inner hexagon core -->
+  <polygon
+    points="256,166 316,199 316,265 256,298 196,265 196,199"
+    fill="#7FF7FF"
+    opacity="0.2"/>
+
+  <!-- Central oscillator core -->
+  <circle cx="256" cy="232" r="24" fill="#7FF7FF" opacity="0.8" filter="url(#icon-glow)"/>
+
+  <!-- CV pathways (signal flow lines) -->
+  <g stroke="#FF1EA0" stroke-width="4" fill="none" opacity="0.8">
+    <!-- Top pathway -->
+    <path d="M 256 106 L 256 166"/>
+
+    <!-- Upper right pathway -->
+    <path d="M 356 161 L 316 199"/>
+
+    <!-- Lower right pathway -->
+    <path d="M 356 271 L 316 265"/>
+
+    <!-- Bottom pathway -->
+    <path d="M 256 326 L 256 298"/>
+
+    <!-- Lower left pathway -->
+    <path d="M 156 271 L 196 265"/>
+
+    <!-- Upper left pathway -->
+    <path d="M 156 161 L 196 199"/>
+  </g>
+
+  <!-- Signal dots at connection points -->
+  <g fill="#7FF7FF">
+    <circle cx="256" cy="106" r="6"/>
+    <circle cx="356" cy="161" r="6"/>
+    <circle cx="356" cy="271" r="6"/>
+    <circle cx="256" cy="326" r="6"/>
+    <circle cx="156" cy="271" r="6"/>
+    <circle cx="156" cy="161" r="6"/>
+  </g>
+
+  <!-- Accent signal lines (waveform suggestion) -->
+  <g stroke="#7FF7FF" stroke-width="2" fill="none" opacity="0.5">
+    <path d="M 226 232 Q 236 222, 246 232 T 266 232 T 286 232"/>
+  </g>
+</svg>
