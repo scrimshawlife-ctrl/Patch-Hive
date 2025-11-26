@@ -1,0 +1,11 @@
+sqlalchemy
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+psycopg2-binary
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
+reportlab
+email-validator

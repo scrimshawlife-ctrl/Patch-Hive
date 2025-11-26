@@ -19,6 +19,9 @@
 [![Docker](https://img.shields.io/badge/Docker-Ready-7FF7FF?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com/)
 
 [![ABX-Core](https://img.shields.io/badge/ABX--Core-v1.2-EBAF38?style=flat-square)](docs/ABX_CORE_COMPLIANCE.md)
+[![Backend Tests](https://img.shields.io/badge/Backend_Tests-88_passing-00FF88?style=flat-square)](backend/tests/README.md)
+[![Code Quality](https://img.shields.io/badge/Code_Quality-Automated-00FF88?style=flat-square)](.github/workflows/README.md)
+
 [![License](https://img.shields.io/badge/License-MIT-2E7CEB?style=flat-square)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-2E7CEB?style=flat-square)](https://github.com/scrimshawlife-ctrl/Patch-Hive/pulls)
 
@@ -246,6 +249,42 @@ npm install
 # Start development server
 npm run dev
 ```
+
+---
+
+## 🚀 Deployment
+
+### Deploy to Render (Easiest)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+**One-Click Deployment:**
+1. Click the button above or go to [Render Dashboard](https://render.com)
+2. Connect your GitHub repository
+3. Render will detect `render.yaml` and deploy automatically:
+   - PostgreSQL database (free tier)
+   - FastAPI backend (free tier)
+   - React frontend (free tier)
+4. Services will be live in ~10 minutes
+
+**Service URLs** (after deployment):
+- Frontend: `https://patchhive-frontend.onrender.com`
+- Backend API: `https://patchhive-api.onrender.com/docs`
+- Health Check: `https://patchhive-api.onrender.com/health`
+
+📖 **Detailed Guide**: See [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) for:
+- Manual deployment steps
+- Environment variable configuration
+- Custom domain setup
+- Troubleshooting
+- Upgrade options
+
+### Other Hosting Options
+
+- **Vercel** (Frontend): Static site deployment
+- **Railway** (Backend + DB): Full-stack deployment
+- **DigitalOcean App Platform**: Container-based deployment
+- **Self-hosted**: Docker Compose (see infra/ directory)
 
 ---
 
