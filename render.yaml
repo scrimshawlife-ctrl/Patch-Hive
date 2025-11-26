@@ -1,10 +1,10 @@
-services:
-  # PostgreSQL Database
-  - type: pserv
-    name: patchhive-db
+databases:
+  - name: patchhive-db
+    databaseName: patchhive
+    user: patchhive
     plan: free
-    ipAllowList: []
 
+services:
   # Backend API (FastAPI)
   - type: web
     name: patchhive-api
