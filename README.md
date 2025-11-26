@@ -252,6 +252,42 @@ npm run dev
 
 ---
 
+## 🚀 Deployment
+
+### Deploy to Render (Easiest)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+**One-Click Deployment:**
+1. Click the button above or go to [Render Dashboard](https://render.com)
+2. Connect your GitHub repository
+3. Render will detect `render.yaml` and deploy automatically:
+   - PostgreSQL database (free tier)
+   - FastAPI backend (free tier)
+   - React frontend (free tier)
+4. Services will be live in ~10 minutes
+
+**Service URLs** (after deployment):
+- Frontend: `https://patchhive-frontend.onrender.com`
+- Backend API: `https://patchhive-api.onrender.com/docs`
+- Health Check: `https://patchhive-api.onrender.com/health`
+
+📖 **Detailed Guide**: See [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) for:
+- Manual deployment steps
+- Environment variable configuration
+- Custom domain setup
+- Troubleshooting
+- Upgrade options
+
+### Other Hosting Options
+
+- **Vercel** (Frontend): Static site deployment
+- **Railway** (Backend + DB): Full-stack deployment
+- **DigitalOcean App Platform**: Container-based deployment
+- **Self-hosted**: Docker Compose (see infra/ directory)
+
+---
+
 ## ABX-Core v1.2 Compliance
 
 PatchHive adheres to Applied Alchemy Labs architecture principles:
