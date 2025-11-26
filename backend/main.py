@@ -8,6 +8,13 @@ from contextlib import asynccontextmanager
 
 from core import settings, init_db
 
+# Import all models to register them with SQLAlchemy before init_db()
+from modules.models import Module  # noqa: F401
+from cases.models import Case  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
+from patches.models import Patch  # noqa: F401
+from community.models import User, Vote, Comment  # noqa: F401
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

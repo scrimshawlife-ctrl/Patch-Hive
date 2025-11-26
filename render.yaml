@@ -1,60 +1,34 @@
-# services:
+services:
   # PostgreSQL Database
   - type: pserv
     name: patchhive-db
-    env: docker
     plan: free
-    region: oregon
-    databaseName: patchhive
-    databaseUser: patchhive
     ipAllowList: []
 
   # Backend API (FastAPI)
   - type: web
     name: patchhive-api
     env: python
-    region: oregon
     plan: free
-    branch: main
     buildCommand: cd backend && pip install -r requirements.txt
     startCommand: cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT
-    healthCheckPath: /health
     envVars:
       - key: DATABASE_URL
         fromDatabase:
           name: patchhive-db
           property: connectionString
-      - key: PYTHON_VERSION
-        value: 3.11.0
       - key: CORS_ORIGINS
-        value: https://patchhive.onrender.com
+        value: https://patchhive-frontend.onrender.com
       - key: SECRET_KEY
         generateValue: true
-      - key: APP_NAME
-        value: PatchHive
-      - key: APP_VERSION
-        value: 1.0.0
-      - key: ABX_CORE_VERSION
-        value: 1.2
-      - key: ENFORCE_SEED_TRACEABILITY
-        value: true
 
   # Frontend (React/Vite)
   - type: web
     name: patchhive-frontend
     env: static
-    region: oregon
     plan: free
-    branch: main
     buildCommand: cd frontend && npm install && npm run build
     staticPublishPath: frontend/dist
-    headers:
-      - path: /*
-        name: Cache-Control
-        value: public, max-age=0, must-revalidate
-      - path: /assets/*
-        name: Cache-Control
-        value: public, max-age=31536000, immutable
     routes:
       - type: rewrite
         source: /*
