@@ -1,8 +1,7 @@
 services:
   # PostgreSQL Database
-  - type: pserv
+  - type: postgres
     name: patchhive-db
-    env: docker
     plan: free
     region: oregon
     databaseName: patchhive
