@@ -1,4 +1,4 @@
-# services:
+services:
   # PostgreSQL Database
   - type: pserv
     name: patchhive-db
@@ -27,7 +27,7 @@
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: CORS_ORIGINS
-        value: https://patchhive.onrender.com
+        value: https://patchhive-frontend.onrender.com
       - key: SECRET_KEY
         generateValue: true
       - key: APP_NAME
@@ -35,9 +35,9 @@
       - key: APP_VERSION
         value: 1.0.0
       - key: ABX_CORE_VERSION
-        value: 1.2
+        value: "1.2"
       - key: ENFORCE_SEED_TRACEABILITY
-        value: true
+        value: "true"
 
   # Frontend (React/Vite)
   - type: web
