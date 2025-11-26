@@ -254,35 +254,68 @@ npm run dev
 
 ## 🚀 Deployment
 
-### Deploy to Render (Easiest)
+PatchHive can be deployed to Azure or Render with one-click deployment:
+
+### Deploy to Azure (Recommended for Production)
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fscrimshawlife-ctrl%2FPatch-Hive%2Fmain%2Finfra%2Fmain.bicep)
+
+**Quick Deploy with Azure Developer CLI:**
+```bash
+azd up
+```
+
+**What gets deployed:**
+- Azure PostgreSQL Flexible Server (15)
+- Azure App Service for backend (Python 3.11)
+- Azure Static Web Apps for frontend (Free tier)
+- Automatic SSL certificates
+- Application Insights (monitoring)
+
+📖 **Detailed Guide**: [AZURE_DEPLOYMENT.md](docs/AZURE_DEPLOYMENT.md)
+
+**Estimated Cost:** ~$25-30/month (production tier) | Free tier available
+
+---
+
+### Deploy to Render (Easiest Free Option)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 **One-Click Deployment:**
 1. Click the button above or go to [Render Dashboard](https://render.com)
 2. Connect your GitHub repository
-3. Render will detect `render.yaml` and deploy automatically:
+3. Render detects `render.yaml` and deploys:
    - PostgreSQL database (free tier)
    - FastAPI backend (free tier)
    - React frontend (free tier)
-4. Services will be live in ~10 minutes
+4. Services live in ~10 minutes
 
-**Service URLs** (after deployment):
-- Frontend: `https://patchhive-frontend.onrender.com`
-- Backend API: `https://patchhive-api.onrender.com/docs`
-- Health Check: `https://patchhive-api.onrender.com/health`
+📖 **Detailed Guide**: [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md)
 
-📖 **Detailed Guide**: See [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) for:
-- Manual deployment steps
-- Environment variable configuration
-- Custom domain setup
-- Troubleshooting
-- Upgrade options
+**Cost:** Free tier available | Services spin down after 15min inactivity
+
+---
+
+### Deployment Comparison
+
+| Feature | Azure | Render |
+|---------|-------|--------|
+| **Cost (Free Tier)** | $200 credit (1 month) | ✅ Forever free (with limitations) |
+| **Cost (Production)** | ~$25-30/month | ~$25/month |
+| **Auto-scaling** | ✅ Yes | Limited on free tier |
+| **Custom Domains** | ✅ Free SSL | ✅ Free SSL |
+| **Database Backups** | ✅ Automated (7-30 days) | ✅ 90 days on free tier |
+| **Cold Start** | Fast (~5 seconds) | ~30 seconds on free tier |
+| **Regions** | 60+ regions worldwide | Limited regions |
+| **CI/CD Integration** | GitHub Actions built-in | Automatic on git push |
+| **Monitoring** | Application Insights included | Basic metrics |
+| **Best For** | Production, enterprise | Quick prototypes, free hosting |
 
 ### Other Hosting Options
 
-- **Vercel** (Frontend): Static site deployment
-- **Railway** (Backend + DB): Full-stack deployment
+- **Vercel** (Frontend only): Static site deployment
+- **Railway** (Full-stack): Backend + Database deployment
 - **DigitalOcean App Platform**: Container-based deployment
 - **Self-hosted**: Docker Compose (see infra/ directory)
 

@@ -1,0 +1,30 @@
+# Azure Developer CLI (azd) configuration for PatchHive
+# Deploy with: azd up
+
+name: patchhive
+metadata:
+  template: patchhive-eurorack-patch-manager
+
+services:
+  # Backend API (FastAPI on Azure App Service)
+  api:
+    project: ./backend
+    language: python
+    host: appservice
+    hooks:
+      postdeploy:
+        shell: sh
+        run: echo "Backend deployed successfully"
+        continueOnError: false
+
+  # Frontend (React/Vite on Azure Static Web Apps)
+  web:
+    project: ./frontend
+    language: js
+    host: staticwebapp
+    dist: dist
+    hooks:
+      postdeploy:
+        shell: sh
+        run: echo "Frontend deployed successfully"
+        continueOnError: false
