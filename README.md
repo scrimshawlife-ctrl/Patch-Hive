@@ -203,19 +203,24 @@ patchhive/
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/scrimshawlife-ctrl/Patch-Hive.git
 cd Patch-Hive
 
-# Start all services
-cd infra
-docker-compose up
+# Start all services with one command
+docker compose up -d
 
-# Backend will be available at http://localhost:8000
-# Frontend will be available at http://localhost:5173
-# API docs at http://localhost:8000/docs
+# Or use the Makefile
+make dev
+
+# Access the application:
+# - Frontend: http://localhost:5173
+# - Backend: http://localhost:8000/docs
+# - Database: localhost:5432
 ```
 
-### Manual Setup
+📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+### Manual Setup (Without Docker)
 
 #### Backend
 
@@ -312,12 +317,30 @@ azd up
 | **Monitoring** | Application Insights included | Basic metrics |
 | **Best For** | Production, enterprise | Quick prototypes, free hosting |
 
+### Self-Hosted with Docker
+
+Perfect for on-premise or custom VPS deployment:
+
+```bash
+# Production deployment
+docker compose -f docker-compose.prod.yml up -d
+
+# Or use the deployment script
+make prod
+```
+
+📖 **Full Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+**Best for:** On-premise, custom VPS, full control
+
+---
+
 ### Other Hosting Options
 
 - **Vercel** (Frontend only): Static site deployment
 - **Railway** (Full-stack): Backend + Database deployment
 - **DigitalOcean App Platform**: Container-based deployment
-- **Self-hosted**: Docker Compose (see infra/ directory)
+- **AWS/GCP**: Use Docker images with ECS/Cloud Run
 
 ---
 
@@ -357,6 +380,40 @@ Key endpoints:
 ---
 
 ## Development
+
+### Quick Start with Docker (Recommended)
+
+The fastest way to get PatchHive running locally:
+
+```bash
+# Start everything with one command
+docker compose up -d
+
+# Or use the Makefile
+make dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000/docs
+- Database: localhost:5432
+
+**Useful commands:**
+```bash
+make help          # Show all available commands
+make logs          # Follow logs
+make test          # Run all tests
+make db-backup     # Backup database
+make restart       # Restart services
+```
+
+📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+---
+
+### Manual Setup (Alternative)
+
+If you prefer running services directly without Docker:
 
 ### Backend Testing
 
