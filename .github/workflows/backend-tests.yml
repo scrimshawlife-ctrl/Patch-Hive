@@ -49,16 +49,20 @@ jobs:
       working-directory: ./backend
       run: |
         python -m pip install --upgrade pip
-        pip install pytest pytest-cov httpx email-validator
-        pip install sqlalchemy fastapi pydantic psycopg2-binary python-jose passlib reportlab
+        pip install pytest pytest-cov httpx
+        pip install -r requirements.txt
 
     - name: Run unit tests
       working-directory: ./backend
+      env:
+        DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
       run: |
         python3 -m pytest tests/unit/ -v --cov=. --cov-report=xml --cov-report=term
 
     - name: Run API tests
       working-directory: ./backend
+      env:
+        DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
       run: |
         python3 -m pytest tests/api/ -v --cov=. --cov-append --cov-report=xml --cov-report=term
 
