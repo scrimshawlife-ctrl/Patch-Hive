@@ -147,7 +147,7 @@ class TestPatchGenerator:
         assert len(patches) > 0
         assert all(isinstance(p, PatchSpec) for p in patches)
         assert all(len(p.connections) > 0 for p in patches)
-        assert all(p.category in ["lead", "bass", "pad"] for p in patches)
+        assert all(p.category in ["lead", "bass", "pad", "drone"] for p in patches)
 
     def test_generate_patches_respects_max_patches(
         self, db_session: Session, sample_rack_full: Rack
@@ -185,7 +185,7 @@ class TestPatchGenerator:
         # Check patch structure
         assert isinstance(patch.name, str)
         assert len(patch.name) > 0
-        assert patch.category in ["pad", "lead", "bass", "percussion", "fx", "generative", "utility"]
+        assert patch.category in ["pad", "lead", "bass", "percussion", "fx", "generative", "utility", "drone"]
         assert isinstance(patch.connections, list)
         assert isinstance(patch.description, str)
         assert isinstance(patch.generation_seed, int)
