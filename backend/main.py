@@ -72,13 +72,13 @@ async def root():
     }
 
 
-# Import and register routers
-from modules.routes import router as modules_router
-from cases.routes import router as cases_router
-from racks.routes import router as racks_router
-from patches.routes import router as patches_router
-from community.routes import router as community_router
-from export.routes import router as export_router
+# Import and register routers  # noqa: E402
+from modules.routes import router as modules_router  # noqa: E402
+from cases.routes import router as cases_router  # noqa: E402
+from racks.routes import router as racks_router  # noqa: E402
+from patches.routes import router as patches_router  # noqa: E402
+from community.routes import router as community_router  # noqa: E402
+from export.routes import router as export_router  # noqa: E402
 
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
 app.include_router(cases_router, prefix="/api/cases", tags=["cases"])

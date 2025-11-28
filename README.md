@@ -203,19 +203,24 @@ patchhive/
 
 ```bash
 # Clone repository
-git clone <repository-url>
+git clone https://github.com/scrimshawlife-ctrl/Patch-Hive.git
 cd Patch-Hive
 
-# Start all services
-cd infra
-docker-compose up
+# Start all services with one command
+docker compose up -d
 
-# Backend will be available at http://localhost:8000
-# Frontend will be available at http://localhost:5173
-# API docs at http://localhost:8000/docs
+# Or use the Makefile
+make dev
+
+# Access the application:
+# - Frontend: http://localhost:5173
+# - Backend: http://localhost:8000/docs
+# - Database: localhost:5432
 ```
 
-### Manual Setup
+📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+### Manual Setup (Without Docker)
 
 #### Backend
 
@@ -254,37 +259,98 @@ npm run dev
 
 ## 🚀 Deployment
 
-### Deploy to Render (Easiest)
+PatchHive supports deployment to **7+ platforms**. Choose based on your needs:
+
+📖 **[Complete Deployment Comparison →](docs/DEPLOYMENT_OPTIONS.md)**
+
+### Quick Deploy Options
+
+#### Deploy to Azure (Recommended for Production)
+
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fscrimshawlife-ctrl%2FPatch-Hive%2Fmain%2Finfra%2Fmain.bicep)
+
+**Quick Deploy with Azure Developer CLI:**
+```bash
+azd up
+```
+
+**What gets deployed:**
+- Azure PostgreSQL Flexible Server (15)
+- Azure App Service for backend (Python 3.11)
+- Azure Static Web Apps for frontend (Free tier)
+- Automatic SSL certificates
+- Application Insights (monitoring)
+
+📖 **Detailed Guide**: [AZURE_DEPLOYMENT.md](docs/AZURE_DEPLOYMENT.md)
+
+**Estimated Cost:** ~$25-30/month (production tier) | Free tier available
+
+#### Deploy to Render (Easiest Free Option)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
 **One-Click Deployment:**
 1. Click the button above or go to [Render Dashboard](https://render.com)
 2. Connect your GitHub repository
-3. Render will detect `render.yaml` and deploy automatically:
+3. Render detects `render.yaml` and deploys:
    - PostgreSQL database (free tier)
    - FastAPI backend (free tier)
    - React frontend (free tier)
-4. Services will be live in ~10 minutes
+4. Services live in ~10 minutes
 
-**Service URLs** (after deployment):
-- Frontend: `https://patchhive-frontend.onrender.com`
-- Backend API: `https://patchhive-api.onrender.com/docs`
-- Health Check: `https://patchhive-api.onrender.com/health`
+📖 **Detailed Guide**: [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md)
 
-📖 **Detailed Guide**: See [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md) for:
-- Manual deployment steps
-- Environment variable configuration
-- Custom domain setup
-- Troubleshooting
-- Upgrade options
+**Cost:** Free tier available | Services spin down after 15min inactivity
 
-### Other Hosting Options
+#### Deployment Comparison
 
-- **Vercel** (Frontend): Static site deployment
-- **Railway** (Backend + DB): Full-stack deployment
-- **DigitalOcean App Platform**: Container-based deployment
-- **Self-hosted**: Docker Compose (see infra/ directory)
+| Feature | Azure | Render |
+|---------|-------|--------|
+| **Cost (Free Tier)** | $200 credit (1 month) | ✅ Forever free (with limitations) |
+| **Cost (Production)** | ~$25-30/month | ~$25/month |
+| **Auto-scaling** | ✅ Yes | Limited on free tier |
+| **Custom Domains** | ✅ Free SSL | ✅ Free SSL |
+| **Database Backups** | ✅ Automated (7-30 days) | ✅ 90 days on free tier |
+| **Cold Start** | Fast (~5 seconds) | ~30 seconds on free tier |
+| **Regions** | 60+ regions worldwide | Limited regions |
+| **CI/CD Integration** | GitHub Actions built-in | Automatic on git push |
+| **Monitoring** | Application Insights included | Basic metrics |
+| **Best For** | Production, enterprise | Quick prototypes, free hosting |
+
+#### Self-Hosted with Docker
+
+Perfect for on-premise or custom VPS deployment:
+
+```bash
+# Production deployment
+docker compose -f docker-compose.prod.yml up -d
+
+# Or use the deployment script
+make prod
+```
+
+📖 **Full Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+**Best for:** On-premise, custom VPS, full control
+
+#### Additional Platform Options
+
+| Platform | Best For | Cost | Setup Time |
+|----------|----------|------|------------|
+| **Railway** | MVPs, startups | $5-50/mo | 15 min |
+| **DigitalOcean** | Simple production | $12-50/mo | 15 min |
+| **Fly.io** | Edge deployment | $0-30/mo | 15 min |
+| **Vercel** | Frontend only | Free-$20/mo | 5 min |
+
+📖 **[View Full Comparison & Setup Guides →](docs/DEPLOYMENT_OPTIONS.md)**
+
+**Complete guide includes:**
+- ✅ Detailed cost comparisons for all platforms
+- ✅ Platform-specific setup instructions
+- ✅ Configuration files included for each platform
+- ✅ Security considerations and compliance
+- ✅ Migration guides between platforms
+- ✅ Recommendation decision tree
 
 ---
 
@@ -324,6 +390,40 @@ Key endpoints:
 ---
 
 ## Development
+
+### Quick Start with Docker (Recommended)
+
+The fastest way to get PatchHive running locally:
+
+```bash
+# Start everything with one command
+docker compose up -d
+
+# Or use the Makefile
+make dev
+```
+
+**Access the application:**
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000/docs
+- Database: localhost:5432
+
+**Useful commands:**
+```bash
+make help          # Show all available commands
+make logs          # Follow logs
+make test          # Run all tests
+make db-backup     # Backup database
+make restart       # Restart services
+```
+
+📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+
+---
+
+### Manual Setup (Alternative)
+
+If you prefer running services directly without Docker:
 
 ### Backend Testing
 

@@ -258,10 +258,10 @@ def delete_comment(comment_id: int, current_user: User = Depends(require_auth), 
 def get_feed(skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100), db: Session = Depends(get_db)):
     """Get public feed of shared racks and patches."""
     # Get public racks
-    racks = db.query(Rack).filter(Rack.is_public == True).order_by(desc(Rack.created_at)).all()
+    racks = db.query(Rack).filter(Rack.is_public.is_(True)).order_by(desc(Rack.created_at)).all()
 
     # Get public patches
-    patches = db.query(Patch).filter(Patch.is_public == True).order_by(desc(Patch.created_at)).all()
+    patches = db.query(Patch).filter(Patch.is_public.is_(True)).order_by(desc(Patch.created_at)).all()
 
     # Build feed items
     feed_items: list[FeedItem] = []
