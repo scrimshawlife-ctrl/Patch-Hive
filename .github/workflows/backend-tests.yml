@@ -56,6 +56,7 @@ jobs:
       working-directory: ./backend
       env:
         DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
+        PYTHONPATH: .
       run: |
         python3 -m pytest tests/unit/ -v --cov=. --cov-report=xml --cov-report=term
 
@@ -63,6 +64,7 @@ jobs:
       working-directory: ./backend
       env:
         DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
+        PYTHONPATH: .
       run: |
         python3 -m pytest tests/api/ -v --cov=. --cov-append --cov-report=xml --cov-report=term
 
