@@ -259,9 +259,13 @@ npm run dev
 
 ## 🚀 Deployment
 
-PatchHive can be deployed to Azure or Render with one-click deployment:
+PatchHive supports deployment to **7+ platforms**. Choose based on your needs:
 
-### Deploy to Azure (Recommended for Production)
+📖 **[Complete Deployment Comparison →](docs/DEPLOYMENT_OPTIONS.md)**
+
+### Quick Deploy Options
+
+#### Deploy to Azure (Recommended for Production)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fscrimshawlife-ctrl%2FPatch-Hive%2Fmain%2Finfra%2Fmain.bicep)
 
@@ -281,9 +285,7 @@ azd up
 
 **Estimated Cost:** ~$25-30/month (production tier) | Free tier available
 
----
-
-### Deploy to Render (Easiest Free Option)
+#### Deploy to Render (Easiest Free Option)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
 
@@ -300,9 +302,7 @@ azd up
 
 **Cost:** Free tier available | Services spin down after 15min inactivity
 
----
-
-### Deployment Comparison
+#### Deployment Comparison
 
 | Feature | Azure | Render |
 |---------|-------|--------|
@@ -317,7 +317,7 @@ azd up
 | **Monitoring** | Application Insights included | Basic metrics |
 | **Best For** | Production, enterprise | Quick prototypes, free hosting |
 
-### Self-Hosted with Docker
+#### Self-Hosted with Docker
 
 Perfect for on-premise or custom VPS deployment:
 
@@ -333,14 +333,24 @@ make prod
 
 **Best for:** On-premise, custom VPS, full control
 
----
+#### Additional Platform Options
 
-### Other Hosting Options
+| Platform | Best For | Cost | Setup Time |
+|----------|----------|------|------------|
+| **Railway** | MVPs, startups | $5-50/mo | 15 min |
+| **DigitalOcean** | Simple production | $12-50/mo | 15 min |
+| **Fly.io** | Edge deployment | $0-30/mo | 15 min |
+| **Vercel** | Frontend only | Free-$20/mo | 5 min |
 
-- **Vercel** (Frontend only): Static site deployment
-- **Railway** (Full-stack): Backend + Database deployment
-- **DigitalOcean App Platform**: Container-based deployment
-- **AWS/GCP**: Use Docker images with ECS/Cloud Run
+📖 **[View Full Comparison & Setup Guides →](docs/DEPLOYMENT_OPTIONS.md)**
+
+**Complete guide includes:**
+- ✅ Detailed cost comparisons for all platforms
+- ✅ Platform-specific setup instructions
+- ✅ Configuration files included for each platform
+- ✅ Security considerations and compliance
+- ✅ Migration guides between platforms
+- ✅ Recommendation decision tree
 
 ---
 
