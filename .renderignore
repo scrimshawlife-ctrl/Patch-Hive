@@ -1,0 +1,71 @@
+# Render deployment ignore file
+# Files and directories to exclude from deployment
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Documentation
+docs/
+*.md
+!README.md
+
+# Tests
+backend/tests/
+frontend/src/test/
+**/__tests__/
+**/*.test.ts
+**/*.test.tsx
+**/*.test.py
+**/*.spec.ts
+**/*.spec.tsx
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Development
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node
+node_modules/
+npm-debug.log*
+.npm/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.egg-info/
+.venv/
+venv/
+
+# Build artifacts (will be rebuilt)
+frontend/dist/
+backend/exports/
+backend/waveforms/
+
+# Deployment configs for other platforms
+azure.yaml
+.do/
+backend/fly.toml
+frontend/vercel.json
+backend/railway.json
+frontend/railway.json
+docker-compose*.yml
+Dockerfile
+!Dockerfile.backend
+!Dockerfile.frontend
+infra/
+scripts/
+
+# CI/CD
+.github/
