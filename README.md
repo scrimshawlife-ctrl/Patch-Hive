@@ -287,7 +287,7 @@ azd up
 
 #### Deploy to Render (Easiest Free Option)
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/scrimshawlife-ctrl/Patch-Hive)
 
 **One-Click Deployment:**
 1. Click the button above or go to [Render Dashboard](https://render.com)

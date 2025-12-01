@@ -6,7 +6,7 @@ This guide covers deploying PatchHive to Render.com using Docker containers for 
 
 **One-Click Deployment:**
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/scrimshawlife-ctrl/Patch-Hive)
 
 1. Click the button above
 2. Connect your GitHub account
