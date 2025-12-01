@@ -22,7 +22,7 @@ services:
           name: patchhive-db
           property: connectionString
       - key: CORS_ORIGINS
-        value: https://patchhive-frontend.onrender.com
+        value: '["https://patchhive-frontend.onrender.com"]'
       - key: SECRET_KEY
         generateValue: true
       - key: PORT
@@ -37,9 +37,10 @@ services:
     plan: free
     dockerfilePath: ./Dockerfile.frontend
     dockerContext: .
-    envVars:
-      - key: VITE_API_URL
+    dockerBuildArgs:
+      - key: VITE_API_BASE_URL
         value: https://patchhive-api.onrender.com
+    envVars:
       - key: PORT
         value: 8080
     healthCheckPath: /health
