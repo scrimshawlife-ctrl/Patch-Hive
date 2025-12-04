@@ -1,15 +1,32 @@
 """
 Deterministic Patch Generation Engine.
 Generates plausible patch configurations based on module types and connections.
+
+ABX-Core v1.3: This engine now produces first-class IR objects and full provenance
+tracking for every generation run. The IR is serializable and replayable.
 """
 import random
-from typing import List, Dict, Any, Literal, Optional
+import time
+from typing import List, Dict, Any, Literal, Optional, Tuple
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
-from core import settings, generate_patch_name
+from core import (
+    settings,
+    generate_patch_name,
+    Provenance,
+    PatchGenerationIR,
+    RackStateIR,
+    ModuleIR,
+    PatchGenerationParams,
+    PatchGraphIR,
+    ConnectionIR,
+    get_git_commit,
+)
 from racks.models import Rack, RackModule
 from modules.models import Module
+from cases.models import Case
 
 
 PatchCategory = Literal["pad", "lead", "bass", "percussion", "fx", "generative", "utility"]
@@ -461,3 +478,147 @@ def generate_patches_for_rack(
     patches = generator.generate_patches()
 
     return patches
+
+
+# ================================================================================
+# ABX-Core v1.3: IR-Aware Generation with Provenance
+# ================================================================================
+
+
+def build_rack_state_ir(db: Session, rack: Rack) -> RackStateIR:
+    """
+    Build a RackStateIR from a Rack model.
+
+    This extracts the complete rack state into a deterministic IR representation.
+    """
+    # Get rack modules
+    rack_modules = db.query(RackModule).filter(RackModule.rack_id == rack.id).all()
+
+    modules_ir: List[ModuleIR] = []
+    for rm in rack_modules:
+        module = db.query(Module).filter(Module.id == rm.module_id).first()
+        if module:
+            modules_ir.append(
+                ModuleIR(
+                    module_id=module.id,
+                    module_name=module.name,
+                    module_type=module.module_type,
+                    position_hp=rm.position_hp,
+                    row=rm.row,
+                )
+            )
+
+    # Get case info
+    case = db.query(Case).filter(Case.id == rack.case_id).first()
+    case_hp = case.hp if case else 104
+    case_rows = case.rows if case else 1
+
+    return RackStateIR(
+        rack_id=rack.id,
+        rack_name=rack.name,
+        case_hp=case_hp,
+        case_rows=case_rows,
+        modules=modules_ir,
+    )
+
+
+def generate_patches_with_ir(
+    db: Session,
+    rack: Rack,
+    seed: Optional[int] = None,
+    config: Optional[PatchEngineConfig] = None,
+) -> Tuple[PatchGenerationIR, List[PatchGraphIR], Provenance]:
+    """
+    ABX-Core v1.3 compliant patch generation with full IR and provenance.
+
+    This function:
+    1. Creates a PatchGenerationIR (deterministic IR)
+    2. Tracks provenance for the run
+    3. Calls the existing generation logic
+    4. Converts output to PatchGraphIR format
+    5. Returns (IR, patches, provenance) for storage
+
+    Args:
+        db: Database session
+        rack: Rack to generate patches for
+        seed: Random seed
+        config: Engine configuration
+
+    Returns:
+        Tuple of (generation_ir, patch_graphs, provenance)
+    """
+    start_time = time.time()
+
+    # Default seed and config
+    if seed is None:
+        seed = settings.default_generation_seed
+    if config is None:
+        config = PatchEngineConfig()
+
+    # Build IR
+    rack_state = build_rack_state_ir(db, rack)
+    params = PatchGenerationParams(
+        max_patches=config.max_patches,
+        allow_feedback=config.allow_feedback,
+        prefer_simple=config.prefer_simple,
+    )
+
+    generation_ir = PatchGenerationIR(
+        run_id=f"patchgen-{rack.id}-{seed}",  # Deterministic run_id
+        rack_state=rack_state,
+        seed=seed,
+        params=params,
+        engine_version=settings.patch_engine_version,
+        abx_core_version=settings.abx_core_version,
+        created_at=datetime.now(timezone.utc).isoformat(),
+        git_commit=get_git_commit(),
+        host=None,  # Will be filled by Provenance
+    )
+
+    # Create provenance
+    provenance = Provenance.create(
+        entity_type="patch_batch",
+        pipeline="patch_generation",
+        engine_version=settings.patch_engine_version,
+        git_commit=get_git_commit(),
+    )
+
+    # Generate patches using existing logic
+    patch_specs = generate_patches_for_rack(db, rack, seed, config)
+
+    # Convert to PatchGraphIR
+    patch_graphs: List[PatchGraphIR] = []
+    ir_hash = generation_ir.get_canonical_hash()
+
+    for spec in patch_specs:
+        connections_ir = [
+            ConnectionIR(
+                from_module_id=c.from_module_id,
+                from_port=c.from_port,
+                to_module_id=c.to_module_id,
+                to_port=c.to_port,
+                cable_type=c.cable_type,
+            )
+            for c in spec.connections
+        ]
+
+        graph = PatchGraphIR(
+            patch_name=spec.name,
+            category=spec.category,  # type: ignore
+            connections=connections_ir,
+            description=spec.description,
+            generation_ir_hash=ir_hash,
+            generation_seed=spec.generation_seed,
+        )
+        patch_graphs.append(graph)
+
+    # Complete provenance
+    end_time = time.time()
+    provenance.mark_completed()
+    provenance.add_metric("duration_ms", (end_time - start_time) * 1000)
+    provenance.add_metric("patch_count", len(patch_graphs))
+    provenance.add_metric(
+        "connection_count", sum(len(p.connections) for p in patch_graphs)
+    )
+
+    return generation_ir, patch_graphs, provenance
