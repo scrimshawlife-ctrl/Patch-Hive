@@ -42,8 +42,11 @@ class Settings(BaseSettings):
     waveform_dir: str = "./waveforms"
 
     # ABX-Core / SEED
-    abx_core_version: str = "1.2"
+    abx_core_version: str = "1.3"
     enforce_seed_traceability: bool = True
+
+    # Git tracking (optional, for provenance)
+    git_commit: str = ""  # Set by environment or CI/CD
 
 
 # Global settings instance

@@ -48,6 +48,11 @@ class Patch(Base):
     )  # Patch engine version that generated this
     engine_config = Column(JSON, nullable=True)  # Config parameters used during generation
 
+    # ABX-Core v1.3: Enhanced provenance
+    provenance = Column(JSON, nullable=True)  # Full provenance record (Provenance.to_dict())
+    generation_ir = Column(JSON, nullable=True)  # Complete IR that generated this patch
+    generation_ir_hash = Column(String(32), nullable=True, index=True)  # Hash for deduplication
+
     # Waveform visualization
     waveform_svg_path = Column(String(500), nullable=True)  # Path to SVG file
     waveform_params = Column(JSON, nullable=True)  # Parameters used to generate waveform
