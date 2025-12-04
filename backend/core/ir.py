@@ -11,7 +11,6 @@ This satisfies the ABX-Core v1.3 requirement that "deterministic IR be a first-c
 """
 from dataclasses import dataclass, field, asdict
 from typing import List, Dict, Any, Optional, Literal
-from datetime import datetime
 import json
 
 PatchCategory = Literal["pad", "lead", "bass", "percussion", "fx", "generative", "utility", "drone"]
