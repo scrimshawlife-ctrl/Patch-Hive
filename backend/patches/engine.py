@@ -25,7 +25,8 @@ from core import (
     get_git_commit,
 )
 from racks.models import Rack, RackModule
-from modules.models import Module, Case
+from modules.models import Module
+from cases.models import Case
 
 
 PatchCategory = Literal["pad", "lead", "bass", "percussion", "fx", "generative", "utility"]
