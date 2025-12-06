@@ -10,6 +10,7 @@ from core import settings, init_db
 
 # Import all models to register them with SQLAlchemy before init_db()
 from modules.models import Module  # noqa: F401
+from modules.catalog import ModuleCatalog  # noqa: F401
 from cases.models import Case  # noqa: F401
 from racks.models import Rack, RackModule  # noqa: F401
 from patches.models import Patch  # noqa: F401
@@ -74,6 +75,7 @@ async def root():
 
 # Import and register routers  # noqa: E402
 from modules.routes import router as modules_router  # noqa: E402
+from modules.catalog_routes import router as catalog_router  # noqa: E402
 from cases.routes import router as cases_router  # noqa: E402
 from racks.routes import router as racks_router  # noqa: E402
 from patches.routes import router as patches_router  # noqa: E402
@@ -82,6 +84,7 @@ from export.routes import router as export_router  # noqa: E402
 from integrations.router import router as integrations_router  # noqa: E402
 
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
+app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(cases_router, prefix="/api/cases", tags=["cases"])
 app.include_router(racks_router, prefix="/api/racks", tags=["racks"])
 app.include_router(patches_router, prefix="/api/patches", tags=["patches"])
