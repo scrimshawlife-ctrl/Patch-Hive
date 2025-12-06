@@ -31,8 +31,8 @@ def browse_module_catalog(
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=500),
     # Sorting
-    sort_by: str = Query("brand", regex="^(brand|name|hp|category|created_at)$"),
-    sort_order: str = Query("asc", regex="^(asc|desc)$"),
+    sort_by: str = Query("brand", pattern="^(brand|name|hp|category|created_at)$"),
+    sort_order: str = Query("asc", pattern="^(asc|desc)$"),
 ):
     """
     Browse module catalog with search, filters, and sorting.
