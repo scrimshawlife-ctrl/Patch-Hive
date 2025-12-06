@@ -1,0 +1,86 @@
+"""
+Module Catalog model - lightweight searchable/filterable module directory.
+
+Two-tier architecture:
+1. ModuleCatalog: Lightweight listing of ALL modules (searchable/filterable)
+2. Module: Full specs, only populated when user adds to rack
+
+This allows:
+- Fast catalog browsing without loading heavy specs
+- Scalability to 8,000+ modules
+- On-demand spec fetching
+"""
+from sqlalchemy import Column, Integer, String, Index
+from datetime import datetime
+from sqlalchemy.orm import relationship
+
+from core.database import Base
+
+
+class ModuleCatalog(Base):
+    """
+    Lightweight module catalog for browsing/searching.
+
+    Contains minimal info for fast queries. Full specs fetched on-demand
+    when user adds module to rack.
+    """
+    __tablename__ = "module_catalog"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    # Basic identification
+    modulargrid_id = Column(Integer, unique=True, nullable=True, index=True)  # MG ID if available
+    slug = Column(String(200), unique=True, nullable=False, index=True)  # brand-name normalized
+    brand = Column(String(100), nullable=False, index=True)
+    name = Column(String(200), nullable=False, index=True)
+
+    # Essential specs for filtering
+    hp = Column(Integer, nullable=True, index=True)  # Width
+    category = Column(String(50), nullable=True, index=True)  # VCO, VCF, VCA, etc.
+
+    # Visual
+    image_url = Column(String(500), nullable=True)  # Module image
+
+    # Links
+    modulargrid_url = Column(String(500), nullable=True)
+    manufacturer_url = Column(String(500), nullable=True)
+
+    # Status
+    is_available = Column(String(20), default="available", index=True)  # available, discontinued, upcoming
+
+    # Metadata
+    created_at = Column(String(50), default=lambda: datetime.utcnow().isoformat())
+    updated_at = Column(String(50), default=lambda: datetime.utcnow().isoformat(), onupdate=lambda: datetime.utcnow().isoformat())
+
+    # Indexes for fast filtering
+    __table_args__ = (
+        Index('idx_catalog_brand_name', 'brand', 'name'),
+        Index('idx_catalog_category_hp', 'category', 'hp'),
+        Index('idx_catalog_available', 'is_available'),
+    )
+
+    def to_dict(self):
+        """Convert to dictionary."""
+        return {
+            "id": self.id,
+            "modulargrid_id": self.modulargrid_id,
+            "slug": self.slug,
+            "brand": self.brand,
+            "name": self.name,
+            "hp": self.hp,
+            "category": self.category,
+            "image_url": self.image_url,
+            "modulargrid_url": self.modulargrid_url,
+            "manufacturer_url": self.manufacturer_url,
+            "is_available": self.is_available,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+        }
+
+    @staticmethod
+    def create_slug(brand: str, name: str) -> str:
+        """Create URL-safe slug from brand and name."""
+        import re
+        combined = f"{brand}-{name}".lower()
+        slug = re.sub(r'[^a-z0-9]+', '-', combined)
+        return slug.strip('-')
