@@ -18,6 +18,13 @@ from core.database import SessionLocal
 from modules.catalog import ModuleCatalog
 from integrations.modulargrid_data import MODULES_DATABASE
 
+# Import all models to register them with SQLAlchemy before querying
+from modules.models import Module  # noqa: F401
+from cases.models import Case  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
+from patches.models import Patch  # noqa: F401
+from community.models import User, Vote, Comment  # noqa: F401
+
 
 def populate_catalog_from_curated_modules(db: Session) -> Dict[str, Any]:
     """

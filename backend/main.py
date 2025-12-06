@@ -83,8 +83,8 @@ from community.routes import router as community_router  # noqa: E402
 from export.routes import router as export_router  # noqa: E402
 from integrations.router import router as integrations_router  # noqa: E402
 
-app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
+app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
 app.include_router(cases_router, prefix="/api/cases", tags=["cases"])
 app.include_router(racks_router, prefix="/api/racks", tags=["racks"])
 app.include_router(patches_router, prefix="/api/patches", tags=["patches"])

@@ -133,22 +133,6 @@ def list_catalog_categories(db: Session = Depends(get_db)):
     }
 
 
-@router.get("/catalog/{slug}")
-def get_catalog_module(slug: str, db: Session = Depends(get_db)):
-    """
-    Get catalog entry for specific module.
-
-    Returns lightweight catalog info. Use /modules/{id} for full specs.
-    """
-    module = db.query(ModuleCatalog).filter(ModuleCatalog.slug == slug).first()
-
-    if not module:
-        from fastapi import HTTPException
-        raise HTTPException(status_code=404, detail=f"Module '{slug}' not found in catalog")
-
-    return module.to_dict()
-
-
 @router.get("/catalog/stats")
 def get_catalog_stats(db: Session = Depends(get_db)):
     """Get catalog statistics."""
@@ -182,3 +166,19 @@ def get_catalog_stats(db: Session = Depends(get_db)):
             "discontinued": total_modules - (available_count or 0) if total_modules else 0,
         }
     }
+
+
+@router.get("/catalog/{slug}")
+def get_catalog_module(slug: str, db: Session = Depends(get_db)):
+    """
+    Get catalog entry for specific module.
+
+    Returns lightweight catalog info. Use /modules/{id} for full specs.
+    """
+    module = db.query(ModuleCatalog).filter(ModuleCatalog.slug == slug).first()
+
+    if not module:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail=f"Module '{slug}' not found in catalog")
+
+    return module.to_dict()
