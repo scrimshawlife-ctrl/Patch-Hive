@@ -2,7 +2,7 @@
 
 ## Summary
 
-This PR upgrades PatchHive from ABX-Core v1.2 to v1.3, implementing all required architectural improvements for Applied Alchemy Labs ecosystem compliance. It also introduces ModularGrid integration with real Eurorack module data and a scalable two-tier catalog architecture designed to handle 8,000+ modules efficiently.
+This PR upgrades PatchHive from ABX-Core v1.2 to v1.3, implementing all required architectural improvements for Applied Alchemy Labs ecosystem compliance. It also introduces ModularGrid integration with real Eurorack module data, a scalable two-tier catalog architecture designed to handle 8,000+ modules efficiently, and an Abraxas overlay service for AAL ecosystem integration.
 
 ## Changes
 
@@ -107,6 +107,47 @@ This PR upgrades PatchHive from ABX-Core v1.2 to v1.3, implementing all required
 - **Scalable**: Can handle entire ModularGrid catalog (8,000+ modules)
 - **On-Demand**: Full specs only loaded when user adds module to rack
 - **Storage Efficient**: ~4MB for entire catalog vs. ~50MB for full specs
+
+### 🌉 Abraxas Overlay Service (NEW)
+
+- **Overlay Server** - `patchhive_overlay/server.py`
+  - Thin HTTP adapter for AAL ecosystem integration
+  - Stable `/health` and `/run` endpoints
+  - Capability-based routing to backend
+  - Threaded request handling
+
+- **Provenance System** - `patchhive_overlay/provenance.py`
+  - Deterministic SHA-256 run IDs
+  - Canonical JSON serialization for hashing
+  - Environment fingerprinting (Python, platform, git HEAD)
+  - ISO 8601 UTC timestamps
+
+- **Capabilities Supported**:
+  - `patchhive.ping` - Backend health check
+  - `patchhive.echo` - Echo test (local, no backend)
+  - `patchhive.search` - Module catalog search
+  - `patchhive.generate_patch` - Patch generation
+
+- **Documentation** - `patchhive_overlay/README.md`
+  - Complete API reference
+  - Usage examples
+  - Integration guide
+  - Troubleshooting
+
+**Usage**:
+```bash
+python -m patchhive_overlay.server \
+  --host 127.0.0.1 \
+  --port 8791 \
+  --backend-base http://127.0.0.1:8000
+```
+
+**Overlay Protocol Compliance**:
+- ✅ Stable interface (/health, /run)
+- ✅ Deterministic operations (same input+seed = same run_id)
+- ✅ Complete provenance tracking
+- ✅ Stateless requests
+- ✅ Canonical JSON
 
 ### 🐛 Bug Fixes
 
