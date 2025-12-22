@@ -188,6 +188,7 @@ class CanonicalMode:
 @dataclass(frozen=True)
 class CanonicalModule:
     instance_id: str
+    name: str
     hp: int
     tags: List[str] = field(default_factory=list)
     modes: List[CanonicalMode] = field(default_factory=list)

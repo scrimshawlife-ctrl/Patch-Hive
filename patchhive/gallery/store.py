@@ -29,6 +29,7 @@ class ModuleGalleryStore:
         entry = self.get_module(module_id)
         return CanonicalModule(
             instance_id=instance_id,
+            name=entry.name,
             hp=entry.hp,
             tags=list(entry.tags),
             modes=[CanonicalMode(name=mode, tags=[]) for mode in entry.modes],

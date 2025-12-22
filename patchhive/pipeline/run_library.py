@@ -68,6 +68,11 @@ def run_library(
     include_diagrams: bool = False,
     build_spec: LibraryBuildSpec = LibraryBuildSpec(),
 ) -> PatchLibrary:
+    # TODO: Integrate template-based generation using build_registry_for_rig(canon)
+    # from patchhive.templates.build_registry import build_registry_for_rig
+    # reg = build_registry_for_rig(canon)
+    # Use reg.templates to drive patch generation with VL2 micro-grammar when detected
+
     archetypes = ["basic_voice", "generative_mod", "clocked_sequence"]
     items: List[PatchLibraryItem] = []
 
