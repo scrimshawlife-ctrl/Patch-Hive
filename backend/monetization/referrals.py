@@ -1,0 +1,184 @@
+"""
+Referral program utilities and credit ledger helpers.
+"""
+from __future__ import annotations
+
+import hashlib
+import secrets
+from datetime import datetime
+from typing import Optional
+
+from sqlalchemy.orm import Session
+
+from community.models import User
+from monetization.models import CreditsLedger, Referral
+
+REFERRAL_REWARD_CREDITS = 3
+
+
+def generate_referral_code(db: Session, *, username: str, email: str) -> str:
+    """Generate a deterministic referral code with a collision-safe suffix."""
+    base = hashlib.sha256(f"{username.lower()}:{email.lower()}".encode()).hexdigest()[:10]
+    code = base
+    counter = 0
+    while db.query(User).filter(User.referral_code == code).first() is not None:
+        counter += 1
+        suffix = secrets.token_hex(2)
+        code = f"{base}{suffix}"
+        if counter > 5:
+            base = hashlib.sha256(f"{base}{suffix}".encode()).hexdigest()[:10]
+            code = base
+    return code
+
+
+def create_referral(db: Session, *, referrer: User, referred: User) -> Referral:
+    """Create a referral entry for a new user."""
+    if referrer.id == referred.id:
+        raise ValueError("Referrer and referred user cannot be the same.")
+    existing_reward = (
+        db.query(Referral)
+        .filter(
+            Referral.referred_user_id == referred.id,
+            Referral.status == "Rewarded",
+        )
+        .first()
+    )
+    if existing_reward:
+        raise ValueError("Referral already rewarded for this user.")
+    existing_referral = (
+        db.query(Referral)
+        .filter(
+            Referral.referred_user_id == referred.id,
+            Referral.status == "Pending",
+        )
+        .first()
+    )
+    if existing_referral:
+        raise ValueError("Referral already recorded for this user.")
+    referral = Referral(
+        referrer_user_id=referrer.id,
+        referred_user_id=referred.id,
+        status="Pending",
+    )
+    db.add(referral)
+    return referral
+
+
+def record_purchase(
+    db: Session,
+    *,
+    user: User,
+    credits_delta: int = 0,
+    notes: Optional[str] = None,
+) -> CreditsLedger:
+    """
+    Record a paid purchase event and apply referral rewards if eligible.
+
+    The ledger entry uses change_type="Purchase" and is treated as the
+    canonical marker for first-paid purchase eligibility.
+    """
+    purchase_entry = CreditsLedger(
+        user_id=user.id,
+        change_type="Purchase",
+        credits_delta=credits_delta,
+        notes=notes,
+    )
+    db.add(purchase_entry)
+    db.flush()
+    apply_referral_reward(db, referred_user_id=user.id, purchase_entry_id=purchase_entry.id)
+    return purchase_entry
+
+
+def apply_referral_reward(
+    db: Session,
+    *,
+    referred_user_id: int,
+    purchase_entry_id: int,
+) -> Optional[CreditsLedger]:
+    """Grant referral credits after the referred user's first paid purchase."""
+    purchase_count = (
+        db.query(CreditsLedger)
+        .filter(CreditsLedger.user_id == referred_user_id, CreditsLedger.change_type == "Purchase")
+        .count()
+    )
+    if purchase_count != 1:
+        return None
+
+    referral_pending = (
+        db.query(Referral)
+        .filter(
+            Referral.referred_user_id == referred_user_id,
+            Referral.status == "Pending",
+        )
+        .first()
+    )
+    if not referral_pending:
+        return None
+    if referral_pending.referrer_user_id == referred_user_id:
+        return None
+
+    rewarded_exists = (
+        db.query(Referral)
+        .filter(
+            Referral.referred_user_id == referred_user_id,
+            Referral.status == "Rewarded",
+        )
+        .first()
+    )
+    if rewarded_exists:
+        return None
+
+    reward_entry = CreditsLedger(
+        user_id=referral_pending.referrer_user_id,
+        change_type="Grant",
+        credits_delta=REFERRAL_REWARD_CREDITS,
+        notes=f"Referral reward: {referred_user_id}",
+        referral_id=referral_pending.id,
+    )
+    rewarded_entry = Referral(
+        referrer_user_id=referral_pending.referrer_user_id,
+        referred_user_id=referred_user_id,
+        status="Rewarded",
+        first_purchase_id=purchase_entry_id,
+        rewarded_at=datetime.utcnow(),
+    )
+    db.add(reward_entry)
+    db.add(rewarded_entry)
+    return reward_entry
+
+
+def get_referral_summary(db: Session, *, user: User) -> dict:
+    """Return referral status overview for a user."""
+    referrals = (
+        db.query(Referral)
+        .filter(Referral.referrer_user_id == user.id)
+        .order_by(Referral.created_at.desc())
+        .all()
+    )
+    rewarded_ids = {
+        referral.referred_user_id for referral in referrals if referral.status == "Rewarded"
+    }
+    pending_referrals = [
+        referral
+        for referral in referrals
+        if referral.status == "Pending" and referral.referred_user_id not in rewarded_ids
+    ]
+    rewarded_referrals = [referral for referral in referrals if referral.status == "Rewarded"]
+    earned_credits = (
+        db.query(CreditsLedger)
+        .filter(
+            CreditsLedger.user_id == user.id,
+            CreditsLedger.change_type == "Grant",
+            CreditsLedger.referral_id.isnot(None),
+        )
+        .with_entities(CreditsLedger.credits_delta)
+        .all()
+    )
+    earned_total = sum(entry.credits_delta for entry in earned_credits)
+    return {
+        "referral_code": user.referral_code,
+        "referral_link": f"/signup?ref={user.referral_code}",
+        "pending_referrals": pending_referrals,
+        "rewarded_referrals": rewarded_referrals,
+        "earned_credits": earned_total,
+    }

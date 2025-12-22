@@ -29,6 +29,10 @@ class ModuleBase(BaseModel):
     tags: list[str] = Field(default_factory=list)
     description: Optional[str] = None
     manufacturer_url: Optional[str] = None
+    status: Optional[str] = "active"
+    replacement_module_id: Optional[int] = None
+    deprecated_at: Optional[datetime] = None
+    tombstoned_at: Optional[datetime] = None
 
 
 class ModuleCreate(ModuleBase):
@@ -52,6 +56,10 @@ class ModuleUpdate(BaseModel):
     tags: Optional[list[str]] = None
     description: Optional[str] = None
     manufacturer_url: Optional[str] = None
+    status: Optional[str] = None
+    replacement_module_id: Optional[int] = None
+    deprecated_at: Optional[datetime] = None
+    tombstoned_at: Optional[datetime] = None
 
 
 class ModuleResponse(ModuleBase):

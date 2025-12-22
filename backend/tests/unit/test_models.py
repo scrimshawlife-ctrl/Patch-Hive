@@ -224,6 +224,9 @@ class TestUserModel:
             username="testuser",
             email="test@example.com",
             password_hash="$2b$12$hashedpassword",
+            referral_code="refcode",
+            role="User",
+            display_name="Test User",
         )
         db_session.add(user)
         db_session.commit()
@@ -239,11 +242,15 @@ class TestUserModel:
             username="testuser",
             email="test1@example.com",
             password_hash="hash1",
+            referral_code="refcode1",
+            role="User",
         )
         user2 = User(
             username="testuser",  # Same username
             email="test2@example.com",
             password_hash="hash2",
+            referral_code="refcode2",
+            role="User",
         )
         db_session.add(user1)
         db_session.commit()
@@ -258,11 +265,15 @@ class TestUserModel:
             username="user1",
             email="test@example.com",
             password_hash="hash1",
+            referral_code="refcode3",
+            role="User",
         )
         user2 = User(
             username="user2",
             email="test@example.com",  # Same email
             password_hash="hash2",
+            referral_code="refcode4",
+            role="User",
         )
         db_session.add(user1)
         db_session.commit()
@@ -277,6 +288,8 @@ class TestUserModel:
             username="testuser",
             email="test@example.com",
             password_hash="hash",
+            referral_code="refcode5",
+            role="User",
         )
         db_session.add(user)
         db_session.commit()

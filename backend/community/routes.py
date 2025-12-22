@@ -10,6 +10,8 @@ from core import get_db, get_password_hash, verify_password, create_access_token
 from racks.models import Rack
 from patches.models import Patch
 from .models import User, Vote, Comment
+from monetization.referrals import create_referral, generate_referral_code, get_referral_summary
+from monetization.schemas import ReferralSummary
 from .schemas import (
     UserCreate,
     UserUpdate,
@@ -67,15 +69,31 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
     if existing:
         raise HTTPException(status_code=400, detail="Email already registered")
 
+    referrer = None
+    if user.referral_code:
+        referrer = db.query(User).filter(User.referral_code == user.referral_code).first()
+        if not referrer:
+            raise HTTPException(status_code=400, detail="Invalid referral code")
+
     # Create user
     db_user = User(
         username=user.username,
         email=user.email,
         password_hash=get_password_hash(user.password),
+        display_name=user.username,
+        role="User",
+        referral_code=generate_referral_code(db, username=user.username, email=user.email),
+        referred_by=referrer.id if referrer else None,
         avatar_url=user.avatar_url,
         bio=user.bio,
     )
     db.add(db_user)
+    db.flush()
+    if referrer:
+        try:
+            create_referral(db, referrer=referrer, referred=db_user)
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail=str(exc)) from exc
     db.commit()
     db.refresh(db_user)
 
@@ -124,6 +142,19 @@ def update_profile(user_update: UserUpdate, current_user: User = Depends(require
     db.commit()
     db.refresh(current_user)
     return current_user
+
+
+@router.get("/users/me/referrals", response_model=ReferralSummary)
+def get_referrals(current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+    """Get referral summary for the current user."""
+    summary = get_referral_summary(db, user=current_user)
+    return ReferralSummary(
+        referral_code=summary["referral_code"],
+        referral_link=summary["referral_link"],
+        earned_credits=summary["earned_credits"],
+        pending_referrals=summary["pending_referrals"],
+        rewarded_referrals=summary["rewarded_referrals"],
+    )
 
 
 # Vote routes

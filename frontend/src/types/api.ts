@@ -21,6 +21,10 @@ export interface Module {
   tags: string[];
   description?: string;
   manufacturer_url?: string;
+  status?: string;
+  replacement_module_id?: number | null;
+  deprecated_at?: string | null;
+  tombstoned_at?: string | null;
   source: string;
   source_reference?: string;
   imported_at: string;
@@ -153,8 +157,10 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  display_name?: string;
   avatar_url?: string;
   bio?: string;
+  role: string;
   created_at: string;
   updated_at: string;
 }

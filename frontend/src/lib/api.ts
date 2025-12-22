@@ -18,6 +18,12 @@ import type {
   Patch,
   User,
 } from '@/types/api';
+import type {
+  AdminUserList,
+  AdminGalleryRevisionList,
+  AdminRunList,
+  AdminLeaderboardEntry,
+} from '@/types/admin';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
@@ -152,6 +158,64 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
+};
+
+// Admin API
+export const adminApi = {
+  listUsers: (query?: string) =>
+    api.get<AdminUserList>('/admin/users', { params: query ? { query } : undefined }),
+
+  updateUserRole: (userId: number, role: string, reason: string) =>
+    api.patch(`/admin/users/${userId}/role`, { role, reason }),
+
+  updateUserAvatar: (userId: number, avatar_url: string | null, reason: string) =>
+    api.patch(`/admin/users/${userId}/avatar`, { avatar_url, reason }),
+
+  grantCredits: (userId: number, credits: number, reason: string) =>
+    api.post(`/admin/users/${userId}/credits/grant`, { credits, reason }),
+
+  createModule: (payload: Record<string, unknown>) => api.post(`/admin/modules`, payload),
+
+  importModules: (payload: Record<string, unknown>) => api.post(`/admin/modules/import`, payload),
+
+  updateModuleStatus: (moduleId: number, status: string, reason: string) =>
+    api.patch(`/admin/modules/${moduleId}/status`, { status, reason }),
+
+  mergeModule: (moduleId: number, replacement_module_id: number, reason: string) =>
+    api.patch(`/admin/modules/${moduleId}/merge`, { replacement_module_id, reason }),
+
+  listGalleryRevisions: (status?: string) =>
+    api.get<AdminGalleryRevisionList>('/admin/gallery/revisions', {
+      params: status ? { status } : undefined,
+    }),
+
+  approveRevision: (revisionId: number) => api.post(`/admin/gallery/revisions/${revisionId}/approve`),
+
+  confirmRevision: (revisionId: number) => api.post(`/admin/gallery/revisions/${revisionId}/confirm`),
+
+  listRuns: (status?: string) =>
+    api.get<AdminRunList>('/admin/runs', { params: status ? { status } : undefined }),
+
+  rerunRig: (rigId: number) => api.post(`/admin/runs/${rigId}/rerun`),
+
+  unlockExport: (exportId: number, reason: string) =>
+    api.post(`/admin/exports/${exportId}/unlock`, { reason }),
+
+  revokeExport: (exportId: number, reason: string) =>
+    api.post(`/admin/exports/${exportId}/revoke`, { reason }),
+
+  invalidateCache: (payload: { run_id?: number; export_type?: string; reason: string }) =>
+    api.post(`/admin/cache/invalidate`, payload),
+
+  popularModules: () => api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/modules/popular`),
+
+  trendingModules: (window_days: number) =>
+    api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/modules/trending`, {
+      params: { window_days },
+    }),
+
+  exportedCategories: () =>
+    api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/categories/exported`),
 };
 
 export default api;
