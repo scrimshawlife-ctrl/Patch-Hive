@@ -6,7 +6,7 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 from patchhive.gallery.store_v2 import ModuleGalleryStoreV2, _meta
 from patchhive.gallery.schemas_gallery_v2 import (
@@ -48,6 +48,36 @@ def norm_list_csv(s: str) -> List[str]:
     if not s:
         return []
     return [x.strip() for x in s.split(",") if x.strip()]
+
+
+def normalize_secondary_functions(value: Any) -> List[str]:
+    if value is None:
+        return []
+    if isinstance(value, list):
+        return [str(x).strip() for x in value if str(x).strip()]
+    return norm_list_csv(str(value))
+
+
+def normalize_optional_float(value: Any) -> Optional[float]:
+    if value is None:
+        return None
+    if isinstance(value, str) and not value.strip():
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def pick_first_key(payload: Dict[str, Any], keys: Iterable[str]) -> Any:
+    for key in keys:
+        if key in payload:
+            return payload.get(key)
+    return None
+
+
+def stable_module_id(manufacturer: str, module_name: str) -> str:
+    return sha256_hex(f"{manufacturer}::{module_name}")
 
 
 # ----------------------------
@@ -120,6 +150,7 @@ def ingest_modulargrid_dataset(
     *,
     source_name: str = "ModularGrid Top 100",
     database_version: str = "unknown",
+    library_root: Optional[str] = None,
 ) -> Dict[str, Any]:
     """
     Ingest ModularGrid dataset into PatchHive gallery v2.
@@ -138,6 +169,10 @@ def ingest_modulargrid_dataset(
     source_name = str(meta.get("source", source_name))
 
     store = ModuleGalleryStoreV2(gallery_root)
+    library_root_path = Path(library_root) if library_root else Path(gallery_root) / "module_library"
+    gallery_entries_path = Path(gallery_root) / "gallery_entries"
+    library_root_path.mkdir(parents=True, exist_ok=True)
+    gallery_entries_path.mkdir(parents=True, exist_ok=True)
 
     ingested = 0
     skipped = 0
@@ -149,8 +184,22 @@ def ingest_modulargrid_dataset(
             skipped += 1
             continue
 
-        hp = int(m.get("hp_width", 0) or 8)  # default to 8hp if missing
-        depth_mm = int(m.get("depth_mm", 0) or 0)
+        hp_raw = m.get("hp_width")
+        hp = int(hp_raw) if hp_raw not in (None, "") else None
+        if not hp:
+            skipped += 1
+            continue
+        depth_raw = m.get("depth_mm")
+        depth_mm = int(depth_raw) if depth_raw not in (None, "") else None
+        power_plus12 = normalize_optional_float(
+            pick_first_key(m, ["power_+12v_ma", "+12v_ma", "power_plus12v_ma", "power_12v_ma"])
+        )
+        power_minus12 = normalize_optional_float(
+            pick_first_key(m, ["power_-12v_ma", "-12v_ma", "power_minus12v_ma", "power_12v_neg_ma"])
+        )
+        power_plus5 = normalize_optional_float(
+            pick_first_key(m, ["power_+5v_ma", "+5v_ma", "power_plus5v_ma", "power_5v_ma"])
+        )
 
         module_key = stable_module_key(manufacturer, module_name, hp)
 
@@ -162,12 +211,13 @@ def ingest_modulargrid_dataset(
             continue
 
         primary = str(m.get("primary_function", "")).strip() or "Unknown"
-        secondary = norm_list_csv(str(m.get("secondary_functions", "") or ""))
+        secondary = normalize_secondary_functions(m.get("secondary_functions"))
+        price_usd = normalize_optional_float(m.get("price_usd"))
+        description = str(m.get("description", "")).strip() or None
 
         # Tags: lightweight capability map for search + patch-gen filters
         tags = sorted(set(
-            ["eurorack", "module"]
-            + ([primary] if primary else [])
+            ([primary] if primary else [])
             + secondary
             + [manufacturer]
         ), key=lambda x: x.lower())
@@ -230,6 +280,62 @@ def ingest_modulargrid_dataset(
         print(f"Ingested: {module_key} (v{stored.version}, rev {stored.revision_id})")
         ingested += 1
 
+        module_id = stable_module_id(manufacturer, module_name)
+        imported_at = utc_now_iso()
+
+        library_entry = {
+            "module_id": module_id,
+            "manufacturer": manufacturer,
+            "module_name": module_name,
+            "physical": {
+                "hp": hp,
+                "depth_mm": depth_mm,
+            },
+            "power": {
+                "+12v_ma": power_plus12,
+                "-12v_ma": power_minus12,
+                "+5v_ma": power_plus5,
+            },
+            "primary_function": primary or None,
+            "secondary_functions": secondary,
+            "price_usd": price_usd,
+            "description": description,
+            "tags": tags,
+            "jacks": [],
+            "provenance": {
+                "source": source_name,
+                "database_version": database_version,
+                "imported_at": imported_at,
+            },
+        }
+
+        gallery_entry = {
+            "module_id": module_id,
+            "display_name": module_name,
+            "manufacturer": manufacturer,
+            "hp": hp,
+            "primary_function": primary or None,
+            "secondary_functions": secondary,
+            "panel_image": None,
+            "panel_sketch": svg,
+            "user_uploaded_images": [],
+            "tags": tags,
+            "provenance": {
+                "source": source_name,
+                "database_version": database_version,
+                "imported_at": imported_at,
+            },
+        }
+
+        (library_root_path / f"{module_id}.json").write_text(
+            json.dumps(library_entry, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+        (gallery_entries_path / f"{module_id}.json").write_text(
+            json.dumps(gallery_entry, indent=2, sort_keys=True),
+            encoding="utf-8",
+        )
+
     manifest = {
         "kind": "patchhive.ingest_manifest",
         "imported_at": utc_now_iso(),
@@ -238,6 +344,8 @@ def ingest_modulargrid_dataset(
         "modules_ingested": ingested,
         "modules_skipped": skipped,
         "gallery_root": gallery_root,
+        "module_library_root": str(library_root_path),
+        "gallery_entries_root": str(gallery_entries_path),
     }
 
     # Write manifest
@@ -254,11 +362,16 @@ def main() -> None:
     )
     ap.add_argument("--src-json", required=True, help="Path to eurorack_modules_database.json")
     ap.add_argument("--gallery-root", required=True, help="Gallery root directory")
+    ap.add_argument(
+        "--library-root",
+        help="Module library output directory (defaults to {gallery_root}/module_library)",
+    )
     args = ap.parse_args()
 
     manifest = ingest_modulargrid_dataset(
         Path(args.src_json),
         args.gallery_root,
+        library_root=args.library_root,
     )
 
     print("\n" + "=" * 60)
