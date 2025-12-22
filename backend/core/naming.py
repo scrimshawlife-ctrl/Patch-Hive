@@ -3,7 +3,10 @@ Deterministic naming service for racks and patches.
 Generates fun, memorable names based on seeds and hashing.
 """
 import hashlib
-from typing import Literal
+from hashlib import sha256
+from typing import Literal, Iterable, Any, Dict
+
+from core.ops.derive_patch_semantics import derive_patch_semantics
 
 # Word lists for generating names
 ADJECTIVES = [
@@ -95,6 +98,22 @@ def generate_patch_name(
             "utility": "Utility"
         }
         return f"{PATCH_PREFIXES[prefix_idx]} {category_names.get(category, 'Patch')}"
+
+
+def name_patch_v2(
+    patch_id: int | str,
+    modules_by_id: Dict[int, Any],
+    connections: Iterable[Any],
+) -> str:
+    sem = derive_patch_semantics(modules_by_id, connections)
+
+    noun = sem["source"]
+    verb = sem["control"]
+    focus = sem["transform"]
+
+    mk = sha256(str(patch_id).encode()).hexdigest()[:4].upper()
+
+    return f"{noun} {verb} {focus} Mk.{mk}"
 
 
 def hash_string_to_seed(input_str: str) -> int:

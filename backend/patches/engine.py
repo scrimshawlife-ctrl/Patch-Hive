@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session
 
 from core import (
     settings,
-    generate_patch_name,
+    name_patch_v2,
     Provenance,
     PatchGenerationIR,
     RackStateIR,
@@ -146,6 +146,7 @@ class PatchGenerator:
         self.seed = seed
         self.config = config
         self.rng = random.Random(seed)
+        self.modules_by_id = {module.id: module for module in analyzer.all_modules}
 
     def generate_patches(self) -> List[PatchSpec]:
         """Generate all possible patches for the rack."""
@@ -246,7 +247,7 @@ class PatchGenerator:
 
             patch_seed = self.seed + i
             patch = PatchSpec(
-                name=generate_patch_name(patch_seed, category),
+                name=name_patch_v2(patch_seed, self.modules_by_id, connections),
                 category=category,
                 connections=connections,
                 description=f"Subtractive synthesis voice using {vco.name}",
@@ -317,7 +318,7 @@ class PatchGenerator:
         if connections:
             patch_seed = self.seed + 1000
             patch = PatchSpec(
-                name=generate_patch_name(patch_seed, "generative"),
+                name=name_patch_v2(patch_seed, self.modules_by_id, connections),
                 category="generative",
                 connections=connections,
                 description="Self-evolving generative patch with modulation",
@@ -392,7 +393,7 @@ class PatchGenerator:
         if connections:
             patch_seed = self.seed + 2000
             patch = PatchSpec(
-                name=generate_patch_name(patch_seed, "percussion"),
+                name=name_patch_v2(patch_seed, self.modules_by_id, connections),
                 category="percussion",
                 connections=connections,
                 description="Percussion voice using noise and envelope",
@@ -434,7 +435,7 @@ class PatchGenerator:
         if connections:
             patch_seed = self.seed + 3000
             patch = PatchSpec(
-                name=generate_patch_name(patch_seed, "fx"),
+                name=name_patch_v2(patch_seed, self.modules_by_id, connections),
                 category="fx",
                 connections=connections,
                 description=f"FX processing chain using {fx.name}",
