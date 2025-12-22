@@ -100,7 +100,7 @@ def generate_patch_pdf(
 
     try:
         patch_svg = generate_patch_diagram_svg(
-            db, rack, patch.connections, width=int(width - 2 * inch)
+            db, rack, patch.connections, width=int(width - 2 * inch), colorize_cables=False
         )
         patch_svg_io = io.StringIO(patch_svg)
         patch_drawing = svg2rlg(patch_svg_io)

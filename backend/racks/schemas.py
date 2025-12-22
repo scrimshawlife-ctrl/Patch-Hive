@@ -14,6 +14,15 @@ class RackModuleSpec(BaseModel):
     start_hp: int = Field(..., ge=0)
 
 
+class SuggestedPlacement(BaseModel):
+    """Suggested placement for a module instance in a case layout."""
+
+    instance_id: str
+    row: int = Field(..., ge=0)
+    x_hp: int = Field(..., ge=0)
+    width_hp: int = Field(..., ge=0)
+
+
 class RackModuleResponse(RackModuleSpec):
     """Response schema for a module in a rack."""
 

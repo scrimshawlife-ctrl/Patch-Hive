@@ -2,7 +2,7 @@
 from .config import settings
 from .database import Base, get_db, init_db
 from .security import create_access_token, decode_access_token, get_password_hash, verify_password
-from .naming import generate_rack_name, generate_patch_name, hash_string_to_seed
+from .naming import generate_rack_name, generate_patch_name, hash_string_to_seed, name_patch_v2
 from .provenance import Provenance, ProvenanceMetrics, get_git_commit
 from .ir import (
     PatchGenerationIR,
@@ -27,6 +27,7 @@ __all__ = [
     "verify_password",
     "generate_rack_name",
     "generate_patch_name",
+    "name_patch_v2",
     "hash_string_to_seed",
     # Provenance (ABX-Core v1.3)
     "Provenance",
