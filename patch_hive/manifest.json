@@ -1,0 +1,6 @@
+{
+  "name": "patch_hive",
+  "enabled": true,
+  "py_exports": ["patch_hive.exports"],
+  "service_url": "http://127.0.0.1:8220"
+}
