@@ -8,5 +8,7 @@ python-jose[cryptography]
 passlib[bcrypt]
 python-multipart
 reportlab
+svglib
+pillow
 email-validator
 httpx

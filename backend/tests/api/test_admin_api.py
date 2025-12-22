@@ -1,6 +1,10 @@
 """
 API endpoint tests for /api/admin.
 """
+import pytest
+
+pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
+
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
