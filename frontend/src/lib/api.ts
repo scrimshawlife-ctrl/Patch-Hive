@@ -7,6 +7,8 @@ import type {
   CaseListResponse,
   RackListResponse,
   PatchListResponse,
+  RunListResponse,
+  Run,
   GeneratePatchesRequest,
   GeneratePatchesResponse,
   LoginRequest,
@@ -113,6 +115,14 @@ export const patchApi = {
 
   generate: (rackId: number, request: GeneratePatchesRequest) =>
     api.post<GeneratePatchesResponse>(`/patches/generate/${rackId}`, request),
+};
+
+// Run API
+export const runApi = {
+  list: (params?: { skip?: number; limit?: number; rack_id?: number }) =>
+    api.get<RunListResponse>('/runs', { params }),
+
+  create: (data: { rack_id: number; status?: string }) => api.post<Run>('/runs', data),
 };
 
 // Auth API

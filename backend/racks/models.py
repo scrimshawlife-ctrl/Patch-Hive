@@ -21,6 +21,7 @@ class Rack(Base):
 
     # Metadata
     name = Column(String(200), nullable=False)  # Auto-generated or user-specified
+    name_suggested = Column(String(200), nullable=True)
     description = Column(Text, nullable=True)
     tags = Column(JSON, nullable=False, default=list)
 

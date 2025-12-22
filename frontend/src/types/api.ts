@@ -85,6 +85,7 @@ export interface Rack {
   user_id: number;
   case_id: number;
   name: string;
+  name_suggested?: string;
   description?: string;
   tags: string[];
   is_public: boolean;
@@ -120,7 +121,10 @@ export interface Connection {
 export interface Patch {
   id: number;
   rack_id: number;
+  run_id?: number | null;
   name: string;
+  suggested_name?: string | null;
+  name_override?: string | null;
   category: string;
   description?: string;
   connections: Connection[];
@@ -138,6 +142,18 @@ export interface Patch {
 export interface PatchListResponse {
   total: number;
   patches: Patch[];
+}
+
+export interface Run {
+  id: number;
+  rack_id: number;
+  status: string;
+  created_at: string;
+}
+
+export interface RunListResponse {
+  total: number;
+  runs: Run[];
 }
 
 export interface GeneratePatchesRequest {

@@ -37,6 +37,7 @@ class RackBase(BaseModel):
     """Base schema for rack data."""
 
     name: Optional[str] = None
+    name_suggested: Optional[str] = None
     description: Optional[str] = None
     tags: list[str] = Field(default_factory=list)
     is_public: bool = False
@@ -54,6 +55,7 @@ class RackUpdate(BaseModel):
     """Schema for updating a rack."""
 
     name: Optional[str] = None
+    name_suggested: Optional[str] = None
     description: Optional[str] = None
     tags: Optional[list[str]] = None
     is_public: Optional[bool] = None
