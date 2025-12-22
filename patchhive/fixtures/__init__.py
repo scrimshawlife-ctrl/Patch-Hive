@@ -1,0 +1,1 @@
+"""PatchHive fixtures."""
