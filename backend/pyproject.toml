@@ -37,7 +37,27 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools]
-packages = ["core", "racks", "cases", "export", "ingest", "patches", "modules", "community"]
+packages = [
+    "core",
+    "racks",
+    "cases",
+    "export",
+    "ingest",
+    "patches",
+    "modules",
+    "community",
+    "patchhive",
+    "patchhive.abraxas",
+    "patchhive.cli",
+    "patchhive.fixtures",
+    "patchhive.export",
+    "patchhive.gallery",
+    "patchhive.ops",
+    "patchhive.pipeline",
+    "patchhive.registry",
+    "patchhive.render",
+    "patchhive.templates",
+]
 
 [tool.black]
 line-length = 100
