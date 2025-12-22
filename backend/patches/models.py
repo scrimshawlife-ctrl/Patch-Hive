@@ -18,11 +18,14 @@ class Patch(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    # Association with rack
+    # Association with rack/run
     rack_id = Column(Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True)
+    run_id = Column(Integer, ForeignKey("runs.id", ondelete="SET NULL"), nullable=True, index=True)
 
     # Metadata
     name = Column(String(200), nullable=False)  # Auto-generated or user-specified
+    suggested_name = Column(String(200), nullable=True)
+    name_override = Column(String(200), nullable=True)
     category = Column(
         String(50), nullable=False, index=True
     )  # "Voice", "Modulation", "Clock-Rhythm", "Generative", "Utility", "Performance Macro", "Texture-FX", "Study", "Experimental-Feedback"

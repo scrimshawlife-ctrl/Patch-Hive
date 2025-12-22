@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 
 from core import get_db, settings
 from racks.models import Rack
+from runs.models import Run
 from .models import Patch
 from .schemas import (
     PatchCreate,
@@ -31,7 +32,10 @@ def create_patch(patch: PatchCreate, db: Session = Depends(get_db)):
 
     db_patch = Patch(
         rack_id=patch.rack_id,
+        run_id=patch.run_id,
         name=patch.name,
+        suggested_name=patch.suggested_name,
+        name_override=patch.name_override,
         category=patch.category,
         description=patch.description,
         connections=patch.connections,
@@ -53,6 +57,7 @@ def list_patches(
     skip: int = Query(0, ge=0),
     limit: int = Query(100, ge=1, le=1000),
     rack_id: Optional[int] = None,
+    run_id: Optional[int] = None,
     category: Optional[str] = None,
     is_public: Optional[bool] = None,
     db: Session = Depends(get_db),
@@ -63,6 +68,8 @@ def list_patches(
     # Apply filters
     if rack_id is not None:
         query = query.filter(Patch.rack_id == rack_id)
+    if run_id is not None:
+        query = query.filter(Patch.run_id == run_id)
     if category is not None:
         query = query.filter(Patch.category == category)
     if is_public is not None:
@@ -97,6 +104,12 @@ def update_patch(patch_id: int, patch_update: PatchUpdate, db: Session = Depends
     update_data = patch_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
         setattr(db_patch, field, value)
+
+    if "name_override" in update_data:
+        if patch_update.name_override:
+            db_patch.name = patch_update.name_override
+        else:
+            db_patch.name = db_patch.suggested_name or db_patch.name
 
     db.commit()
     db.refresh(db_patch)
@@ -133,6 +146,10 @@ def generate_patches(
         prefer_simple=request.prefer_simple,
     )
 
+    new_run = Run(rack_id=rack_id, status="running")
+    db.add(new_run)
+    db.flush()
+
     # Generate patches
     patch_specs = generate_patches_for_rack(db, rack, seed=request.seed, config=config)
 
@@ -141,7 +158,10 @@ def generate_patches(
     for spec in patch_specs:
         db_patch = Patch(
             rack_id=rack_id,
+            run_id=new_run.id,
             name=spec.name,
+            suggested_name=spec.name,
+            name_override=None,
             category=spec.category,
             description=spec.description,
             connections=[c.to_dict() for c in spec.connections],
@@ -157,6 +177,7 @@ def generate_patches(
         db.add(db_patch)
         saved_patches.append(db_patch)
 
+    new_run.status = "completed"
     db.commit()
 
     # Build responses
@@ -176,7 +197,10 @@ def build_patch_response(db: Session, patch: Patch) -> PatchResponse:
     return PatchResponse(
         id=patch.id,
         rack_id=patch.rack_id,
+        run_id=patch.run_id,
         name=patch.name,
+        suggested_name=patch.suggested_name,
+        name_override=patch.name_override,
         category=patch.category,
         description=patch.description,
         connections=patch.connections,

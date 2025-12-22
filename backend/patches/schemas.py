@@ -20,6 +20,8 @@ class PatchBase(BaseModel):
     """Base schema for patch data."""
 
     name: str
+    suggested_name: Optional[str] = None
+    name_override: Optional[str] = None
     category: str  # "Voice", "Modulation", "Clock-Rhythm", "Generative", "Utility", "Performance Macro", "Texture-FX", "Study", "Experimental-Feedback"
     description: Optional[str] = None
     is_public: bool = False
@@ -29,6 +31,7 @@ class PatchCreate(PatchBase):
     """Schema for creating a new patch."""
 
     rack_id: int
+    run_id: Optional[int] = None
     connections: list[dict[str, Any]]
     generation_seed: int
     generation_version: str
@@ -40,6 +43,7 @@ class PatchUpdate(BaseModel):
     """Schema for updating a patch."""
 
     name: Optional[str] = None
+    name_override: Optional[str] = None
     description: Optional[str] = None
     is_public: Optional[bool] = None
 
@@ -49,6 +53,7 @@ class PatchResponse(PatchBase):
 
     id: int
     rack_id: int
+    run_id: Optional[int] = None
     connections: list[dict[str, Any]]
     generation_seed: int
     generation_version: str

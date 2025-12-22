@@ -5,7 +5,11 @@ from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from core import get_db, generate_rack_name, hash_string_to_seed
+from core import (
+    get_db,
+    generate_rig_suggested_name,
+    hash_string_to_seed,
+)
 from cases.models import Case
 from modules.models import Module
 from .models import Rack, RackModule
@@ -28,18 +32,23 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
             status_code=400, detail={"message": "Rack validation failed", "errors": errors}
         )
 
-    # Generate name if not provided
+    modules = []
+    for module_spec in rack.modules:
+        module = db.query(Module).filter(Module.id == module_spec.module_id).first()
+        if module:
+            modules.append(module)
+
+    seed = rack.generation_seed or hash_string_to_seed(f"rack-{user_id}-{rack.case_id}")
+    suggested_name = rack.name_suggested or generate_rig_suggested_name(modules)
     if not rack.name:
-        seed = rack.generation_seed or hash_string_to_seed(f"rack-{user_id}-{rack.case_id}")
-        rack.name = generate_rack_name(seed)
-    else:
-        seed = rack.generation_seed
+        rack.name = suggested_name
 
     # Create rack
     db_rack = Rack(
         user_id=user_id,
         case_id=rack.case_id,
         name=rack.name,
+        name_suggested=suggested_name,
         description=rack.description,
         tags=rack.tags,
         is_public=rack.is_public,
@@ -57,6 +66,9 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
             start_hp=module_spec.start_hp,
         )
         db.add(db_rack_module)
+        module = db.query(Module).filter(Module.id == module_spec.module_id).first()
+        if module:
+            modules.append(module)
 
     db.commit()
     db.refresh(db_rack)
@@ -108,7 +120,7 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
         raise HTTPException(status_code=404, detail="Rack not found")
 
     # Update basic fields
-    update_data = rack_update.model_dump(exclude_unset=True, exclude={"modules"})
+    update_data = rack_update.model_dump(exclude_unset=True, exclude={"modules", "name_suggested"})
     for field, value in update_data.items():
         setattr(db_rack, field, value)
 
@@ -127,6 +139,7 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
         db.query(RackModule).filter(RackModule.rack_id == rack_id).delete()
 
         # Add new modules
+        modules = []
         for module_spec in rack_update.modules:
             db_rack_module = RackModule(
                 rack_id=db_rack.id,
@@ -135,6 +148,12 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
                 start_hp=module_spec.start_hp,
             )
             db.add(db_rack_module)
+            module = db.query(Module).filter(Module.id == module_spec.module_id).first()
+            if module:
+                modules.append(module)
+
+        if not db_rack.name_suggested:
+            db_rack.name_suggested = generate_rig_suggested_name(modules)
 
     db.commit()
     db.refresh(db_rack)
@@ -192,6 +211,7 @@ def build_rack_response(db: Session, rack: Rack) -> RackResponse:
         user_id=rack.user_id,
         case_id=rack.case_id,
         name=rack.name,
+        name_suggested=rack.name_suggested,
         description=rack.description,
         tags=rack.tags,
         is_public=rack.is_public,

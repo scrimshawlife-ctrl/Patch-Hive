@@ -47,7 +47,7 @@ function App() {
             <nav style={{ display: 'flex', gap: '1rem' }}>
               <NavLink to="/modules">Modules</NavLink>
               <NavLink to="/cases">Cases</NavLink>
-              <NavLink to="/racks">Racks</NavLink>
+              <NavLink to="/racks">Rigs</NavLink>
               <NavLink to="/patches">Patches</NavLink>
               <NavLink to="/feed">Feed</NavLink>
               {canSeeAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
