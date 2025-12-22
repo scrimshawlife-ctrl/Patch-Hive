@@ -53,7 +53,7 @@ def generate_patch_pdf(
     # Metadata
     c.setFont("Helvetica", 12)
     y = height - inch - 30
-    c.drawString(inch, y, f"Category: {patch.category.title()}")
+    c.drawString(inch, y, f"Category: {patch.category}")
     y -= 20
     c.drawString(inch, y, f"Generation Seed: {patch.generation_seed}")
     y -= 20
@@ -216,7 +216,7 @@ def generate_rack_pdf(db: Session, rack: Rack, output_path: Optional[str] = None
         y -= 30
 
         c.setFont("Helvetica", 12)
-        c.drawString(inch, y, f"Category: {patch.category.title()}")
+        c.drawString(inch, y, f"Category: {patch.category}")
         y -= 20
 
         if patch.description:

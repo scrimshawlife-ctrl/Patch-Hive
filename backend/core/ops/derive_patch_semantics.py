@@ -93,7 +93,7 @@ def derive_patch_semantics(
     elif outc.get("random", 0):
         control = "Drifting"
 
-    clocked = "Clocked" if (outc.get("clock", 0) or inc.get("clock", 0)) else "Free"
+    clocked = "Clock-Rhythm" if (outc.get("clock", 0) or inc.get("clock", 0)) else "Free"
 
     return {
         "source": source,

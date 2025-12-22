@@ -98,7 +98,7 @@ The backend is organized into domains, each with clear responsibilities:
 - **Key Features**:
   - Rule-based patch generation
   - Connection graph representation
-  - Category detection (pad, lead, bass, etc.)
+  - Category detection (Voice/Modulation/Clock-Rhythm/etc.)
   - Full provenance (seed, version, config)
 
 #### 6. **Community** (`backend/community/`)

@@ -455,7 +455,7 @@ class TestVoteModel:
         patch = Patch(
             rack_id=sample_rack_basic.id,
             name="Test Patch",
-            category="lead",
+            category="Voice",
             connections=[],
             generation_seed=42,
             generation_version="v1.0",
@@ -496,7 +496,7 @@ class TestVoteModel:
         patch = Patch(
             rack_id=sample_rack_basic.id,
             name="Test Patch",
-            category="lead",
+            category="Voice",
             connections=[],
             generation_seed=42,
             generation_version="v1.0",
@@ -534,7 +534,7 @@ class TestCommentModel:
         patch = Patch(
             rack_id=sample_rack_basic.id,
             name="Test Patch",
-            category="lead",
+            category="Voice",
             connections=[],
             generation_seed=42,
             generation_version="v1.0",
@@ -564,7 +564,7 @@ class TestCommentModel:
         patch = Patch(
             rack_id=sample_rack_basic.id,
             name="Test Patch",
-            category="lead",
+            category="Voice",
             connections=[],
             generation_seed=42,
             generation_version="v1.0",

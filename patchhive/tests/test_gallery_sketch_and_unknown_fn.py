@@ -44,3 +44,40 @@ def test_unknown_jacks_create_registry_entries(tmp_path: Path) -> None:
 
     sk_dir = Path(tmp_path) / "sketches"
     assert sk_dir.exists()
+
+
+def test_sketch_exists_with_unconfirmed_when_no_jacks(tmp_path: Path) -> None:
+    fn_store = FunctionRegistryStore(str(tmp_path))
+    sketch_store = ModuleSketchStore(str(tmp_path))
+
+    vision = VisionRigSpec(
+        rig_id="rig.unknown",
+        evidence_ref="vision:unknown",
+        modules=[
+            VisionModuleHit(
+                module_name="Mystery Module",
+                manufacturer=None,
+                hp=None,
+                jack_labels=[],
+            )
+        ],
+    )
+
+    def lookup(name, manufacturer):
+        return None
+
+    def upsert(entry):
+        return None
+
+    vision_to_rigspec(
+        vision,
+        gallery_lookup_fn=lookup,
+        gallery_upsert_fn=upsert,
+        function_store=fn_store,
+        sketch_store=sketch_store,
+    )
+
+    sketch = sketch_store.read("gallery.unknown.mystery_module.10hp")
+    assert sketch is not None
+    assert sketch.jacks == []
+    assert "UNCONFIRMED" in sketch.svg

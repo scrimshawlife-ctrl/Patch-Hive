@@ -1,0 +1,149 @@
+{
+  "engine_version": "1.0.0",
+  "runes": [
+    {
+      "assets": [
+        "assets/rune_generate_patches.svg"
+      ],
+      "category": "generation",
+      "maps_to": "patches.engine:generate_patches_with_ir",
+      "name": "Generate Patches (IR)",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "042f7a1600962b2d"
+    },
+    {
+      "assets": [
+        "assets/rune_generate_patches_rack.svg"
+      ],
+      "category": "generation",
+      "maps_to": "patches.engine:generate_patches_for_rack",
+      "name": "Generate Patches (Rack)",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "ab079655fbb64138"
+    },
+    {
+      "assets": [
+        "assets/rune_build_rack_state_ir.svg"
+      ],
+      "category": "generation",
+      "maps_to": "patches.engine:build_rack_state_ir",
+      "name": "Build Rack State IR",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "d2ada832eac92232"
+    },
+    {
+      "assets": [
+        "assets/rune_build_canonical_rig.svg"
+      ],
+      "category": "rig",
+      "maps_to": "patchhive.ops.build_canonical_rig:build_canonical_rig",
+      "name": "Build Canonical Rig",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "417a01f9796835f7"
+    },
+    {
+      "assets": [
+        "assets/rune_append_gallery_revision.svg"
+      ],
+      "category": "gallery",
+      "maps_to": "patchhive.gallery.revisions:append_revision",
+      "name": "Append Gallery Revision",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "78348b982d9ea7d0"
+    },
+    {
+      "assets": [
+        "assets/rune_import_modulargrid.svg"
+      ],
+      "category": "ingest",
+      "maps_to": "integrations.modulargrid_importer:import_all",
+      "name": "Import ModularGrid Catalog",
+      "provenance": {
+        "confidence": "curated",
+        "source": "modulargrid"
+      },
+      "rune_id": "411d5cb216bb78f1"
+    },
+    {
+      "assets": [
+        "assets/rune_export_patch_pdf.svg"
+      ],
+      "category": "export",
+      "maps_to": "export.pdf:generate_patch_pdf",
+      "name": "Export Patch PDF",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "6de2b3920737afbe"
+    },
+    {
+      "assets": [
+        "assets/rune_export_rack_pdf.svg"
+      ],
+      "category": "export",
+      "maps_to": "export.pdf:generate_rack_pdf",
+      "name": "Export Rack PDF",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "bbba8ddf2678e4a6"
+    },
+    {
+      "assets": [
+        "assets/rune_render_rack_layout.svg"
+      ],
+      "category": "export",
+      "maps_to": "export.visualization:generate_rack_layout_svg",
+      "name": "Render Rack Layout SVG",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "ccef0ae10030c27f"
+    },
+    {
+      "assets": [
+        "assets/rune_render_patch_diagram.svg"
+      ],
+      "category": "export",
+      "maps_to": "export.visualization:generate_patch_diagram_svg",
+      "name": "Render Patch Diagram SVG",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "0eabd66eac84b412"
+    },
+    {
+      "assets": [
+        "assets/rune_render_waveform.svg"
+      ],
+      "category": "export",
+      "maps_to": "export.waveform:generate_waveform_svg",
+      "name": "Render Waveform SVG",
+      "provenance": {
+        "confidence": "deterministic",
+        "source": "patchhive"
+      },
+      "rune_id": "fcdd14f1aab3085e"
+    }
+  ],
+  "schema_version": "1.0"
+}

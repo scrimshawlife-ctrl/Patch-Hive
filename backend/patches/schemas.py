@@ -20,7 +20,7 @@ class PatchBase(BaseModel):
     """Base schema for patch data."""
 
     name: str
-    category: str  # "pad", "lead", "bass", "percussion", "fx", "generative", "utility"
+    category: str  # "Voice", "Modulation", "Clock-Rhythm", "Generative", "Utility", "Performance Macro", "Texture-FX", "Study", "Experimental-Feedback"
     description: Optional[str] = None
     is_public: bool = False
 

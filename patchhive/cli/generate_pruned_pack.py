@@ -94,8 +94,8 @@ def main() -> None:
     ap.add_argument(
         "--category-weights",
         default=(
-            '{"Voice":2.0,"Clocked":1.4,"Generative":0.8,"Study Patches":0.7,'
-            '"Utility / Calibration":0.6,"Texture / FX Space":1.0,"Performance Macro":1.0}'
+            '{"Voice":2.0,"Clock-Rhythm":1.4,"Generative":0.8,"Study":0.7,'
+            '"Utility":0.6,"Texture-FX":1.0,"Performance Macro":1.0}'
         ),
     )
     ap.add_argument(

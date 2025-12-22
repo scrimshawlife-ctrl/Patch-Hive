@@ -28,12 +28,12 @@ class E2EConfig(BaseModel):
     # weights (JSON strings or dicts; keep simple here as dicts)
     category_weights: dict = Field(default_factory=lambda: {
         "Voice": 2.0,
-        "Clocked": 1.4,
+        "Clock-Rhythm": 1.4,
         "Generative": 0.8,
         "Performance Macro": 1.0,
-        "Texture / FX Space": 1.0,
-        "Utility / Calibration": 0.6,
-        "Study Patches": 0.7,
+        "Texture-FX": 1.0,
+        "Utility": 0.6,
+        "Study": 0.7,
     })
     difficulty_weights: dict = Field(default_factory=lambda: {
         "Beginner": 2.0,
