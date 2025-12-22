@@ -13,9 +13,17 @@ import RackBuilderPage from '@/pages/RackBuilder';
 import PatchesPage from '@/pages/Patches';
 import FeedPage from '@/pages/Feed';
 import LoginPage from '@/pages/Login';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import AdminUsers from '@/pages/admin/AdminUsers';
+import AdminModules from '@/pages/admin/AdminModules';
+import AdminGallery from '@/pages/admin/AdminGallery';
+import AdminRuns from '@/pages/admin/AdminRuns';
+import AdminExports from '@/pages/admin/AdminExports';
+import AdminLeaderboards from '@/pages/admin/AdminLeaderboards';
 
 function App() {
   const { user, logout, isAuthenticated } = useAuthStore();
+  const canSeeAdmin = user && ['Admin', 'Ops', 'Support', 'ReadOnly'].includes(user.role);
 
   return (
     <BrowserRouter>
@@ -42,6 +50,7 @@ function App() {
               <NavLink to="/racks">Racks</NavLink>
               <NavLink to="/patches">Patches</NavLink>
               <NavLink to="/feed">Feed</NavLink>
+              {canSeeAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             </nav>
           </div>
           <div>
@@ -94,6 +103,13 @@ function App() {
             <Route path="/patches" element={<PatchesPage />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/admin/users" element={<AdminUsers />} />
+            <Route path="/admin/modules" element={<AdminModules />} />
+            <Route path="/admin/gallery" element={<AdminGallery />} />
+            <Route path="/admin/runs" element={<AdminRuns />} />
+            <Route path="/admin/exports" element={<AdminExports />} />
+            <Route path="/admin/leaderboards" element={<AdminLeaderboards />} />
           </Routes>
         </main>
 

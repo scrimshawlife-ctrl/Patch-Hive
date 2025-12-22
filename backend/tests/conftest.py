@@ -12,6 +12,10 @@ from cases.models import Case
 from racks.models import Rack, RackModule
 from patches.models import Patch  # Import to ensure patches table is created
 from community.models import User, Vote, Comment  # Import to ensure tables are created
+from monetization.models import CreditsLedger, Export, License, Referral  # noqa: F401
+from admin.models import AdminAuditLog  # noqa: F401
+from gallery.models import GalleryRevision  # noqa: F401
+from runs.models import Run  # noqa: F401
 
 
 @pytest.fixture(scope="function")
@@ -271,6 +275,9 @@ def sample_user(db_session: Session) -> User:
         username="testuser",
         email="test@example.com",
         password_hash="$2b$12$dummyhash",  # Dummy bcrypt hash
+        referral_code="samplecode",
+        role="User",
+        display_name="Test User",
     )
     db_session.add(user)
     db_session.commit()

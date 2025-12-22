@@ -2,7 +2,7 @@
 SQLAlchemy models for Eurorack modules.
 """
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Float, Text, DateTime, JSON
+from sqlalchemy import Column, Integer, String, Float, Text, DateTime, JSON, ForeignKey
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -38,6 +38,10 @@ class Module(Base):
     tags = Column(JSON, nullable=False, default=list)  # ["analog", "digital", "west-coast", etc.]
     description = Column(Text, nullable=True)
     manufacturer_url = Column(String(500), nullable=True)
+    status = Column(String(20), nullable=False, default="active", index=True)
+    replacement_module_id = Column(Integer, ForeignKey("modules.id"), nullable=True)
+    deprecated_at = Column(DateTime, nullable=True)
+    tombstoned_at = Column(DateTime, nullable=True)
 
     # Data provenance (SEED principle)
     source = Column(String(50), nullable=False)  # "Manual", "CSV", "ModularGrid", etc.

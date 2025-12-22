@@ -2,6 +2,7 @@
 FastAPI routes for Module management.
 """
 from typing import Optional
+from datetime import datetime
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
@@ -27,6 +28,10 @@ def create_module(module: ModuleCreate, db: Session = Depends(get_db)):
         tags=module.tags,
         description=module.description,
         manufacturer_url=module.manufacturer_url,
+        status=module.status or "active",
+        replacement_module_id=module.replacement_module_id,
+        deprecated_at=module.deprecated_at,
+        tombstoned_at=module.tombstoned_at,
         source=module.source,
         source_reference=module.source_reference,
     )
@@ -48,7 +53,7 @@ def list_modules(
     db: Session = Depends(get_db),
 ):
     """List modules with optional filters."""
-    query = db.query(Module)
+    query = db.query(Module).filter(Module.status != "tombstoned")
 
     # Apply filters
     if brand:
@@ -99,11 +104,12 @@ def update_module(module_id: int, module_update: ModuleUpdate, db: Session = Dep
 
 @router.delete("/{module_id}", status_code=204)
 def delete_module(module_id: int, db: Session = Depends(get_db)):
-    """Delete a module."""
+    """Tombstone a module (no hard delete)."""
     db_module = db.query(Module).filter(Module.id == module_id).first()
     if not db_module:
         raise HTTPException(status_code=404, detail="Module not found")
 
-    db.delete(db_module)
+    db_module.status = "tombstoned"
+    db_module.tombstoned_at = datetime.utcnow()
     db.commit()
     return None

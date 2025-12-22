@@ -17,6 +17,10 @@ class User(Base):
     username = Column(String(50), unique=True, nullable=False, index=True)
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
+    display_name = Column(String(100), nullable=True)
+    role = Column(String(20), nullable=False, default="User", index=True)
+    referral_code = Column(String(32), unique=True, nullable=False, index=True)
+    referred_by = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     avatar_url = Column(String(500), nullable=True)
     bio = Column(Text, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
@@ -26,6 +30,7 @@ class User(Base):
     racks = relationship("Rack", back_populates="user", cascade="all, delete-orphan")
     votes = relationship("Vote", back_populates="user", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
+    referrer = relationship("User", remote_side=[id], backref="referrals")
 
 
 class Vote(Base):

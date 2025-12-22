@@ -12,6 +12,7 @@ class UserBase(BaseModel):
 
     username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
+    display_name: Optional[str] = Field(default=None, max_length=100)
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
 
@@ -20,6 +21,9 @@ class UserCreate(UserBase):
     """Schema for user registration."""
 
     password: str = Field(..., min_length=8)
+    referral_code: Optional[str] = Field(
+        default=None, description="Optional code from a referrer during signup."
+    )
 
 
 class UserUpdate(BaseModel):
@@ -33,6 +37,9 @@ class UserResponse(UserBase):
     """Schema for user response."""
 
     id: int
+    referral_code: str
+    referred_by: Optional[int] = None
+    role: str
     created_at: datetime
     updated_at: datetime
 

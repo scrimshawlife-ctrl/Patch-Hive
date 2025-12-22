@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from core.database import SessionLocal
 from core.security import get_password_hash
 from community.models import User
+from monetization.referrals import generate_referral_code
 from modules.models import Module
 from cases.models import Case
 
@@ -25,6 +26,9 @@ def load_seed_data(db: Session) -> None:
         username="testuser",
         email="test@patchhive.io",
         password_hash=get_password_hash("testpass123"),
+        display_name="Test User",
+        role="Admin",
+        referral_code=generate_referral_code(db, username="testuser", email="test@patchhive.io"),
         bio="Test user for development",
     )
     db.add(test_user)
