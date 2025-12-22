@@ -13,6 +13,7 @@ from patchhive.pipeline.run_e2e_with_progress import run_e2e_with_progress
 from patchhive.store.artifact_store import ArtifactStore
 from patchhive.store.job_store import JobStore, JobState, JobStatus, _now_utc
 from patchhive.export.export_bundle_zip import build_bundle_zip
+from patchhive.ops.build_ux_view import build_ux_view
 
 from patchhive.vision.gemini_interface import GeminiVisionClient, VisionRigSpec
 
@@ -259,3 +260,22 @@ def download_bundle(run_id: str):
     build_bundle_zip(str(run_root), str(zpath))
 
     return FileResponse(str(zpath), media_type="application/zip", filename=f"patchhive_{run_id}_bundle.zip")
+
+
+# ============================================================
+# V3 Endpoints: UX Library View
+# ============================================================
+
+
+@app.get("/v3/runs/{run_id}/library")
+def get_library_view(run_id: str):
+    """
+    Get a UX-friendly view of the patch library with sorting, categorization, and download links.
+    Returns structured data for frontend consumption with filters and exports.
+    """
+    run_root = Path(STORE_ROOT) / "runs" / run_id
+    if not run_root.exists():
+        raise HTTPException(status_code=404, detail="run not found")
+
+    ux = build_ux_view(run_root=str(run_root), run_id=run_id)
+    return JSONResponse(ux.model_dump())
