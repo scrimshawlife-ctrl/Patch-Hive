@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import List, Optional
 
+from pydantic import BaseModel, Field
 
-@dataclass(frozen=True)
-class VisionModuleHit:
+
+class VisionModuleHit(BaseModel):
     """
     Output of vision extraction:
       - module name + manufacturer (optional)
@@ -14,13 +14,12 @@ class VisionModuleHit:
     """
 
     module_name: str
-    manufacturer: Optional[str]
-    hp: Optional[int]
-    jack_labels: List[str]
+    manufacturer: Optional[str] = None
+    hp: Optional[int] = None
+    jack_labels: List[str] = Field(default_factory=list)
 
 
-@dataclass(frozen=True)
-class VisionRigSpec:
+class VisionRigSpec(BaseModel):
     rig_id: str
     modules: List[VisionModuleHit]
     evidence_ref: str
