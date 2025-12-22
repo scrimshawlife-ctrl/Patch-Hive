@@ -2,14 +2,15 @@
 FastAPI routes for Community features (users, auth, votes, comments, feed).
 """
 from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query, Header
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import or_, desc
 
-from core import get_db, get_password_hash, verify_password, create_access_token, decode_access_token
+from core import get_db, get_password_hash, verify_password, create_access_token
 from racks.models import Rack
 from patches.models import Patch
 from .models import User, Vote, Comment
+from .auth import get_current_user, require_auth
 from .schemas import (
     UserCreate,
     UserUpdate,
@@ -26,31 +27,6 @@ from .schemas import (
 )
 
 router = APIRouter()
-
-
-# Authentication helpers
-def get_current_user(authorization: Optional[str] = Header(None), db: Session = Depends(get_db)) -> Optional[User]:
-    """Get current user from JWT token."""
-    if not authorization or not authorization.startswith("Bearer "):
-        return None
-
-    token = authorization.replace("Bearer ", "")
-    payload = decode_access_token(token)
-    if not payload:
-        return None
-
-    user_id = payload.get("user_id")
-    if not user_id:
-        return None
-
-    return db.query(User).filter(User.id == user_id).first()
-
-
-def require_auth(current_user: Optional[User] = Depends(get_current_user)) -> User:
-    """Require authentication."""
-    if not current_user:
-        raise HTTPException(status_code=401, detail="Authentication required")
-    return current_user
 
 
 # User routes
@@ -73,6 +49,8 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         email=user.email,
         password_hash=get_password_hash(user.password),
         avatar_url=user.avatar_url,
+        display_name=user.display_name,
+        allow_public_avatar=user.allow_public_avatar,
         bio=user.bio,
     )
     db.add(db_user)

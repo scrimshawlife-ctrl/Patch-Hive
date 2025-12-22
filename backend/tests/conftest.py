@@ -12,6 +12,8 @@ from cases.models import Case
 from racks.models import Rack, RackModule
 from patches.models import Patch  # Import to ensure patches table is created
 from community.models import User, Vote, Comment  # Import to ensure tables are created
+from admin.models import AdminAuditLog  # Import to ensure tables are created
+from publishing.models import Export, Publication, PublicationReport  # Import to ensure tables are created
 
 
 @pytest.fixture(scope="function")

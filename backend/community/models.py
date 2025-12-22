@@ -18,7 +18,10 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     password_hash = Column(String(255), nullable=False)
     avatar_url = Column(String(500), nullable=True)
+    display_name = Column(String(100), nullable=True)
+    allow_public_avatar = Column(Boolean, default=True, nullable=False)
     bio = Column(Text, nullable=True)
+    is_admin = Column(Boolean, default=False, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 

@@ -17,6 +17,11 @@ import type {
   Rack,
   Patch,
   User,
+  ExportRecord,
+  PublicationListResponse,
+  PublicationRecord,
+  PublicPublicationResponse,
+  GalleryResponse,
 } from '@/types/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
@@ -120,7 +125,7 @@ export const authApi = {
 
   getUserByUsername: (username: string) => api.get<User>(`/community/users/username/${username}`),
 
-  updateProfile: (data: { avatar_url?: string; bio?: string }) =>
+  updateProfile: (data: { avatar_url?: string; bio?: string; display_name?: string; allow_public_avatar?: boolean }) =>
     api.patch<User>('/community/users/me', data),
 };
 
@@ -152,6 +157,41 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
+};
+
+// Publishing API
+export const publishingApi = {
+  createExport: (data: { source_type: 'patch' | 'rack'; source_id: number }) =>
+    api.post<ExportRecord>('/me/exports', data),
+
+  listExports: () => api.get<ExportRecord[]>('/me/exports'),
+
+  createPublication: (data: {
+    export_id: number;
+    title: string;
+    description?: string;
+    visibility: 'public' | 'unlisted';
+    allow_download: boolean;
+    allow_remix: boolean;
+    cover_image_url?: string;
+  }) => api.post<PublicationRecord>('/me/publications', data),
+
+  updatePublication: (publicationId: number, data: Partial<PublicationRecord>) =>
+    api.patch<PublicationRecord>(`/me/publications/${publicationId}`, data),
+
+  listPublications: () => api.get<PublicationListResponse>('/me/publications'),
+
+  getPublication: (slug: string) => api.get<PublicPublicationResponse>(`/p/${slug}`),
+
+  listGallery: (params?: {
+    limit?: number;
+    cursor?: string;
+    export_type?: string;
+    recent_days?: number;
+  }) => api.get<GalleryResponse>('/gallery/publications', { params }),
+
+  reportPublication: (slug: string, data: { reason: string; details?: string }) =>
+    api.post(`/p/${slug}/report`, data),
 };
 
 export default api;
