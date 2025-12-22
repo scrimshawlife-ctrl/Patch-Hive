@@ -33,6 +33,7 @@ def generate_plain_module_sketch(
     hp: int,
     jack_labels: List[str],
     evidence_ref: str,
+    jack_count: int | None = None,
     width_px: int = 512,
     height_px: int = 768,
 ) -> ModuleSketch:
@@ -48,9 +49,16 @@ def generate_plain_module_sketch(
     usable_w = width_px - 2 * pad
     usable_h = height_px - top - pad
 
+    labels = list(jack_labels)
+    if not labels:
+        if jack_count and jack_count > 0:
+            labels = ["UNCONFIRMED"] * jack_count
+        else:
+            labels = []
+
     # jacks arranged in rows of 6
     cols = 6
-    n = max(1, len(jack_labels))
+    n = max(1, len(labels))
     rows = (n + cols - 1) // cols
 
     x_step = usable_w / (cols + 1)
@@ -70,7 +78,7 @@ def generate_plain_module_sketch(
 
     meta = _meta("generate_plain_module_sketch.v1", evidence_ref, ProvenanceType.derived)
 
-    for idx, lbl in enumerate(jack_labels):
+    for idx, lbl in enumerate(labels):
         r = idx // cols
         c = idx % cols
         x = pad + (c + 1) * x_step
@@ -90,6 +98,15 @@ def generate_plain_module_sketch(
 
     svg_parts.append("</svg>")
     svg = "\n".join(svg_parts)
+
+    if not labels:
+        svg = svg.replace(
+            "</svg>",
+            (
+                f'<text x="{pad}" y="{height_px - pad / 2:.1f}" '
+                f'font-size="12" font-family="monospace" fill="#555">UNCONFIRMED</text>\n</svg>'
+            ),
+        )
 
     return ModuleSketch(
         module_key=module_key,

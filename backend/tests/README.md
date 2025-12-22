@@ -101,8 +101,8 @@ Tests specific patch type generation logic.
 
 - `test_subtractive_patch_structure` - VCO→VCF→VCA chains
 - `test_generative_patch_has_sequencer_or_lfo` - Generative patch requirements
-- `test_percussion_patch_structure` - Noise-based percussion
-- `test_fx_chain_structure` - Effects processing chains
+- `test_percussion_patch_structure` - Noise-based clock-rhythm
+- `test_fx_chain_structure` - Texture-FX processing chains
 
 ### 5. **Edge Cases Tests** (6 tests)
 Tests error conditions and boundary cases.
@@ -210,7 +210,7 @@ assert patch.generation_seed == 42  # or derivative
 Patch generation follows Eurorack conventions:
 - VCO → VCF → VCA (subtractive synthesis)
 - Sequencer/LFO → Modulation (generative)
-- Noise → VCF → VCA (percussion)
+- Noise → VCF → VCA (clock-rhythm)
 
 ## Known Issues
 

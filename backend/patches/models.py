@@ -25,7 +25,7 @@ class Patch(Base):
     name = Column(String(200), nullable=False)  # Auto-generated or user-specified
     category = Column(
         String(50), nullable=False, index=True
-    )  # "pad", "lead", "bass", "percussion", "fx", "generative", "utility"
+    )  # "Voice", "Modulation", "Clock-Rhythm", "Generative", "Utility", "Performance Macro", "Texture-FX", "Study", "Experimental-Feedback"
     description = Column(Text, nullable=True)
 
     # Connection graph

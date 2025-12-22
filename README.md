@@ -95,7 +95,7 @@ SEED enforcement: every module, rack, and patch tracks its source and generation
 - Import from multiple sources:
   - Manual entry via UI
   - CSV upload
-  - ModularGrid integration (interface ready, implementation pending)
+  - ModularGrid adapter (boundary-only; implementation provided externally)
 - Full data provenance tracking (SEED principle)
 
 ### 2. Rack Builder
@@ -111,8 +111,8 @@ SEED enforcement: every module, rack, and patch tracks its source and generation
 - Rule-based patch generation from rack configurations
 - Deterministic: same seed + rack = same patches
 - Patch categories:
-  - Pads, Leads, Basses, Percussion
-  - FX/Textures, Generative, Utility/Processing
+  - Voice, Modulation, Clock-Rhythm, Generative
+  - Utility, Performance Macro, Texture-FX, Study, Experimental-Feedback
 - Connection graph representation (modules as nodes, cables as edges)
 - Full provenance: seed, engine version, config stored with each patch
 

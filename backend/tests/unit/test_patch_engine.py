@@ -147,7 +147,7 @@ class TestPatchGenerator:
         assert len(patches) > 0
         assert all(isinstance(p, PatchSpec) for p in patches)
         assert all(len(p.connections) > 0 for p in patches)
-        assert all(p.category in ["lead", "bass", "pad", "drone"] for p in patches)
+        assert all(p.category == "Voice" for p in patches)
 
     def test_generate_patches_respects_max_patches(
         self, db_session: Session, sample_rack_full: Rack
@@ -185,7 +185,17 @@ class TestPatchGenerator:
         # Check patch structure
         assert isinstance(patch.name, str)
         assert len(patch.name) > 0
-        assert patch.category in ["pad", "lead", "bass", "percussion", "fx", "generative", "utility", "drone"]
+        assert patch.category in [
+            "Voice",
+            "Modulation",
+            "Clock-Rhythm",
+            "Generative",
+            "Utility",
+            "Performance Macro",
+            "Texture-FX",
+            "Study",
+            "Experimental-Feedback",
+        ]
         assert isinstance(patch.connections, list)
         assert isinstance(patch.description, str)
         assert isinstance(patch.generation_seed, int)
@@ -325,7 +335,7 @@ class TestPatchTypes:
 
         if len(patches) > 0:
             patch = patches[0]
-            assert patch.category == "generative"
+            assert patch.category == "Generative"
             assert len(patch.connections) > 0
 
             # Should involve sequencer or LFO
@@ -355,7 +365,7 @@ class TestPatchTypes:
 
         if len(patches) > 0:
             patch = patches[0]
-            assert patch.category == "percussion"
+            assert patch.category == "Clock-Rhythm"
             assert len(patch.connections) > 0
 
     def test_fx_chain_structure(
@@ -378,7 +388,7 @@ class TestPatchTypes:
 
         if len(patches) > 0:
             patch = patches[0]
-            assert patch.category == "fx"
+            assert patch.category == "Texture-FX"
 
 
 class TestEdgeCases:

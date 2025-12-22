@@ -25,7 +25,7 @@ def register_vl2_micro_grammar(reg: PatchTemplateRegistry) -> PatchTemplateRegis
     reg.register(PatchTemplate(
         template_id="vl2.bus.clock_distribution.v1",
         archetype="utility_clock_bus",
-        category="Utility / Calibration",
+        category="Utility",
         difficulty="Beginner",
         tags=("vl2", "clock", "bus", "distribution"),
         slots=(

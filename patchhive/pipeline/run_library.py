@@ -45,8 +45,8 @@ def _category_for(archetype: str) -> PatchCategory:
     return {
         "basic_voice": PatchCategory.Voice,
         "generative_mod": PatchCategory.Generative,
-        "clocked_sequence": PatchCategory.Clocked,
-    }.get(archetype, PatchCategory.StudyPatches)
+        "clocked_sequence": PatchCategory.ClockRhythm,
+    }.get(archetype, PatchCategory.Study)
 
 
 def _difficulty_for(archetype: str) -> PatchDifficulty:

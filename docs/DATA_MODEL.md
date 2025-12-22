@@ -197,7 +197,7 @@ Represents a patch configuration (connection graph between modules).
 | id                  | Integer      | PK, Auto                   | Unique identifier                     |
 | rack_id             | Integer      | FK → racks.id, Indexed     | Rack this patch belongs to            |
 | name                | String(200)  | Not Null                   | Patch name (auto-generated)           |
-| category            | String(50)   | Not Null, Indexed          | pad/lead/bass/percussion/fx/etc.      |
+| category            | String(50)   | Not Null, Indexed          | Voice/Modulation/Clock-Rhythm/Generative/Utility/Performance Macro/Texture-FX/Study/Experimental-Feedback |
 | description         | Text         | Nullable                   | Patch description                     |
 | connections         | JSON         | Not Null, Default: []      | Connection graph                      |
 | generation_seed     | Integer      | Not Null                   | Seed used for generation              |

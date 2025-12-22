@@ -22,13 +22,11 @@ The patch generation engine analyzes a rack's modules and generates plausible pa
   - **Outputs**: Final audio path
 
 ### 3. Category Detection
-- Patches are automatically categorized based on characteristics:
-  - **Pad**: Slow attack/release, often with FX
-  - **Lead**: Fast attack, medium sustain
-  - **Bass**: Low oscillators, short envelope
-  - **Percussion**: Noise + short envelope
-  - **FX**: Effect-centric processing
+- Patches are categorized using the canonical PatchHive category set:
+  - **Voice**: Primary synth voice paths
+  - **Clock-Rhythm**: Percussive or clock-driven structures
   - **Generative**: Self-evolving modulation
+  - **Texture-FX**: Effect-centric processing
   - **Utility**: Processing-only patches
 
 ## Architecture
@@ -53,7 +51,7 @@ Located in: `backend/patches/engine.py`
 @dataclass
 class PatchSpec:
     name: str                    # Auto-generated deterministic name
-    category: PatchCategory      # pad/lead/bass/percussion/fx/generative/utility
+    category: PatchCategory      # Voice/Modulation/Clock-Rhythm/Generative/Utility/Performance Macro/Texture-FX/Study/Experimental-Feedback
     connections: List[Connection]
     description: str
     generation_seed: int
@@ -218,9 +216,9 @@ if len(lfos) >= 2:
     # LFO2 → VCF Cutoff
 ```
 
-#### Percussion
+#### Clock-Rhythm
 
-**Concept**: Short, percussive sounds using noise and envelopes.
+**Concept**: Short, rhythmic structures using noise and envelopes.
 
 **Signal chain**:
 ```
@@ -229,9 +227,9 @@ NOISE → [VCF] → VCA
                  └── ENV (short)
 ```
 
-**Category**: Always "Percussion"
+**Category**: Always "Clock-Rhythm"
 
-#### FX Chains
+#### Texture-FX Chains
 
 **Concept**: Processing chains for external signals.
 
@@ -240,15 +238,15 @@ NOISE → [VCF] → VCA
 MIXER → FX → OUT
 ```
 
-**Category**: Always "FX"
+**Category**: Always "Texture-FX"
 
 ## Deterministic Naming
 
 Each patch gets a deterministic name using the `generate_patch_name()` function:
 
 ```python
-name = generate_patch_name(seed=patch_seed, category="pad")
-# Examples: "Deep Evolving Pad", "Bright Fast Lead"
+name = generate_patch_name(seed=patch_seed, category="Voice")
+# Examples: "Deep Evolving Voice", "Bright Fast Voice"
 ```
 
 **Name generation**:
@@ -295,12 +293,11 @@ def infer_waveform_params_from_patch(
 ```
 
 **Category-based defaults**:
-- **Pad**: Complex waveform, slow attack/release, high sustain
-- **Lead**: Saw wave, fast attack, medium sustain
-- **Bass**: Square wave, very fast attack, short decay
-- **Percussion**: Noise, very fast attack/decay, low sustain
-- **Generative**: Complex wave with modulation
-- **FX**: Complex wave with noise
+- **Voice**: Complex waveform, slow attack/release, high sustain
+- **Modulation**: Saw wave, fast attack, medium sustain
+- **Clock-Rhythm**: Square wave, very fast attack, short decay
+- **Generative**: Noise with modulation
+- **Texture-FX**: Complex wave with noise
 
 ### Waveform Generation
 

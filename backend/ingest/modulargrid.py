@@ -1,9 +1,8 @@
 """
-ModularGrid import adapter (placeholder).
-This module provides scaffolding for importing module data from ModularGrid.
+ModularGrid import adapter (boundary only).
+This module provides an interface for importing module data from ModularGrid.
 
-TODO: Implement actual scraper or API integration.
-Interface is defined so a real implementation can be dropped in later.
+Implementation lives outside core PatchHive and must be injected explicitly.
 """
 from typing import List, Dict, Any, Optional
 from sqlalchemy.orm import Session
@@ -27,15 +26,10 @@ class ModularGridAdapter:
         Returns:
             List of imported Module objects
 
-        TODO: Implement actual import logic
-        - Parse ModularGrid HTML or use API
-        - Extract module metadata
-        - Create Module instances
-        - Handle duplicate detection
         """
-        raise NotImplementedError(
-            "ModularGrid import is not yet implemented. "
-            "This is a placeholder interface for future development."
+        raise ModularGridUnavailableError(
+            "ModularGrid import adapter is unavailable. "
+            "Provide an external implementation via dependency injection."
         )
 
     def import_from_id(self, modulargrid_id: str) -> Optional[Module]:
@@ -48,11 +42,10 @@ class ModularGridAdapter:
         Returns:
             Imported Module object or None
 
-        TODO: Implement actual import logic
         """
-        raise NotImplementedError(
-            "ModularGrid import is not yet implemented. "
-            "This is a placeholder interface for future development."
+        raise ModularGridUnavailableError(
+            "ModularGrid import adapter is unavailable. "
+            "Provide an external implementation via dependency injection."
         )
 
     def search_modules(self, query: str, limit: int = 10) -> List[Dict[str, Any]]:
@@ -66,14 +59,17 @@ class ModularGridAdapter:
         Returns:
             List of module metadata dictionaries
 
-        TODO: Implement actual search logic
         """
-        raise NotImplementedError(
-            "ModularGrid search is not yet implemented. "
-            "This is a placeholder interface for future development."
+        raise ModularGridUnavailableError(
+            "ModularGrid search adapter is unavailable. "
+            "Provide an external implementation via dependency injection."
         )
 
 
 def create_modulargrid_adapter(db: Session) -> ModularGridAdapter:
     """Factory function to create ModularGrid adapter."""
     return ModularGridAdapter(db)
+
+
+class ModularGridUnavailableError(RuntimeError):
+    """Raised when the ModularGrid adapter is not configured."""

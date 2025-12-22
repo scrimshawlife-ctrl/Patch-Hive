@@ -52,7 +52,7 @@ def derive_patch_semantics(
         else "Free"
     )
 
-    clocked = "Clocked" if (outc[SignalKind.clock] or inc[SignalKind.clock]) else "Free"
+    clocked = "Clock-Rhythm" if (outc[SignalKind.clock] or inc[SignalKind.clock]) else "Free"
 
     return {
         "source": source,

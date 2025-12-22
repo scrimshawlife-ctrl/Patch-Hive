@@ -9,12 +9,14 @@ from patchhive.schemas import PatchGraph, PatchPlan, ValidationReport
 
 class PatchCategory(str, Enum):
     Voice = "Voice"
-    Clocked = "Clocked"
+    Modulation = "Modulation"
+    ClockRhythm = "Clock-Rhythm"
     Generative = "Generative"
-    StudyPatches = "Study Patches"
-    UtilityCalibration = "Utility / Calibration"
-    TextureFXSpace = "Texture / FX Space"
+    Utility = "Utility"
     PerformanceMacro = "Performance Macro"
+    TextureFX = "Texture-FX"
+    Study = "Study"
+    ExperimentalFeedback = "Experimental-Feedback"
 
 
 class PatchDifficulty(str, Enum):

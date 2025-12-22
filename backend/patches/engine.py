@@ -29,7 +29,17 @@ from modules.models import Module
 from cases.models import Case
 
 
-PatchCategory = Literal["pad", "lead", "bass", "percussion", "fx", "generative", "utility"]
+PatchCategory = Literal[
+    "Voice",
+    "Modulation",
+    "Clock-Rhythm",
+    "Generative",
+    "Utility",
+    "Performance Macro",
+    "Texture-FX",
+    "Study",
+    "Experimental-Feedback",
+]
 
 
 @dataclass
@@ -237,13 +247,7 @@ class PatchGenerator:
                 )
 
             # Determine category based on envelope characteristics
-            category: PatchCategory = "lead"
-            if len(connections) > 5:
-                category = "pad"  # More complex = pad-like
-            elif len(self.analyzer.envelopes) > 0:
-                category = self.rng.choice(["lead", "bass", "pad"])
-            else:
-                category = "drone"  # type: ignore
+            category: PatchCategory = "Voice"
 
             patch_seed = self.seed + i
             patch = PatchSpec(
@@ -319,7 +323,7 @@ class PatchGenerator:
             patch_seed = self.seed + 1000
             patch = PatchSpec(
                 name=name_patch_v2(patch_seed, self.modules_by_id, connections),
-                category="generative",
+                category="Generative",
                 connections=connections,
                 description="Self-evolving generative patch with modulation",
                 generation_seed=patch_seed,
@@ -394,9 +398,9 @@ class PatchGenerator:
             patch_seed = self.seed + 2000
             patch = PatchSpec(
                 name=name_patch_v2(patch_seed, self.modules_by_id, connections),
-                category="percussion",
+                category="Clock-Rhythm",
                 connections=connections,
-                description="Percussion voice using noise and envelope",
+                description="Clock-Rhythm voice using noise and envelope",
                 generation_seed=patch_seed,
             )
             patches.append(patch)
@@ -436,9 +440,9 @@ class PatchGenerator:
             patch_seed = self.seed + 3000
             patch = PatchSpec(
                 name=name_patch_v2(patch_seed, self.modules_by_id, connections),
-                category="fx",
+                category="Texture-FX",
                 connections=connections,
-                description=f"FX processing chain using {fx.name}",
+                description=f"Texture-FX processing chain using {fx.name}",
                 generation_seed=patch_seed,
             )
             patches.append(patch)

@@ -92,7 +92,7 @@ def build_default_registry() -> PatchTemplateRegistry:
     reg.register(PatchTemplate(
         template_id="basic.clocked.clock_to_seq.v1",
         archetype="clocked_sequence",
-        category="Clocked",
+        category="Clock-Rhythm",
         difficulty="Intermediate",
         tags=("clocked", "sequencer"),
         slots=(

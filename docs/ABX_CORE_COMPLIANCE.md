@@ -594,7 +594,7 @@ export_json = export.to_dict()
   "age_seconds": 86400.0,
   "module_count": 12,
   "connection_count": 24,
-  "category": "pad",
+  "category": "Voice",
   "structural_entropy": 0.167,
   "seed_hash": "9f8e7d6c",  // Truncated
   "engine_version": "1.0.0"

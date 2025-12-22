@@ -179,7 +179,9 @@ def calculate_envelope(t: float, params: WaveformParams) -> float:
         return sustain * (1 - t_release)
 
 
-def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_envelope: bool) -> WaveformParams:
+def infer_waveform_params_from_patch(
+    patch_category: str, has_lfo: bool, has_envelope: bool
+) -> WaveformParams:
     """
     Infer waveform parameters from patch characteristics.
 
@@ -193,8 +195,10 @@ def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_env
     """
     params = WaveformParams()
 
+    category = normalize_patch_category(patch_category)
+
     # Base characteristics by category
-    if patch_category == "pad":
+    if category == "Voice":
         params.waveform_type = "complex"
         params.frequency = 2.0
         params.attack_time = 0.3
@@ -202,7 +206,7 @@ def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_env
         params.sustain_level = 0.8
         params.release_time = 0.4
 
-    elif patch_category == "lead":
+    elif category == "Modulation":
         params.waveform_type = "saw"
         params.frequency = 4.0
         params.attack_time = 0.05
@@ -210,7 +214,7 @@ def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_env
         params.sustain_level = 0.6
         params.release_time = 0.15
 
-    elif patch_category == "bass":
+    elif category == "Clock-Rhythm":
         params.waveform_type = "square"
         params.frequency = 1.5
         params.attack_time = 0.01
@@ -218,37 +222,48 @@ def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_env
         params.sustain_level = 0.4
         params.release_time = 0.1
 
-    elif patch_category == "percussion":
+    elif category == "Generative":
         params.waveform_type = "noise"
-        params.frequency = 8.0
+        params.frequency = 3.0
         params.attack_time = 0.01
         params.decay_time = 0.15
         params.sustain_level = 0.1
         params.release_time = 0.05
-        params.noise_amount = 0.5
+        params.noise_amount = 0.4
 
-    elif patch_category == "fx":
+    elif category == "Texture-FX":
         params.waveform_type = "complex"
-        params.frequency = 3.0
+        params.frequency = 0.6
         params.attack_time = 0.1
         params.decay_time = 0.2
         params.sustain_level = 0.7
         params.release_time = 0.3
-        params.noise_amount = 0.2
+        params.noise_amount = 0.25
 
-    elif patch_category == "generative":
-        params.waveform_type = "complex"
-        params.frequency = 2.5
-        params.attack_time = 0.2
-        params.decay_time = 0.3
-        params.sustain_level = 0.6
-        params.release_time = 0.3
-        params.modulation_amount = 0.6
-        params.modulation_rate = 0.3
-
-    else:  # utility
+    elif category == "Utility":
         params.waveform_type = "sine"
-        params.frequency = 3.0
+        params.frequency = 1.0
+
+    elif category == "Performance Macro":
+        params.waveform_type = "triangle"
+        params.frequency = 1.2
+        params.modulation_amount = 0.4
+        params.modulation_rate = 0.4
+
+    elif category == "Study":
+        params.waveform_type = "sine"
+        params.frequency = 0.9
+
+    elif category == "Experimental-Feedback":
+        params.waveform_type = "complex"
+        params.frequency = 1.8
+        params.modulation_amount = 0.8
+        params.modulation_rate = 0.6
+        params.noise_amount = 0.5
+
+    else:
+        params.waveform_type = "sine"
+        params.frequency = 1.0
 
     # Modify based on features
     if has_lfo:
@@ -260,3 +275,23 @@ def infer_waveform_params_from_patch(patch_category: str, has_lfo: bool, has_env
         params.release_time = 0.0
 
     return params
+
+
+def normalize_patch_category(category: str) -> str:
+    if not category:
+        return "Study"
+    lower = category.strip().lower()
+    mapping = {
+        "pad": "Voice",
+        "lead": "Voice",
+        "bass": "Voice",
+        "drone": "Voice",
+        "clocked": "Clock-Rhythm",
+        "percussion": "Clock-Rhythm",
+        "fx": "Texture-FX",
+        "fx/textures": "Texture-FX",
+        "generative": "Generative",
+        "utility": "Utility",
+        "processing": "Utility",
+    }
+    return mapping.get(lower, category)

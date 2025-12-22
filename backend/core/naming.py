@@ -33,7 +33,7 @@ NOUNS = [
 
 PATCH_PREFIXES = [
     "Deep", "Bright", "Warm", "Cold", "Soft", "Hard", "Wide", "Narrow",
-    "Fast", "Slow", "Evolving", "Static", "Random", "Sequenced", "Clocked",
+    "Fast", "Slow", "Evolving", "Static", "Random", "Sequenced", "Clock-Rhythm",
     "Free", "Chaotic", "Ordered", "Dense", "Sparse", "Rich", "Minimal"
 ]
 
@@ -64,7 +64,17 @@ def generate_rack_name(seed: int) -> str:
 
 def generate_patch_name(
     seed: int,
-    category: Literal["pad", "lead", "bass", "percussion", "fx", "generative", "utility"]
+    category: Literal[
+        "Voice",
+        "Modulation",
+        "Clock-Rhythm",
+        "Generative",
+        "Utility",
+        "Performance Macro",
+        "Texture-FX",
+        "Study",
+        "Experimental-Feedback",
+    ]
 ) -> str:
     """
     Generate a deterministic patch name from a seed and category.
@@ -89,13 +99,15 @@ def generate_patch_name(
     else:
         # Use category-based name
         category_names = {
-            "pad": "Pad",
-            "lead": "Lead",
-            "bass": "Bass",
-            "percussion": "Percussion",
-            "fx": "FX",
-            "generative": "Generative",
-            "utility": "Utility"
+            "Voice": "Voice",
+            "Modulation": "Modulation",
+            "Clock-Rhythm": "Clock-Rhythm",
+            "Generative": "Generative",
+            "Utility": "Utility",
+            "Performance Macro": "Performance Macro",
+            "Texture-FX": "Texture-FX",
+            "Study": "Study",
+            "Experimental-Feedback": "Experimental-Feedback",
         }
         return f"{PATCH_PREFIXES[prefix_idx]} {category_names.get(category, 'Patch')}"
 
