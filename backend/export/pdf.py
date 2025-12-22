@@ -10,8 +10,6 @@ from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
-from svglib.svglib import svg2rlg
-from reportlab.graphics import renderPDF
 from sqlalchemy.orm import Session
 
 from core import settings
@@ -19,6 +17,14 @@ from patches.models import Patch
 from racks.models import Rack
 from .visualization import generate_rack_layout_svg, generate_patch_diagram_svg
 from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
+
+
+def _load_svg2rlg():
+    try:
+        from svglib.svglib import svg2rlg
+    except ImportError as exc:
+        raise RuntimeError("svglib is required for PDF exports") from exc
+    return svg2rlg
 
 
 def generate_patch_pdf(
@@ -75,6 +81,7 @@ def generate_patch_pdf(
     y -= 20
 
     try:
+        svg2rlg = _load_svg2rlg()
         rack_svg = generate_rack_layout_svg(db, rack, width=int(width - 2 * inch))
         rack_svg_io = io.StringIO(rack_svg)
         rack_drawing = svg2rlg(rack_svg_io)
@@ -99,6 +106,7 @@ def generate_patch_pdf(
     y -= 20
 
     try:
+        svg2rlg = _load_svg2rlg()
         patch_svg = generate_patch_diagram_svg(
             db, rack, patch.connections, width=int(width - 2 * inch), colorize_cables=False
         )
@@ -124,6 +132,7 @@ def generate_patch_pdf(
     y -= 20
 
     try:
+        svg2rlg = _load_svg2rlg()
         # Infer waveform params from patch
         has_lfo = any("lfo" in conn.get("from_port", "").lower() for conn in patch.connections)
         has_envelope = any(
@@ -183,6 +192,7 @@ def generate_rack_pdf(db: Session, rack: Rack, output_path: Optional[str] = None
     patches = db.query(Patch).filter(Patch.rack_id == rack.id).all()
 
     # Create canvas
+    svg2rlg = _load_svg2rlg()
     c = canvas.Canvas(output_path, pagesize=letter)
     width, height = letter
 

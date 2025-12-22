@@ -3,6 +3,8 @@ API endpoint tests for /api/racks.
 Tests the Rack CRUD endpoints using FastAPI TestClient.
 """
 import pytest
+pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
+
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
