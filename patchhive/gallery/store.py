@@ -16,6 +16,15 @@ class ModuleGalleryStore:
     def get_module(self, module_id: str) -> ModuleGalleryEntry:
         return self._entries[module_id]
 
+    def find_by_name(self, *, name: str, manufacturer: str | None = None) -> ModuleGalleryEntry | None:
+        for entry in self._entries.values():
+            if entry.name != name:
+                continue
+            if manufacturer and entry.manufacturer != manufacturer:
+                continue
+            return entry
+        return None
+
     def to_canonical(self, module_id: str, instance_id: str) -> CanonicalModule:
         entry = self.get_module(module_id)
         return CanonicalModule(
