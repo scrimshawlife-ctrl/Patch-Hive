@@ -115,6 +115,28 @@ class AdminExportResponse(BaseModel):
         from_attributes = True
 
 
+class AdminPendingFunction(BaseModel):
+    id: int
+    module_id: int
+    function_name: str
+    status: str
+    canonical_function: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+
+
+class AdminPendingFunctionList(BaseModel):
+    total: int
+    items: list[AdminPendingFunction]
+
+
+class AdminFunctionApprove(BaseModel):
+    canonical_function: str
+    reason: str
+
+
 class AdminLeaderboardEntry(BaseModel):
     label: str
     count: int

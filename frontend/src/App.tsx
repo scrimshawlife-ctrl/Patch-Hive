@@ -13,6 +13,7 @@ import RackBuilderPage from '@/pages/RackBuilder';
 import PatchesPage from '@/pages/Patches';
 import FeedPage from '@/pages/Feed';
 import LoginPage from '@/pages/Login';
+import RigDetailPage from '@/pages/RigDetail';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import AdminModules from '@/pages/admin/AdminModules';
@@ -100,6 +101,7 @@ function App() {
             <Route path="/racks" element={<RacksPage />} />
             <Route path="/racks/new" element={<RackBuilderPage />} />
             <Route path="/racks/:id/edit" element={<RackBuilderPage />} />
+            <Route path="/rigs/:rigId" element={<RigDetailPage />} />
             <Route path="/patches" element={<PatchesPage />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/login" element={<LoginPage />} />
