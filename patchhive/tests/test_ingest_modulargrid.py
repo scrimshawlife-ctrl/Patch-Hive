@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from patchhive.cli.ingest_modulargrid_dataset import (
     ingest_modulargrid_dataset,
+    stable_module_id,
     stable_module_key,
     slugify,
     gen_panel_svg,
@@ -111,6 +112,8 @@ def test_ingest_modulargrid_dataset(tmp_path: Path):
     assert manifest["database_version"] == "2024-01-01"
     assert manifest["modules_ingested"] == 2
     assert manifest["modules_skipped"] == 1
+    assert "module_library_root" in manifest
+    assert "gallery_entries_root" in manifest
 
     # Verify gallery store
     store = ModuleGalleryStoreV2(gallery_root)
@@ -143,6 +146,25 @@ def test_ingest_modulargrid_dataset(tmp_path: Path):
     assert manifest_path.exists()
     saved_manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
     assert saved_manifest["modules_ingested"] == 2
+
+    # Verify module library entry + gallery entry JSON
+    module_id = stable_module_id("Mutable Instruments", "Plaits")
+    library_entry = json.loads(
+        (Path(manifest["module_library_root"]) / f"{module_id}.json").read_text(encoding="utf-8")
+    )
+    assert library_entry["module_id"] == module_id
+    assert library_entry["manufacturer"] == "Mutable Instruments"
+    assert library_entry["module_name"] == "Plaits"
+    assert library_entry["physical"]["hp"] == 12
+    assert library_entry["physical"]["depth_mm"] == 25
+    assert library_entry["jacks"] == []
+
+    gallery_entry = json.loads(
+        (Path(manifest["gallery_entries_root"]) / f"{module_id}.json").read_text(encoding="utf-8")
+    )
+    assert gallery_entry["module_id"] == module_id
+    assert gallery_entry["panel_image"] is None
+    assert "JACKS: TBD" in gallery_entry["panel_sketch"]
 
 
 def test_ingest_idempotency(tmp_path: Path):
