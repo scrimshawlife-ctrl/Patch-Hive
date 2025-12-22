@@ -13,6 +13,8 @@ import RackBuilderPage from '@/pages/RackBuilder';
 import PatchesPage from '@/pages/Patches';
 import FeedPage from '@/pages/Feed';
 import LoginPage from '@/pages/Login';
+import AccountPage from '@/pages/Account';
+import LeaderboardsModulesPage from '@/pages/LeaderboardsModules';
 
 function App() {
   const { user, logout, isAuthenticated } = useAuthStore();
@@ -42,6 +44,8 @@ function App() {
               <NavLink to="/racks">Racks</NavLink>
               <NavLink to="/patches">Patches</NavLink>
               <NavLink to="/feed">Feed</NavLink>
+              <NavLink to="/leaderboards/modules">Leaderboards</NavLink>
+              {isAuthenticated() && <NavLink to="/account">Account</NavLink>}
             </nav>
           </div>
           <div>
@@ -94,6 +98,8 @@ function App() {
             <Route path="/patches" element={<PatchesPage />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/leaderboards/modules" element={<LeaderboardsModulesPage />} />
           </Routes>
         </main>
 

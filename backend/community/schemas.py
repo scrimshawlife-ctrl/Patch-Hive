@@ -12,6 +12,7 @@ class UserBase(BaseModel):
 
     username: str = Field(..., min_length=3, max_length=50)
     email: EmailStr
+    display_name: Optional[str] = Field(None, max_length=100)
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
 
@@ -20,11 +21,13 @@ class UserCreate(UserBase):
     """Schema for user registration."""
 
     password: str = Field(..., min_length=8)
+    referral_code: Optional[str] = None
 
 
 class UserUpdate(BaseModel):
     """Schema for updating user profile."""
 
+    display_name: Optional[str] = Field(None, max_length=100)
     avatar_url: Optional[str] = None
     bio: Optional[str] = None
 

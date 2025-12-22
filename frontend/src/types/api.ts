@@ -153,10 +153,55 @@ export interface User {
   id: number;
   username: string;
   email: string;
+  display_name?: string;
   avatar_url?: string;
   bio?: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface CreditLedgerEntry {
+  id: number;
+  entry_type: string;
+  amount: number;
+  description?: string;
+  created_at: string;
+}
+
+export interface CreditsSummary {
+  balance: number;
+  entries: CreditLedgerEntry[];
+}
+
+export interface ExportRecord {
+  id: number;
+  export_type: string;
+  entity_id: number;
+  run_id: string;
+  unlocked: boolean;
+  license_type?: string;
+  created_at: string;
+}
+
+export interface ReferralRecord {
+  referred_user_id: string;
+  status: string;
+  rewarded_at?: string;
+}
+
+export interface ReferralSummary {
+  referral_code: string;
+  referral_link: string;
+  pending_count: number;
+  earned_count: number;
+  recent_referrals: ReferralRecord[];
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  module_name: string;
+  manufacturer: string;
+  count: number;
 }
 
 export interface LoginRequest {

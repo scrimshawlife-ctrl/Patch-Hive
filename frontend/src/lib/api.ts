@@ -17,6 +17,10 @@ import type {
   Rack,
   Patch,
   User,
+  CreditsSummary,
+  ExportRecord,
+  ReferralSummary,
+  LeaderboardEntry,
 } from '@/types/api';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
@@ -120,8 +124,10 @@ export const authApi = {
 
   getUserByUsername: (username: string) => api.get<User>(`/community/users/username/${username}`),
 
-  updateProfile: (data: { avatar_url?: string; bio?: string }) =>
+  updateProfile: (data: { display_name?: string; avatar_url?: string; bio?: string }) =>
     api.patch<User>('/community/users/me', data),
+
+  getMe: () => api.get<User>('/community/users/me'),
 };
 
 // Community API
@@ -152,6 +158,20 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
+};
+
+// Account API
+export const accountApi = {
+  getCredits: () => api.get<CreditsSummary>('/me/credits'),
+  getExports: () => api.get<ExportRecord[]>('/me/exports'),
+  getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
+};
+
+// Leaderboards API
+export const leaderboardsApi = {
+  getPopularModules: () => api.get<LeaderboardEntry[]>('/leaderboards/modules/popular'),
+  getTrendingModules: (windowDays = 30) =>
+    api.get<LeaderboardEntry[]>('/leaderboards/modules/trending', { params: { window_days: windowDays } }),
 };
 
 export default api;

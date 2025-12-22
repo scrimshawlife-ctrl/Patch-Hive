@@ -12,6 +12,7 @@ from cases.models import Case
 from racks.models import Rack, RackModule
 from patches.models import Patch  # Import to ensure patches table is created
 from community.models import User, Vote, Comment  # Import to ensure tables are created
+from account.models import CreditLedgerEntry, ExportRecord, Referral  # noqa: F401
 
 
 @pytest.fixture(scope="function")

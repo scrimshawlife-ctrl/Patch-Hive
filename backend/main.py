@@ -15,6 +15,7 @@ from cases.models import Case  # noqa: F401
 from racks.models import Rack, RackModule  # noqa: F401
 from patches.models import Patch  # noqa: F401
 from community.models import User, Vote, Comment  # noqa: F401
+from account.models import CreditLedgerEntry, ExportRecord, Referral  # noqa: F401
 
 
 @asynccontextmanager
@@ -82,6 +83,8 @@ from patches.routes import router as patches_router  # noqa: E402
 from community.routes import router as community_router  # noqa: E402
 from export.routes import router as export_router  # noqa: E402
 from integrations.router import router as integrations_router  # noqa: E402
+from account.routes import router as account_router  # noqa: E402
+from leaderboards.routes import router as leaderboards_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
@@ -91,3 +94,5 @@ app.include_router(patches_router, prefix="/api/patches", tags=["patches"])
 app.include_router(community_router, prefix="/api/community", tags=["community"])
 app.include_router(export_router, prefix="/api/export", tags=["export"])
 app.include_router(integrations_router, prefix="/api", tags=["integrations"])
+app.include_router(account_router, prefix="/api/me", tags=["account"])
+app.include_router(leaderboards_router, prefix="/api/leaderboards", tags=["leaderboards"])

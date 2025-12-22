@@ -10,6 +10,8 @@ from core import get_db, get_password_hash, verify_password, create_access_token
 from racks.models import Rack
 from patches.models import Patch
 from .models import User, Vote, Comment
+from account.models import Referral
+from account.services import ensure_referral_code
 from .schemas import (
     UserCreate,
     UserUpdate,
@@ -72,12 +74,28 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         username=user.username,
         email=user.email,
         password_hash=get_password_hash(user.password),
+        display_name=user.display_name or user.username,
         avatar_url=user.avatar_url,
         bio=user.bio,
     )
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
+    ensure_referral_code(db, db_user)
+
+    if user.referral_code:
+        referrer = db.query(User).filter(User.referral_code == user.referral_code).first()
+        if referrer and referrer.id != db_user.id:
+            existing_referral = (
+                db.query(Referral)
+                .filter(Referral.referred_user_id == db_user.id)
+                .first()
+            )
+            if not existing_referral:
+                referral = Referral(referrer_user_id=referrer.id, referred_user_id=db_user.id, status="pending")
+                db.add(referral)
+                db.commit()
 
     return db_user
 
@@ -94,6 +112,12 @@ def login(request: LoginRequest, db: Session = Depends(get_db)):
     token = create_access_token({"user_id": user.id, "username": user.username})
 
     return TokenResponse(access_token=token, user=user)
+
+
+@router.get("/users/me", response_model=UserResponse)
+def get_current_profile(current_user: User = Depends(require_auth)):
+    """Get current user's profile."""
+    return current_user
 
 
 @router.get("/users/{user_id}", response_model=UserResponse)

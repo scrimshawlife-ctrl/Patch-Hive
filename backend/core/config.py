@@ -31,6 +31,9 @@ class Settings(BaseSettings):
     # CORS
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
 
+    # Frontend
+    frontend_base_url: str = "http://localhost:5173"
+
     # Patch Engine
     patch_engine_version: str = "1.0.0"
     max_patches_per_generation: int = 20
