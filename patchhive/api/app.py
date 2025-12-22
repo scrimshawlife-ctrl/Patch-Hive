@@ -9,7 +9,10 @@ from fastapi.responses import FileResponse, JSONResponse
 
 from patchhive.pipeline.e2e_config import E2EConfig
 from patchhive.pipeline.run_e2e_to_store import run_e2e_to_store
+from patchhive.pipeline.run_e2e_with_progress import run_e2e_with_progress
 from patchhive.store.artifact_store import ArtifactStore
+from patchhive.store.job_store import JobStore, JobState, JobStatus, _now_utc
+from patchhive.export.export_bundle_zip import build_bundle_zip
 
 from patchhive.vision.gemini_interface import GeminiVisionClient, VisionRigSpec
 
@@ -31,13 +34,14 @@ class GeminiOverlayClient(GeminiVisionClient):
         return VisionRigSpec.model_validate(data)
 
 
-app = FastAPI(title="PatchHive API", version="0.1.0")
+app = FastAPI(title="PatchHive API", version="0.2.0")
 
 # configure roots (swap for env vars in real deployment)
 STORE_ROOT = "./.patchhive_store"
 GALLERY_ROOT = "./.patchhive_gallery"
 
 store = ArtifactStore(STORE_ROOT)
+jobs = JobStore(STORE_ROOT)
 gemini = GeminiOverlayClient()
 
 
@@ -124,3 +128,134 @@ def get_patch_svg(run_id: str, patch_id: str):
     if not p.exists():
         raise HTTPException(status_code=404, detail="svg not found")
     return FileResponse(str(p), media_type="image/svg+xml", filename=f"{patch_id}.svg")
+
+
+# ============================================================
+# V2 Endpoints: Jobs + Progress + Bundle Download
+# ============================================================
+
+
+@app.post("/v2/rigs/{rig_id}/ingest-image")
+async def ingest_image_v2(
+    rig_id: str,
+    file: UploadFile = File(...),
+    preset: str = "core",
+):
+    """
+    Upload a rack image and run the full pipeline with job tracking.
+    Returns run_id, job state, and summary. Idempotent: returns cached result if already built.
+    """
+    uploads = Path(STORE_ROOT) / "uploads"
+    uploads.mkdir(parents=True, exist_ok=True)
+    img_path = uploads / f"{rig_id}.{file.filename}"
+    img_path.write_bytes(await file.read())
+
+    cfg = E2EConfig(
+        gallery_root=GALLERY_ROOT,
+        out_dir="(overridden by store)",
+        preset=preset,
+        rows=1,
+        row_hp=104,
+        max_total=160,
+        max_per_category=70,
+        drop_runaway=True,
+        drop_silence=False,
+        interactive_pdf=True,
+    )
+
+    refs = store.alloc_run(rig_id=rig_id, image_ref=str(img_path), preset=preset)
+
+    # Idempotency: if already built, return immediately
+    if store.exists(refs):
+        st = jobs.read(refs.run_id) or JobState(
+            run_id=refs.run_id, status=JobStatus.succeeded, stage="cached", progress=1.0
+        )
+        jobs.write(st)
+        summary_path = refs.root / "summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else {}
+        return JSONResponse({"run_id": refs.run_id, "cached": True, "job": st.to_dict(), "summary": summary})
+
+    # Create job record
+    st = JobState(run_id=refs.run_id, status=JobStatus.running, stage="start", progress=0.0, started_at=_now_utc())
+    jobs.write(st)
+
+    def on_progress(stage: str, p: float):
+        st2 = JobState(
+            run_id=refs.run_id, status=JobStatus.running, stage=stage, progress=p, started_at=st.started_at
+        )
+        jobs.write(st2)
+
+    # Run synchronously (v1). Later: push into a worker queue.
+    try:
+        store.write_input(refs, {"rig_id": rig_id, "image_ref": str(img_path), "config": cfg.model_dump()})
+        cfg2 = cfg.model_copy(update={"out_dir": str(refs.root)})
+
+        on_progress("running_pipeline", 0.05)
+        _ = run_e2e_with_progress(
+            image_ref=str(img_path),
+            rig_id=rig_id,
+            config=cfg2,
+            gemini=gemini,
+            on_progress=on_progress,
+        )
+
+        st_ok = JobState(
+            run_id=refs.run_id,
+            status=JobStatus.succeeded,
+            stage="done",
+            progress=1.0,
+            started_at=st.started_at,
+            finished_at=_now_utc(),
+        )
+        jobs.write(st_ok)
+
+        summary_path = refs.root / "summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8")) if summary_path.exists() else {}
+        return JSONResponse({"run_id": refs.run_id, "cached": False, "job": st_ok.to_dict(), "summary": summary})
+    except Exception as e:
+        st_fail = JobState(
+            run_id=refs.run_id,
+            status=JobStatus.failed,
+            stage="failed",
+            progress=st.progress,
+            started_at=st.started_at,
+            finished_at=_now_utc(),
+            error=str(e),
+        )
+        jobs.write(st_fail)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/v2/runs/{run_id}/job")
+def get_job(run_id: str):
+    """
+    Get the current job state (status, stage, progress).
+    """
+    st = jobs.read(run_id)
+    if not st:
+        raise HTTPException(status_code=404, detail="job not found")
+    return JSONResponse(st.to_dict())
+
+
+@app.get("/v2/runs/{run_id}/download/bundle.zip")
+def download_bundle(run_id: str):
+    """
+    Download a ZIP bundle containing all artifacts:
+    - rigspec.json
+    - library.json
+    - manifest.json
+    - summary.json
+    - pdf/patchbook.pdf
+    - svgs/*.svg
+    """
+    run_root = Path(STORE_ROOT) / "runs" / run_id
+    if not run_root.exists():
+        raise HTTPException(status_code=404, detail="run not found")
+
+    zdir = run_root / "bundle"
+    zdir.mkdir(parents=True, exist_ok=True)
+    zpath = zdir / "patchhive_bundle.zip"
+
+    build_bundle_zip(str(run_root), str(zpath))
+
+    return FileResponse(str(zpath), media_type="application/zip", filename=f"patchhive_{run_id}_bundle.zip")
