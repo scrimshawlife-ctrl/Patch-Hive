@@ -89,6 +89,7 @@ from integrations.router import router as integrations_router  # noqa: E402
 from monetization.routes import router as monetization_router  # noqa: E402
 from admin.routes import router as admin_router  # noqa: E402
 from runs.routes import router as runs_router  # noqa: E402
+from ingest.system_packs.routes import router as system_packs_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
@@ -101,3 +102,4 @@ app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 app.include_router(runs_router, prefix="/api/runs", tags=["runs"])
+app.include_router(system_packs_router, prefix="/api/ingest", tags=["ingest"])

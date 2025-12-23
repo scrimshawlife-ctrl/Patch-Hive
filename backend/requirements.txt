@@ -13,3 +13,5 @@ pillow
 email-validator
 httpx
 pyyaml
+pytest
+pytest-asyncio
