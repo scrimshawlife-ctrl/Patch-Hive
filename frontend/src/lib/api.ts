@@ -26,6 +26,9 @@ import type {
   PublicationRecord,
   PublicPublicationResponse,
   GalleryResponse,
+  CreditsSummary,
+  ReferralSummary,
+  LeaderboardEntry,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -149,6 +152,8 @@ export const authApi = {
 
   updateProfile: (data: { avatar_url?: string; bio?: string; display_name?: string; allow_public_avatar?: boolean }) =>
     api.patch<User>('/community/users/me', data),
+
+  getMe: () => api.get<User>('/community/users/me'),
 };
 
 // Community API
@@ -279,6 +284,20 @@ export const publishingApi = {
 
   reportPublication: (slug: string, data: { reason: string; details?: string }) =>
     api.post(`/p/${slug}/report`, data),
+};
+
+// Account API
+export const accountApi = {
+  getCredits: () => api.get<CreditsSummary>('/me/credits'),
+  getExports: () => api.get<ExportRecord[]>('/me/exports'),
+  getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
+};
+
+// Leaderboards API
+export const leaderboardsApi = {
+  getPopularModules: () => api.get<LeaderboardEntry[]>('/leaderboards/modules/popular'),
+  getTrendingModules: (windowDays = 30) =>
+    api.get<LeaderboardEntry[]>('/leaderboards/modules/trending', { params: { window_days: windowDays } }),
 };
 
 export default api;

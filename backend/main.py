@@ -20,6 +20,7 @@ from admin.models import AdminAuditLog, PendingFunction  # noqa: F401
 from gallery.models import GalleryRevision  # noqa: F401
 from runs.models import Run  # noqa: F401
 from publishing.models import Publication, PublicationReport  # noqa: F401
+from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
 
 
 @asynccontextmanager
@@ -91,6 +92,8 @@ from integrations.router import router as integrations_router  # noqa: E402
 from monetization.routes import router as monetization_router  # noqa: E402
 from admin.routes import router as admin_router  # noqa: E402
 from publishing.routes import router as publishing_router  # noqa: E402
+from account.routes import router as account_router  # noqa: E402
+from leaderboards.routes import router as leaderboards_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
@@ -104,3 +107,5 @@ app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 app.include_router(publishing_router, prefix="/api", tags=["publishing"])
+app.include_router(account_router, prefix="/api/me", tags=["account"])
+app.include_router(leaderboards_router, prefix="/api/leaderboards", tags=["leaderboards"])

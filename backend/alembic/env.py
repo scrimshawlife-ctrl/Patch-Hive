@@ -13,6 +13,7 @@ from cases.models import Case
 from racks.models import Rack, RackModule
 from patches.models import Patch
 from community.models import User, Vote, Comment
+from account.models import CreditLedgerEntry, ExportRecord, Referral  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

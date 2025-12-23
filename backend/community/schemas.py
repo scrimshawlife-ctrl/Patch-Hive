@@ -14,7 +14,6 @@ class UserBase(BaseModel):
     email: EmailStr
     display_name: Optional[str] = Field(default=None, max_length=100)
     avatar_url: Optional[str] = None
-    display_name: Optional[str] = Field(default=None, max_length=100)
     allow_public_avatar: bool = True
     bio: Optional[str] = None
 
@@ -31,8 +30,8 @@ class UserCreate(UserBase):
 class UserUpdate(BaseModel):
     """Schema for updating user profile."""
 
-    avatar_url: Optional[str] = None
     display_name: Optional[str] = Field(default=None, max_length=100)
+    avatar_url: Optional[str] = None
     allow_public_avatar: Optional[bool] = None
     bio: Optional[str] = None
 

@@ -1,244 +1,303 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { publishingApi } from '@/lib/api';
+/**
+ * User dashboard page for credits, exports, referrals, and profile.
+ */
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { accountApi, authApi, exportApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
-import type { PublicationRecord } from '@/types/api';
+import type { CreditsSummary, ExportRecord, ReferralSummary, User } from '@/types/api';
 
-interface PublicationDraft {
-  title: string;
-  description: string;
-}
+const sectionStyle: React.CSSProperties = {
+  background: '#111',
+  border: '1px solid #222',
+  borderRadius: '8px',
+  padding: '1.5rem',
+  marginBottom: '1.5rem',
+};
+
+const labelStyle: React.CSSProperties = {
+  color: '#aaa',
+  fontSize: '0.9rem',
+};
 
 export default function AccountPage() {
-  const { isAuthenticated } = useAuthStore();
-  const [publications, setPublications] = useState<PublicationRecord[]>([]);
-  const [drafts, setDrafts] = useState<Record<number, PublicationDraft>>({});
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchPublications = async () => {
-    setLoading(true);
-    try {
-      const response = await publishingApi.listPublications();
-      setPublications(response.data.publications);
-      const nextDrafts: Record<number, PublicationDraft> = {};
-      response.data.publications.forEach((pub) => {
-        nextDrafts[pub.id] = {
-          title: pub.title,
-          description: pub.description || '',
-        };
-      });
-      setDrafts(nextDrafts);
-      setError(null);
-    } catch (err) {
-      setError('Unable to load publications.');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
+  const { isAuthenticated, setAuth } = useAuthStore();
+  const [credits, setCredits] = useState<CreditsSummary | null>(null);
+  const [exports, setExports] = useState<ExportRecord[]>([]);
+  const [referrals, setReferrals] = useState<ReferralSummary | null>(null);
+  const [profile, setProfile] = useState<User | null>(null);
+  const [displayName, setDisplayName] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [copyStatus, setCopyStatus] = useState('');
 
   useEffect(() => {
+    if (!isAuthenticated()) {
+      navigate('/login');
+    }
+  }, [isAuthenticated, navigate]);
+
+  useEffect(() => {
+    const loadDashboard = async () => {
+      const [creditsRes, exportsRes, referralsRes, profileRes] = await Promise.all([
+        accountApi.getCredits(),
+        accountApi.getExports(),
+        accountApi.getReferrals(),
+        authApi.getMe(),
+      ]);
+      setCredits(creditsRes.data);
+      setExports(exportsRes.data);
+      setReferrals(referralsRes.data);
+      setProfile(profileRes.data);
+      setDisplayName(profileRes.data.display_name || profileRes.data.username);
+      setAvatarUrl(profileRes.data.avatar_url || '');
+      setAuth(profileRes.data, localStorage.getItem('auth_token') || '');
+    };
+
     if (isAuthenticated()) {
-      fetchPublications();
+      loadDashboard();
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, setAuth]);
 
-  const updatePublication = async (id: number, updates: Partial<PublicationRecord>) => {
+  const handleSaveProfile = async () => {
+    setSaving(true);
     try {
-      await publishingApi.updatePublication(id, updates);
-      fetchPublications();
-    } catch (err) {
-      setError('Unable to update publication.');
+      const res = await authApi.updateProfile({
+        display_name: displayName,
+        avatar_url: avatarUrl || undefined,
+      });
+      setProfile(res.data);
+      setAuth(res.data, localStorage.getItem('auth_token') || '');
+    } finally {
+      setSaving(false);
     }
   };
 
-  const saveDraft = async (id: number) => {
-    const draft = drafts[id];
-    if (!draft) return;
-    await updatePublication(id, {
-      title: draft.title,
-      description: draft.description,
+  const exportRows = useMemo(() => {
+    return exports.map((record) => {
+      const isPatch = record.export_type === 'patch';
+      const label = isPatch ? 'Patch' : 'Rack';
+      const downloadLink = record.unlocked
+        ? isPatch
+          ? exportApi.patchPdf(record.entity_id)
+          : exportApi.rackPdf(record.entity_id)
+        : null;
+      return { ...record, label, downloadLink };
     });
-  };
+  }, [exports]);
 
-  if (!isAuthenticated()) {
-    return <p>Please log in to manage publishing.</p>;
-  }
+  const handleCopy = async () => {
+    if (!referrals?.referral_link) return;
+    await navigator.clipboard.writeText(referrals.referral_link);
+    setCopyStatus('Copied');
+    setTimeout(() => setCopyStatus(''), 2000);
+  };
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <section
-        style={{
-          background: '#111',
-          border: '1px solid #222',
-          borderRadius: '8px',
-          padding: '1.5rem',
-        }}
-      >
-        <h2 style={{ marginTop: 0 }}>Publishing</h2>
-        <p style={{ color: '#aaa' }}>
-          Manage published exports and keep visibility aligned with your intent.
+    <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+      <h2 style={{ marginBottom: '0.5rem' }}>Account</h2>
+      <p style={{ color: '#bbb', marginBottom: '2rem' }}>
+        PatchHive is free to explore. You only pay when you export something you want to keep.
+      </p>
+
+      <section style={sectionStyle}>
+        <h3>Credits</h3>
+        <p style={labelStyle}>Balance</p>
+        <h2 style={{ marginTop: '0.25rem' }}>{credits ? credits.balance : '—'}</h2>
+        <p style={{ ...labelStyle, marginTop: '1rem' }}>History</p>
+        {credits?.entries.length ? (
+          <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
+            <thead style={{ textAlign: 'left', color: '#888' }}>
+              <tr>
+                <th style={{ padding: '0.5rem' }}>Type</th>
+                <th style={{ padding: '0.5rem' }}>Amount</th>
+                <th style={{ padding: '0.5rem' }}>Date</th>
+                <th style={{ padding: '0.5rem' }}>Note</th>
+              </tr>
+            </thead>
+            <tbody>
+              {credits.entries.map((entry) => (
+                <tr key={entry.id} style={{ borderTop: '1px solid #222' }}>
+                  <td style={{ padding: '0.5rem' }}>{entry.entry_type}</td>
+                  <td style={{ padding: '0.5rem' }}>{entry.amount}</td>
+                  <td style={{ padding: '0.5rem' }}>{new Date(entry.created_at).toLocaleString()}</td>
+                  <td style={{ padding: '0.5rem', color: '#888' }}>{entry.description || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p style={{ color: '#777' }}>No credit history yet.</p>
+        )}
+      </section>
+
+      <section style={sectionStyle}>
+        <h3>Exports</h3>
+        {exportRows.length ? (
+          <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
+            <thead style={{ textAlign: 'left', color: '#888' }}>
+              <tr>
+                <th style={{ padding: '0.5rem' }}>Type</th>
+                <th style={{ padding: '0.5rem' }}>Run ID</th>
+                <th style={{ padding: '0.5rem' }}>Date</th>
+                <th style={{ padding: '0.5rem' }}>License</th>
+                <th style={{ padding: '0.5rem' }}>Download</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exportRows.map((record) => (
+                <tr key={record.id} style={{ borderTop: '1px solid #222' }}>
+                  <td style={{ padding: '0.5rem' }}>{record.label}</td>
+                  <td style={{ padding: '0.5rem', color: '#888' }}>{record.run_id}</td>
+                  <td style={{ padding: '0.5rem' }}>{new Date(record.created_at).toLocaleString()}</td>
+                  <td style={{ padding: '0.5rem' }}>{record.license_type || '—'}</td>
+                  <td style={{ padding: '0.5rem' }}>
+                    {record.downloadLink ? (
+                      <a
+                        href={record.downloadLink}
+                        style={{ color: '#00ff88', textDecoration: 'none' }}
+                      >
+                        Download
+                      </a>
+                    ) : (
+                      <span style={{ color: '#666' }}>Locked</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p style={{ color: '#777' }}>No exports yet.</p>
+        )}
+      </section>
+
+      <section style={sectionStyle}>
+        <h3>Referrals</h3>
+        <p style={{ color: '#bbb' }}>
+          You’ll receive free credits if your friend makes their first purchase.
         </p>
-        <Link to="/publish">
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+          <input
+            type="text"
+            value={referrals?.referral_link || ''}
+            readOnly
+            style={{
+              flex: 1,
+              background: '#0c0c0c',
+              border: '1px solid #333',
+              color: '#ccc',
+              padding: '0.5rem',
+              borderRadius: '4px',
+            }}
+          />
           <button
+            onClick={handleCopy}
             style={{
               background: '#00ff88',
               color: '#000',
               border: 'none',
-              padding: '0.6rem 1.2rem',
-              borderRadius: '6px',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
               cursor: 'pointer',
               fontWeight: 'bold',
             }}
           >
-            Publish an export
+            Invite a friend
           </button>
-        </Link>
+          {copyStatus && <span style={{ color: '#00ff88' }}>{copyStatus}</span>}
+        </div>
+        <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
+          <div>
+            <p style={labelStyle}>Pending</p>
+            <h3>{referrals?.pending_count ?? '—'}</h3>
+          </div>
+          <div>
+            <p style={labelStyle}>Earned</p>
+            <h3>{referrals?.earned_count ?? '—'}</h3>
+          </div>
+        </div>
+        {referrals?.recent_referrals.length ? (
+          <div style={{ marginTop: '1rem' }}>
+            <p style={labelStyle}>Recent referrals</p>
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {referrals.recent_referrals.map((referral, index) => (
+                <li key={`${referral.referred_user_id}-${index}`} style={{ padding: '0.35rem 0' }}>
+                  <span style={{ color: '#ccc' }}>{referral.referred_user_id}</span>
+                  <span style={{ color: '#666', marginLeft: '0.5rem' }}>{referral.status}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : (
+          <p style={{ color: '#777', marginTop: '1rem' }}>No referrals yet.</p>
+        )}
       </section>
 
-      <section
-        style={{
-          background: '#111',
-          border: '1px solid #222',
-          borderRadius: '8px',
-          padding: '1.5rem',
-        }}
-      >
-        <h3 style={{ marginTop: 0 }}>Your publications</h3>
-        {loading && <p>Loading publications...</p>}
-        {error && <p style={{ color: '#ff6b6b' }}>{error}</p>}
-        {!loading && publications.length === 0 && (
-          <p style={{ color: '#aaa' }}>No publications yet.</p>
-        )}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-          {publications.map((publication) => (
-            <div
-              key={publication.id}
+      <section style={sectionStyle}>
+        <h3>Profile</h3>
+        <div style={{ display: 'grid', gap: '1rem', maxWidth: '400px' }}>
+          <label>
+            <div style={labelStyle}>Display name</div>
+            <input
+              type="text"
+              value={displayName}
+              onChange={(event) => setDisplayName(event.target.value)}
               style={{
-                border: '1px solid #222',
-                padding: '1rem',
-                borderRadius: '8px',
-                background: '#0d0d0d',
+                width: '100%',
+                background: '#0c0c0c',
+                border: '1px solid #333',
+                color: '#ccc',
+                padding: '0.5rem',
+                borderRadius: '4px',
               }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                <div style={{ flex: 1 }}>
-                  <input
-                    value={drafts[publication.id]?.title || ''}
-                    onChange={(event) =>
-                      setDrafts((prev) => ({
-                        ...prev,
-                        [publication.id]: {
-                          title: event.target.value,
-                          description: prev[publication.id]?.description || '',
-                        },
-                      }))
-                    }
-                    style={{
-                      width: '100%',
-                      padding: '0.4rem 0.6rem',
-                      borderRadius: '4px',
-                      border: '1px solid #333',
-                      background: '#111',
-                      color: '#fff',
-                      fontSize: '1rem',
-                    }}
-                  />
-                  <textarea
-                    value={drafts[publication.id]?.description || ''}
-                    onChange={(event) =>
-                      setDrafts((prev) => ({
-                        ...prev,
-                        [publication.id]: {
-                          title: prev[publication.id]?.title || '',
-                          description: event.target.value,
-                        },
-                      }))
-                    }
-                    rows={2}
-                    style={{
-                      width: '100%',
-                      marginTop: '0.5rem',
-                      padding: '0.4rem 0.6rem',
-                      borderRadius: '4px',
-                      border: '1px solid #333',
-                      background: '#111',
-                      color: '#ccc',
-                    }}
-                  />
-                  <p style={{ margin: '0.4rem 0 0', color: '#666' }}>
-                    Slug: /p/{publication.slug}
-                  </p>
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <label style={{ color: '#ccc' }}>
-                    Visibility
-                    <select
-                      value={publication.visibility}
-                      onChange={(event) =>
-                        updatePublication(publication.id, {
-                          visibility: event.target.value as PublicationRecord['visibility'],
-                        })
-                      }
-                      style={{
-                        marginLeft: '0.5rem',
-                        background: '#111',
-                        color: '#fff',
-                        border: '1px solid #333',
-                        borderRadius: '4px',
-                      }}
-                    >
-                      <option value="unlisted">Unlisted</option>
-                      <option value="public">Public</option>
-                    </select>
-                  </label>
-                  <label style={{ color: '#ccc' }}>
-                    Allow download
-                    <input
-                      type="checkbox"
-                      checked={publication.allow_download}
-                      onChange={(event) =>
-                        updatePublication(publication.id, { allow_download: event.target.checked })
-                      }
-                      style={{ marginLeft: '0.5rem' }}
-                    />
-                  </label>
-                  <button
-                    onClick={() =>
-                      updatePublication(publication.id, {
-                        status: publication.status === 'hidden' ? 'published' : 'hidden',
-                      })
-                    }
-                    style={{
-                      background: '#222',
-                      color: '#fff',
-                      border: '1px solid #333',
-                      padding: '0.4rem 0.8rem',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {publication.status === 'hidden' ? 'Unhide' : 'Hide'}
-                  </button>
-                  <button
-                    onClick={() => saveDraft(publication.id)}
-                    style={{
-                      background: '#00ff88',
-                      color: '#000',
-                      border: 'none',
-                      padding: '0.4rem 0.8rem',
-                      borderRadius: '4px',
-                      cursor: 'pointer',
-                      fontWeight: 'bold',
-                    }}
-                  >
-                    Save
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
+            />
+          </label>
+          <label>
+            <div style={labelStyle}>Avatar URL</div>
+            <input
+              type="url"
+              value={avatarUrl}
+              onChange={(event) => setAvatarUrl(event.target.value)}
+              placeholder="https://"
+              style={{
+                width: '100%',
+                background: '#0c0c0c',
+                border: '1px solid #333',
+                color: '#ccc',
+                padding: '0.5rem',
+                borderRadius: '4px',
+              }}
+            />
+          </label>
+          {avatarUrl && (
+            <img
+              src={avatarUrl}
+              alt="Avatar preview"
+              style={{ width: '96px', height: '96px', borderRadius: '50%' }}
+            />
+          )}
+          <button
+            onClick={handleSaveProfile}
+            disabled={saving}
+            style={{
+              background: '#333',
+              color: '#fff',
+              border: '1px solid #555',
+              padding: '0.5rem 1rem',
+              borderRadius: '4px',
+              cursor: 'pointer',
+            }}
+          >
+            {saving ? 'Saving...' : 'Save profile'}
+          </button>
         </div>
+        {profile && (
+          <p style={{ color: '#666', marginTop: '0.75rem' }}>
+            Signed in as {profile.username}
+          </p>
+        )}
       </section>
     </div>
   );

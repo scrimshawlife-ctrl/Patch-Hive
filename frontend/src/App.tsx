@@ -25,6 +25,7 @@ import AccountPage from '@/pages/Account';
 import PublishPage from '@/pages/Publish';
 import GalleryPage from '@/pages/Gallery';
 import PublicationPage from '@/pages/Publication';
+import LeaderboardsModulesPage from '@/pages/LeaderboardsModules';
 
 function App() {
   const { user, logout, isAuthenticated } = useAuthStore();
@@ -57,7 +58,8 @@ function App() {
               <NavLink to="/feed">Feed</NavLink>
               <NavLink to="/gallery">Gallery</NavLink>
               <NavLink to="/publish">Publish</NavLink>
-              <NavLink to="/account">Account</NavLink>
+              <NavLink to="/leaderboards/modules">Leaderboards</NavLink>
+              {isAuthenticated() && <NavLink to="/account">Account</NavLink>}
               {canSeeAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             </nav>
           </div>
@@ -116,6 +118,7 @@ function App() {
             <Route path="/publish" element={<PublishPage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/p/:slug" element={<PublicationPage />} />
+            <Route path="/leaderboards/modules" element={<LeaderboardsModulesPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/modules" element={<AdminModules />} />

@@ -17,6 +17,7 @@ from admin.models import AdminAuditLog, PendingFunction  # Import to ensure tabl
 from gallery.models import GalleryRevision  # noqa: F401
 from runs.models import Run  # noqa: F401
 from publishing.models import Publication, PublicationReport  # Import to ensure tables are created
+from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
 
 
 @pytest.fixture(scope="function")
