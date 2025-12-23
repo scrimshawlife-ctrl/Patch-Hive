@@ -26,6 +26,10 @@ class RackRecommendationRequest(BaseModel):
     connection_frequencies: Optional[list[ConnectionFrequency]] = None
 
 
+class RackRecommendationFromRackRequest(BaseModel):
+    connection_frequencies: Optional[list[ConnectionFrequency]] = None
+
+
 class LayoutScore(BaseModel):
     adjacency_score: float
     zoning_score: float
