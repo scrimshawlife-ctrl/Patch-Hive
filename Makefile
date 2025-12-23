@@ -91,6 +91,12 @@ test-backend-cov: ## Run backend tests with coverage
 test-frontend: ## Run frontend tests
 	docker compose exec frontend-dev npm test
 
+test-acceptance: ## Run acceptance tests (backend + UI)
+	@echo "$(BLUE)Running backend acceptance tests...$(NC)"
+	cd backend && python -m pytest tests/acceptance -q
+	@echo "$(BLUE)Running frontend Playwright tests...$(NC)"
+	cd frontend && npm run test:e2e
+
 # Database
 db-migrate: ## Run database migrations
 	docker compose exec backend python -c "from core.database import init_db; init_db()"

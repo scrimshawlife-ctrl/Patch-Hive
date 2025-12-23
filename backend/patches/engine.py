@@ -175,6 +175,9 @@ class PatchGenerator:
         if self._can_generate_fx_chain():
             patches.extend(self._generate_fx_chains())
 
+        if len(patches) < self.config.max_patches:
+            patches.extend(self._generate_study_variations(patches))
+
         # Limit to max patches
         return patches[: self.config.max_patches]
 
@@ -449,6 +452,42 @@ class PatchGenerator:
 
         return patches
 
+    def _generate_study_variations(self, existing: List[PatchSpec]) -> List[PatchSpec]:
+        """Generate additional deterministic study patches to reach target count."""
+        patches: List[PatchSpec] = []
+        if len(self.analyzer.all_modules) < 2:
+            return patches
+
+        study_rng = random.Random(self.seed + 4000)
+        index = 0
+        target = self.config.max_patches
+        module_ids = list(self.modules_by_id.keys())
+
+        while len(existing) + len(patches) < target and index < 20:
+            from_id = study_rng.choice(module_ids)
+            to_id = study_rng.choice([mid for mid in module_ids if mid != from_id])
+            connections = [
+                Connection(
+                    from_module_id=from_id,
+                    from_port="Audio Out",
+                    to_module_id=to_id,
+                    to_port="Audio In",
+                    cable_type="audio",
+                )
+            ]
+            patch_seed = self.seed + 4000 + index
+            patch = PatchSpec(
+                name=name_patch_v2(patch_seed, self.modules_by_id, connections),
+                category="Study",
+                connections=connections,
+                description="Study patch for deterministic coverage",
+                generation_seed=patch_seed,
+            )
+            patches.append(patch)
+            index += 1
+
+        return patches
+
 
 def generate_patches_for_rack(
     db: Session, rack: Rack, seed: Optional[int] = None, config: Optional[PatchEngineConfig] = None
@@ -508,14 +547,14 @@ def build_rack_state_ir(db: Session, rack: Rack) -> RackStateIR:
                     module_id=module.id,
                     module_name=module.name,
                     module_type=module.module_type,
-                    position_hp=rm.position_hp,
-                    row=rm.row,
+                    position_hp=rm.start_hp,
+                    row=rm.row_index,
                 )
             )
 
     # Get case info
     case = db.query(Case).filter(Case.id == rack.case_id).first()
-    case_hp = case.hp if case else 104
+    case_hp = case.total_hp if case else 104
     case_rows = case.rows if case else 1
 
     return RackStateIR(

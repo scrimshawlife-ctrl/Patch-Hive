@@ -11,6 +11,8 @@ import type {
   Run,
   GeneratePatchesRequest,
   GeneratePatchesResponse,
+  RunListResponse,
+  RunPatchesResponse,
   LoginRequest,
   TokenResponse,
   FeedResponse,
@@ -122,7 +124,11 @@ export const runApi = {
   list: (params?: { skip?: number; limit?: number; rack_id?: number }) =>
     api.get<RunListResponse>('/runs', { params }),
 
+  get: (runId: number) => api.get<Run>(`/runs/${runId}`),
+
   create: (data: { rack_id: number; status?: string }) => api.post<Run>('/runs', data),
+
+  patches: (runId: number) => api.get<RunPatchesResponse>(`/runs/${runId}/patches`),
 };
 
 // Auth API
@@ -168,6 +174,13 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
+
+  patchbookExport: (runId: number) => api.post(`/export/runs/${runId}/patchbook`),
+};
+
+// Monetization API
+export const monetizationApi = {
+  balance: () => api.get<{ balance: number }>(`/monetization/credits/balance`),
 };
 
 // Admin API

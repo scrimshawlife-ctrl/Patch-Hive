@@ -127,6 +127,10 @@ export interface Patch {
   name_override?: string | null;
   category: string;
   description?: string;
+  tags?: string[];
+  suggested_name?: string;
+  difficulty?: string;
+  diagram_svg_url?: string;
   connections: Connection[];
   generation_seed: number;
   generation_version: string;
@@ -165,6 +169,27 @@ export interface GeneratePatchesRequest {
 
 export interface GeneratePatchesResponse {
   generated_count: number;
+  patches: Patch[];
+  run_id?: number;
+}
+
+// Run types
+export interface Run {
+  id: number;
+  rack_id: number;
+  status: string;
+  created_at: string;
+}
+
+export interface RunListResponse {
+  total: number;
+  runs: Run[];
+}
+
+export interface RunPatchesResponse {
+  run_id: number;
+  total: number;
+  created_at?: string;
   patches: Patch[];
 }
 

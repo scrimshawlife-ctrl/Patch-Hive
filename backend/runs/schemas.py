@@ -1,9 +1,10 @@
-"""
-Pydantic schemas for Run API.
-"""
+"""Pydantic schemas for run APIs."""
 from datetime import datetime
 from typing import Optional
+
 from pydantic import BaseModel
+
+from patches.schemas import PatchResponse
 
 
 class RunBase(BaseModel):
@@ -35,3 +36,12 @@ class RunCreate(BaseModel):
 
     rack_id: int
     status: Optional[str] = None
+
+
+class RunPatchesResponse(BaseModel):
+    """Schema for run patches response."""
+
+    run_id: int
+    patches: list[PatchResponse]
+    total: int
+    created_at: Optional[datetime] = None
