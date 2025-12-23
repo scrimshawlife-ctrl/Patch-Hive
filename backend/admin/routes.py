@@ -27,21 +27,51 @@ from admin.schemas import (
     AdminRunResponse,
     AdminUserList,
     AdminUserResponse,
+    AdminPendingFunctionList,
+    AdminFunctionApprove,
 )
 from admin.utils import log_admin_action
 from community.models import User
 from core import get_db
 from gallery.models import GalleryRevision
+from admin.models import PendingFunction
 from modules.models import Module
 from monetization.models import CreditsLedger, Export
 from runs.models import Run
 
 router = APIRouter()
 
+KNOWN_PORT_TYPES = {
+    "audio_in",
+    "audio_out",
+    "cv_in",
+    "cv_out",
+    "gate_in",
+    "gate_out",
+    "clock_in",
+    "clock_out",
+}
+
 
 def _canonical_revision_id(payload: dict) -> str:
     payload_text = str(sorted(payload.items()))
     return f"rev.{abs(hash(payload_text)) % 10**12}"
+
+
+def _record_pending_functions(db: Session, module: Module) -> int:
+    created = 0
+    for port in module.io_ports:
+        port_type = port.get("type") if isinstance(port, dict) else None
+        if not port_type or port_type in KNOWN_PORT_TYPES:
+            continue
+        pending = PendingFunction(
+            module_id=module.id,
+            function_name=port_type,
+            status="pending",
+        )
+        db.add(pending)
+        created += 1
+    return created
 
 
 @router.get("/users", response_model=AdminUserList)
@@ -167,6 +197,8 @@ def create_module(
         status="active",
     )
     db.add(module)
+    db.flush()
+    pending_count = _record_pending_functions(db, module)
     log_admin_action(
         db,
         actor=current_user,
@@ -188,6 +220,7 @@ def import_modules(
     current_user: User = Depends(require_admin_mutate),
 ):
     created = 0
+    pending_created = 0
     for module_payload in payload.modules:
         module = Module(
             brand=module_payload.brand,
@@ -206,14 +239,16 @@ def import_modules(
             status="active",
         )
         db.add(module)
+        db.flush()
         created += 1
+        pending_created += _record_pending_functions(db, module)
     log_admin_action(
         db,
         actor=current_user,
         action_type="module.import",
         target_type="module",
         target_id=None,
-        delta_json={"count": created},
+        delta_json={"count": created, "pending_functions": pending_created},
         reason=payload.reason,
     )
     db.commit()
@@ -509,3 +544,41 @@ def exported_categories(
         .all()
     )
     return [AdminLeaderboardEntry(label=row[0], count=row[1]) for row in rows]
+
+
+@router.get("/functions/pending", response_model=AdminPendingFunctionList)
+def list_pending_functions(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_read),
+):
+    pending = db.query(PendingFunction).filter(PendingFunction.status == "pending").all()
+    return AdminPendingFunctionList(total=len(pending), items=pending)
+
+
+@router.post("/functions/{pending_id}/approve", status_code=201)
+def approve_pending_function(
+    pending_id: int,
+    payload: AdminFunctionApprove,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_mutate),
+):
+    pending = db.query(PendingFunction).filter(PendingFunction.id == pending_id).first()
+    if not pending:
+        raise HTTPException(status_code=404, detail="Pending function not found")
+    pending.status = "approved"
+    pending.canonical_function = payload.canonical_function
+    pending.resolved_at = datetime.utcnow()
+    log_admin_action(
+        db,
+        actor=current_user,
+        action_type="function.approve",
+        target_type="pending_function",
+        target_id=str(pending_id),
+        delta_json={
+            "function_name": pending.function_name,
+            "canonical_function": payload.canonical_function,
+        },
+        reason=payload.reason,
+    )
+    db.commit()
+    return {"status": "approved"}

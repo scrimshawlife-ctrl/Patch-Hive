@@ -11,6 +11,8 @@ import type {
   Run,
   GeneratePatchesRequest,
   GeneratePatchesResponse,
+  RunListResponse,
+  RunPatchesResponse,
   LoginRequest,
   TokenResponse,
   FeedResponse,
@@ -19,6 +21,14 @@ import type {
   Rack,
   Patch,
   User,
+  ExportRecord,
+  PublicationListResponse,
+  PublicationRecord,
+  PublicPublicationResponse,
+  GalleryResponse,
+  CreditsSummary,
+  ReferralSummary,
+  LeaderboardEntry,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -119,10 +129,8 @@ export const patchApi = {
 
 // Run API
 export const runApi = {
-  list: (params?: { skip?: number; limit?: number; rack_id?: number }) =>
-    api.get<RunListResponse>('/runs', { params }),
-
-  create: (data: { rack_id: number; status?: string }) => api.post<Run>('/runs', data),
+  list: (rackId: number) => api.get<RunListResponse>('/runs', { params: { rack_id: rackId } }),
+  patches: (runId: number) => api.get<RunPatchesResponse>(`/runs/${runId}/patches`),
 };
 
 // Auth API
@@ -136,8 +144,10 @@ export const authApi = {
 
   getUserByUsername: (username: string) => api.get<User>(`/community/users/username/${username}`),
 
-  updateProfile: (data: { avatar_url?: string; bio?: string }) =>
+  updateProfile: (data: { avatar_url?: string; bio?: string; display_name?: string; allow_public_avatar?: boolean }) =>
     api.patch<User>('/community/users/me', data),
+
+  getMe: () => api.get<User>('/community/users/me'),
 };
 
 // Community API
@@ -168,6 +178,13 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
+
+  patchbookExport: (runId: number) => api.post(`/export/runs/${runId}/patchbook`),
+};
+
+// Monetization API
+export const monetizationApi = {
+  balance: () => api.get<{ balance: number }>(`/monetization/credits/balance`),
 };
 
 // Admin API
@@ -226,6 +243,55 @@ export const adminApi = {
 
   exportedCategories: () =>
     api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/categories/exported`),
+};
+
+// Publishing API
+export const publishingApi = {
+  createExport: (data: { source_type: 'patch' | 'rack'; source_id: number }) =>
+    api.post<ExportRecord>('/me/exports', data),
+
+  listExports: () => api.get<ExportRecord[]>('/me/exports'),
+
+  createPublication: (data: {
+    export_id: number;
+    title: string;
+    description?: string;
+    visibility: 'public' | 'unlisted';
+    allow_download: boolean;
+    allow_remix: boolean;
+    cover_image_url?: string;
+  }) => api.post<PublicationRecord>('/me/publications', data),
+
+  updatePublication: (publicationId: number, data: Partial<PublicationRecord>) =>
+    api.patch<PublicationRecord>(`/me/publications/${publicationId}`, data),
+
+  listPublications: () => api.get<PublicationListResponse>('/me/publications'),
+
+  getPublication: (slug: string) => api.get<PublicPublicationResponse>(`/p/${slug}`),
+
+  listGallery: (params?: {
+    limit?: number;
+    cursor?: string;
+    export_type?: string;
+    recent_days?: number;
+  }) => api.get<GalleryResponse>('/gallery/publications', { params }),
+
+  reportPublication: (slug: string, data: { reason: string; details?: string }) =>
+    api.post(`/p/${slug}/report`, data),
+};
+
+// Account API
+export const accountApi = {
+  getCredits: () => api.get<CreditsSummary>('/me/credits'),
+  getExports: () => api.get<ExportRecord[]>('/me/exports'),
+  getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
+};
+
+// Leaderboards API
+export const leaderboardsApi = {
+  getPopularModules: () => api.get<LeaderboardEntry[]>('/leaderboards/modules/popular'),
+  getTrendingModules: (windowDays = 30) =>
+    api.get<LeaderboardEntry[]>('/leaderboards/modules/trending', { params: { window_days: windowDays } }),
 };
 
 export default api;

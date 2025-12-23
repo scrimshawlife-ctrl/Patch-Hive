@@ -1,300 +1,337 @@
-"""
-Schema objects for deterministic patch semantics and rendering.
-"""
-from dataclasses import dataclass, field
+from __future__ import annotations
+
 from datetime import datetime
 from enum import Enum
-from typing import List, Optional, Sequence, Tuple, Union
+from typing import Dict, List, Optional, Tuple, Literal
 
+from pydantic import BaseModel, Field, ConfigDict
+
+
+class PHBase(BaseModel):
+    """Base model with canonical serialization helpers."""
+
+    model_config = ConfigDict(extra="forbid", frozen=False)
+
+    def to_canonical_dict(self) -> dict:
+        return self.model_dump(mode="json", exclude_none=True)
+
+    def to_canonical_json(self) -> str:
+        return self.model_dump_json(exclude_none=True)
 
 class SignalKind(str, Enum):
-    """Signal types used in patch semantics."""
-
     audio = "audio"
     cv = "cv"
-    random = "random"
-    lfo = "lfo"
-    clock = "clock"
-    envelope = "envelope"
+    cv_or_audio = "cv_or_audio"
     gate = "gate"
+    trigger = "trigger"
+    clock = "clock"
+    lfo = "lfo"
+    envelope = "envelope"
+    random = "random"
+    pitch_cv = "pitch_cv"
+    unknown = "unknown"
 
 
 class SignalRate(str, Enum):
-    """Signal rate classification used in VL2 schemas."""
-
     audio = "audio"
     control = "control"
+    event = "event"
+    unknown = "unknown"
 
 
 class CableType(str, Enum):
-    """Cable types supported by patch diagrams."""
-
     audio = "audio"
     cv = "cv"
-    clock = "clock"
     gate = "gate"
-
-
-class JackDir(str, Enum):
-    """Direction of a jack on a module."""
-
-    in_ = "in"
-    out = "out"
-
-
-class FieldStatus(str, Enum):
-    """Status of a field's provenance."""
-
-    confirmed = "confirmed"
-    inferred = "inferred"
+    trigger = "trigger"
+    clock = "clock"
+    pitch_cv = "pitch_cv"
     unknown = "unknown"
 
 
 class ProvenanceType(str, Enum):
-    """Origins of a schema field."""
-
-    manual = "manual"
-    gallery = "gallery"
     derived = "derived"
+    imported = "imported"
+    manual = "manual"
+    gemini = "gemini"
+    unknown = "unknown"
 
 
-class NormalledBehavior(str, Enum):
-    """Rules for normalled connections."""
-
-    break_on_insert = "break_on_insert"
-    hard_normalled = "hard_normalled"
-
-
-class RigSource(str, Enum):
-    """Origin of a rig specification."""
-
-    manual_picklist = "manual_picklist"
-
-
-@dataclass(frozen=True)
-class Provenance:
-    """Provenance record for a field."""
-
+class Provenance(PHBase):
     type: ProvenanceType
     timestamp: datetime
-    evidence_ref: str
+    evidence_ref: Optional[str] = None
     method: Optional[str] = None
 
 
-@dataclass(frozen=True)
-class FieldMeta:
-    """Metadata describing the source and confidence of a field."""
+class FieldStatus(str, Enum):
+    inferred = "inferred"
+    confirmed = "confirmed"
+    unknown = "unknown"
 
-    provenance: Sequence[Provenance] = field(default_factory=list)
-    confidence: float = 1.0
+
+class FieldMeta(PHBase):
+    provenance: List[Provenance] = Field(default_factory=list)
+    confidence: float = 0.0
     status: FieldStatus = FieldStatus.unknown
 
-
-@dataclass(frozen=True)
-class Signal:
-    """Signal metadata for a jack."""
-
-    kind: SignalKind
+class JackDir(str, Enum):
+    in_ = "in"
+    out = "out"
+    bidir = "bidir"
 
 
-@dataclass(frozen=True)
-class Jack:
-    """Canonical representation of a jack on a module."""
+class GalleryImageRef(PHBase):
+    url: str
+    kind: str
+    meta: FieldMeta
 
+
+class ModuleJackEntry(PHBase):
     jack_id: str
-    label: str
-    signal: Signal
+    label: Optional[str] = None
+    dir: JackDir = JackDir.bidir
+    signal: SignalContract
 
 
-@dataclass(frozen=True)
-class SignalContract:
-    """Detailed signal contract for module jacks."""
-
-    kind: SignalKind
-    rate: SignalRate
-    range_v: Tuple[float, float]
-    polarity: str
+class ModuleGalleryEntry(PHBase):
+    module_gallery_id: str
+    rev: datetime
+    canonical_name: str
+    hp: Optional[int] = None
+    images: List[GalleryImageRef] = Field(default_factory=list)
+    jacks: List[ModuleJackEntry] = Field(default_factory=list)
+    sketch: Optional[str] = None
     meta: Optional[FieldMeta] = None
 
 
-@dataclass(frozen=True)
-class ModuleJack:
-    """Gallery jack definition."""
+class JackFunctionEntry(PHBase):
+    """
+    Append-only registry of jack-level functions.
+    This is how we represent proprietary / vendor-specific behaviors
+    without exploding SignalKind.
 
-    jack_id: str
-    label: str
-    dir: JackDir
-    signal: SignalContract
-    meta: FieldMeta
+    Example:
+      function_id: "fn.erica.vl2.chaos_bus"
+      label_aliases: ["CHAOS", "XBUS", "FOLD AMT"]
+      kind_hint: "cv" (still coarse)
+    """
 
-
-@dataclass(frozen=True)
-class ModuleMode:
-    """Selectable mode for a module."""
-
-    mode_id: str
-    label: str
-    jack_overrides: Optional[Sequence[ModuleJack]]
-    tags: Sequence[str]
-    meta: FieldMeta
-
-
-@dataclass(frozen=True)
-class PowerSpec:
-    """Power specification for a module."""
-
-    plus12_ma: Optional[float]
-    minus12_ma: Optional[float]
-    plus5_ma: Optional[float]
-    meta: FieldMeta
-
-
-@dataclass(frozen=True)
-class ModuleGalleryEntry:
-    """Canonical gallery entry for a module."""
-
-    module_gallery_id: str
+    function_id: str
     rev: datetime
-    name: str
-    manufacturer: str
-    hp: float
-    tags: Sequence[str]
-    power: PowerSpec
-    jacks: Sequence[ModuleJack]
-    modes: Sequence[ModuleMode]
-    images: Sequence[str]
-    sketch_svg: Optional[str]
-    provenance: Sequence[Provenance]
-    notes: Sequence[str]
+    canonical_name: str
+    description: str
+    label_aliases: List[str] = Field(default_factory=list)
 
+    # coarse mapping stays separate from true function identity
+    kind_hint: SignalKind = SignalKind.unknown
 
-@dataclass(frozen=True)
-class JackRef:
-    """Reference to a jack on a module instance."""
-
-    instance_id: str
-    jack_id: str
-
-
-@dataclass(frozen=True)
-class Module:
-    """Module instance inside a canonical rig."""
-
-    instance_id: str
-    hp: float
-    jacks: Sequence[Jack] = field(default_factory=list)
-
-
-@dataclass(frozen=True)
-class ObservedPlacement:
-    """Observed placement in a physical rack."""
-
-    row_index: int
-    start_hp: float
-
-
-@dataclass(frozen=True)
-class RigModuleInstance:
-    """Instance of a module used in a rig."""
-
-    instance_id: str
-    gallery_module_id: str
-    gallery_rev: Optional[datetime]
-    observed_placement: Optional[ObservedPlacement]
+    provenance: List[Provenance] = Field(default_factory=list)
     meta: FieldMeta
 
 
-@dataclass(frozen=True)
-class NormalledEdge:
-    """Explicit normalled edge defined in a rig."""
+class SignalContract(PHBase):
+    kind: SignalKind
+    rate: SignalRate
+    range_v: Optional[Tuple[float, float]] = None
+    polarity: Optional[Literal["unipolar", "bipolar", "unknown"]] = "unknown"
+    notes: Optional[str] = None
 
-    from_jack: str
-    to_jack: str
-    behavior: NormalledBehavior
+    # NEW:
+    function_id: Optional[str] = Field(
+        default=None,
+        description="Optional pointer to JackFunctionEntry.function_id for proprietary named behaviors.",
+    )
+
+    meta: Optional[FieldMeta] = None
+
+
+class VisionEvidence(PHBase):
+    image_id: str
+    bbox: Optional[Tuple[float, float, float, float]] = None
+
+
+class DetectedModule(PHBase):
+    """
+    Vision-only detection of a module.
+    Never canonical. Used to propose gallery matches later.
+    """
+
+    temp_id: str
+    label_guess: str
+    brand_guess: Optional[str] = None
+    hp_guess: Optional[int] = None
+    confidence: float = Field(ge=0.0, le=1.0)
+    evidence: VisionEvidence
+
+
+class DetectedJack(PHBase):
+    """
+    Vision-only detection of a jack.
+    Never canonical. Used to propose SignalContract + function_id later.
+    """
+
+    temp_jack_id: str
+    label_guess: str
+    confidence: float = Field(ge=0.0, le=1.0)
+    bbox: Optional[Tuple[float, float, float, float]] = None
     meta: FieldMeta
 
 
-@dataclass(frozen=True)
-class RigSpec:
-    """Specification for a canonical rig."""
+class VisionRigDetection(PHBase):
+    """
+    Output of Phase 7.
+    This is a proposal bundle only.
+    """
 
-    rig_id: str
-    name: str
-    source: RigSource
-    modules: Sequence[RigModuleInstance]
-    normalled_edges: Sequence[NormalledEdge]
-    provenance: Sequence[Provenance]
-    notes: Sequence[str]
+    image_id: str
+    detected_modules: List[DetectedModule] = Field(default_factory=list)
+    detected_jacks: dict[str, List[DetectedJack]] = Field(default_factory=dict)
+    proposed_functions: List[JackFunctionEntry] = Field(default_factory=list)
+    provenance: List[Provenance] = Field(default_factory=list)
 
 
-@dataclass(frozen=True)
-class CanonicalJack:
-    """Canonical jack representation with provenance."""
-
-    jack_id: str
-    label: str
-    dir: JackDir
-    signal: SignalContract
+class PatchIntent(PHBase):
+    archetype: str
+    energy: str
+    focus: str
     meta: FieldMeta
 
 
-@dataclass(frozen=True)
-class CanonicalModule:
-    """Module inside a canonical rig."""
-
-    instance_id: str
-    module_gallery_id: str
-    module_rev: datetime
-    name: str
-    manufacturer: str
-    hp: float
-    tags: Sequence[str]
-    power: PowerSpec
-    jacks: Sequence[CanonicalJack]
-    modes: Sequence[ModuleMode]
-    observed_placement: Optional[ObservedPlacement]
-    meta: FieldMeta
+class PatchPlan(PHBase):
+    intent: PatchIntent
+    patch_id: Optional[str] = None
+    setup: List[str] = Field(default_factory=list)
+    perform: List[str] = Field(default_factory=list)
+    warnings: List[str] = Field(default_factory=list)
+    why_it_works: List[str] = Field(default_factory=list)
+    meta: Optional[FieldMeta] = None
 
 
-@dataclass(frozen=True)
-class CanonicalRig:
-    """Normalized module list used for semantic derivation and rendering."""
-
-    rig_id: str
-    name: str
-    modules: Sequence[CanonicalModule] = field(default_factory=list)
-    normalled_edges: Sequence[NormalledEdge] = field(default_factory=list)
-    provenance: Sequence[Provenance] = field(default_factory=list)
+class TimelineSection(str, Enum):
+    prep = "prep"
+    threshold = "threshold"
+    peak = "peak"
+    release = "release"
+    seal = "seal"
 
 
-@dataclass(frozen=True)
-class Cable:
-    """Connection between two module jacks."""
+class PatchTimeline(PHBase):
+    clock_bpm: Optional[float] = None
+    sections: List[TimelineSection] = Field(default_factory=list)
+    meta: Optional[FieldMeta] = None
 
-    from_jack: Union[JackRef, str]
-    to_jack: Union[JackRef, str]
+
+class PatchCable(PHBase):
+    from_jack: Optional[str] = None
+    to_jack: Optional[str] = None
     type: CableType
+    meta: Optional[FieldMeta] = None
 
 
-@dataclass(frozen=True)
-class PatchGraph:
-    """Patch graph for deterministic semantics."""
+class MacroControl(PHBase):
+    range: Tuple[float, float]
 
+
+class PatchMacro(PHBase):
+    macro_id: str
+    controls: List[MacroControl] = Field(default_factory=list)
+
+
+class PatchGraph(PHBase):
     patch_id: str
-    cables: Sequence[Cable] = field(default_factory=list)
+    rig_id: str
+    timeline: PatchTimeline
+    cables: List[PatchCable] = Field(default_factory=list)
+    macros: List[PatchMacro] = Field(default_factory=list)
+    mode_selections: List[str] = Field(default_factory=list)
+    meta: Optional[FieldMeta] = None
 
 
-@dataclass(frozen=True)
-class Placement:
-    """Module placement in a diagram layout."""
+class SymbolicPatchEnvelope(PHBase):
+    patch_id: str
+    archetype_vector: Dict[str, float]
+    temporal_intensity_curve: List[float]
+    chaos_modulation_curve: List[float]
+    agency_distribution: Dict[str, float]
+    closure_strength: float
+    meta: FieldMeta
 
+
+class RigMetricsPacket(PHBase):
+    routing_flex_score: float
+
+
+class LayoutType(str, Enum):
+    grid = "grid"
+    stacked = "stacked"
+    vertical = "vertical"
+
+
+class LayoutScoreBreakdown(PHBase):
+    learning_gradient: float
+
+
+class SuggestedLayout(PHBase):
+    layout_type: LayoutType
+    total_score: float
+    score_breakdown: LayoutScoreBreakdown
+    placements: List["LayoutPlacement"] = Field(default_factory=list)
+
+
+class LayoutPlacement(PHBase):
     instance_id: str
     x_hp: float
-    row: int
+    hp: Optional[float] = None
 
 
-@dataclass(frozen=True)
-class Layout:
-    """Row-aware layout of modules used by diagram rendering."""
+class RigSpec(PHBase):
+    rig_id: str
+    module_gallery_ids: List[str] = Field(default_factory=list)
 
-    placements: List[Placement] = field(default_factory=list)
+
+class CanonicalRigJack(PHBase):
+    jack_id: str
+    label: Optional[str] = None
+    dir: JackDir
+    signal: SignalContract
+
+
+class CanonicalRigModule(PHBase):
+    instance_id: str
+    name: str
+    hp: int = 0
+    jacks: List[CanonicalRigJack] = Field(default_factory=list)
+
+
+class CanonicalRig(PHBase):
+    rig_id: str
+    modules: List[CanonicalRigModule] = Field(default_factory=list)
+
+
+class ValidationReport(PHBase):
+    ok: bool
+    warnings: List[str] = Field(default_factory=list)
+    stability_score: float = 1.0
+    illegal_connections: List[str] = Field(default_factory=list)
+    silence_risk: List[str] = Field(default_factory=list)
+    runaway_risk: List[str] = Field(default_factory=list)
+
+
+class PatchHiveBundle(PHBase):
+    """
+    One-shot export artifact for UI + Abraxas consumption.
+    Pure data bundle; no side effects.
+    """
+
+    image_id: Optional[str] = None
+    rig_id: str
+    canonical_rig: CanonicalRig
+    metrics: RigMetricsPacket
+    layouts: List[SuggestedLayout]
+    patch: PatchGraph
+    plan: PatchPlan
+    validation: ValidationReport
+    envelope: SymbolicPatchEnvelope
+    variations: List[PatchGraph] = Field(default_factory=list)
+    meta: FieldMeta

@@ -127,6 +127,10 @@ export interface Patch {
   name_override?: string | null;
   category: string;
   description?: string;
+  tags?: string[];
+  suggested_name?: string;
+  difficulty?: string;
+  diagram_svg_url?: string;
   connections: Connection[];
   generation_seed: number;
   generation_version: string;
@@ -166,6 +170,27 @@ export interface GeneratePatchesRequest {
 export interface GeneratePatchesResponse {
   generated_count: number;
   patches: Patch[];
+  run_id?: number;
+}
+
+// Run types
+export interface Run {
+  id: number;
+  rack_id: number;
+  status: string;
+  created_at: string;
+}
+
+export interface RunListResponse {
+  total: number;
+  runs: Run[];
+}
+
+export interface RunPatchesResponse {
+  run_id: number;
+  total: number;
+  created_at?: string;
+  patches: Patch[];
 }
 
 // User types
@@ -175,10 +200,56 @@ export interface User {
   email: string;
   display_name?: string;
   avatar_url?: string;
+  display_name?: string;
+  allow_public_avatar?: boolean;
   bio?: string;
   role: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface CreditLedgerEntry {
+  id: number;
+  entry_type: string;
+  amount: number;
+  description?: string;
+  created_at: string;
+}
+
+export interface CreditsSummary {
+  balance: number;
+  entries: CreditLedgerEntry[];
+}
+
+export interface ExportRecord {
+  id: number;
+  export_type: string;
+  entity_id: number;
+  run_id: string;
+  unlocked: boolean;
+  license_type?: string;
+  created_at: string;
+}
+
+export interface ReferralRecord {
+  referred_user_id: string;
+  status: string;
+  rewarded_at?: string;
+}
+
+export interface ReferralSummary {
+  referral_code: string;
+  referral_link: string;
+  pending_count: number;
+  earned_count: number;
+  recent_referrals: ReferralRecord[];
+}
+
+export interface LeaderboardEntry {
+  rank: number;
+  module_name: string;
+  manufacturer: string;
+  count: number;
 }
 
 export interface LoginRequest {
@@ -206,4 +277,78 @@ export interface FeedItem {
 export interface FeedResponse {
   total: number;
   items: FeedItem[];
+}
+
+// Publishing types
+export interface ExportArtifactUrls {
+  pdf?: string;
+  svg?: string;
+  zip?: string;
+  waveform_svg?: string;
+}
+
+export interface ExportRecord {
+  id: number;
+  export_type: 'patch' | 'rack';
+  license: string;
+  run_id: string;
+  generated_at: string;
+  patch_count?: number;
+  manifest_hash: string;
+  artifact_urls: ExportArtifactUrls;
+}
+
+export interface PublicationRecord {
+  id: number;
+  export_id: number;
+  slug: string;
+  visibility: 'public' | 'unlisted';
+  status: 'published' | 'hidden' | 'draft' | 'removed';
+  allow_download: boolean;
+  allow_remix: boolean;
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  published_at?: string;
+  updated_at: string;
+}
+
+export interface PublicationListResponse {
+  publications: PublicationRecord[];
+}
+
+export interface PublicPublicationResponse {
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  export_type: 'patch' | 'rack';
+  license: string;
+  provenance: {
+    run_id: string;
+    generated_at: string;
+    patch_count?: number;
+    manifest_hash: string;
+  };
+  publisher_display: string;
+  avatar_url?: string;
+  allow_download: boolean;
+  download_urls?: {
+    pdf_url: string;
+    svg_url: string;
+    zip_url: string;
+  };
+}
+
+export interface PublicationCard {
+  slug: string;
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  export_type: 'patch' | 'rack';
+  published_at?: string;
+}
+
+export interface GalleryResponse {
+  publications: PublicationCard[];
+  next_cursor?: string;
 }

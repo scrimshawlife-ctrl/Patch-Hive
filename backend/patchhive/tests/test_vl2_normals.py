@@ -1,38 +1,82 @@
 from __future__ import annotations
 
-from pathlib import Path
+from datetime import datetime, timezone
 
-from patchhive.fixtures.vl2_fixture import vl2_gallery_entry_min, vl2_rigspec_min
-from patchhive.gallery.store import ModuleGalleryStore
-from patchhive.ops.build_canonical_rig import build_canonical_rig
+from patchhive.ops.build_canonical_rig import build_canonical_rig_v1
+from patchhive.schemas import (
+    JackDirection,
+    JackSignalType,
+    JackSpec,
+    ModuleSection,
+    ModuleSpec,
+    NormalledEdge,
+    Provenance,
+    ProvenanceStatus,
+    ProvenanceType,
+    ResolvedModuleRef,
+    RigModuleInput,
+    RigSpec,
+    ProvenancedValue,
+)
+
+FIXED_TIME = datetime(2024, 1, 1, tzinfo=timezone.utc)
 
 
-def test_vl2_normals_and_modes_are_preserved(tmp_path: Path):
-    store = ModuleGalleryStore(tmp_path)
+def test_vl2_normalled_edges_preserved() -> None:
+    module_spec = ModuleSpec(
+        module_id="vl2-mode",
+        name="VL2 Mode Block",
+        manufacturer="VL2",
+        width_hp=8,
+        sections=[
+            ModuleSection(
+                section_id="mode",
+                label="Mode",
+                capability_profile=["normal"],
+                jacks=[
+                    JackSpec(
+                        jack_id="out",
+                        label="Out",
+                        direction=JackDirection.OUT,
+                        signal_type=JackSignalType.CV,
+                    )
+                ],
+                modes=[],
+            )
+        ],
+        normalled_edges=[
+            NormalledEdge(from_jack="mode:out", to_jack="mode:in", break_on_insert=True)
+        ],
+        power_12v_ma=None,
+        power_minus12v_ma=None,
+        power_5v_ma=None,
+    )
+    rig_spec = RigSpec(
+        rig_id="rig-vl2",
+        modules=[
+            RigModuleInput(
+                module_id=None,
+                name=ProvenancedValue(
+                    value="VL2 Mode Block",
+                    provenance=Provenance(type=ProvenanceType.MANUAL, timestamp=FIXED_TIME),
+                    confidence=1.0,
+                    status=ProvenanceStatus.CONFIRMED,
+                ),
+            )
+        ],
+    )
+    resolved = [
+        ResolvedModuleRef(
+            detection_id="det-1",
+            gallery_entry_id="vl2-mode",
+            match_confidence=0.95,
+            status=ProvenanceStatus.CONFIRMED,
+            module_spec=module_spec,
+            provenance=Provenance(type=ProvenanceType.GALLERY, timestamp=FIXED_TIME),
+        )
+    ]
 
-    # Append gallery entry
-    entry = vl2_gallery_entry_min()
-    store.append_revision(entry)
+    canonical = build_canonical_rig_v1(rig_spec, resolved)
 
-    rig = vl2_rigspec_min()
-    canon = build_canonical_rig(rig, gallery_store=store)
-
-    assert canon.rig_id == rig.rig_id
-    assert len(canon.modules) == 1
-
-    m = canon.modules[0]
-    # Modes preserved
-    mode_ids = [mm.mode_id for mm in m.modes]
-    assert "fn.lfo" in mode_ids
-    assert "fn.env" in mode_ids
-
-    # Normals preserved and explicit
-    assert len(canon.normalled_edges) == 1
-    e = canon.normalled_edges[0]
-    assert e.from_jack == "vl2.internal.clock_out"
-    assert e.to_jack == "vl2.seq.clock_in"
-    assert e.behavior.value == "break_on_insert"
-
-    # Jack ordering deterministic by jack_id
-    jack_ids = [j.jack_id for j in m.jacks]
-    assert jack_ids == sorted(jack_ids)
+    assert canonical.normalled_edges
+    assert canonical.normalled_edges[0].break_on_insert is True

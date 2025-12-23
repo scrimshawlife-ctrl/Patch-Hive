@@ -25,6 +25,7 @@ class PatchBase(BaseModel):
     category: str  # "Voice", "Modulation", "Clock-Rhythm", "Generative", "Utility", "Performance Macro", "Texture-FX", "Study", "Experimental-Feedback"
     description: Optional[str] = None
     is_public: bool = False
+    tags: list[str] = Field(default_factory=list)
 
 
 class PatchCreate(PatchBase):
@@ -60,6 +61,9 @@ class PatchResponse(PatchBase):
     engine_config: Optional[dict[str, Any]]
     waveform_svg_path: Optional[str]
     waveform_params: Optional[dict[str, Any]]
+    suggested_name: Optional[str] = None
+    difficulty: Optional[str] = None
+    diagram_svg_url: Optional[str] = None
     created_at: datetime
     updated_at: datetime
     vote_count: int = 0
@@ -89,3 +93,4 @@ class GeneratePatchesResponse(BaseModel):
 
     generated_count: int
     patches: list[PatchResponse]
+    run_id: Optional[int] = None

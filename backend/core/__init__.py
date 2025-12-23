@@ -21,6 +21,7 @@ from .ir import (
 )
 from .runes import RuneTag, RuneContext, with_rune, RuneTypes, get_recent_runes
 from .ers import ERSJob, ERSExecutor, JobPriority, schedule_patch_generation, schedule_pdf_export
+from .discovery import FunctionDescriptor, register_function, get_registered_functions
 
 __all__ = [
     "settings",
@@ -60,4 +61,8 @@ __all__ = [
     "JobPriority",
     "schedule_patch_generation",
     "schedule_pdf_export",
+    # Dynamic Function Discovery
+    "FunctionDescriptor",
+    "register_function",
+    "get_registered_functions",
 ]

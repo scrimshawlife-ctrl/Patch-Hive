@@ -1,11 +1,18 @@
 """
 FastAPI routes for export functionality (PDF, SVG).
 """
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
+from hashlib import sha256
+from pathlib import Path
 
-from core import get_db
+from core import get_db, settings
+from community.routes import require_auth
+from community.models import User
+from monetization.models import CreditsLedger, Export
+from monetization.credits import get_credits_balance
+from runs.models import Run
 from patches.models import Patch
 from racks.models import Rack
 from .pdf import generate_patch_pdf, generate_rack_pdf
@@ -104,3 +111,74 @@ def export_patch_waveform_svg(patch_id: int, db: Session = Depends(get_db)):
         return Response(content=svg, media_type="image/svg+xml")
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"SVG generation failed: {str(e)}")
+
+
+@router.post("/runs/{run_id}/patchbook")
+def export_patchbook_pdf(
+    run_id: int,
+    force_fail: bool = Query(False),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_auth),
+):
+    """Export a patch book PDF for a run (credit gated)."""
+    run = db.query(Run).filter(Run.id == run_id).first()
+    if not run:
+        raise HTTPException(status_code=404, detail="Run not found")
+
+    cached = (
+        db.query(Export)
+        .filter(Export.run_id == run_id, Export.export_type == "patchbook", Export.status == "completed")
+        .first()
+    )
+    if cached:
+        return {
+            "export_id": cached.id,
+            "status": cached.status,
+            "artifact_path": (cached.provenance or {}).get("artifact_path"),
+            "cached": True,
+        }
+
+    balance = get_credits_balance(db, current_user.id)
+    if balance < settings.patchbook_export_cost:
+        raise HTTPException(status_code=402, detail="Insufficient credits")
+
+    if force_fail and settings.test_mode:
+        raise HTTPException(status_code=500, detail="Forced export failure")
+
+    rack = db.query(Rack).filter(Rack.id == run.rack_id).first()
+    if not rack:
+        raise HTTPException(status_code=404, detail="Rack not found")
+
+    pdf_path = generate_rack_pdf(db, rack)
+    digest = sha256(Path(pdf_path).read_bytes()).hexdigest()
+
+    export = Export(
+        user_id=current_user.id,
+        rack_id=rack.id,
+        run_id=run.id,
+        export_type="patchbook",
+        status="completed",
+        credits_spent=settings.patchbook_export_cost,
+        manifest_hash=digest,
+        provenance={"artifact_path": pdf_path},
+    )
+    db.add(export)
+    db.commit()
+    db.refresh(export)
+
+    ledger = CreditsLedger(
+        user_id=current_user.id,
+        change_type="Spend",
+        credits_delta=-settings.patchbook_export_cost,
+        notes="Patch book export",
+        export_id=export.id,
+    )
+    db.add(ledger)
+    db.commit()
+
+    return {
+        "export_id": export.id,
+        "status": export.status,
+        "artifact_path": pdf_path,
+        "cached": False,
+    }

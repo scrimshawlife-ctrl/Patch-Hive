@@ -62,6 +62,7 @@ class Patch(Base):
 
     # Sharing
     is_public = Column(Boolean, default=False, nullable=False)
+    tags = Column(JSON, nullable=False, default=list)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

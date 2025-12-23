@@ -20,3 +20,4 @@ class Run(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
     rack = relationship("Rack", backref="runs")
+    patches = relationship("Patch", backref="run")

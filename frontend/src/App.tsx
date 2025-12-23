@@ -13,6 +13,7 @@ import RackBuilderPage from '@/pages/RackBuilder';
 import PatchesPage from '@/pages/Patches';
 import FeedPage from '@/pages/Feed';
 import LoginPage from '@/pages/Login';
+import RigDetailPage from '@/pages/RigDetail';
 import AdminDashboard from '@/pages/admin/AdminDashboard';
 import AdminUsers from '@/pages/admin/AdminUsers';
 import AdminModules from '@/pages/admin/AdminModules';
@@ -20,6 +21,11 @@ import AdminGallery from '@/pages/admin/AdminGallery';
 import AdminRuns from '@/pages/admin/AdminRuns';
 import AdminExports from '@/pages/admin/AdminExports';
 import AdminLeaderboards from '@/pages/admin/AdminLeaderboards';
+import AccountPage from '@/pages/Account';
+import PublishPage from '@/pages/Publish';
+import GalleryPage from '@/pages/Gallery';
+import PublicationPage from '@/pages/Publication';
+import LeaderboardsModulesPage from '@/pages/LeaderboardsModules';
 
 function App() {
   const { user, logout, isAuthenticated } = useAuthStore();
@@ -50,6 +56,10 @@ function App() {
               <NavLink to="/racks">Rigs</NavLink>
               <NavLink to="/patches">Patches</NavLink>
               <NavLink to="/feed">Feed</NavLink>
+              <NavLink to="/gallery">Gallery</NavLink>
+              <NavLink to="/publish">Publish</NavLink>
+              <NavLink to="/leaderboards/modules">Leaderboards</NavLink>
+              {isAuthenticated() && <NavLink to="/account">Account</NavLink>}
               {canSeeAdmin ? <NavLink to="/admin">Admin</NavLink> : null}
             </nav>
           </div>
@@ -100,9 +110,15 @@ function App() {
             <Route path="/racks" element={<RacksPage />} />
             <Route path="/racks/new" element={<RackBuilderPage />} />
             <Route path="/racks/:id/edit" element={<RackBuilderPage />} />
+            <Route path="/rigs/:rigId" element={<RigDetailPage />} />
             <Route path="/patches" element={<PatchesPage />} />
             <Route path="/feed" element={<FeedPage />} />
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/gallery" element={<GalleryPage />} />
+            <Route path="/publish" element={<PublishPage />} />
+            <Route path="/account" element={<AccountPage />} />
+            <Route path="/p/:slug" element={<PublicationPage />} />
+            <Route path="/leaderboards/modules" element={<LeaderboardsModulesPage />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/admin/users" element={<AdminUsers />} />
             <Route path="/admin/modules" element={<AdminModules />} />

@@ -1,0 +1,6 @@
+{
+  "name": "patchhive",
+  "enabled": true,
+  "py_exports": ["patchhive.exports"],
+  "service_url": "http://127.0.0.1:8130"
+}
