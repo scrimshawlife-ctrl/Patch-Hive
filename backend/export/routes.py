@@ -21,6 +21,9 @@ from runs.models import Run
 from .pdf import generate_patch_pdf, generate_rack_pdf
 from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
 from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
+from .patchbook.builder import build_patchbook_document, compute_patchbook_content_hash
+from .patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION
+from .patchbook.render_pdf import build_patchbook_pdf_bytes
 
 router = APIRouter()
 
@@ -185,3 +188,41 @@ def export_patchbook_pdf(
         "artifact_path": pdf_path,
         "cached": False,
     }
+
+
+@router.post("/patchbook")
+def export_patchbook_document(payload: PatchBookExportRequest, db: Session = Depends(get_db)):
+    """Export PatchBook PDF bytes for a rack/patch selection."""
+    if not payload.rack_id and not payload.patch_ids:
+        raise HTTPException(status_code=400, detail="rack_id or patch_ids required")
+
+    rack = None
+    patches_query = db.query(Patch)
+    if payload.patch_ids:
+        patches_query = patches_query.filter(Patch.id.in_(payload.patch_ids))
+        patches = patches_query.all()
+        if not patches:
+            raise HTTPException(status_code=404, detail="Patches not found")
+        rack_id = payload.rack_id or patches[0].rack_id
+        rack = db.query(Rack).filter(Rack.id == rack_id).first()
+    else:
+        rack = db.query(Rack).filter(Rack.id == payload.rack_id).first()
+        patches = db.query(Patch).filter(Patch.rack_id == payload.rack_id).all()
+
+    if not rack:
+        raise HTTPException(status_code=404, detail="Rack not found")
+    if not patches:
+        raise HTTPException(status_code=404, detail="No patches available for rack")
+
+    content_hash = compute_patchbook_content_hash(payload)
+    document = build_patchbook_document(db, rack, patches, content_hash=content_hash)
+    pdf_bytes = build_patchbook_pdf_bytes(document)
+
+    return Response(
+        content=pdf_bytes,
+        media_type="application/pdf",
+        headers={
+            "X-PatchBook-Template-Version": PATCHBOOK_TEMPLATE_VERSION,
+            "X-PatchBook-Content-Hash": content_hash,
+        },
+    )
