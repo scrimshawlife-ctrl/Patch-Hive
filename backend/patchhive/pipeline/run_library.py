@@ -1,12 +1,26 @@
 from __future__ import annotations
 
-from patchhive.ops.generate_patch_candidates import build_patch_library
+from patchhive.ops.build_patch_library import build_patch_library
+from patchhive.render.render_patch_diagram_min import render_patch_diagram_min
 from patchhive.schemas import CanonicalRig
+from patchhive.schemas_library import PatchLibrary, PatchSpaceConstraints
 from patchhive.templates.registry import build_default_registry
-from patchhive.templates.vl2_pack_v1 import register_vl2_pack_v1
 
 
-def run_library(canon: CanonicalRig) -> dict[str, list[dict[str, str]]]:
-    reg = build_default_registry()
-    reg = register_vl2_pack_v1(reg)
-    return build_patch_library(canon, reg)
+def run_library(
+    canon: CanonicalRig,
+    *,
+    constraints: PatchSpaceConstraints,
+    include_diagrams: bool = True,
+) -> PatchLibrary:
+    registry = build_default_registry()
+    library = build_patch_library(canon, registry=registry, constraints=constraints)
+
+    if include_diagrams:
+        new_items = []
+        for item in library.patches:
+            diagram = render_patch_diagram_min(canon, item.patch)
+            new_items.append(item.model_copy(update={"diagram": diagram}))
+        library = library.model_copy(update={"patches": new_items})
+
+    return library

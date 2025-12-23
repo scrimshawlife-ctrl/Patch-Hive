@@ -1,82 +1,58 @@
-"""Suggest deterministic layouts for a canonical rig."""
-
 from __future__ import annotations
 
-import random
-from typing import Iterable
+from dataclasses import dataclass
+from typing import List
 
 from patchhive.schemas import (
     CanonicalRig,
+    LayoutPlacement,
+    LayoutScoreBreakdown,
+    LayoutType,
+    RigMetricsPacket,
     SuggestedLayout,
-    SuggestedPlacement,
 )
 
-WEIGHTS = {
-    "reach_cost": 0.25,
-    "cable_cross_cost": 0.2,
-    "learning_gradient": 0.15,
-    "utility_proximity": 0.25,
-    "patch_template_coverage": 0.15,
-}
+
+@dataclass(frozen=True)
+class CaseSpec:
+    rows: int = 1
+    row_hp: int = 104
 
 
-def _score_layout(
-    placements: Iterable[SuggestedPlacement],
-    seed: int,
-) -> tuple[float, dict[str, float]]:
-    rng = random.Random(seed)
-    reach_cost = sum(abs(p.row) * 0.5 for p in placements) * WEIGHTS["reach_cost"]
-    cable_cross_cost = rng.random() * WEIGHTS["cable_cross_cost"]
-    learning_gradient = rng.random() * WEIGHTS["learning_gradient"]
-    utility_proximity = (1.0 - (rng.random() * 0.5)) * WEIGHTS["utility_proximity"]
-    patch_template_coverage = (1.0 - (rng.random() * 0.5)) * WEIGHTS["patch_template_coverage"]
-    breakdown = {
-        "reach_cost": reach_cost,
-        "cable_cross_cost": cable_cross_cost,
-        "learning_gradient": learning_gradient,
-        "utility_proximity": utility_proximity,
-        "patch_template_coverage": patch_template_coverage,
-    }
-    score = sum(breakdown.values())
-    return score, breakdown
+def suggest_layouts(
+    rig: CanonicalRig,
+    metrics: RigMetricsPacket,
+    *,
+    case: CaseSpec,
+) -> List[SuggestedLayout]:
+    """
+    Deterministic layout suggestion placeholder.
+    """
+    base = metrics.routing_flex_score
 
+    placements: List[LayoutPlacement] = []
+    cursor = 0.0
+    for module in sorted(rig.modules, key=lambda m: m.instance_id):
+        placements.append(LayoutPlacement(instance_id=module.instance_id, x_hp=cursor, hp=module.hp))
+        cursor += float(module.hp or 0)
 
-def _placements_for_profile(
-    canonical: CanonicalRig, profile: str, seed: int
-) -> list[SuggestedPlacement]:
-    rng = random.Random(seed)
-    placements: list[SuggestedPlacement] = []
-    for index, module in enumerate(canonical.modules):
-        row = 0 if profile == "Beginner" else rng.randint(0, 2)
-        x_hp = index * 6
-        placements.append(
-            SuggestedPlacement(
-                module_id=module.canonical_id,
-                row=row,
-                x_hp=x_hp,
-                observed=bool(module.observed_position),
-            )
-        )
-    return placements
-
-
-def suggest_layouts_v1(canonical: CanonicalRig, user_profile: str, seed: int) -> list[SuggestedLayout]:
-    profiles = ["Beginner", "Performance", "Experimental"]
-    layouts: list[SuggestedLayout] = []
-    for index, profile in enumerate(profiles):
-        profile_seed = seed + index
-        placements = _placements_for_profile(canonical, profile, profile_seed)
-        score, breakdown = _score_layout(placements, profile_seed)
-        layouts.append(
-            SuggestedLayout(
-                layout_id=f"layout-{profile.lower()}-{seed}",
-                profile=profile,
-                placements=placements,
-                score=score,
-                breakdown=breakdown,
-                rationale=(
-                    f"{profile} layout weighted by reach, cable crossings, and proximity."
-                ),
-            )
-        )
-    return layouts
+    return [
+        SuggestedLayout(
+            layout_type=LayoutType.grid,
+            total_score=base + 0.1,
+            score_breakdown=LayoutScoreBreakdown(learning_gradient=0.7),
+            placements=placements,
+        ),
+        SuggestedLayout(
+            layout_type=LayoutType.stacked,
+            total_score=base + 0.05,
+            score_breakdown=LayoutScoreBreakdown(learning_gradient=0.6),
+            placements=placements,
+        ),
+        SuggestedLayout(
+            layout_type=LayoutType.vertical,
+            total_score=base,
+            score_breakdown=LayoutScoreBreakdown(learning_gradient=0.5),
+            placements=placements,
+        ),
+    ]

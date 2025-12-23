@@ -1,6 +1,8 @@
-"""Module gallery utilities."""
+"""Module gallery storage for PatchHive."""
 
-from .match import match_module
-from .store import ModuleGalleryStore
+from .store import GalleryPaths, ModuleGalleryStore
 
-__all__ = ["match_module", "ModuleGalleryStore"]
+__all__ = [
+    "GalleryPaths",
+    "ModuleGalleryStore",
+]
