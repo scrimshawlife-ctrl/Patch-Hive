@@ -36,7 +36,7 @@ def build_patchbook_pdf_bytes_from_payload(
     if not patches:
         raise ValueError("No patches available for rack")
 
-    document = build_patchbook_document(db, rack, patches)
+    document = build_patchbook_document(db, rack, patches, tier=payload.tier)
     content_hash = compute_patchbook_content_hash(
         document.model_dump(mode="json"),
         PATCHBOOK_TEMPLATE_VERSION,
