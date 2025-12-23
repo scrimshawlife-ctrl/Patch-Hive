@@ -10,6 +10,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 from .models import PatchBookDocument, PatchBookPage
+from .pdf_meta import apply_deterministic_pdf_metadata
 
 
 def _load_svg2rlg():
@@ -22,6 +23,8 @@ def _load_svg2rlg():
 
 def _draw_wordmark(c: canvas.Canvas, svg_text: str | None, x: float, y: float) -> None:
     if not svg_text:
+        c.setFont("Helvetica-Bold", 14)
+        c.drawString(x, y + 10, "PatchHive")
         return
     svg2rlg = _load_svg2rlg()
     drawing = svg2rlg(io.StringIO(svg_text))
@@ -157,9 +160,11 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
     """Build PatchBook PDF in-memory bytes."""
     buffer = io.BytesIO()
     c = canvas.Canvas(buffer, pagesize=letter, invariant=1)
-    c.setAuthor("PatchHive")
-    c.setCreator("PatchHive")
-    c.setTitle("PatchHive PatchBook")
+    apply_deterministic_pdf_metadata(
+        c,
+        document.branding.template_version,
+        document.content_hash or "",
+    )
 
     total_pages = len(document.pages)
     for idx, page in enumerate(document.pages):

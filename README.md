@@ -41,6 +41,15 @@ PatchHive is a modular web application that helps users design, catalog, share, 
 
 ---
 
+## 🔍 What PatchHive Is (and Is Not)
+
+- **PatchHive is a deterministic patch data platform.** It outputs patch plans, wiring, and Patch Book exports.
+- **Patch Book export is the primary paid feature.** Everything else supports clear, repeatable patch documentation.
+- **PatchHive never generates audio.** No DSP, no audio preview, no synthesis rendering.
+- **BeatOven integration is future and external.** Any audio workflows belong to BeatOven, not PatchHive.
+
+---
+
 ## 📑 Table of Contents
 
 - [✨ Key Highlights](#-key-highlights)
@@ -214,12 +223,8 @@ Preview below in [Screenshots](#-screenshots).
   - Color-coded signal types
   - Port labeling
   - Flow direction indicators
-- **Waveform Approximation**
-  - Simplified synthesis model
-  - Visual audio output preview
-  - Frequency and amplitude analysis
 - **Export Formats**
-  - **PDF**: Complete patch books with diagrams and descriptions
+  - **Patch Book PDF (Paid)**: Branded patch books with diagrams, wiring, and patching order
   - **SVG**: Individual scalable vector graphics
   - **JSON**: Raw data for external tools
   - **CSV**: Module and patch lists
@@ -430,7 +435,9 @@ Frontend will be available at: **http://localhost:5173**
 
 ## ☁️ Deployment
 
-PatchHive supports deployment to **7+ platforms**. Choose based on your needs:
+PatchHive supports deployment to **7+ platforms**. Choose based on your needs.
+
+> **Status:** Azure and Render deployments are currently **paused** pending canon-aligned rollout.
 
 ### 🎯 Quick Deploy Options
 
@@ -438,7 +445,7 @@ PatchHive supports deployment to **7+ platforms**. Choose based on your needs:
 <tr>
 <td width="50%">
 
-#### Azure (Production-Ready)
+#### Azure (Production-Ready — Paused)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fscrimshawlife-ctrl%2FPatch-Hive%2Fmain%2Finfra%2Fmain.bicep)
 
@@ -461,7 +468,7 @@ azd up
 </td>
 <td width="50%">
 
-#### Render (Free Tier)
+#### Render (Free Tier — Paused)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/scrimshawlife-ctrl/Patch-Hive)
 
@@ -627,38 +634,37 @@ Once the backend is running, interactive API documentation is available at:
 
 ---
 
-## 🗺️ Roadmap
+## 🗺️ Roadmap (Canon v0.5)
 
-### ✅ Phase 1 - Core Platform (Current)
+### ✅ Phase 0 — Complete (Architecture)
 
-- [x] Module & Case library management
-- [x] Rack builder with validation
-- [x] Deterministic patch generation engine
-- [x] Waveform approximation visualization
-- [x] PDF export functionality
-- [x] Community features (auth, voting, feed)
-- [x] Docker deployment support
-- [x] Comprehensive test coverage
+- ABX-Core compliant architecture
+- Deterministic patch engine foundations
+- System pack ingestion + Patch Book scaffolding
 
-### 🚧 Phase 2 - Enhanced Features (In Progress)
+### 🚧 Phase 1 — Active (Paid Beta)
 
-- [ ] ModularGrid import implementation
-- [ ] Enhanced rack builder UI with drag-and-drop
-- [ ] Real-time collaborative rack editing
-- [ ] Advanced patch filtering and search
-- [ ] Rack templates and preset library
-- [ ] Audio preview generation (actual DSP)
-- [ ] Performance optimizations
+- Patch Book export as primary paid feature
+- VL2 system pack reference library
+- Deterministic rack recommendations
 
-### 🔮 Phase 3 - Advanced Features (Future)
+### 🔮 Phase 2 — Future (UX)
 
-- [ ] Mobile application (React Native)
-- [ ] AI-assisted patch generation
-- [ ] Hardware modular system integration
-- [ ] Community marketplace for patches
-- [ ] Educational content and tutorials
-- [ ] Plugin system for custom modules
-- [ ] Multi-language support
+- UX refinement for patch exploration
+- Library navigation improvements
+- Template-driven patch browsing
+
+### 🌌 Phase 3 — Future (Ecosystem)
+
+- External integrations (BeatOven and partners)
+- Community distribution workflows
+- Expanded system packs
+
+---
+
+## 📎 Canon Traceability
+
+Canon decisions live in Notion. This repo aligns with **Canon v0.5**.
 
 ---
 
