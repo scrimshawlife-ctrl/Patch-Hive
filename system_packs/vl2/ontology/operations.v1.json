@@ -1,0 +1,96 @@
+{
+  "version": "1.0.0",
+  "description": "Patch operations taxonomy for PatchHive",
+  "operations": {
+    "generation": {
+      "description": "Creating signals from scratch",
+      "techniques": [
+        "oscillation",
+        "noise generation",
+        "stepped random",
+        "smooth random"
+      ]
+    },
+    "modulation": {
+      "description": "One signal controlling another",
+      "techniques": [
+        "frequency modulation",
+        "amplitude modulation",
+        "pulse width modulation",
+        "ring modulation",
+        "cross-modulation",
+        "parameter automation"
+      ]
+    },
+    "sequencing": {
+      "description": "Time-based control of signals",
+      "techniques": [
+        "step sequencing",
+        "probabilistic sequencing",
+        "generative patterns",
+        "euclidean rhythms",
+        "clocked modulation"
+      ]
+    },
+    "synchronization": {
+      "description": "Phase and frequency locking",
+      "techniques": [
+        "hard sync",
+        "soft sync",
+        "clock division",
+        "clock multiplication",
+        "phase reset"
+      ]
+    },
+    "transformation": {
+      "description": "Altering signal characteristics",
+      "techniques": [
+        "waveshaping",
+        "bitcrushing",
+        "sample rate reduction",
+        "rectification",
+        "inversion",
+        "offset",
+        "slewing"
+      ]
+    },
+    "mixing": {
+      "description": "Combining multiple signals",
+      "techniques": [
+        "summation",
+        "crossfading",
+        "ring modulation",
+        "multiplication",
+        "min/max"
+      ]
+    },
+    "gating": {
+      "description": "Control signal flow",
+      "techniques": [
+        "envelope gating",
+        "probability gating",
+        "conditional logic",
+        "trigger distribution"
+      ]
+    },
+    "feedback": {
+      "description": "Recursive signal routing",
+      "techniques": [
+        "audio feedback",
+        "CV feedback",
+        "self-modulation",
+        "chaotic systems"
+      ]
+    },
+    "gesture": {
+      "description": "Human performance control",
+      "techniques": [
+        "touch control",
+        "pressure sensing",
+        "continuous CV",
+        "macro control",
+        "real-time modulation"
+      ]
+    }
+  }
+}

@@ -1,0 +1,454 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://patchhive.io/schemas/patchhive.schema.vl2.v1.json",
+  "title": "PatchHive VL2 Patch Schema",
+  "version": "1.0.0",
+  "description": "Schema for representing Voltage Lab 2 synthesizer patches",
+  "type": "object",
+  "required": ["id", "name", "system", "schemaVersion", "modules", "wiring"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^PHVL2-[0-9]{4}$",
+      "description": "Unique patch identifier following PHVL2-NNNN format"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable patch name"
+    },
+    "system": {
+      "type": "string",
+      "const": "voltage-lab-2",
+      "description": "Target synthesizer system"
+    },
+    "schemaVersion": {
+      "type": "string",
+      "const": "vl2.v1",
+      "description": "Schema version identifier"
+    },
+    "intent": {
+      "type": "string",
+      "description": "Patch design philosophy and intended sonic outcome"
+    },
+    "tags": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "generative",
+          "deterministic",
+          "probabilistic",
+          "chaotic",
+          "evolving",
+          "static",
+          "temporal",
+          "rhythmic",
+          "clocked",
+          "free-running",
+          "synchronized",
+          "gestural",
+          "performance",
+          "hands-off",
+          "macro-controlled",
+          "responsive",
+          "harmonic",
+          "melodic",
+          "ambient",
+          "percussive",
+          "textural",
+          "tonal",
+          "atonal",
+          "noise-based",
+          "drone",
+          "minimal",
+          "moderate",
+          "complex",
+          "experimental",
+          "modulation-heavy",
+          "fm-based",
+          "sync-based",
+          "cross-mod",
+          "feedback-driven",
+          "layered",
+          "sequential",
+          "parallel",
+          "recursive",
+          "linear"
+        ]
+      },
+      "uniqueItems": true
+    },
+    "modules": {
+      "type": "object",
+      "description": "Module configurations",
+      "properties": {
+        "oscillators": {
+          "type": "object",
+          "properties": {
+            "osc1": {
+              "$ref": "#/$defs/oscillator"
+            },
+            "osc2": {
+              "$ref": "#/$defs/oscillator"
+            }
+          }
+        },
+        "functionGenerators": {
+          "type": "object",
+          "properties": {
+            "fg1": {
+              "$ref": "#/$defs/functionGenerator"
+            },
+            "fg2": {
+              "$ref": "#/$defs/functionGenerator"
+            },
+            "fg3": {
+              "$ref": "#/$defs/functionGenerator"
+            },
+            "fg4": {
+              "$ref": "#/$defs/functionGenerator"
+            }
+          }
+        },
+        "chanceSequencer": {
+          "$ref": "#/$defs/chanceSequencer"
+        },
+        "clock": {
+          "$ref": "#/$defs/clock"
+        },
+        "dynamics": {
+          "$ref": "#/$defs/dynamics"
+        },
+        "touchController": {
+          "$ref": "#/$defs/touchController"
+        },
+        "interplay": {
+          "$ref": "#/$defs/interplay"
+        }
+      }
+    },
+    "wiring": {
+      "type": "array",
+      "description": "Explicit patch cable connections",
+      "items": {
+        "$ref": "#/$defs/connection"
+      },
+      "minItems": 1
+    },
+    "notes": {
+      "type": "string",
+      "description": "Additional performance notes or patch behavior details"
+    }
+  },
+  "$defs": {
+    "oscillator": {
+      "type": "object",
+      "properties": {
+        "waveform": {
+          "type": "string",
+          "enum": ["sine", "triangle", "saw", "square", "pulse", "noise"]
+        },
+        "frequency": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Normalized frequency control (0-1)"
+        },
+        "finetuning": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "pulseWidth": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Pulse width for pulse waveforms"
+        },
+        "tracking": {
+          "type": "string",
+          "enum": ["1v/oct", "free", "lfo"],
+          "description": "Oscillator tracking mode"
+        }
+      }
+    },
+    "functionGenerator": {
+      "type": "object",
+      "properties": {
+        "shape": {
+          "type": "string",
+          "enum": ["sine", "triangle", "saw", "ramp", "square", "random", "stepped"]
+        },
+        "rate": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Rate/frequency control (0-1)"
+        },
+        "symmetry": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Waveform symmetry/skew"
+        },
+        "quantize": {
+          "type": "boolean",
+          "description": "Enable stepped/quantized output"
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["free", "clocked", "triggered", "envelope"],
+          "description": "Function generator operating mode"
+        }
+      }
+    },
+    "chanceSequencer": {
+      "type": "object",
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "probability": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "Step trigger probability (0-1)"
+              },
+              "value": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1,
+                "description": "CV output value when step fires"
+              }
+            }
+          },
+          "minItems": 1,
+          "maxItems": 16
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["forward", "reverse", "pendulum", "random", "brownian"]
+        },
+        "range": {
+          "type": "string",
+          "enum": ["unipolar", "bipolar"],
+          "description": "Output voltage range"
+        }
+      }
+    },
+    "clock": {
+      "type": "object",
+      "properties": {
+        "bpm": {
+          "type": "number",
+          "minimum": 20,
+          "maximum": 300,
+          "description": "Beats per minute"
+        },
+        "division": {
+          "type": "string",
+          "enum": ["whole", "half", "quarter", "eighth", "sixteenth", "triplet", "dotted"],
+          "description": "Clock division"
+        },
+        "swing": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Clock swing amount"
+        },
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "enum": ["main", "div2", "div4", "div8", "mult2", "mult4"]
+              },
+              "active": {
+                "type": "boolean"
+              }
+            }
+          }
+        }
+      }
+    },
+    "dynamics": {
+      "type": "object",
+      "properties": {
+        "attack": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "decay": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "response": {
+          "type": "string",
+          "enum": ["linear", "exponential", "logarithmic"]
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["envelope", "lpg", "vca", "follower"]
+        }
+      }
+    },
+    "touchController": {
+      "type": "object",
+      "properties": {
+        "zones": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "outputType": {
+                "type": "string",
+                "enum": ["cv", "gate", "trigger", "pressure"]
+              },
+              "range": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "number"
+                  },
+                  "max": {
+                    "type": "number"
+                  }
+                }
+              },
+              "responseType": {
+                "type": "string",
+                "enum": ["linear", "exponential", "logarithmic", "stepped"]
+              }
+            }
+          }
+        },
+        "mode": {
+          "type": "string",
+          "enum": ["performance", "sequencer", "macro", "xy-pad"]
+        }
+      }
+    },
+    "interplay": {
+      "type": "object",
+      "description": "Cross-modulation and signal interaction",
+      "properties": {
+        "sync": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "source": {
+              "type": "string",
+              "enum": ["osc1", "osc2", "external"]
+            },
+            "target": {
+              "type": "string",
+              "enum": ["osc1", "osc2"]
+            },
+            "mode": {
+              "type": "string",
+              "enum": ["hard", "soft", "reversible"]
+            }
+          }
+        },
+        "ringMod": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "carrier": {
+              "type": "string"
+            },
+            "modulator": {
+              "type": "string"
+            },
+            "depth": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        },
+        "bitcrush": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "bits": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 16
+            },
+            "sampleRate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1,
+              "description": "Sample rate reduction (0-1)"
+            }
+          }
+        },
+        "feedback": {
+          "type": "object",
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "source": {
+              "type": "string"
+            },
+            "destination": {
+              "type": "string"
+            },
+            "amount": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          }
+        }
+      }
+    },
+    "connection": {
+      "type": "object",
+      "required": ["from", "to"],
+      "properties": {
+        "from": {
+          "type": "string",
+          "description": "Source module and output (e.g., 'osc1.out', 'fg1.cv')"
+        },
+        "to": {
+          "type": "string",
+          "description": "Destination module and input (e.g., 'osc2.fm', 'dynamics.in')"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1,
+          "description": "Attenuator/VCA level for this connection"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["audio", "cv", "gate", "trigger", "clock", "pressure"],
+          "description": "Signal type"
+        },
+        "role": {
+          "type": "string",
+          "description": "Semantic role of this connection (e.g., 'modulation', 'source', 'timing')"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,148 @@
+id: PHVL2-0011
+name: Cyclic Interference
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Create emergent patterns through prime-number clock relationships and phase interference
+tags:
+  - temporal
+  - generative
+  - evolving
+  - complex
+
+modules:
+  oscillators:
+    osc1:
+      waveform: sine
+      frequency: 0.3
+      tracking: free
+    osc2:
+      waveform: sine
+      frequency: 0.45
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: triangle
+      rate: 0.5
+      symmetry: 0.5
+      mode: clocked
+    fg2:
+      shape: saw
+      rate: 0.33
+      symmetry: 0.5
+      mode: clocked
+    fg3:
+      shape: sine
+      rate: 0.2
+      symmetry: 0.5
+      mode: clocked
+    fg4:
+      shape: ramp
+      rate: 0.14
+      symmetry: 0.5
+      mode: clocked
+
+  clock:
+    bpm: 120
+    division: eighth
+    swing: 0.0
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+      - name: div4
+        active: true
+
+  dynamics:
+    attack: 0.2
+    decay: 0.8
+    response: logarithmic
+    mode: lpg
+
+  interplay:
+    ringMod:
+      enabled: true
+      carrier: fg1.cv
+      modulator: fg2.cv
+      depth: 0.6
+
+wiring:
+  - from: clock.main
+    to: fg1.clock
+    type: clock
+    role: timing
+
+  - from: clock.main
+    to: fg2.clock
+    type: clock
+    role: timing
+
+  - from: clock.div2
+    to: fg3.clock
+    type: clock
+    role: timing
+
+  - from: clock.div4
+    to: fg4.clock
+    type: clock
+    role: timing
+
+  - from: fg1.cv
+    to: osc1.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc1.fm
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: osc2.cv
+    amount: 0.7
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: osc2.fm
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: interplay.ringMod.out
+    to: dynamics.cv
+    amount: 0.8
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: dynamics.in
+    amount: 0.5
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 0.5
+    type: audio
+    role: source
+
+  - from: fg1.cv
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+notes: |
+  Temporal interference patterns:
+  - Four FGs at different rate ratios: 0.5 : 0.33 : 0.2 : 0.14
+  - Rates chosen to create long non-repeating cycles
+  - FG1 and FG2 run at same clock, different rates
+  - Ring modulation of FG1×FG2 creates interference pattern
+  - This interference controls dynamics envelope
+  - FG3 and FG4 at slower divisions modulate oscillators
+  - Pattern repeat time is LCM of all periods
+  - Creates emergent rhythmic and harmonic evolution
+  - Demonstrates temporal complexity through simple relationships

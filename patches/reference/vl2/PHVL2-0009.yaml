@@ -1,0 +1,116 @@
+id: PHVL2-0009
+name: Harmonic Reconstruction
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Use oscillator sync to rebuild harmonic structure from chaotic source material
+tags:
+  - sync-based
+  - harmonic
+  - evolving
+  - experimental
+
+modules:
+  oscillators:
+    osc1:
+      waveform: saw
+      frequency: 0.2
+      tracking: 1v/oct
+    osc2:
+      waveform: saw
+      frequency: 0.25
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: random
+      rate: 0.35
+      mode: free
+    fg2:
+      shape: stepped
+      rate: 0.2
+      quantize: true
+      mode: free
+    fg3:
+      shape: sine
+      rate: 0.08
+      symmetry: 0.5
+      mode: free
+
+  clock:
+    bpm: 90
+    division: quarter
+    outputs:
+      - name: main
+        active: true
+
+  dynamics:
+    attack: 0.15
+    decay: 0.6
+    response: exponential
+    mode: lpg
+
+  interplay:
+    sync:
+      enabled: true
+      source: osc1
+      target: osc2
+      mode: hard
+    feedback:
+      enabled: true
+      source: osc2.out
+      destination: osc1.fm
+      amount: 0.3
+
+wiring:
+  - from: fg1.cv
+    to: osc2.cv
+    amount: 0.9
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc1.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: interplay.sync.mode
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: osc2.out
+    to: osc1.fm
+    amount: 0.3
+    type: audio
+    role: feedback
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: clock.main
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+  - from: fg3.cv
+    to: dynamics.cv
+    amount: 0.4
+    type: cv
+    role: modulation
+
+notes: |
+  Harmonic reconstruction through sync:
+  - OSC2 driven by random CV creates chaotic source
+  - OSC1 provides stable harmonic reference
+  - Hard sync forces OSC2 to realign to OSC1's phase
+  - Result: chaotic input → harmonic output
+  - FG2 (stepped) controls OSC1 pitch in quantized steps
+  - FG3 modulates sync behavior for evolving reconstruction
+  - Feedback from OSC2 to OSC1 FM adds complexity
+  - Demonstrates sync as harmonic organizing principle
+  - Contrast to PHVL2-0008 erosion approach

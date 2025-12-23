@@ -1,0 +1,132 @@
+id: PHVL2-0007
+name: Gestural FM
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Real-time control of complex FM relationships through multi-zone touch interface
+tags:
+  - gestural
+  - performance
+  - fm-based
+  - harmonic
+
+modules:
+  oscillators:
+    osc1:
+      waveform: sine
+      frequency: 0.25
+      tracking: 1v/oct
+    osc2:
+      waveform: sine
+      frequency: 0.5
+      tracking: 1v/oct
+
+  functionGenerators:
+    fg1:
+      shape: sine
+      rate: 0.12
+      symmetry: 0.5
+      mode: free
+    fg2:
+      shape: triangle
+      rate: 0.18
+      symmetry: 0.5
+      mode: free
+
+  touchController:
+    mode: macro
+    zones:
+      - id: carrier
+        outputType: cv
+        range:
+          min: 0
+          max: 4
+        responseType: exponential
+      - id: modulator
+        outputType: cv
+        range:
+          min: 0
+          max: 4
+        responseType: exponential
+      - id: fmAmount
+        outputType: cv
+        range:
+          min: 0
+          max: 1
+        responseType: linear
+      - id: gate
+        outputType: gate
+        range:
+          min: 0
+          max: 1
+        responseType: linear
+
+  dynamics:
+    attack: 0.05
+    decay: 0.7
+    response: exponential
+    mode: lpg
+
+wiring:
+  - from: touchController.carrier
+    to: osc1.cv
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: touchController.modulator
+    to: osc2.cv
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: osc2.out
+    to: osc1.fm
+    amount: 1.0
+    type: audio
+    role: modulation
+
+  - from: touchController.fmAmount
+    to: osc1.fmDepth
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: fg1.cv
+    to: osc2.cv
+    amount: 0.2
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc1.fmDepth
+    amount: 0.3
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: touchController.gate
+    to: dynamics.gate
+    type: gate
+    role: control
+
+  - from: touchController.fmAmount
+    to: dynamics.cv
+    amount: 0.4
+    type: cv
+    role: control
+
+notes: |
+  Gestural FM synthesis:
+  - Carrier and modulator frequencies independently controlled
+  - FM amount under continuous touch control
+  - Gate zone triggers dynamics envelope
+  - FG1 adds subtle drift to modulator frequency
+  - FG2 modulates FM depth autonomously
+  - FM amount also affects dynamics for timbral/amplitude coupling
+  - Pure sine waves allow exploration of FM harmonics
+  - Macro mode optimizes for FM parameter control

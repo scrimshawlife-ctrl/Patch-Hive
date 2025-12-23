@@ -1,0 +1,20 @@
+{
+  "name": "@patchhive/vl2-system-pack",
+  "version": "1.0.0",
+  "description": "PatchHive VL2 reference patch collection",
+  "type": "module",
+  "scripts": {
+    "test": "node tests/validate-pack.mjs"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "js-yaml": "^4.1.0"
+  },
+  "keywords": [
+    "patchhive",
+    "voltage-lab-2",
+    "vl2",
+    "patches",
+    "synthesizer"
+  ]
+}

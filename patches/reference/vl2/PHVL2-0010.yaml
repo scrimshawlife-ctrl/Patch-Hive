@@ -1,0 +1,153 @@
+id: PHVL2-0010
+name: Probabilistic Modulation
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Apply probability to modulation routing creating non-deterministic timbral evolution
+tags:
+  - probabilistic
+  - generative
+  - modulation-heavy
+  - textural
+
+modules:
+  oscillators:
+    osc1:
+      waveform: pulse
+      frequency: 0.35
+      pulseWidth: 0.5
+      tracking: free
+    osc2:
+      waveform: triangle
+      frequency: 0.52
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: random
+      rate: 0.25
+      mode: triggered
+    fg2:
+      shape: random
+      rate: 0.18
+      mode: triggered
+    fg3:
+      shape: random
+      rate: 0.32
+      mode: triggered
+    fg4:
+      shape: sine
+      rate: 0.1
+      mode: free
+
+  chanceSequencer:
+    mode: random
+    range: unipolar
+    steps:
+      - probability: 0.4
+        value: 0.2
+      - probability: 0.6
+        value: 0.4
+      - probability: 0.3
+        value: 0.5
+      - probability: 0.7
+        value: 0.7
+      - probability: 0.5
+        value: 0.9
+
+  clock:
+    bpm: 100
+    division: sixteenth
+    swing: 0.1
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+      - name: div4
+        active: true
+
+  dynamics:
+    attack: 0.08
+    decay: 0.4
+    response: exponential
+    mode: lpg
+
+wiring:
+  - from: clock.main
+    to: chanceSequencer.clock
+    type: clock
+    role: timing
+
+  - from: chanceSequencer.gate
+    to: fg1.trigger
+    type: trigger
+    role: timing
+
+  - from: chanceSequencer.gate
+    to: fg2.trigger
+    type: trigger
+    role: timing
+
+  - from: chanceSequencer.gate
+    to: fg3.trigger
+    type: trigger
+    role: timing
+
+  - from: fg1.cv
+    to: osc1.pwm
+    amount: 0.7
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc1.cv
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: osc2.fm
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: chanceSequencer.probability
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: chanceSequencer.cv
+    to: osc2.cv
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: dynamics.in
+    amount: 0.6
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 0.4
+    type: audio
+    role: source
+
+  - from: clock.div2
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+notes: |
+  Probabilistic modulation architecture:
+  - Chance sequencer gates three random CV generators
+  - Each random source modulates different parameter
+  - FG1 → PWM (timbral variation)
+  - FG2 → OSC1 pitch (melodic variation)
+  - FG3 → OSC2 FM (harmonic variation)
+  - FG4 continuously modulates trigger probability
+  - Result: same triggers produce different modulations
+  - Non-deterministic timbral evolution
+  - Demonstrates probability beyond sequencing

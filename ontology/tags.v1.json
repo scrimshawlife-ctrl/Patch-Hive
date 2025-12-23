@@ -1,0 +1,114 @@
+{
+  "version": "1.0.0",
+  "description": "Patch classification tags for PatchHive",
+  "categories": {
+    "behavior": {
+      "tags": [
+        "generative",
+        "deterministic",
+        "probabilistic",
+        "chaotic",
+        "evolving",
+        "static"
+      ]
+    },
+    "time": {
+      "tags": [
+        "temporal",
+        "rhythmic",
+        "clocked",
+        "free-running",
+        "synchronized"
+      ]
+    },
+    "interaction": {
+      "tags": [
+        "gestural",
+        "performance",
+        "hands-off",
+        "macro-controlled",
+        "responsive"
+      ]
+    },
+    "sound": {
+      "tags": [
+        "harmonic",
+        "melodic",
+        "ambient",
+        "percussive",
+        "textural",
+        "tonal",
+        "atonal",
+        "noise-based",
+        "drone"
+      ]
+    },
+    "complexity": {
+      "tags": [
+        "minimal",
+        "moderate",
+        "complex",
+        "experimental"
+      ]
+    },
+    "modulation": {
+      "tags": [
+        "modulation-heavy",
+        "fm-based",
+        "sync-based",
+        "cross-mod",
+        "feedback-driven"
+      ]
+    },
+    "structure": {
+      "tags": [
+        "layered",
+        "sequential",
+        "parallel",
+        "recursive",
+        "linear"
+      ]
+    }
+  },
+  "allowedTags": [
+    "generative",
+    "deterministic",
+    "probabilistic",
+    "chaotic",
+    "evolving",
+    "static",
+    "temporal",
+    "rhythmic",
+    "clocked",
+    "free-running",
+    "synchronized",
+    "gestural",
+    "performance",
+    "hands-off",
+    "macro-controlled",
+    "responsive",
+    "harmonic",
+    "melodic",
+    "ambient",
+    "percussive",
+    "textural",
+    "tonal",
+    "atonal",
+    "noise-based",
+    "drone",
+    "minimal",
+    "moderate",
+    "complex",
+    "experimental",
+    "modulation-heavy",
+    "fm-based",
+    "sync-based",
+    "cross-mod",
+    "feedback-driven",
+    "layered",
+    "sequential",
+    "parallel",
+    "recursive",
+    "linear"
+  ]
+}

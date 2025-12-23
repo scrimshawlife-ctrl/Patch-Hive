@@ -1,0 +1,100 @@
+{
+  "name": "PatchHive VL2 System Pack",
+  "system": "voltage-lab-2",
+  "version": "1.0.0",
+  "schemaVersion": "vl2.v1",
+  "description": "Reference patch collection for Voltage Lab 2 synthesizer system",
+  "created": "2025-12-23",
+  "schema": {
+    "file": "schema/patchhive.schema.vl2.v1.json",
+    "version": "1.0.0"
+  },
+  "ontology": {
+    "roles": "ontology/roles.v1.json",
+    "operations": "ontology/operations.v1.json",
+    "tags": "ontology/tags.v1.json"
+  },
+  "patches": [
+    {
+      "id": "PHVL2-0001",
+      "file": "patches/PHVL2-0001.yaml",
+      "name": "Fundamental Oscillation",
+      "sha256": "141258e99c16367d3558ab1ca0b27b61a3c44f6537300332bfb830a18c13b5df"
+    },
+    {
+      "id": "PHVL2-0002",
+      "file": "patches/PHVL2-0002.yaml",
+      "name": "Stochastic Melodies",
+      "sha256": "f3ef4d0575220f133f59c9194906b1044a9f2992e9f1fafd35fd48657f79d863"
+    },
+    {
+      "id": "PHVL2-0003",
+      "file": "patches/PHVL2-0003.yaml",
+      "name": "Polyrhythmic Layers",
+      "sha256": "50ce3c7390a31a4b32214ba5ecbd7cab1a96605ef9c6355688921e92ee507e78"
+    },
+    {
+      "id": "PHVL2-0004",
+      "file": "patches/PHVL2-0004.yaml",
+      "name": "Expressive Touch",
+      "sha256": "d86a4422eb1a7f00111d3cbbb6988a1b278e9b3064137fb267aac813cdab42c2"
+    },
+    {
+      "id": "PHVL2-0005",
+      "file": "patches/PHVL2-0005.yaml",
+      "name": "Chaotic Rhythms",
+      "sha256": "807a511088b3bf828081706be4674445fec1dc2bfb4a5c22d18e27752bb59b98"
+    },
+    {
+      "id": "PHVL2-0006",
+      "file": "patches/PHVL2-0006.yaml",
+      "name": "Phase Drift",
+      "sha256": "bb376950291953782b88c11f7482b9dfd5adfd95e27c3e8028ead20475ebb583"
+    },
+    {
+      "id": "PHVL2-0007",
+      "file": "patches/PHVL2-0007.yaml",
+      "name": "Gestural FM",
+      "sha256": "ff7cbf25ce2c97dd9c547d834d0be85692efa1a9f3aea21954a73e5b31e0d635"
+    },
+    {
+      "id": "PHVL2-0008",
+      "file": "patches/PHVL2-0008.yaml",
+      "name": "Digital Erosion",
+      "sha256": "75bde1fecfd6593fa02660e1e05032549dccefe60d6963e5e88e14a226b42c5c"
+    },
+    {
+      "id": "PHVL2-0009",
+      "file": "patches/PHVL2-0009.yaml",
+      "name": "Harmonic Reconstruction",
+      "sha256": "3aeab0ec0604bda93e7ce18d68feb7b60c0ba58d815d01470252dafa24650ce2"
+    },
+    {
+      "id": "PHVL2-0010",
+      "file": "patches/PHVL2-0010.yaml",
+      "name": "Probabilistic Modulation",
+      "sha256": "ac74d6ea62f9a5c2a048e21838eca8152d55c3e881e3840287ac4053ec945510"
+    },
+    {
+      "id": "PHVL2-0011",
+      "file": "patches/PHVL2-0011.yaml",
+      "name": "Cyclic Interference",
+      "sha256": "a472414f83d40ce6ca73c7a24e8f2fbf3b3b387fe456202fcfd803747da5654f"
+    },
+    {
+      "id": "PHVL2-0012",
+      "file": "patches/PHVL2-0012.yaml",
+      "name": "Recursive Feedback Network",
+      "sha256": "a3492899ec89f3933f96a07d9cd003d0ff90e2e7eb5c540e04bf7368c02bb175"
+    }
+  ],
+  "stats": {
+    "totalPatches": 12,
+    "categories": {
+      "probabilistic": 3,
+      "temporal": 4,
+      "gestural": 2,
+      "experimental": 3
+    }
+  }
+}

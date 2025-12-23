@@ -1,0 +1,121 @@
+id: PHVL2-0008
+name: Digital Erosion
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Progressive signal degradation through bitcrushing and sample rate reduction
+tags:
+  - experimental
+  - textural
+  - evolving
+  - modulation-heavy
+
+modules:
+  oscillators:
+    osc1:
+      waveform: triangle
+      frequency: 0.4
+      tracking: free
+    osc2:
+      waveform: sine
+      frequency: 0.605
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: ramp
+      rate: 0.03
+      symmetry: 0.3
+      mode: free
+    fg2:
+      shape: saw
+      rate: 0.05
+      symmetry: 0.5
+      mode: free
+    fg3:
+      shape: sine
+      rate: 0.15
+      symmetry: 0.5
+      mode: free
+
+  dynamics:
+    attack: 0.1
+    decay: 0.5
+    response: linear
+    mode: vca
+
+  interplay:
+    bitcrush:
+      enabled: true
+      bits: 12
+      sampleRate: 0.8
+    ringMod:
+      enabled: true
+      carrier: osc1.out
+      modulator: osc2.out
+      depth: 0.3
+
+wiring:
+  - from: osc1.out
+    to: interplay.ringMod.carrier
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: interplay.ringMod.modulator
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: interplay.ringMod.out
+    to: interplay.bitcrush.in
+    amount: 1.0
+    type: audio
+    role: transformation
+
+  - from: fg1.cv
+    to: interplay.bitcrush.bits
+    amount: 1.0
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: interplay.bitcrush.sampleRate
+    amount: 1.0
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: osc1.fm
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: osc2.fm
+    amount: 0.3
+    type: cv
+    role: modulation
+
+  - from: interplay.bitcrush.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: transformation
+
+  - from: fg1.cv
+    to: dynamics.cv
+    amount: 0.5
+    type: cv
+    role: modulation
+
+notes: |
+  Digital erosion process:
+  - Ring modulation creates complex harmonic source
+  - FG1 (slow ramp) progressively reduces bit depth
+  - FG2 (slow saw) reduces sample rate
+  - Combined effect creates evolving degradation
+  - FG3 adds FM to oscillators for source complexity
+  - Erosion happens over ~33 second cycle (FG1 rate)
+  - Creates progression from clean to heavily degraded
+  - Demonstrates transformation as compositional element

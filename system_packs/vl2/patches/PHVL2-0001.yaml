@@ -1,0 +1,89 @@
+id: PHVL2-0001
+name: Fundamental Oscillation
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Demonstrate basic oscillator architecture with simple modulation and dynamics control
+tags:
+  - minimal
+  - harmonic
+  - deterministic
+
+modules:
+  oscillators:
+    osc1:
+      waveform: saw
+      frequency: 0.4
+      finetuning: 0.0
+      tracking: 1v/oct
+    osc2:
+      waveform: sine
+      frequency: 0.45
+      finetuning: 0.02
+      tracking: 1v/oct
+
+  functionGenerators:
+    fg1:
+      shape: triangle
+      rate: 0.15
+      symmetry: 0.5
+      mode: free
+    fg2:
+      shape: sine
+      rate: 0.08
+      symmetry: 0.5
+      mode: free
+
+  dynamics:
+    attack: 0.1
+    decay: 0.6
+    response: exponential
+    mode: lpg
+
+  touchController:
+    mode: performance
+    zones:
+      - id: zone1
+        outputType: cv
+        range:
+          min: 0
+          max: 1
+        responseType: linear
+
+wiring:
+  - from: osc1.out
+    to: dynamics.in
+    amount: 0.8
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: osc1.fm
+    amount: 0.3
+    type: audio
+    role: modulation
+
+  - from: fg1.cv
+    to: osc2.fm
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: dynamics.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: touchController.zone1
+    to: osc1.cv
+    amount: 1.0
+    type: cv
+    role: control
+
+notes: |
+  Basic patch demonstrating fundamental VL2 architecture:
+  - OSC1 (saw) as primary voice
+  - OSC2 (sine) modulating OSC1
+  - FG1 modulating OSC2 for evolving timbre
+  - FG2 controlling dynamics
+  - Touch controller provides pitch control
