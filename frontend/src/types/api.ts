@@ -200,6 +200,8 @@ export interface User {
   email: string;
   display_name?: string;
   avatar_url?: string;
+  display_name?: string;
+  allow_public_avatar?: boolean;
   bio?: string;
   role: string;
   created_at: string;
@@ -231,4 +233,78 @@ export interface FeedItem {
 export interface FeedResponse {
   total: number;
   items: FeedItem[];
+}
+
+// Publishing types
+export interface ExportArtifactUrls {
+  pdf?: string;
+  svg?: string;
+  zip?: string;
+  waveform_svg?: string;
+}
+
+export interface ExportRecord {
+  id: number;
+  export_type: 'patch' | 'rack';
+  license: string;
+  run_id: string;
+  generated_at: string;
+  patch_count?: number;
+  manifest_hash: string;
+  artifact_urls: ExportArtifactUrls;
+}
+
+export interface PublicationRecord {
+  id: number;
+  export_id: number;
+  slug: string;
+  visibility: 'public' | 'unlisted';
+  status: 'published' | 'hidden' | 'draft' | 'removed';
+  allow_download: boolean;
+  allow_remix: boolean;
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  published_at?: string;
+  updated_at: string;
+}
+
+export interface PublicationListResponse {
+  publications: PublicationRecord[];
+}
+
+export interface PublicPublicationResponse {
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  export_type: 'patch' | 'rack';
+  license: string;
+  provenance: {
+    run_id: string;
+    generated_at: string;
+    patch_count?: number;
+    manifest_hash: string;
+  };
+  publisher_display: string;
+  avatar_url?: string;
+  allow_download: boolean;
+  download_urls?: {
+    pdf_url: string;
+    svg_url: string;
+    zip_url: string;
+  };
+}
+
+export interface PublicationCard {
+  slug: string;
+  title: string;
+  description?: string;
+  cover_image_url?: string;
+  export_type: 'patch' | 'rack';
+  published_at?: string;
+}
+
+export interface GalleryResponse {
+  publications: PublicationCard[];
+  next_cursor?: string;
 }

@@ -13,9 +13,10 @@ from racks.models import Rack, RackModule
 from patches.models import Patch  # Import to ensure patches table is created
 from community.models import User, Vote, Comment  # Import to ensure tables are created
 from monetization.models import CreditsLedger, Export, License, Referral  # noqa: F401
-from admin.models import AdminAuditLog  # noqa: F401
+from admin.models import AdminAuditLog, PendingFunction  # Import to ensure tables are created
 from gallery.models import GalleryRevision  # noqa: F401
 from runs.models import Run  # noqa: F401
+from publishing.models import Publication, PublicationReport  # Import to ensure tables are created
 
 
 @pytest.fixture(scope="function")

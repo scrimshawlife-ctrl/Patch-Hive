@@ -21,6 +21,11 @@ import type {
   Rack,
   Patch,
   User,
+  ExportRecord,
+  PublicationListResponse,
+  PublicationRecord,
+  PublicPublicationResponse,
+  GalleryResponse,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -142,7 +147,7 @@ export const authApi = {
 
   getUserByUsername: (username: string) => api.get<User>(`/community/users/username/${username}`),
 
-  updateProfile: (data: { avatar_url?: string; bio?: string }) =>
+  updateProfile: (data: { avatar_url?: string; bio?: string; display_name?: string; allow_public_avatar?: boolean }) =>
     api.patch<User>('/community/users/me', data),
 };
 
@@ -239,6 +244,41 @@ export const adminApi = {
 
   exportedCategories: () =>
     api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/categories/exported`),
+};
+
+// Publishing API
+export const publishingApi = {
+  createExport: (data: { source_type: 'patch' | 'rack'; source_id: number }) =>
+    api.post<ExportRecord>('/me/exports', data),
+
+  listExports: () => api.get<ExportRecord[]>('/me/exports'),
+
+  createPublication: (data: {
+    export_id: number;
+    title: string;
+    description?: string;
+    visibility: 'public' | 'unlisted';
+    allow_download: boolean;
+    allow_remix: boolean;
+    cover_image_url?: string;
+  }) => api.post<PublicationRecord>('/me/publications', data),
+
+  updatePublication: (publicationId: number, data: Partial<PublicationRecord>) =>
+    api.patch<PublicationRecord>(`/me/publications/${publicationId}`, data),
+
+  listPublications: () => api.get<PublicationListResponse>('/me/publications'),
+
+  getPublication: (slug: string) => api.get<PublicPublicationResponse>(`/p/${slug}`),
+
+  listGallery: (params?: {
+    limit?: number;
+    cursor?: string;
+    export_type?: string;
+    recent_days?: number;
+  }) => api.get<GalleryResponse>('/gallery/publications', { params }),
+
+  reportPublication: (slug: string, data: { reason: string; details?: string }) =>
+    api.post(`/p/${slug}/report`, data),
 };
 
 export default api;
