@@ -1,263 +1,528 @@
-"""Pydantic models for PatchHive rig ingestion and patch generation."""
-
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
-from typing import Any, Generic, Literal, Optional, TypeVar
+from typing import Any, Dict, List, Literal, Optional, Tuple
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
-CONFIRM_THRESHOLD: float = 0.82
-DEFAULT_TIMESTAMP = datetime(1970, 1, 1, tzinfo=timezone.utc)
+
+# =========================
+# Determinism & Serialization
+# =========================
+
+
+class PHBase(BaseModel):
+    """
+    PatchHive base model:
+    - strict-ish validation
+    - deterministic JSON export via explicit helpers
+    """
+
+    model_config = ConfigDict(
+        extra="forbid",
+        frozen=False,
+        validate_assignment=True,
+        str_strip_whitespace=True,
+    )
+
+    def to_canonical_dict(self) -> Dict[str, Any]:
+        """
+        Deterministic dict form for hashing / golden tests.
+        - no None fields
+        - stable key ordering achieved at json serialization time via sort_keys=True
+        """
+
+        return self.model_dump(mode="json", exclude_none=True)
+
+    def to_canonical_json(self) -> str:
+        """
+        Deterministic JSON (sort_keys, compact separators) for byte-identical tests.
+        """
+
+        import json
+
+        return json.dumps(self.to_canonical_dict(), sort_keys=True, separators=(",", ":"))
+
+
+# =========================
+# Provenance / Confidence
+# =========================
 
 
 class ProvenanceType(str, Enum):
-    GEMINI = "gemini"
-    GALLERY = "gallery"
-    DERIVED = "derived"
-    MANUAL = "manual"
+    gemini = "gemini"
+    gallery = "gallery"
+    derived = "derived"
+    manual = "manual"
 
 
-class ProvenanceStatus(str, Enum):
-    CONFIRMED = "confirmed"
-    INFERRED = "inferred"
-    DISPUTED = "disputed"
-    MISSING = "missing"
+class FieldStatus(str, Enum):
+    confirmed = "confirmed"
+    inferred = "inferred"
+    disputed = "disputed"
+    missing = "missing"
 
 
-class Provenance(BaseModel):
+class Provenance(PHBase):
     type: ProvenanceType
-    model_version: Optional[str] = None
-    timestamp: datetime = Field(default_factory=lambda: DEFAULT_TIMESTAMP)
-    evidence_ref: Optional[str] = None
+    timestamp: datetime
+    evidence_ref: str = Field(
+        ...,
+        description="Opaque pointer: image_id:bbox:..., doc id, user confirmation id, etc.",
+    )
+    model_version: Optional[str] = Field(
+        default=None,
+        description="Model/version string when type=gemini or similar.",
+    )
+    method: Optional[str] = Field(
+        default=None,
+        description="Derivation method description when type=derived.",
+    )
 
 
-T = TypeVar("T")
-
-
-class ProvenancedValue(BaseModel, Generic[T]):
-    value: Optional[T]
-    provenance: Provenance
+class FieldMeta(PHBase):
+    provenance: List[Provenance] = Field(default_factory=list)
     confidence: float = Field(ge=0.0, le=1.0)
-    status: ProvenanceStatus
-
-    @classmethod
-    def missing(cls, provenance_type: ProvenanceType, evidence_ref: Optional[str] = None) -> "ProvenancedValue[T]":
-        return cls(
-            value=None,
-            provenance=Provenance(type=provenance_type, evidence_ref=evidence_ref),
-            confidence=0.0,
-            status=ProvenanceStatus.MISSING,
-        )
+    status: FieldStatus
 
 
-class JackDirection(str, Enum):
-    IN = "in"
-    OUT = "out"
-    BIDIRECTIONAL = "bidirectional"
+# =========================
+# Vision Output
+# =========================
+
+BBox = Tuple[float, float, float, float]  # x1,y1,x2,y2 normalized 0..1
 
 
-class JackSignalType(str, Enum):
-    AUDIO = "audio"
-    CV = "cv"
-    GATE = "gate"
-    CLOCK = "clock"
-    TRIGGER = "trigger"
-    LOGIC = "logic"
-    UNKNOWN = "unknown"
+class VisionEvidence(PHBase):
+    image_id: str
+    bbox: BBox
 
 
-class JackSpec(BaseModel):
+class DetectedModule(PHBase):
+    """
+    Output of detect_modules_from_photo (Gemini wrapper).
+    This is a proposal only. Never authoritative.
+    """
+
+    temp_id: str
+    label_guess: str
+    brand_guess: Optional[str] = None
+    hp_guess: Optional[int] = Field(default=None, ge=1)
+    position_guess: Optional[Dict[str, int]] = Field(
+        default=None,
+        description="Optional hint: {'row': int, 'x_hp': int}. Observed, not ideal.",
+    )
+    confidence: float = Field(ge=0.0, le=1.0)
+    evidence: VisionEvidence
+
+
+class MatchMethod(str, Enum):
+    exact = "exact"
+    fuzzy = "fuzzy"
+    unknown_stub = "unknown_stub"
+
+
+class ResolvedModuleRef(PHBase):
+    """
+    Output of resolve_modules. Exactly one of gallery_module_id or unknown_stub_id must be present.
+    """
+
+    detected_id: str
+    gallery_module_id: Optional[str] = None
+    unknown_stub_id: Optional[str] = None
+    match_method: MatchMethod
+    confidence: float = Field(ge=0.0, le=1.0)
+    status: FieldStatus
+
+    def model_post_init(self, __context: Any) -> None:
+        has_gallery = self.gallery_module_id is not None
+        has_stub = self.unknown_stub_id is not None
+        if has_gallery == has_stub:
+            raise ValueError(
+                "ResolvedModuleRef: exactly one of gallery_module_id or unknown_stub_id must be set."
+            )
+
+
+# =========================
+# Module Gallery
+# =========================
+
+
+class SignalRate(str, Enum):
+    control = "control"
+    audio = "audio"
+    either = "either"
+
+
+class SignalKind(str, Enum):
+    pitch_cv = "pitch_cv"
+    gate = "gate"
+    trigger = "trigger"
+    clock = "clock"
+    envelope = "envelope"
+    lfo = "lfo"
+    random = "random"
+    cv = "cv"
+    audio = "audio"
+    cv_or_audio = "cv_or_audio"
+    midi = "midi"
+    unknown = "unknown"
+
+
+class SignalContract(PHBase):
+    kind: SignalKind
+    rate: SignalRate
+    # range may be unknown; if known, keep as volts; if not, None
+    range_v: Optional[Tuple[float, float]] = None
+    polarity: Optional[Literal["unipolar", "bipolar", "unknown"]] = "unknown"
+    notes: Optional[str] = None
+    meta: Optional[FieldMeta] = None
+
+
+class JackDir(str, Enum):
+    in_ = "in"
+    out = "out"
+    bidir = "bidir"
+
+
+class ModuleJack(PHBase):
     jack_id: str
     label: str
-    direction: JackDirection
-    signal_type: JackSignalType
-    normalled_to: Optional[str] = None
+    dir: JackDir
+    signal: SignalContract
+    meta: FieldMeta
 
 
-class ModeSpec(BaseModel):
+class ModuleMode(PHBase):
+    """
+    Modeful blocks: distinct capability profiles and/or jack contract overrides.
+    """
+
     mode_id: str
     label: str
-    capability_profile: list[str] = Field(default_factory=list)
-    jack_overrides: list[JackSpec] = Field(default_factory=list)
+    # If present, overrides apply to jack signal contracts for this mode
+    jack_overrides: Optional[Dict[str, SignalContract]] = None
+    # Capability tags (e.g., "envelope", "lfo", "oscillator")
+    tags: List[str] = Field(default_factory=list)
+    meta: FieldMeta
 
 
-class ModuleSection(BaseModel):
-    section_id: str
-    label: str
-    capability_profile: list[str] = Field(default_factory=list)
-    jacks: list[JackSpec] = Field(default_factory=list)
-    modes: list[ModeSpec] = Field(default_factory=list)
+class PowerSpec(PHBase):
+    """
+    NEVER invent power specs. Missing means missing.
+    Use integers where known; None where missing.
+    """
+
+    plus12_ma: Optional[int] = Field(default=None, ge=0)
+    minus12_ma: Optional[int] = Field(default=None, ge=0)
+    plus5_ma: Optional[int] = Field(default=None, ge=0)
+    meta: FieldMeta
 
 
-class NormalledEdge(BaseModel):
+class ModuleGalleryEntry(PHBase):
+    """
+    Append-only, versioned.
+    module_gallery_id stable across revs; rev identifies immutable revision.
+    """
 
-class ModuleSpec(BaseModel):
-    module_id: str
+    module_gallery_id: str
+    rev: datetime
     name: str
-    manufacturer: Optional[str] = None
-    width_hp: Optional[int] = None
-    sections: list[ModuleSection] = Field(default_factory=list)
-    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
-    power_12v_ma: Optional[int] = None
-    power_minus12v_ma: Optional[int] = None
-    power_5v_ma: Optional[int] = None
+    manufacturer: str
+    hp: int = Field(ge=1)
+    tags: List[str] = Field(default_factory=list)
+
+    power: PowerSpec
+    jacks: List[ModuleJack] = Field(default_factory=list)
+    modes: List[ModuleMode] = Field(default_factory=list)
+
+    provenance: List[Provenance] = Field(default_factory=list)
+    notes: List[str] = Field(default_factory=list)
 
 
-class RigModuleInput(BaseModel):
-    module_id: Optional[str] = None
-    name: ProvenancedValue[str]
-    manufacturer: Optional[ProvenancedValue[str]] = None
-    width_hp: Optional[ProvenancedValue[int]] = None
-    position_hint: Optional[ProvenancedValue[str]] = None
-    observed_photo_ref: Optional[str] = None
+# =========================
+# Rig Spec / Canonical Rig
+# =========================
 
 
-class RigSpec(BaseModel):
-    rig_id: str
-    modules: list[RigModuleInput]
-    notes: Optional[str] = None
+class RigSource(str, Enum):
+    photo_gemini = "photo_gemini"
+    manual_picklist = "manual_picklist"
+    hybrid = "hybrid"
 
 
-class CanonicalModule(BaseModel):
-    canonical_id: str
-    module_spec: ModuleSpec
-    provenance: Provenance
-    confidence: float = Field(ge=0.0, le=1.0)
-    status: ProvenanceStatus
-    observed_position: Optional[str] = None
+class ObservedPlacement(PHBase):
+    """
+    Observed case position for a module instance. Not considered ideal.
+    """
+
+    row: int = Field(ge=0)
+    x_hp: int = Field(ge=0)
+    meta: FieldMeta
 
 
-class CanonicalRig(BaseModel):
-    rig_id: str
-    modules: list[CanonicalModule]
-    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
+class RigModuleInstance(PHBase):
+    """
+    A module instance as it appears in a rig.
+    This points to a gallery id + optional rev (rev optional to allow "latest").
+    """
+
+    instance_id: str
+    gallery_module_id: str
+    gallery_rev: Optional[datetime] = None
+    observed_placement: Optional[ObservedPlacement] = None
+    meta: FieldMeta
 
 
-class RigMetricsCategory(str, Enum):
-    SOURCES = "Sources"
-    SHAPERS = "Shapers"
-    CONTROLLERS = "Controllers"
-    MODULATORS = "Modulators"
-    ROUTERS_MIX = "Routers/Mix"
-    CLOCK_DOMAIN = "Clock Domain"
-    FX_SPACE = "FX/Space"
-    IO_EXTERNAL = "IO/External"
-    NORMALS_INTERNAL_BUSSES = "Normals/Internal Busses"
+class NormalledBehavior(str, Enum):
+    break_on_insert = "break_on_insert"
+    always_connected = "always_connected"
+    unknown = "unknown"
 
 
-class RigMetricsPacket(BaseModel):
-    rig_id: str
-    categories: dict[RigMetricsCategory, list[str]]
-    summary: dict[str, int]
+class NormalledEdge(PHBase):
+    """
+    Explicit semi-normalled/internal routes (VL2 critical).
+    """
 
-
-class DetectedModule(BaseModel):
-    detection_id: str
-    name: ProvenancedValue[str]
-    manufacturer: Optional[ProvenancedValue[str]] = None
-    photo_position: Optional[ProvenancedValue[str]] = None
-    confidence: float = Field(ge=0.0, le=1.0)
-
-
-class ResolvedModuleRef(BaseModel):
-    detection_id: str
-    gallery_entry_id: Optional[str]
-    match_confidence: float = Field(ge=0.0, le=1.0)
-    status: ProvenanceStatus
-    module_spec: Optional[ModuleSpec] = None
-    provenance: Provenance
-
-
-class ModuleGalleryEntry(BaseModel):
-    entry_id: str
-    revision_id: str
-    previous_revision_id: Optional[str] = None
-    created_at: datetime = Field(default_factory=lambda: DEFAULT_TIMESTAMP)
-    name: str
-    manufacturer: Optional[str] = None
-    spec: ModuleSpec
-    provenance: Provenance
-
-
-class SuggestedPlacement(BaseModel):
-    module_id: str
-    row: int
-    x_hp: int
-    observed: bool = False
-
-
-class SuggestedLayout(BaseModel):
-    layout_id: str
-    profile: str
-    placements: list[SuggestedPlacement]
-    score: float
-    breakdown: dict[str, float]
-
-class PatchNode(BaseModel):
-    node_id: str
-    module_id: str
-    section_id: Optional[str] = None
-
-
-class PatchEdge(BaseModel):
-    edge_id: str
     from_jack: str
     to_jack: str
-    signal_type: JackSignalType
-    provenance: Provenance
+    behavior: NormalledBehavior
+    meta: FieldMeta
 
 
-class PatchMacro(BaseModel):
-    macro_id: str
+class RigSpec(PHBase):
+    rig_id: str
+    name: str
+    source: RigSource
+    modules: List[RigModuleInstance] = Field(default_factory=list)
+    normalled_edges: List[NormalledEdge] = Field(default_factory=list)
+    provenance: List[Provenance] = Field(default_factory=list)
+    notes: List[str] = Field(default_factory=list)
+
+
+class CanonicalJack(PHBase):
+    """
+    Normalized jack in CanonicalRig.
+    """
+
+    jack_id: str
     label: str
-    description: str
-    nodes: list[str]
+    dir: JackDir
+    signal: SignalContract
+    # mode-specific overrides are represented in CanonicalModeState (below)
+    meta: FieldMeta
 
 
-class PatchTimelinePhase(BaseModel):
-    phase_id: Literal["prep", "threshold", "peak", "release", "seal"]
-    description: str
+class CanonicalModule(PHBase):
+    """
+    Normalized module representation after gallery resolution + rev pinning.
+    """
+
+    instance_id: str
+    module_gallery_id: str
+    module_rev: datetime
+    name: str
+    manufacturer: str
+    hp: int
+    tags: List[str] = Field(default_factory=list)
+    power: PowerSpec
+    jacks: List[CanonicalJack] = Field(default_factory=list)
+    modes: List[ModuleMode] = Field(default_factory=list)
+    observed_placement: Optional[ObservedPlacement] = None
+    meta: FieldMeta
 
 
-class PatchGraph(BaseModel):
+class CanonicalRig(PHBase):
     rig_id: str
-    nodes: list[PatchNode]
-    edges: list[PatchEdge]
-    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
-    macros: list[PatchMacro] = Field(default_factory=list)
-    timeline: list[PatchTimelinePhase] = Field(default_factory=list)
-    node_state: dict[str, dict[str, str]] = Field(default_factory=dict)
+    name: str
+    modules: List[CanonicalModule] = Field(default_factory=list)
+    normalled_edges: List[NormalledEdge] = Field(default_factory=list)
+    provenance: List[Provenance] = Field(default_factory=list)
 
 
-class PatchStep(BaseModel):
-    phase_id: Literal["prep", "threshold", "peak", "release", "seal"]
-    instruction: str
+# =========================
+# Rig Metrics Packet (Abraxas surface)
+# =========================
 
 
-class PatchPlan(BaseModel):
+class CapabilityCategory(str, Enum):
+    sources = "Sources"
+    shapers = "Shapers"
+    controllers = "Controllers"
+    modulators = "Modulators"
+    routers_mix = "Routers/Mix"
+    clock_domain = "Clock Domain"
+    fx_space = "FX/Space"
+    io_external = "IO/External"
+    normals_internal = "Normals/Internal Busses"
+
+
+class RigMetricsPacket(PHBase):
     rig_id: str
-    intent: str
-    steps: list[PatchStep]
-    closure: list[PatchTimelinePhase]
+    module_count: int = Field(ge=0)
+    category_counts: Dict[CapabilityCategory, int] = Field(default_factory=dict)
+
+    modulation_budget: float = Field(ge=0.0)
+    routing_flex_score: float = Field(ge=0.0)
+    clock_coherence_score: float = Field(ge=0.0)
+    chaos_headroom: float = Field(ge=0.0)
+
+    learning_gradient_index: float = Field(ge=0.0)
+    performance_density_index: float = Field(ge=0.0)
+
+    meta: FieldMeta
 
 
-class ValidationIssue(BaseModel):
-    code: str
-    message: str
-    severity: Literal["error", "warning"]
+# =========================
+# Layout Suggestions
+# =========================
 
 
-class ValidationReport(BaseModel):
+class LayoutType(str, Enum):
+    beginner = "Beginner"
+    performance = "Performance"
+    experimental = "Experimental"
+
+
+class LayoutPlacement(PHBase):
+    instance_id: str
+    row: int = Field(ge=0)
+    x_hp: int = Field(ge=0)
+
+
+class LayoutScoreBreakdown(PHBase):
+    reach_cost: float = Field(ge=0.0)
+    cable_cross_cost: float = Field(ge=0.0)
+    learning_gradient: float = Field(ge=0.0)
+    utility_proximity: float = Field(ge=0.0)
+    patch_template_coverage: float = Field(ge=0.0)
+
+
+class SuggestedLayout(PHBase):
     rig_id: str
-    issues: list[ValidationIssue]
-    warnings: list[ValidationIssue]
+    layout_type: LayoutType
+    placements: List[LayoutPlacement] = Field(default_factory=list)
+    total_score: float
+    score_breakdown: LayoutScoreBreakdown
+    rationale: str
+    meta: FieldMeta
+
+
+# =========================
+# PatchGraph / PatchPlan / Validation
+# =========================
+
+
+class CableType(str, Enum):
+    pitch_cv = "pitch_cv"
+    gate = "gate"
+    trigger = "trigger"
+    clock = "clock"
+    cv = "cv"
+    audio = "audio"
+    unknown = "unknown"
+
+
+class PatchCable(PHBase):
+    from_jack: str
+    to_jack: str
+    type: CableType
+    meta: FieldMeta
+
+
+class MacroControl(PHBase):
+    target: str
+    range: Tuple[float, float]
+    meta: FieldMeta
+
+
+class PatchMacro(PHBase):
+    macro_id: str
+    controls: List[MacroControl] = Field(default_factory=list)
+    meta: FieldMeta
+
+
+class TimelineSection(str, Enum):
+    prep = "prep"
+    threshold = "threshold"
+    peak = "peak"
+    release = "release"
+    seal = "seal"
+
+
+class PatchTimeline(PHBase):
+    clock_bpm: Optional[float] = Field(default=None, ge=1.0)
+    sections: List[TimelineSection] = Field(default_factory=list)
+    meta: FieldMeta
+
+
+class ModeSelection(PHBase):
+    """
+    Explicit mode selections per module or section.
+    Keys should reference known module instance ids (or sub-section ids if you model them).
+    """
+
+    target_id: str
+    mode_id: str
+    meta: FieldMeta
+
+
+class PatchGraph(PHBase):
+    patch_id: str
+    rig_id: str
+    cables: List[PatchCable] = Field(default_factory=list)
+    macros: List[PatchMacro] = Field(default_factory=list)
+    timeline: PatchTimeline
+    mode_selections: List[ModeSelection] = Field(default_factory=list)
+    meta: FieldMeta
+
+
+class PatchIntent(PHBase):
+    archetype: str
+    energy: str
+    focus: str
+    meta: FieldMeta
+
+
+class PatchPlan(PHBase):
+    patch_id: str
+    intent: PatchIntent
+    setup: List[str] = Field(default_factory=list)
+    perform: List[str] = Field(
+        default_factory=list,
+        description="Must contain ritual sequence: prep→threshold→peak→release→seal (human-readable steps).",
+    )
+    warnings: List[str] = Field(default_factory=list)
+    why_it_works: List[str] = Field(default_factory=list)
+    meta: FieldMeta
+
+
+class ValidationReport(PHBase):
+    patch_id: str
+    illegal_connections: List[str] = Field(default_factory=list)
+    silence_risk: List[str] = Field(default_factory=list)
+    runaway_risk: List[str] = Field(default_factory=list)
     stability_score: float = Field(ge=0.0, le=1.0)
+    meta: FieldMeta
 
 
-class PatchIntent(BaseModel):
-    description: str
-    goals: list[str] = Field(default_factory=list)
-    constraints: list[str] = Field(default_factory=list)
-    metadata: dict[str, Any] = Field(default_factory=dict)
+# =========================
+# Abraxas Bridge: SymbolicPatchEnvelope
+# =========================
+
+
+class SymbolicPatchEnvelope(PHBase):
+    """
+    The only symbolic surface exposed to Abraxas for a patch.
+    Must be derived mechanically from PatchGraph + PatchPlan later (not here).
+    """
+
+    patch_id: str
+    archetype_vector: Dict[str, float] = Field(default_factory=dict)  # e.g. {"Trickster":0.7,"Architect":0.2}
+    temporal_intensity_curve: List[float] = Field(default_factory=list)  # normalized 0..1
+    chaos_modulation_curve: List[float] = Field(default_factory=list)  # normalized 0..1
+    agency_distribution: Dict[str, float] = Field(default_factory=dict)  # e.g. {"performer":0.6,"automation":0.4}
+    closure_strength: float = Field(ge=0.0, le=1.0)
+    meta: FieldMeta

@@ -40,27 +40,6 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools]
 packages = [
     "core",
-    "admin",
-    "racks",
-    "cases",
-    "export",
-    "ingest",
-    "patches",
-    "modules",
-    "community",
-    "publishing",
-    "account",
-    "leaderboards",
-    "monetization",
-    "gallery",
-    "runs",
-    "patchhive",
-    "patchhive.gallery",
-    "patchhive.ops",
-    "patchhive.render",
-    "patchhive.runes",
-]
-
 [tool.black]
 line-length = 100
 target-version = ['py311']
