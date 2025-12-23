@@ -1,5 +1,5 @@
-"""PatchHive operations helpers."""
+"""PatchHive operations."""
 
-from .derive_patch_semantics import derive_patch_semantics, name_patch_v2
+from .ensure_gallery_sketch import ensure_sketch
 
-__all__ = ["derive_patch_semantics", "name_patch_v2"]
+__all__ = ["ensure_sketch"]

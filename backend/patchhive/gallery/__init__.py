@@ -1,4 +1,2 @@
-from .revisions import GalleryRevision, append_revision
-from .store import ModuleGalleryStore
+"""Module Gallery helpers."""
 
-__all__ = ["GalleryRevision", "append_revision", "ModuleGalleryStore"]

@@ -1,300 +1,247 @@
-"""
-Schema objects for deterministic patch semantics and rendering.
-"""
-from dataclasses import dataclass, field
+"""PatchHive canonical schemas (Pydantic)."""
+from __future__ import annotations
+
 from datetime import datetime
-from enum import Enum
-from typing import List, Optional, Sequence, Tuple, Union
+from typing import List, Optional, Literal, Dict
+
+from pydantic import BaseModel, Field, ConfigDict
 
 
-class SignalKind(str, Enum):
-    """Signal types used in patch semantics."""
-
-    audio = "audio"
-    cv = "cv"
-    random = "random"
-    lfo = "lfo"
-    clock = "clock"
-    envelope = "envelope"
-    gate = "gate"
+ProvenanceType = Literal["gemini", "gallery", "derived", "manual"]
+StatusType = Literal["confirmed", "inferred", "disputed", "missing"]
+RigSourceType = Literal["photo_gemini", "manual_picklist", "hybrid"]
+LayoutType = Literal["Beginner", "Performance", "Experimental"]
+SignalType = Literal["audio", "cv", "gate", "clock", "unknown"]
+DirectionType = Literal["input", "output", "bidir"]
+MatchMethod = Literal["exact", "fuzzy", "stub"]
 
 
-class SignalRate(str, Enum):
-    """Signal rate classification used in VL2 schemas."""
-
-    audio = "audio"
-    control = "control"
-
-
-class CableType(str, Enum):
-    """Cable types supported by patch diagrams."""
-
-    audio = "audio"
-    cv = "cv"
-    clock = "clock"
-    gate = "gate"
-
-
-class JackDir(str, Enum):
-    """Direction of a jack on a module."""
-
-    in_ = "in"
-    out = "out"
-
-
-class FieldStatus(str, Enum):
-    """Status of a field's provenance."""
-
-    confirmed = "confirmed"
-    inferred = "inferred"
-    unknown = "unknown"
-
-
-class ProvenanceType(str, Enum):
-    """Origins of a schema field."""
-
-    manual = "manual"
-    gallery = "gallery"
-    derived = "derived"
-
-
-class NormalledBehavior(str, Enum):
-    """Rules for normalled connections."""
-
-    break_on_insert = "break_on_insert"
-    hard_normalled = "hard_normalled"
-
-
-class RigSource(str, Enum):
-    """Origin of a rig specification."""
-
-    manual_picklist = "manual_picklist"
-
-
-@dataclass(frozen=True)
-class Provenance:
-    """Provenance record for a field."""
+class ProvenanceRecord(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
     type: ProvenanceType
+    model_version: Optional[str] = None
     timestamp: datetime
     evidence_ref: str
-    method: Optional[str] = None
 
 
-@dataclass(frozen=True)
-class FieldMeta:
-    """Metadata describing the source and confidence of a field."""
+class EvidenceBBox(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    provenance: Sequence[Provenance] = field(default_factory=list)
-    confidence: float = 1.0
-    status: FieldStatus = FieldStatus.unknown
+    image_id: str
+    bbox: List[float] = Field(..., min_length=4, max_length=4)
 
 
-@dataclass(frozen=True)
-class Signal:
-    """Signal metadata for a jack."""
+class DetectedModule(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    kind: SignalKind
-
-
-@dataclass(frozen=True)
-class Jack:
-    """Canonical representation of a jack on a module."""
-
-    jack_id: str
-    label: str
-    signal: Signal
+    temp_id: str
+    label_guess: str
+    brand_guess: Optional[str] = None
+    hp_guess: Optional[int] = None
+    position_guess: Optional[int] = None
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    evidence: EvidenceBBox
 
 
-@dataclass(frozen=True)
-class SignalContract:
-    """Detailed signal contract for module jacks."""
+class ResolvedModuleRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    kind: SignalKind
-    rate: SignalRate
-    range_v: Tuple[float, float]
-    polarity: str
-    meta: Optional[FieldMeta] = None
-
-
-@dataclass(frozen=True)
-class ModuleJack:
-    """Gallery jack definition."""
-
-    jack_id: str
-    label: str
-    dir: JackDir
-    signal: SignalContract
-    meta: FieldMeta
+    detected_id: str
+    gallery_module_id: Optional[str] = None
+    unknown_stub_id: Optional[str] = None
+    match_method: MatchMethod
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    status: StatusType
 
 
-@dataclass(frozen=True)
-class ModuleMode:
-    """Selectable mode for a module."""
+class JackSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    mode_id: str
-    label: str
-    jack_overrides: Optional[Sequence[ModuleJack]]
-    tags: Sequence[str]
-    meta: FieldMeta
-
-
-@dataclass(frozen=True)
-class PowerSpec:
-    """Power specification for a module."""
-
-    plus12_ma: Optional[float]
-    minus12_ma: Optional[float]
-    plus5_ma: Optional[float]
-    meta: FieldMeta
+    jack_id: Optional[str] = None
+    label: Optional[str] = None
+    name: str
+    signal_type: SignalType
+    direction: DirectionType
+    normalled_to: Optional[str] = None
 
 
-@dataclass(frozen=True)
-class ModuleGalleryEntry:
-    """Canonical gallery entry for a module."""
+class GalleryImageRef(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
+    url: str
+    kind: Literal["photo", "panel", "manual_upload", "unknown"] = "unknown"
+    meta: Optional[Dict[str, str]] = None
+
+
+class ModeProfile(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    capability_profile: List[str]
+
+
+class ModuleGalleryEntry(BaseModel):
+    model_config = ConfigDict(extra="forbid")
     module_gallery_id: str
     rev: datetime
     name: str
     manufacturer: str
-    hp: float
-    tags: Sequence[str]
-    power: PowerSpec
-    jacks: Sequence[ModuleJack]
-    modes: Sequence[ModuleMode]
-    images: Sequence[str]
-    sketch_svg: Optional[str]
-    provenance: Sequence[Provenance]
-    notes: Sequence[str]
+    hp: int
+    power: Optional[Dict[str, float]] = None
+    jacks: List[JackSpec]
+    modes: Optional[List[ModeProfile]] = None
+    images: List[GalleryImageRef] = Field(default_factory=list)
+    sketch_svg: Optional[str] = Field(
+        default=None,
+        description="Deterministic SVG sketch (plain box + jack circles + labels).",
+    )
+    provenance: List[ProvenanceRecord]
+    notes: List[str]
+
+    def to_canonical_dict(self) -> Dict[str, object]:
+        return self.model_dump(mode="json", by_alias=False)
 
 
-@dataclass(frozen=True)
-class JackRef:
-    """Reference to a jack on a module instance."""
+class RigSpecModule(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    instance_id: str
-    jack_id: str
-
-
-@dataclass(frozen=True)
-class Module:
-    """Module instance inside a canonical rig."""
-
-    instance_id: str
-    hp: float
-    jacks: Sequence[Jack] = field(default_factory=list)
+    module_gallery_id: Optional[str] = None
+    unknown_stub_id: Optional[str] = None
+    position_guess: Optional[int] = None
+    confidence: float = Field(..., ge=0.0, le=1.0)
+    provenance: ProvenanceRecord
+    status: StatusType
 
 
-@dataclass(frozen=True)
-class ObservedPlacement:
-    """Observed placement in a physical rack."""
+class RigSpec(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    row_index: int
-    start_hp: float
-
-
-@dataclass(frozen=True)
-class RigModuleInstance:
-    """Instance of a module used in a rig."""
-
-    instance_id: str
-    gallery_module_id: str
-    gallery_rev: Optional[datetime]
-    observed_placement: Optional[ObservedPlacement]
-    meta: FieldMeta
+    rig_id: str
+    source: RigSourceType
+    modules: List[RigSpecModule]
+    observed_layout: Optional[List[Dict[str, int]]] = None
+    provenance_summary: str
 
 
-@dataclass(frozen=True)
-class NormalledEdge:
-    """Explicit normalled edge defined in a rig."""
+class NormalledEdge(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
     from_jack: str
     to_jack: str
-    behavior: NormalledBehavior
-    meta: FieldMeta
+    break_on_insert: bool = True
 
 
-@dataclass(frozen=True)
-class RigSpec:
-    """Specification for a canonical rig."""
+class ModuleInstance(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    rig_id: str
-    name: str
-    source: RigSource
-    modules: Sequence[RigModuleInstance]
-    normalled_edges: Sequence[NormalledEdge]
-    provenance: Sequence[Provenance]
-    notes: Sequence[str]
+    stable_id: str
+    gallery_entry: ModuleGalleryEntry
+    capability_categories: List[str]
+    normalled_edges: List[NormalledEdge]
 
 
-@dataclass(frozen=True)
-class CanonicalJack:
-    """Canonical jack representation with provenance."""
-
-    jack_id: str
-    label: str
-    dir: JackDir
-    signal: SignalContract
-    meta: FieldMeta
-
-
-@dataclass(frozen=True)
-class CanonicalModule:
-    """Module inside a canonical rig."""
-
-    instance_id: str
-    module_gallery_id: str
-    module_rev: datetime
-    name: str
-    manufacturer: str
-    hp: float
-    tags: Sequence[str]
-    power: PowerSpec
-    jacks: Sequence[CanonicalJack]
-    modes: Sequence[ModuleMode]
-    observed_placement: Optional[ObservedPlacement]
-    meta: FieldMeta
-
-
-@dataclass(frozen=True)
-class CanonicalRig:
-    """Normalized module list used for semantic derivation and rendering."""
+class CanonicalRig(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
     rig_id: str
-    name: str
-    modules: Sequence[CanonicalModule] = field(default_factory=list)
-    normalled_edges: Sequence[NormalledEdge] = field(default_factory=list)
-    provenance: Sequence[Provenance] = field(default_factory=list)
+    stable_ids: List[str]
+    explicit_signal_contracts: List[str]
+    explicit_normalled_edges: List[NormalledEdge]
+    capability_surface: Dict[str, int]
+    modules: List[ModuleInstance]
 
 
-@dataclass(frozen=True)
-class Cable:
-    """Connection between two module jacks."""
+class RigMetricsPacket(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    from_jack: Union[JackRef, str]
-    to_jack: Union[JackRef, str]
-    type: CableType
-
-
-@dataclass(frozen=True)
-class PatchGraph:
-    """Patch graph for deterministic semantics."""
-
-    patch_id: str
-    cables: Sequence[Cable] = field(default_factory=list)
+    rig_id: str
+    module_count: int
+    category_counts: Dict[str, int]
+    modulation_budget: float
+    routing_flex_score: float
+    clock_coherence_score: float
+    chaos_headroom: float
+    learning_gradient_index: float
+    performance_density_index: float
 
 
-@dataclass(frozen=True)
-class Placement:
-    """Module placement in a diagram layout."""
+class ModulePlacement(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    instance_id: str
-    x_hp: float
+    module_id: str
     row: int
+    hp_offset: int
 
 
-@dataclass(frozen=True)
-class Layout:
-    """Row-aware layout of modules used by diagram rendering."""
+class SuggestedLayout(BaseModel):
+    model_config = ConfigDict(extra="forbid")
 
-    placements: List[Placement] = field(default_factory=list)
+    layout_type: LayoutType
+    placements: List[ModulePlacement]
+    total_score: float
+    score_breakdown: Dict[str, float]
+    rationale: str
+
+
+class PatchNode(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    module_id: str
+    label: str
+
+
+class PatchCable(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    from_module_id: str
+    from_port: str
+    to_module_id: str
+    to_port: str
+    cable_type: SignalType
+
+
+class PatchGraph(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    nodes: List[PatchNode]
+    cables: List[PatchCable]
+    macros: List[str]
+    timeline: List[str]
+    mode_selections: Dict[str, str]
+
+
+class PatchPlanSection(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    actions: List[str]
+
+
+class PatchPlan(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    intent: str
+    setup: List[str]
+    perform: List[PatchPlanSection]
+    warnings: List[str]
+    why_it_works: str
+
+
+class ValidationReport(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    illegal_connections: List[str]
+    silence_risk: bool
+    runaway_risk: bool
+    stability_score: float
+
+
+class SymbolicPatchEnvelope(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    archetype_vector: Dict[str, float]
+    temporal_intensity_curve: List[float]
+    chaos_modulation_curve: List[float]
+    agency_distribution: Dict[str, float]
+    closure_strength: float
