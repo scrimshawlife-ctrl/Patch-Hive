@@ -34,14 +34,20 @@ def _load_logo_svg() -> str | None:
     return None
 
 
+def get_branding_asset() -> bytes:
+    """
+    Return brand logo bytes if present, otherwise fallback wordmark SVG bytes.
+    """
+    logo_svg = _load_logo_svg()
+    if logo_svg:
+        return logo_svg.encode("utf-8")
+    fallback = WORDMARK_SVG.format(primary=BRAND_PRIMARY, accent=BRAND_ACCENT, font=BRAND_FONT)
+    return fallback.encode("utf-8")
+
+
 def get_patchbook_branding() -> PatchBookBranding:
     """Build PatchBook branding metadata."""
-    logo_svg = _load_logo_svg()
-    wordmark_svg = None
-    if logo_svg and "PatchHive" in logo_svg:
-        wordmark_svg = logo_svg
-    else:
-        wordmark_svg = WORDMARK_SVG.format(primary=BRAND_PRIMARY, accent=BRAND_ACCENT, font=BRAND_FONT)
+    wordmark_svg = get_branding_asset().decode("utf-8")
 
     return PatchBookBranding(
         primary_color=BRAND_PRIMARY,

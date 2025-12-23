@@ -40,7 +40,7 @@ class SystemPack:
     description: str
     patches: List[SystemPackPatch]
     schema_file: str
-    ontology: Dict[str, str]
+    ontology: Dict[str, Any]
 
 
 class SystemPackLoader:
@@ -133,6 +133,15 @@ class SystemPackLoader:
             )
             patches.append(patch)
 
+        ontology_files = manifest.get("ontology", {})
+        ontology: Dict[str, Any] = {}
+        for key, rel_path in ontology_files.items():
+            ontology_path = pack_dir / rel_path
+            if not ontology_path.exists():
+                raise FileNotFoundError(f"Ontology file not found: {ontology_path}")
+            with open(ontology_path, "r") as f:
+                ontology[key] = json.load(f)
+
         # Create pack object
         pack = SystemPack(
             name=manifest["name"],
@@ -142,7 +151,7 @@ class SystemPackLoader:
             description=manifest["description"],
             patches=patches,
             schema_file=str(pack_dir / manifest["schema"]["file"]),
-            ontology=manifest.get("ontology", {}),
+            ontology=ontology,
         )
 
         # Cache and return

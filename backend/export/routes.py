@@ -2,6 +2,7 @@
 FastAPI routes for export functionality (PDF, SVG).
 """
 
+from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
 
@@ -20,10 +21,8 @@ from runs.models import Run
 
 from .pdf import generate_patch_pdf, generate_rack_pdf
 from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
-from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
-from .patchbook.builder import build_patchbook_document, compute_patchbook_content_hash
+from .patchbook.build import build_patchbook_pdf_bytes_from_payload
 from .patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION
-from .patchbook.render_pdf import build_patchbook_pdf_bytes
 
 router = APIRouter()
 
@@ -96,27 +95,6 @@ def export_patch_diagram_svg(patch_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"SVG generation failed: {str(e)}")
 
 
-@router.get("/patches/{patch_id}/waveform.svg")
-def export_patch_waveform_svg(patch_id: int, db: Session = Depends(get_db)):
-    """Export patch waveform approximation as SVG."""
-    patch = db.query(Patch).filter(Patch.id == patch_id).first()
-    if not patch:
-        raise HTTPException(status_code=404, detail="Patch not found")
-
-    try:
-        # Infer waveform params from patch
-        has_lfo = any("lfo" in conn.get("from_port", "").lower() for conn in patch.connections)
-        has_envelope = any(
-            "envelope" in conn.get("from_port", "").lower() for conn in patch.connections
-        )
-        waveform_params = infer_waveform_params_from_patch(patch.category, has_lfo, has_envelope)
-
-        svg = generate_waveform_svg(waveform_params, seed=patch.generation_seed)
-        return Response(content=svg, media_type="image/svg+xml")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"SVG generation failed: {str(e)}")
-
-
 @router.post("/runs/{run_id}/patchbook")
 def export_patchbook_pdf(
     run_id: int,
@@ -141,6 +119,8 @@ def export_patchbook_pdf(
             "export_id": cached.id,
             "status": cached.status,
             "artifact_path": (cached.provenance or {}).get("artifact_path"),
+            "content_hash": cached.manifest_hash,
+            "template_version": PATCHBOOK_TEMPLATE_VERSION,
             "cached": True,
         }
 
@@ -155,8 +135,29 @@ def export_patchbook_pdf(
     if not rack:
         raise HTTPException(status_code=404, detail="Rack not found")
 
-    pdf_path = generate_rack_pdf(db, rack)
-    digest = sha256(Path(pdf_path).read_bytes()).hexdigest()
+    patches = (
+        db.query(Patch)
+        .filter(Patch.run_id == run.id)
+        .order_by(Patch.id.asc())
+        .all()
+    )
+    if not patches:
+        raise HTTPException(status_code=404, detail="No patches available for run")
+
+    payload = PatchBookExportRequest(
+        rack_id=rack.id, patch_ids=[patch.id for patch in patches]
+    )
+    try:
+        pdf_bytes, content_hash = build_patchbook_pdf_bytes_from_payload(db, payload)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    export_dir = Path(settings.export_dir)
+    export_dir.mkdir(parents=True, exist_ok=True)
+    timestamp = datetime.utcnow().strftime("%Y%m%d_%H%M%S")
+    pdf_path = export_dir / f"patchbook_run_{run.id}_{timestamp}.pdf"
+    pdf_path.write_bytes(pdf_bytes)
+    digest = sha256(pdf_bytes).hexdigest()
 
     export = Export(
         user_id=current_user.id,
@@ -165,8 +166,13 @@ def export_patchbook_pdf(
         export_type="patchbook",
         status="completed",
         credits_spent=settings.patchbook_export_cost,
-        manifest_hash=digest,
-        provenance={"artifact_path": pdf_path},
+        manifest_hash=content_hash,
+        provenance={
+            "artifact_path": str(pdf_path),
+            "content_hash": content_hash,
+            "template_version": PATCHBOOK_TEMPLATE_VERSION,
+            "file_hash": digest,
+        },
     )
     db.add(export)
     db.commit()
@@ -185,7 +191,9 @@ def export_patchbook_pdf(
     return {
         "export_id": export.id,
         "status": export.status,
-        "artifact_path": pdf_path,
+        "artifact_path": str(pdf_path),
+        "content_hash": content_hash,
+        "template_version": PATCHBOOK_TEMPLATE_VERSION,
         "cached": False,
     }
 
@@ -214,9 +222,10 @@ def export_patchbook_document(payload: PatchBookExportRequest, db: Session = Dep
     if not patches:
         raise HTTPException(status_code=404, detail="No patches available for rack")
 
-    content_hash = compute_patchbook_content_hash(payload)
-    document = build_patchbook_document(db, rack, patches, content_hash=content_hash)
-    pdf_bytes = build_patchbook_pdf_bytes(document)
+    try:
+        pdf_bytes, content_hash = build_patchbook_pdf_bytes_from_payload(db, payload)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
 
     return Response(
         content=pdf_bytes,

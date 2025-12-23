@@ -42,7 +42,16 @@ def build_wiring_list(connections: list[dict[str, Any]], modules: dict[int, Modu
                 cable_type=conn.get("cable_type", "audio"),
             )
         )
-    return wiring
+    return sorted(
+        wiring,
+        key=lambda item: (
+            item.from_module,
+            item.from_port,
+            item.to_module,
+            item.to_port,
+            item.cable_type,
+        ),
+    )
 
 
 def render_patch_schematic(

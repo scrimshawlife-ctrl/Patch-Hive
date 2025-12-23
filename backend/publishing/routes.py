@@ -22,7 +22,6 @@ from community.models import User
 from core import Provenance, get_db, settings
 from export.pdf import generate_patch_pdf, generate_rack_pdf
 from export.visualization import generate_patch_diagram_svg, generate_rack_layout_svg
-from export.waveform import generate_waveform_svg, infer_waveform_params_from_patch
 from patches.models import Patch
 from racks.models import Rack
 
@@ -89,26 +88,14 @@ def _create_export_from_patch(db: Session, patch: Patch, owner: User) -> Export:
         diagram_svg, f"patch_{patch.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.svg"
     )
 
-    has_lfo = any("lfo" in conn.get("from_port", "").lower() for conn in patch.connections)
-    has_envelope = any(
-        "envelope" in conn.get("from_port", "").lower() for conn in patch.connections
-    )
-    waveform_params = infer_waveform_params_from_patch(patch.category, has_lfo, has_envelope)
-    waveform_svg = generate_waveform_svg(waveform_params, seed=patch.generation_seed)
-    waveform_path = _write_svg(
-        waveform_svg,
-        f"patch_{patch.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}_waveform.svg",
-    )
-
     zip_path = _zip_artifacts(
-        [pdf_path, diagram_path, waveform_path],
+        [pdf_path, diagram_path],
         f"patch_{patch.id}_{datetime.utcnow().strftime('%Y%m%d_%H%M%S')}.zip",
     )
 
     artifact_urls = {
         "pdf": pdf_path,
         "svg": diagram_path,
-        "waveform_svg": waveform_path,
         "zip": zip_path,
     }
 

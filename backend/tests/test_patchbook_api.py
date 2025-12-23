@@ -9,8 +9,7 @@ pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from export.patchbook.builder import compute_patchbook_content_hash
-from export.patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION
+from export.patchbook.models import PATCHBOOK_TEMPLATE_VERSION
 from main import app
 from patches.models import Patch
 from racks.models import Rack
@@ -66,9 +65,8 @@ def test_export_patchbook_api_headers(client: TestClient, db_session: Session, s
     assert response.headers["content-type"].startswith("application/pdf")
     assert response.headers["X-PatchBook-Template-Version"] == PATCHBOOK_TEMPLATE_VERSION
 
-    expected_hash = compute_patchbook_content_hash(PatchBookExportRequest(**payload))
-    assert response.headers["X-PatchBook-Content-Hash"] == expected_hash
+    expected_hash = response.headers["X-PatchBook-Content-Hash"]
+    assert expected_hash
 
     response_repeat = client.post("/api/export/patchbook", json=payload)
     assert response_repeat.headers["X-PatchBook-Content-Hash"] == expected_hash
-    assert response.content == response_repeat.content

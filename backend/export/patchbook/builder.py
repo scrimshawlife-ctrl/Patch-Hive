@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-from hashlib import sha256
 from typing import Any
 
 from sqlalchemy.orm import Session
@@ -19,22 +17,10 @@ from .models import (
     PatchBookDocument,
     PatchBookHeader,
     PatchBookPage,
-    PatchBookExportRequest,
     PatchModulePosition,
 )
 from .patching_order import generate_patching_order
 from .render_schematic import render_patch_schematic
-from .models import PATCHBOOK_TEMPLATE_VERSION
-
-
-def compute_patchbook_content_hash(payload: PatchBookExportRequest) -> str:
-    """Compute deterministic content hash for PatchBook exports."""
-    payload_dict = payload.model_dump(mode="json")
-    if payload_dict.get("patch_ids"):
-        payload_dict["patch_ids"] = sorted(payload_dict["patch_ids"])
-    normalized_payload = json.dumps(payload_dict, sort_keys=True, separators=(",", ":"))
-    digest = sha256(f"{PATCHBOOK_TEMPLATE_VERSION}:{normalized_payload}".encode("utf-8")).hexdigest()
-    return digest
 
 
 def _build_module_inventory(rack_modules: list[RackModule], modules: dict[int, Module]) -> list[PatchModulePosition]:
@@ -133,12 +119,7 @@ def build_patchbook_document(
 
     pages: list[PatchBookPage] = []
     for patch in sorted(patches, key=lambda item: item.id):
-        used_module_ids = {
-            conn.get("from_module_id") for conn in patch.connections
-        } | {conn.get("to_module_id") for conn in patch.connections}
-        module_inventory = [
-            item for item in _build_module_inventory(rack_modules, modules) if item.module_id in used_module_ids
-        ]
+        module_inventory = _build_module_inventory(rack_modules, modules)
 
         header = PatchBookHeader(
             title=patch.name,
