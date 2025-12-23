@@ -53,6 +53,7 @@ packages = [
     "leaderboards",
     "monetization",
     "gallery",
+    "runs",
     "patchhive",
     "patchhive.gallery",
     "patchhive.ops",
@@ -76,11 +77,7 @@ warn_unused_configs = true
 disallow_untyped_defs = true
 
 [tool.pytest.ini_options]
-<<<<<<< HEAD
-testpaths = ["tests", "patchhive/runes/tests"]
-=======
-testpaths = ["tests", "patchhive/tests"]
->>>>>>> origin/codex/implement-patchhive-system-as-a-subsystem
+testpaths = ["tests", "patchhive/tests", "patchhive/runes/tests"]
 python_files = ["test_*.py"]
 python_classes = ["Test*"]
 python_functions = ["test_*"]

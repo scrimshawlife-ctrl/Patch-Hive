@@ -1,247 +1,263 @@
-"""PatchHive canonical schemas (Pydantic)."""
+"""Pydantic models for PatchHive rig ingestion and patch generation."""
+
 from __future__ import annotations
 
-from datetime import datetime
-from typing import List, Optional, Literal, Dict
+from datetime import datetime, timezone
+from enum import Enum
+from typing import Any, Generic, Literal, Optional, TypeVar
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field
 
-
-ProvenanceType = Literal["gemini", "gallery", "derived", "manual"]
-StatusType = Literal["confirmed", "inferred", "disputed", "missing"]
-RigSourceType = Literal["photo_gemini", "manual_picklist", "hybrid"]
-LayoutType = Literal["Beginner", "Performance", "Experimental"]
-SignalType = Literal["audio", "cv", "gate", "clock", "unknown"]
-DirectionType = Literal["input", "output", "bidir"]
-MatchMethod = Literal["exact", "fuzzy", "stub"]
+CONFIRM_THRESHOLD: float = 0.82
+DEFAULT_TIMESTAMP = datetime(1970, 1, 1, tzinfo=timezone.utc)
 
 
-class ProvenanceRecord(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class ProvenanceType(str, Enum):
+    GEMINI = "gemini"
+    GALLERY = "gallery"
+    DERIVED = "derived"
+    MANUAL = "manual"
 
+
+class ProvenanceStatus(str, Enum):
+    CONFIRMED = "confirmed"
+    INFERRED = "inferred"
+    DISPUTED = "disputed"
+    MISSING = "missing"
+
+
+class Provenance(BaseModel):
     type: ProvenanceType
     model_version: Optional[str] = None
-    timestamp: datetime
-    evidence_ref: str
+    timestamp: datetime = Field(default_factory=lambda: DEFAULT_TIMESTAMP)
+    evidence_ref: Optional[str] = None
 
 
-class EvidenceBBox(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    image_id: str
-    bbox: List[float] = Field(..., min_length=4, max_length=4)
+T = TypeVar("T")
 
 
-class DetectedModule(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class ProvenancedValue(BaseModel, Generic[T]):
+    value: Optional[T]
+    provenance: Provenance
+    confidence: float = Field(ge=0.0, le=1.0)
+    status: ProvenanceStatus
 
-    temp_id: str
-    label_guess: str
-    brand_guess: Optional[str] = None
-    hp_guess: Optional[int] = None
-    position_guess: Optional[int] = None
-    confidence: float = Field(..., ge=0.0, le=1.0)
-    evidence: EvidenceBBox
+    @classmethod
+    def missing(cls, provenance_type: ProvenanceType, evidence_ref: Optional[str] = None) -> "ProvenancedValue[T]":
+        return cls(
+            value=None,
+            provenance=Provenance(type=provenance_type, evidence_ref=evidence_ref),
+            confidence=0.0,
+            status=ProvenanceStatus.MISSING,
+        )
 
 
-class ResolvedModuleRef(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class JackDirection(str, Enum):
+    IN = "in"
+    OUT = "out"
+    BIDIRECTIONAL = "bidirectional"
 
-    detected_id: str
-    gallery_module_id: Optional[str] = None
-    unknown_stub_id: Optional[str] = None
-    match_method: MatchMethod
-    confidence: float = Field(..., ge=0.0, le=1.0)
-    status: StatusType
+
+class JackSignalType(str, Enum):
+    AUDIO = "audio"
+    CV = "cv"
+    GATE = "gate"
+    CLOCK = "clock"
+    TRIGGER = "trigger"
+    LOGIC = "logic"
+    UNKNOWN = "unknown"
 
 
 class JackSpec(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    jack_id: Optional[str] = None
-    label: Optional[str] = None
-    name: str
-    signal_type: SignalType
-    direction: DirectionType
+    jack_id: str
+    label: str
+    direction: JackDirection
+    signal_type: JackSignalType
     normalled_to: Optional[str] = None
 
 
-class GalleryImageRef(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    url: str
-    kind: Literal["photo", "panel", "manual_upload", "unknown"] = "unknown"
-    meta: Optional[Dict[str, str]] = None
-
-
-class ModeProfile(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    name: str
-    capability_profile: List[str]
+class ModeSpec(BaseModel):
+    mode_id: str
+    label: str
+    capability_profile: list[str] = Field(default_factory=list)
+    jack_overrides: list[JackSpec] = Field(default_factory=list)
 
 
-class ModuleGalleryEntry(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-    module_gallery_id: str
-    rev: datetime
-    name: str
-    manufacturer: str
-    hp: int
-    power: Optional[Dict[str, float]] = None
-    jacks: List[JackSpec]
-    modes: Optional[List[ModeProfile]] = None
-    images: List[GalleryImageRef] = Field(default_factory=list)
-    sketch_svg: Optional[str] = Field(
-        default=None,
-        description="Deterministic SVG sketch (plain box + jack circles + labels).",
-    )
-    provenance: List[ProvenanceRecord]
-    notes: List[str]
-
-    def to_canonical_dict(self) -> Dict[str, object]:
-        return self.model_dump(mode="json", by_alias=False)
-
-
-class RigSpecModule(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    module_gallery_id: Optional[str] = None
-    unknown_stub_id: Optional[str] = None
-    position_guess: Optional[int] = None
-    confidence: float = Field(..., ge=0.0, le=1.0)
-    provenance: ProvenanceRecord
-    status: StatusType
-
-
-class RigSpec(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    rig_id: str
-    source: RigSourceType
-    modules: List[RigSpecModule]
-    observed_layout: Optional[List[Dict[str, int]]] = None
-    provenance_summary: str
+class ModuleSection(BaseModel):
+    section_id: str
+    label: str
+    capability_profile: list[str] = Field(default_factory=list)
+    jacks: list[JackSpec] = Field(default_factory=list)
+    modes: list[ModeSpec] = Field(default_factory=list)
 
 
 class NormalledEdge(BaseModel):
-    model_config = ConfigDict(extra="forbid")
 
-    from_jack: str
-    to_jack: str
-    break_on_insert: bool = True
+class ModuleSpec(BaseModel):
+    module_id: str
+    name: str
+    manufacturer: Optional[str] = None
+    width_hp: Optional[int] = None
+    sections: list[ModuleSection] = Field(default_factory=list)
+    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
+    power_12v_ma: Optional[int] = None
+    power_minus12v_ma: Optional[int] = None
+    power_5v_ma: Optional[int] = None
 
 
-class ModuleInstance(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class RigModuleInput(BaseModel):
+    module_id: Optional[str] = None
+    name: ProvenancedValue[str]
+    manufacturer: Optional[ProvenancedValue[str]] = None
+    width_hp: Optional[ProvenancedValue[int]] = None
+    position_hint: Optional[ProvenancedValue[str]] = None
+    observed_photo_ref: Optional[str] = None
 
-    stable_id: str
-    gallery_entry: ModuleGalleryEntry
-    capability_categories: List[str]
-    normalled_edges: List[NormalledEdge]
+
+class RigSpec(BaseModel):
+    rig_id: str
+    modules: list[RigModuleInput]
+    notes: Optional[str] = None
+
+
+class CanonicalModule(BaseModel):
+    canonical_id: str
+    module_spec: ModuleSpec
+    provenance: Provenance
+    confidence: float = Field(ge=0.0, le=1.0)
+    status: ProvenanceStatus
+    observed_position: Optional[str] = None
 
 
 class CanonicalRig(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     rig_id: str
-    stable_ids: List[str]
-    explicit_signal_contracts: List[str]
-    explicit_normalled_edges: List[NormalledEdge]
-    capability_surface: Dict[str, int]
-    modules: List[ModuleInstance]
+    modules: list[CanonicalModule]
+    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
+
+
+class RigMetricsCategory(str, Enum):
+    SOURCES = "Sources"
+    SHAPERS = "Shapers"
+    CONTROLLERS = "Controllers"
+    MODULATORS = "Modulators"
+    ROUTERS_MIX = "Routers/Mix"
+    CLOCK_DOMAIN = "Clock Domain"
+    FX_SPACE = "FX/Space"
+    IO_EXTERNAL = "IO/External"
+    NORMALS_INTERNAL_BUSSES = "Normals/Internal Busses"
 
 
 class RigMetricsPacket(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
     rig_id: str
-    module_count: int
-    category_counts: Dict[str, int]
-    modulation_budget: float
-    routing_flex_score: float
-    clock_coherence_score: float
-    chaos_headroom: float
-    learning_gradient_index: float
-    performance_density_index: float
+    categories: dict[RigMetricsCategory, list[str]]
+    summary: dict[str, int]
 
 
-class ModulePlacement(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+class DetectedModule(BaseModel):
+    detection_id: str
+    name: ProvenancedValue[str]
+    manufacturer: Optional[ProvenancedValue[str]] = None
+    photo_position: Optional[ProvenancedValue[str]] = None
+    confidence: float = Field(ge=0.0, le=1.0)
 
+
+class ResolvedModuleRef(BaseModel):
+    detection_id: str
+    gallery_entry_id: Optional[str]
+    match_confidence: float = Field(ge=0.0, le=1.0)
+    status: ProvenanceStatus
+    module_spec: Optional[ModuleSpec] = None
+    provenance: Provenance
+
+
+class ModuleGalleryEntry(BaseModel):
+    entry_id: str
+    revision_id: str
+    previous_revision_id: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: DEFAULT_TIMESTAMP)
+    name: str
+    manufacturer: Optional[str] = None
+    spec: ModuleSpec
+    provenance: Provenance
+
+
+class SuggestedPlacement(BaseModel):
     module_id: str
     row: int
-    hp_offset: int
+    x_hp: int
+    observed: bool = False
 
 
 class SuggestedLayout(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    layout_type: LayoutType
-    placements: List[ModulePlacement]
-    total_score: float
-    score_breakdown: Dict[str, float]
-    rationale: str
-
+    layout_id: str
+    profile: str
+    placements: list[SuggestedPlacement]
+    score: float
+    breakdown: dict[str, float]
 
 class PatchNode(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+    node_id: str
     module_id: str
+    section_id: Optional[str] = None
+
+
+class PatchEdge(BaseModel):
+    edge_id: str
+    from_jack: str
+    to_jack: str
+    signal_type: JackSignalType
+    provenance: Provenance
+
+
+class PatchMacro(BaseModel):
+    macro_id: str
     label: str
+    description: str
+    nodes: list[str]
 
 
-class PatchCable(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    from_module_id: str
-    from_port: str
-    to_module_id: str
-    to_port: str
-    cable_type: SignalType
+class PatchTimelinePhase(BaseModel):
+    phase_id: Literal["prep", "threshold", "peak", "release", "seal"]
+    description: str
 
 
 class PatchGraph(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    rig_id: str
+    nodes: list[PatchNode]
+    edges: list[PatchEdge]
+    normalled_edges: list[NormalledEdge] = Field(default_factory=list)
+    macros: list[PatchMacro] = Field(default_factory=list)
+    timeline: list[PatchTimelinePhase] = Field(default_factory=list)
+    node_state: dict[str, dict[str, str]] = Field(default_factory=dict)
 
-    nodes: List[PatchNode]
-    cables: List[PatchCable]
-    macros: List[str]
-    timeline: List[str]
-    mode_selections: Dict[str, str]
 
-
-class PatchPlanSection(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    name: str
-    actions: List[str]
+class PatchStep(BaseModel):
+    phase_id: Literal["prep", "threshold", "peak", "release", "seal"]
+    instruction: str
 
 
 class PatchPlan(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
+    rig_id: str
     intent: str
-    setup: List[str]
-    perform: List[PatchPlanSection]
-    warnings: List[str]
-    why_it_works: str
+    steps: list[PatchStep]
+    closure: list[PatchTimelinePhase]
+
+
+class ValidationIssue(BaseModel):
+    code: str
+    message: str
+    severity: Literal["error", "warning"]
 
 
 class ValidationReport(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    illegal_connections: List[str]
-    silence_risk: bool
-    runaway_risk: bool
-    stability_score: float
+    rig_id: str
+    issues: list[ValidationIssue]
+    warnings: list[ValidationIssue]
+    stability_score: float = Field(ge=0.0, le=1.0)
 
 
-class SymbolicPatchEnvelope(BaseModel):
-    model_config = ConfigDict(extra="forbid")
-
-    archetype_vector: Dict[str, float]
-    temporal_intensity_curve: List[float]
-    chaos_modulation_curve: List[float]
-    agency_distribution: Dict[str, float]
-    closure_strength: float
+class PatchIntent(BaseModel):
+    description: str
+    goals: list[str] = Field(default_factory=list)
+    constraints: list[str] = Field(default_factory=list)
+    metadata: dict[str, Any] = Field(default_factory=dict)

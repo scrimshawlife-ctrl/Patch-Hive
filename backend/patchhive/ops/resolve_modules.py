@@ -1,75 +1,53 @@
-"""Resolve detections against Module Gallery."""
+"""Resolve detected modules to gallery references."""
+
 from __future__ import annotations
 
-import hashlib
-from typing import List
-
-from core.discovery import register_function
-from patchhive.schemas import DetectedModule, ResolvedModuleRef
-from patchhive.gallery.match import exact_match, fuzzy_match
-from patchhive.gallery.store import ModuleGalleryStore
-
-
-def _stub_id(label: str) -> str:
-    return f"unknown:{hashlib.sha256(label.encode()).hexdigest()[:12]}"
-
-
-def resolve_modules(
-    detected_modules: List[DetectedModule],
-    store: ModuleGalleryStore,
-) -> List[ResolvedModuleRef]:
-    gallery_entries = store.list_latest_entries()
-    resolved: List[ResolvedModuleRef] = []
-    for detected in sorted(detected_modules, key=lambda d: d.temp_id):
-        exact = exact_match(
-            gallery_entries,
-            manufacturer=detected.brand_guess,
-            name=detected.label_guess,
-        )
-        if exact:
-            resolved.append(
-                ResolvedModuleRef(
-                    detected_id=detected.temp_id,
-                    gallery_module_id=exact.module_gallery_id,
-                    match_method="exact",
-                    confidence=min(1.0, detected.confidence + 0.15),
-                    status="inferred",
-                )
-            )
-            continue
-        fuzzy = fuzzy_match(
-            gallery_entries,
-            manufacturer=detected.brand_guess,
-            name=detected.label_guess,
-            hp_guess=detected.hp_guess,
-        )
-        if fuzzy:
-            resolved.append(
-                ResolvedModuleRef(
-                    detected_id=detected.temp_id,
-                    gallery_module_id=fuzzy.module_gallery_id,
-                    match_method="fuzzy",
-                    confidence=min(1.0, detected.confidence * fuzzy.score),
-                    status="inferred",
-                )
-            )
-            continue
-        resolved.append(
-            ResolvedModuleRef(
-                detected_id=detected.temp_id,
-                unknown_stub_id=_stub_id(detected.label_guess),
-                match_method="stub",
-                confidence=detected.confidence,
-                status="missing",
-            )
-        )
-    return resolved
-
-
-register_function(
-    name="resolve_modules",
-    function=resolve_modules,
-    description="Resolve detected modules against the Module Gallery.",
-    input_model="List[DetectedModule], ModuleGalleryStore",
-    output_model="List[ResolvedModuleRef]",
+from patchhive.gallery.match import match_module
+from patchhive.schemas import (
+    CONFIRM_THRESHOLD,
+    DetectedModule,
+    Provenance,
+    ProvenanceStatus,
+    ProvenanceType,
+    ResolvedModuleRef,
 )
+
+
+def resolve_modules_v1(
+    detections: list[DetectedModule],
+    gallery_entries: list,
+) -> list[ResolvedModuleRef]:
+    resolved: list[ResolvedModuleRef] = []
+    for detection in detections:
+        name_value = detection.name.value or ""
+        manufacturer_value = detection.manufacturer.value if detection.manufacturer else None
+        candidates = match_module(name_value, manufacturer_value, gallery_entries)
+        if candidates:
+            match_entry, score = candidates[0]
+            status = (
+                ProvenanceStatus.CONFIRMED
+                if score >= CONFIRM_THRESHOLD
+                else ProvenanceStatus.DISPUTED
+            )
+            resolved.append(
+                ResolvedModuleRef(
+                    detection_id=detection.detection_id,
+                    gallery_entry_id=match_entry.entry_id,
+                    match_confidence=score,
+                    status=status,
+                    module_spec=match_entry.spec,
+                    provenance=Provenance(type=ProvenanceType.GALLERY),
+                )
+            )
+        else:
+            resolved.append(
+                ResolvedModuleRef(
+                    detection_id=detection.detection_id,
+                    gallery_entry_id=None,
+                    match_confidence=0.0,
+                    status=ProvenanceStatus.MISSING,
+                    module_spec=None,
+                    provenance=Provenance(type=ProvenanceType.GALLERY),
+                )
+            )
+    return resolved

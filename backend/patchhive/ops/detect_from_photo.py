@@ -1,64 +1,33 @@
-"""Photo ingestion via Gemini Vision wrapper."""
+"""Gemini detection wrapper for module identification from photos."""
+
 from __future__ import annotations
 
-import hashlib
-from dataclasses import dataclass
-from datetime import datetime
-from typing import List, Protocol, Optional
+from typing import Protocol, Sequence
 
-from patchhive.schemas import DetectedModule, EvidenceBBox
-from core.discovery import register_function
+from patchhive.schemas import DetectedModule
 
 
-@dataclass(frozen=True)
-class GeminiDetection:
-    label: str
-    brand: Optional[str]
-    hp: Optional[int]
-    position: Optional[int]
-    confidence: float
-    bbox: List[float]
+class GeminiClient(Protocol):
+    """Protocol for Gemini detection clients."""
+
+    def detect_modules_from_photo(self, photo_bytes: bytes) -> Sequence[DetectedModule]:
+        """Return detected modules from a photo."""
+        raise NotImplementedError
 
 
-class GeminiVisionClient(Protocol):
-    def detect_modules(self, image_bytes: bytes) -> List[GeminiDetection]:
-        ...
+class GeminiFixtureClient:
+    """Deterministic fixture client for tests."""
+
+    def __init__(self, fixtures: Sequence[DetectedModule]) -> None:
+        self._fixtures = list(fixtures)
+
+    def detect_modules_from_photo(self, photo_bytes: bytes) -> Sequence[DetectedModule]:
+        return list(self._fixtures)
 
 
-def _stable_temp_id(image_id: str, label: str, index: int) -> str:
-    seed = f"{image_id}:{label}:{index}".encode()
-    return hashlib.sha256(seed).hexdigest()[:12]
-
-
-def detect_modules_from_photo(
-    image_bytes: bytes,
-    image_id: str,
-    client: GeminiVisionClient,
-    timestamp: Optional[datetime] = None,
-) -> List[DetectedModule]:
-    detections = client.detect_modules(image_bytes)
-    ordered = sorted(detections, key=lambda d: (d.label, d.confidence), reverse=True)
-    detected_modules: List[DetectedModule] = []
-    for index, detection in enumerate(ordered):
-        detected_modules.append(
-            DetectedModule(
-                temp_id=_stable_temp_id(image_id, detection.label, index),
-                label_guess=detection.label,
-                brand_guess=detection.brand,
-                hp_guess=detection.hp,
-                position_guess=detection.position,
-                confidence=detection.confidence,
-                evidence=EvidenceBBox(image_id=image_id, bbox=detection.bbox),
-            )
-        )
-    _ = timestamp
-    return detected_modules
-
-
-register_function(
-    name="detect_modules_from_photo",
-    function=detect_modules_from_photo,
-    description="Run Gemini Vision detections for a rig photo.",
-    input_model="image_bytes, image_id, client",
-    output_model="List[DetectedModule]",
-)
+def detect_modules_from_photo_v1(
+    photo_bytes: bytes,
+    client: GeminiClient,
+) -> list[DetectedModule]:
+    """Detect modules using a Gemini-compatible client."""
+    return list(client.detect_modules_from_photo(photo_bytes))
