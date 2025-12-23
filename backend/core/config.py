@@ -35,6 +35,7 @@ class Settings(BaseSettings):
     patch_engine_version: str = "1.0.0"
     max_patches_per_generation: int = 20
     default_generation_seed: int = 42
+    patchbook_export_cost: int = 3
 
     # File Storage
     export_dir: str = "./exports"
@@ -43,6 +44,9 @@ class Settings(BaseSettings):
     # ABX-Core / SEED
     abx_core_version: str = "1.3"
     enforce_seed_traceability: bool = True
+
+    # Test mode
+    test_mode: bool = False
 
     # Git tracking (optional, for provenance)
     git_commit: str = ""  # Set by environment or CI/CD

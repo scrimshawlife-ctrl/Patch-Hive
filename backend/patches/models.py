@@ -20,6 +20,7 @@ class Patch(Base):
 
     # Association with rack
     rack_id = Column(Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True)
+    run_id = Column(Integer, ForeignKey("runs.id", ondelete="SET NULL"), nullable=True, index=True)
 
     # Metadata
     name = Column(String(200), nullable=False)  # Auto-generated or user-specified
@@ -59,6 +60,7 @@ class Patch(Base):
 
     # Sharing
     is_public = Column(Boolean, default=False, nullable=False)
+    tags = Column(JSON, nullable=False, default=list)
 
     # Timestamps
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)

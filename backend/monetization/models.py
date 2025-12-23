@@ -35,6 +35,7 @@ class Export(Base):
     user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
     patch_id = Column(Integer, ForeignKey("patches.id", ondelete="SET NULL"), nullable=True, index=True)
     rack_id = Column(Integer, ForeignKey("racks.id", ondelete="SET NULL"), nullable=True, index=True)
+    run_id = Column(Integer, ForeignKey("runs.id", ondelete="SET NULL"), nullable=True, index=True)
     export_type = Column(String(50), nullable=False)
     status = Column(String(30), nullable=False, default="completed")
     credits_spent = Column(Integer, nullable=False, default=0)

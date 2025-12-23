@@ -1,0 +1,60 @@
+{
+  "fixture_version": "1.0",
+  "name": "Golden Demo \u2014 Patch Book Builder",
+  "seed": 13371337,
+  "rig": {
+    "suggested_name_hint": "Voltage Lab Control Rack",
+    "case": {
+      "id": 2001,
+      "rows": 2,
+      "row_hp": 104
+    },
+    "modules": [
+      {
+        "module_id": 1001,
+        "qty": 1
+      },
+      {
+        "module_id": 1002,
+        "qty": 1
+      },
+      {
+        "module_id": 1003,
+        "qty": 1
+      },
+      {
+        "module_id": 1004,
+        "qty": 1
+      },
+      {
+        "module_id": 1005,
+        "qty": 1
+      },
+      {
+        "module_id": 1006,
+        "qty": 1
+      },
+      {
+        "module_id": 1007,
+        "qty": 1
+      },
+      {
+        "module_id": 1008,
+        "qty": 1
+      },
+      {
+        "module_id": 1009,
+        "qty": 1
+      }
+    ]
+  },
+  "expected_minimums": {
+    "min_patches": 10,
+    "min_with_diagrams": 10,
+    "allow_humor": true
+  },
+  "expected_hashes": {
+    "run_fingerprint": "5a86f08e31c60eebe72b673115decc12bfd24494f240af5f411c71f0f940468d",
+    "patch_count": 20
+  }
+}
