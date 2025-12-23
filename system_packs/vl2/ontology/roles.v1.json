@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "description": "Signal and module role taxonomy for PatchHive",
+  "roles": {
+    "source": {
+      "description": "Primary signal generators",
+      "examples": ["oscillator", "noise generator", "sample player"]
+    },
+    "modulation": {
+      "description": "Signals that modify other signals",
+      "examples": ["LFO", "envelope", "function generator", "sequencer CV"]
+    },
+    "timing": {
+      "description": "Clock, gate, and trigger signals that control time",
+      "examples": ["clock", "gate", "trigger", "tempo sync"]
+    },
+    "transformation": {
+      "description": "Signal processors that transform audio or CV",
+      "examples": ["filter", "waveshaper", "bitcrusher", "ring modulator", "sync"]
+    },
+    "dynamics": {
+      "description": "Amplitude and dynamics control",
+      "examples": ["VCA", "LPG", "envelope follower", "compressor"]
+    },
+    "control": {
+      "description": "Human interface and macro controls",
+      "examples": ["touch controller", "CV input", "parameter automation"]
+    },
+    "probability": {
+      "description": "Randomness and chance-based signals",
+      "examples": ["chance sequencer", "random CV", "bernoulli gate"]
+    },
+    "utility": {
+      "description": "Signal routing and utility functions",
+      "examples": ["mixer", "mult", "inverter", "attenuator", "offset"]
+    },
+    "feedback": {
+      "description": "Recursive signal paths",
+      "examples": ["output to modulation input", "self-patching"]
+    }
+  }
+}

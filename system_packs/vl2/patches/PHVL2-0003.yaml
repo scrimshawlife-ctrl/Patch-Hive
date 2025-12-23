@@ -1,0 +1,133 @@
+id: PHVL2-0003
+name: Polyrhythmic Layers
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Create complex polyrhythmic textures using multiple clock divisions driving independent voices
+tags:
+  - temporal
+  - rhythmic
+  - clocked
+  - layered
+
+modules:
+  oscillators:
+    osc1:
+      waveform: square
+      frequency: 0.3
+      tracking: free
+    osc2:
+      waveform: saw
+      frequency: 0.6
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: stepped
+      rate: 0.5
+      quantize: true
+      mode: clocked
+    fg2:
+      shape: saw
+      rate: 0.33
+      mode: clocked
+    fg3:
+      shape: triangle
+      rate: 0.25
+      mode: clocked
+    fg4:
+      shape: random
+      rate: 0.125
+      mode: clocked
+
+  clock:
+    bpm: 128
+    division: sixteenth
+    swing: 0.15
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+      - name: div4
+        active: true
+      - name: mult2
+        active: true
+
+  dynamics:
+    attack: 0.01
+    decay: 0.2
+    response: exponential
+    mode: lpg
+
+  interplay:
+    sync:
+      enabled: true
+      source: osc1
+      target: osc2
+      mode: hard
+
+wiring:
+  - from: clock.main
+    to: fg1.clock
+    type: clock
+    role: timing
+
+  - from: clock.div2
+    to: fg2.clock
+    type: clock
+    role: timing
+
+  - from: clock.div4
+    to: fg3.clock
+    type: clock
+    role: timing
+
+  - from: clock.mult2
+    to: fg4.clock
+    type: clock
+    role: timing
+
+  - from: fg1.cv
+    to: osc1.cv
+    amount: 0.8
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc2.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: dynamics.cv
+    amount: 0.7
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: osc1.fm
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: clock.main
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+notes: |
+  Polyrhythmic exploration using clock divisions:
+  - Four function generators running at different clock divisions
+  - FG1 (main clock) controls OSC1 pitch in steps
+  - FG2 (÷2) controls OSC2 pitch with smoother saw
+  - FG3 (÷4) modulates dynamics for slow amplitude waves
+  - FG4 (×2) adds high-frequency FM modulation
+  - Hard sync from OSC1 to OSC2 creates harmonic alignment
+  - Swing adds groove to the rhythm

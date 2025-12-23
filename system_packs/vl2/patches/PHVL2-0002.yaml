@@ -1,0 +1,125 @@
+id: PHVL2-0002
+name: Stochastic Melodies
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Explore probability-driven melodic generation using chance sequencer with varying trigger likelihood
+tags:
+  - probabilistic
+  - generative
+  - melodic
+  - temporal
+
+modules:
+  oscillators:
+    osc1:
+      waveform: triangle
+      frequency: 0.5
+      tracking: 1v/oct
+    osc2:
+      waveform: pulse
+      frequency: 0.501
+      pulseWidth: 0.3
+      tracking: 1v/oct
+
+  functionGenerators:
+    fg1:
+      shape: random
+      rate: 0.25
+      mode: clocked
+    fg2:
+      shape: sine
+      rate: 0.05
+      symmetry: 0.5
+      mode: free
+
+  chanceSequencer:
+    mode: forward
+    range: unipolar
+    steps:
+      - probability: 0.9
+        value: 0.0
+      - probability: 0.6
+        value: 0.25
+      - probability: 0.8
+        value: 0.4
+      - probability: 0.4
+        value: 0.5
+      - probability: 0.7
+        value: 0.6
+      - probability: 0.5
+        value: 0.75
+      - probability: 0.3
+        value: 0.85
+      - probability: 0.6
+        value: 1.0
+
+  clock:
+    bpm: 110
+    division: eighth
+    swing: 0.0
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+
+  dynamics:
+    attack: 0.05
+    decay: 0.4
+    response: exponential
+    mode: envelope
+
+wiring:
+  - from: clock.main
+    to: chanceSequencer.clock
+    type: clock
+    role: timing
+
+  - from: clock.main
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+  - from: chanceSequencer.cv
+    to: osc1.cv
+    amount: 1.0
+    type: cv
+    role: modulation
+
+  - from: chanceSequencer.cv
+    to: osc2.cv
+    amount: 1.0
+    type: cv
+    role: modulation
+
+  - from: fg1.cv
+    to: osc2.pwm
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: chanceSequencer.probability
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: dynamics.in
+    amount: 0.5
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 0.5
+    type: audio
+    role: source
+
+notes: |
+  Probabilistic melodic generator:
+  - Chance sequencer creates evolving melodic patterns
+  - Varying step probabilities create density fluctuations
+  - FG2 modulates global probability for macro-evolution
+  - Dual oscillators detuned for warmth
+  - Clock-synced dynamics for rhythmic articulation

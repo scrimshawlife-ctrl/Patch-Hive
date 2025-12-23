@@ -1,0 +1,150 @@
+id: PHVL2-0005
+name: Chaotic Rhythms
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Generate unpredictable rhythmic patterns through probability and brownian sequencing
+tags:
+  - probabilistic
+  - chaotic
+  - percussive
+  - generative
+
+modules:
+  oscillators:
+    osc1:
+      waveform: pulse
+      frequency: 0.1
+      pulseWidth: 0.1
+      tracking: free
+    osc2:
+      waveform: noise
+      frequency: 0.0
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: random
+      rate: 0.4
+      mode: triggered
+    fg2:
+      shape: stepped
+      rate: 0.3
+      quantize: true
+      mode: clocked
+    fg3:
+      shape: random
+      rate: 0.15
+      mode: free
+
+  chanceSequencer:
+    mode: brownian
+    range: bipolar
+    steps:
+      - probability: 0.5
+        value: 0.1
+      - probability: 0.7
+        value: 0.2
+      - probability: 0.3
+        value: 0.4
+      - probability: 0.8
+        value: 0.6
+      - probability: 0.2
+        value: 0.8
+      - probability: 0.9
+        value: 1.0
+
+  clock:
+    bpm: 140
+    division: sixteenth
+    swing: 0.2
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+
+  dynamics:
+    attack: 0.001
+    decay: 0.15
+    response: exponential
+    mode: lpg
+
+  interplay:
+    bitcrush:
+      enabled: true
+      bits: 6
+      sampleRate: 0.4
+
+wiring:
+  - from: clock.main
+    to: chanceSequencer.clock
+    type: clock
+    role: timing
+
+  - from: chanceSequencer.gate
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+  - from: chanceSequencer.gate
+    to: fg1.trigger
+    type: trigger
+    role: timing
+
+  - from: clock.div2
+    to: fg2.clock
+    type: clock
+    role: timing
+
+  - from: fg1.cv
+    to: osc1.pwm
+    amount: 0.8
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc1.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: chanceSequencer.probability
+    amount: 0.7
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: interplay.bitcrush.bits
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: interplay.bitcrush.in
+    amount: 0.7
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: interplay.bitcrush.in
+    amount: 0.3
+    type: audio
+    role: source
+
+  - from: interplay.bitcrush.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: transformation
+
+notes: |
+  Chaotic rhythm generator:
+  - Brownian chance sequencer creates wandering gate patterns
+  - Probability varied continuously by FG3
+  - FG1 (random, triggered) modulates pulse width on gate
+  - FG2 (stepped, clocked) creates pitch variations
+  - Noise mixed with pulse for percussive texture
+  - Bitcrusher adds digital degradation
+  - FG3 also modulates bitcrush depth for timbral chaos
+  - Fast attack/decay on dynamics for percussive hits

@@ -1,0 +1,146 @@
+id: PHVL2-0012
+name: Recursive Feedback Network
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Explore chaotic and self-organizing behavior through multi-stage feedback routing
+tags:
+  - feedback-driven
+  - chaotic
+  - experimental
+  - complex
+
+modules:
+  oscillators:
+    osc1:
+      waveform: triangle
+      frequency: 0.3
+      tracking: free
+    osc2:
+      waveform: saw
+      frequency: 0.45
+      tracking: free
+
+  functionGenerators:
+    fg1:
+      shape: random
+      rate: 0.2
+      mode: free
+    fg2:
+      shape: sine
+      rate: 0.15
+      symmetry: 0.5
+      mode: free
+    fg3:
+      shape: stepped
+      rate: 0.12
+      quantize: true
+      mode: free
+    fg4:
+      shape: triangle
+      rate: 0.08
+      symmetry: 0.5
+      mode: free
+
+  dynamics:
+    attack: 0.1
+    decay: 0.5
+    response: linear
+    mode: vca
+
+  interplay:
+    sync:
+      enabled: true
+      source: osc1
+      target: osc2
+      mode: soft
+    ringMod:
+      enabled: true
+      carrier: osc1.out
+      modulator: osc2.out
+      depth: 0.5
+    feedback:
+      enabled: true
+      source: dynamics.out
+      destination: osc1.fm
+      amount: 0.4
+
+wiring:
+  - from: osc2.out
+    to: osc1.fm
+    amount: 0.6
+    type: audio
+    role: modulation
+
+  - from: osc1.out
+    to: osc2.fm
+    amount: 0.5
+    type: audio
+    role: feedback
+
+  - from: fg1.cv
+    to: osc1.cv
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc2.cv
+    amount: 0.3
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: interplay.sync.mode
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: interplay.ringMod.depth
+    amount: 0.7
+    type: cv
+    role: modulation
+
+  - from: interplay.ringMod.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: dynamics.out
+    to: osc1.fm
+    amount: 0.4
+    type: audio
+    role: feedback
+
+  - from: dynamics.out
+    to: fg1.reset
+    amount: 0.3
+    type: cv
+    role: feedback
+
+  - from: fg2.cv
+    to: dynamics.cv
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: dynamics.gate
+    type: gate
+    role: timing
+
+notes: |
+  Complex feedback network:
+  - Cross-coupled FM between OSC1 and OSC2
+  - Soft sync from OSC1 to OSC2
+  - Ring modulation of both oscillators
+  - Output feeds back to OSC1 FM (recursive audio path)
+  - Output also triggers FG1 reset (CV feedback)
+  - Four function generators provide autonomous evolution
+  - FG3 modulates sync behavior
+  - FG4 modulates ring mod depth and gates dynamics
+  - Multiple feedback paths create chaotic behavior
+  - Can self-organize into stable patterns or remain chaotic
+  - Demonstrates feedback as compositional architecture
+  - Most complex patch in reference set

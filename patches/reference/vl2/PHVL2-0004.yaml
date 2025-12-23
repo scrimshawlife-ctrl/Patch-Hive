@@ -1,0 +1,128 @@
+id: PHVL2-0004
+name: Expressive Touch
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Maximize gestural control through touch interface for real-time expressive performance
+tags:
+  - gestural
+  - performance
+  - responsive
+  - harmonic
+
+modules:
+  oscillators:
+    osc1:
+      waveform: sine
+      frequency: 0.5
+      tracking: 1v/oct
+    osc2:
+      waveform: triangle
+      frequency: 0.5
+      tracking: 1v/oct
+
+  functionGenerators:
+    fg1:
+      shape: sine
+      rate: 0.2
+      symmetry: 0.5
+      mode: free
+
+  touchController:
+    mode: xy-pad
+    zones:
+      - id: pitch
+        outputType: cv
+        range:
+          min: 0
+          max: 5
+        responseType: exponential
+      - id: brightness
+        outputType: cv
+        range:
+          min: 0
+          max: 1
+        responseType: linear
+      - id: pressure
+        outputType: pressure
+        range:
+          min: 0
+          max: 1
+        responseType: exponential
+      - id: timbre
+        outputType: cv
+        range:
+          min: 0
+          max: 1
+        responseType: logarithmic
+
+  dynamics:
+    attack: 0.02
+    decay: 0.8
+    response: logarithmic
+    mode: lpg
+
+  interplay:
+    ringMod:
+      enabled: true
+      carrier: osc1.out
+      modulator: osc2.out
+      depth: 0.5
+
+wiring:
+  - from: touchController.pitch
+    to: osc1.cv
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: touchController.pitch
+    to: osc2.cv
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: touchController.brightness
+    to: osc2.fm
+    amount: 0.8
+    type: cv
+    role: control
+
+  - from: touchController.pressure
+    to: dynamics.cv
+    amount: 1.0
+    type: pressure
+    role: control
+
+  - from: touchController.timbre
+    to: interplay.ringMod.depth
+    amount: 1.0
+    type: cv
+    role: control
+
+  - from: fg1.cv
+    to: osc1.fm
+    amount: 0.3
+    type: cv
+    role: modulation
+
+  - from: interplay.ringMod.out
+    to: dynamics.in
+    amount: 1.0
+    type: audio
+    role: source
+
+  - from: touchController.pressure
+    to: dynamics.gate
+    type: gate
+    role: control
+
+notes: |
+  Gesture-focused performance patch:
+  - XY pad provides pitch control for both oscillators (tracked)
+  - Brightness parameter controls FM amount on OSC2
+  - Pressure controls dynamics envelope and gate
+  - Timbre parameter controls ring modulation depth
+  - FG1 adds subtle autonomous FM movement
+  - Ring modulation between OSC1 and OSC2 creates harmonic complexity
+  - All touch parameters are continuously variable
+  - Designed for real-time improvisation

@@ -12,3 +12,4 @@ svglib
 pillow
 email-validator
 httpx
+pyyaml

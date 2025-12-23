@@ -1,0 +1,136 @@
+id: PHVL2-0006
+name: Phase Drift
+system: voltage-lab-2
+schemaVersion: vl2.v1
+intent: Explore evolving phase relationships between clocked modulators creating temporal emergence
+tags:
+  - temporal
+  - evolving
+  - clocked
+  - ambient
+
+modules:
+  oscillators:
+    osc1:
+      waveform: sine
+      frequency: 0.35
+      tracking: 1v/oct
+    osc2:
+      waveform: triangle
+      frequency: 0.7
+      tracking: 1v/oct
+
+  functionGenerators:
+    fg1:
+      shape: sine
+      rate: 0.6
+      symmetry: 0.5
+      mode: clocked
+    fg2:
+      shape: triangle
+      rate: 0.45
+      symmetry: 0.6
+      mode: clocked
+    fg3:
+      shape: saw
+      rate: 0.33
+      symmetry: 0.5
+      mode: clocked
+    fg4:
+      shape: ramp
+      rate: 0.025
+      symmetry: 0.5
+      mode: free
+
+  clock:
+    bpm: 60
+    division: quarter
+    swing: 0.0
+    outputs:
+      - name: main
+        active: true
+      - name: div2
+        active: true
+      - name: div4
+        active: true
+
+  dynamics:
+    attack: 0.3
+    decay: 1.0
+    response: logarithmic
+    mode: lpg
+
+wiring:
+  - from: clock.main
+    to: fg1.clock
+    type: clock
+    role: timing
+
+  - from: clock.main
+    to: fg2.clock
+    type: clock
+    role: timing
+
+  - from: clock.div2
+    to: fg3.clock
+    type: clock
+    role: timing
+
+  - from: fg1.cv
+    to: osc1.cv
+    amount: 0.5
+    type: cv
+    role: modulation
+
+  - from: fg2.cv
+    to: osc2.cv
+    amount: 0.6
+    type: cv
+    role: modulation
+
+  - from: fg3.cv
+    to: osc1.fm
+    amount: 0.4
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: clock.bpm
+    amount: 0.2
+    type: cv
+    role: modulation
+
+  - from: fg4.cv
+    to: fg2.symmetry
+    amount: 0.3
+    type: cv
+    role: modulation
+
+  - from: osc1.out
+    to: dynamics.in
+    amount: 0.6
+    type: audio
+    role: source
+
+  - from: osc2.out
+    to: dynamics.in
+    amount: 0.4
+    type: audio
+    role: source
+
+  - from: fg3.cv
+    to: dynamics.cv
+    amount: 0.5
+    type: cv
+    role: modulation
+
+notes: |
+  Temporal phase evolution:
+  - Three clocked function generators at different rates
+  - FG1 and FG2 run at same clock but different internal rates
+  - FG3 at half clock rate creates slow phase drift
+  - FG4 (free-running) modulates clock tempo for macro-evolution
+  - FG4 also modulates FG2 symmetry, affecting phase relationships
+  - Dual oscillators create harmonic interval
+  - Results in slowly evolving, self-similar patterns
+  - Long dynamics decay sustains harmonic motion
