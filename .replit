@@ -1,0 +1,18 @@
+run = "cd backend && uvicorn main:app --host 0.0.0.0 --port 3000"
+entrypoint = "backend/main.py"
+modules = ["python-3.11"]
+
+[nix]
+channel = "stable-23_11"
+
+[deployment]
+run = ["sh", "-c", "cd backend && uvicorn main:app --host 0.0.0.0 --port 3000"]
+deploymentTarget = "cloudrun"
+
+[[ports]]
+localPort = 3000
+externalPort = 80
+
+[env]
+EXPORT_DIR = "/tmp/exports"
+PYTHONPATH = "/home/runner/${REPL_SLUG}/backend"

@@ -18,7 +18,13 @@ from patches.models import Patch
 from racks.models import Rack
 from runs.models import Run
 
-from .pdf import generate_patch_pdf, generate_rack_pdf
+from .pdf import (
+    PATCHBOOK_TEMPLATE_VERSION,
+    build_patchbook_pdf_bytes,
+    compute_patchbook_content_hash,
+    generate_patch_pdf,
+    generate_rack_pdf,
+)
 from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
 from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
 
@@ -121,15 +127,34 @@ def export_patchbook_pdf(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_auth),
 ):
-    """Export a patch book PDF for a run (credit gated)."""
+    """
+    Export a patch book PDF for a run (credit gated).
+
+    PAID FEATURE - Returns deterministic PDF with:
+    - Template version header
+    - Content hash for cache validation
+    - Sorted patches for reproducibility
+    """
     run = db.query(Run).filter(Run.id == run_id).first()
     if not run:
         raise HTTPException(status_code=404, detail="Run not found")
 
+    rack = db.query(Rack).filter(Rack.id == run.rack_id).first()
+    if not rack:
+        raise HTTPException(status_code=404, detail="Rack not found")
+
+    # Compute content hash before checking cache
+    patch_ids = [p.id for p in db.query(Patch).filter(Patch.rack_id == rack.id).all()]
+    content_hash = compute_patchbook_content_hash(rack.id, patch_ids)
+
+    # Check for cached export with matching content hash
     cached = (
         db.query(Export)
         .filter(
-            Export.run_id == run_id, Export.export_type == "patchbook", Export.status == "completed"
+            Export.run_id == run_id,
+            Export.export_type == "patchbook",
+            Export.status == "completed",
+            Export.manifest_hash == content_hash,
         )
         .first()
     )
@@ -138,6 +163,8 @@ def export_patchbook_pdf(
             "export_id": cached.id,
             "status": cached.status,
             "artifact_path": (cached.provenance or {}).get("artifact_path"),
+            "content_hash": content_hash,
+            "template_version": PATCHBOOK_TEMPLATE_VERSION,
             "cached": True,
         }
 
@@ -148,12 +175,8 @@ def export_patchbook_pdf(
     if force_fail and settings.test_mode:
         raise HTTPException(status_code=500, detail="Forced export failure")
 
-    rack = db.query(Rack).filter(Rack.id == run.rack_id).first()
-    if not rack:
-        raise HTTPException(status_code=404, detail="Rack not found")
-
+    # Generate deterministic PDF to disk
     pdf_path = generate_rack_pdf(db, rack)
-    digest = sha256(Path(pdf_path).read_bytes()).hexdigest()
 
     export = Export(
         user_id=current_user.id,
@@ -162,8 +185,12 @@ def export_patchbook_pdf(
         export_type="patchbook",
         status="completed",
         credits_spent=settings.patchbook_export_cost,
-        manifest_hash=digest,
-        provenance={"artifact_path": pdf_path},
+        manifest_hash=content_hash,
+        provenance={
+            "artifact_path": pdf_path,
+            "template_version": PATCHBOOK_TEMPLATE_VERSION,
+            "patch_count": len(patch_ids),
+        },
     )
     db.add(export)
     db.commit()
@@ -183,5 +210,7 @@ def export_patchbook_pdf(
         "export_id": export.id,
         "status": export.status,
         "artifact_path": pdf_path,
+        "content_hash": content_hash,
+        "template_version": PATCHBOOK_TEMPLATE_VERSION,
         "cached": False,
     }
