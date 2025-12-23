@@ -11,19 +11,21 @@ Strategy:
 The catalog is lightweight - just enough info to browse/search.
 Full specs fetched on-demand when user adds module to rack.
 """
-from sqlalchemy.orm import Session
-from typing import Dict, Any, List
 
+from typing import Any, Dict, List
+
+from sqlalchemy.orm import Session
+
+from cases.models import Case  # noqa: F401
+from community.models import Comment, User, Vote  # noqa: F401
 from core.database import SessionLocal
-from modules.catalog import ModuleCatalog
 from integrations.modulargrid_data import MODULES_DATABASE
+from modules.catalog import ModuleCatalog
 
 # Import all models to register them with SQLAlchemy before querying
 from modules.models import Module  # noqa: F401
-from cases.models import Case  # noqa: F401
-from racks.models import Rack, RackModule  # noqa: F401
 from patches.models import Patch  # noqa: F401
-from community.models import User, Vote, Comment  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
 
 
 def populate_catalog_from_curated_modules(db: Session) -> Dict[str, Any]:
@@ -85,13 +87,13 @@ def import_from_modulargrid_csv(db: Session, csv_path: str) -> Dict[str, Any]:
     errors = []
 
     try:
-        with open(csv_path, 'r', encoding='utf-8') as f:
+        with open(csv_path, "r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
 
             for row in reader:
                 try:
-                    brand = row.get('Brand', '').strip()
-                    name = row.get('Module', '').strip()
+                    brand = row.get("Brand", "").strip()
+                    name = row.get("Module", "").strip()
 
                     if not brand or not name:
                         continue
@@ -105,7 +107,7 @@ def import_from_modulargrid_csv(db: Session, csv_path: str) -> Dict[str, Any]:
                         continue
 
                     # Parse HP
-                    hp_str = row.get('HP', '').strip()
+                    hp_str = row.get("HP", "").strip()
                     try:
                         hp = int(hp_str) if hp_str else None
                     except ValueError:
@@ -117,9 +119,9 @@ def import_from_modulargrid_csv(db: Session, csv_path: str) -> Dict[str, Any]:
                         brand=brand,
                         name=name,
                         hp=hp,
-                        category=row.get('Category', '').strip() or None,
-                        image_url=row.get('Image URL', '').strip() or None,
-                        modulargrid_url=row.get('ModularGrid URL', '').strip() or None,
+                        category=row.get("Category", "").strip() or None,
+                        image_url=row.get("Image URL", "").strip() or None,
+                        modulargrid_url=row.get("ModularGrid URL", "").strip() or None,
                         is_available="available",
                     )
 
@@ -162,7 +164,7 @@ def populate_catalog_auto(db: Session) -> Dict[str, Any]:
         return {
             "status": "already_populated",
             "count": current_count,
-            "message": f"Catalog already has {current_count} modules"
+            "message": f"Catalog already has {current_count} modules",
         }
 
     # Populate from curated modules

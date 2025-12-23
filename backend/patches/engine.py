@@ -5,29 +5,30 @@ Generates plausible patch configurations based on module types and connections.
 ABX-Core v1.3: This engine now produces first-class IR objects and full provenance
 tracking for every generation run. The IR is serializable and replayable.
 """
+
 import random
 import time
-from typing import List, Dict, Any, Literal, Optional, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
+from typing import Any, Dict, List, Literal, Optional, Tuple
+
 from sqlalchemy.orm import Session
 
+from cases.models import Case
 from core import (
-    settings,
-    name_patch_v2,
-    Provenance,
-    PatchGenerationIR,
-    RackStateIR,
+    ConnectionIR,
     ModuleIR,
+    PatchGenerationIR,
     PatchGenerationParams,
     PatchGraphIR,
-    ConnectionIR,
+    Provenance,
+    RackStateIR,
     get_git_commit,
+    name_patch_v2,
+    settings,
 )
-from racks.models import Rack, RackModule
 from modules.models import Module
-from cases.models import Case
-
+from racks.models import Rack, RackModule
 
 PatchCategory = Literal[
     "Voice",
@@ -101,9 +102,7 @@ class ModuleAnalyzer:
 
     def _analyze(self) -> None:
         """Categorize modules by type."""
-        rack_modules = (
-            self.db.query(RackModule).filter(RackModule.rack_id == self.rack.id).all()
-        )
+        rack_modules = self.db.query(RackModule).filter(RackModule.rack_id == self.rack.id).all()
 
         self.all_modules: List[Module] = []
         self.vcos: List[Module] = []
@@ -661,8 +660,6 @@ def generate_patches_with_ir(
     provenance.mark_completed()
     provenance.add_metric("duration_ms", (end_time - start_time) * 1000)
     provenance.add_metric("patch_count", len(patch_graphs))
-    provenance.add_metric(
-        "connection_count", sum(len(p.connections) for p in patch_graphs)
-    )
+    provenance.add_metric("connection_count", sum(len(p.connections) for p in patch_graphs))
 
     return generation_ir, patch_graphs, provenance

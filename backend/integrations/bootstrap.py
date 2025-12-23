@@ -4,14 +4,16 @@ PatchHive First-Run Bootstrap System
 Detects empty database and offers guided setup with data population.
 ABX-Core v1.3 compliant with full provenance tracking.
 """
+
 import sys
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
+
 from sqlalchemy.orm import Session
 
-from core.database import SessionLocal
-from modules.models import Module
 from cases.models import Case
+from core.database import SessionLocal
 from integrations.modulargrid_importer import import_all
+from modules.models import Module
 
 
 def check_database_state(db: Session) -> Dict[str, Any]:
@@ -24,9 +26,7 @@ def check_database_state(db: Session) -> Dict[str, Any]:
     module_count = db.query(Module).count()
     case_count = db.query(Case).count()
 
-    has_modulargrid_data = db.query(Module).filter(
-        Module.source == "ModularGrid"
-    ).count() > 0
+    has_modulargrid_data = db.query(Module).filter(Module.source == "ModularGrid").count() > 0
 
     return {
         "is_empty": module_count == 0 and case_count == 0,
@@ -40,7 +40,8 @@ def check_database_state(db: Session) -> Dict[str, Any]:
 
 def print_bootstrap_banner():
     """Print PatchHive bootstrap welcome banner."""
-    print("""
+    print(
+        """
 ╔═══════════════════════════════════════════════════════════════════╗
 ║                                                                   ║
 ║              🎛️  PATCHHIVE DATABASE BOOTSTRAP  🎛️                ║
@@ -49,7 +50,8 @@ def print_bootstrap_banner():
 ║                   Eurorack Module Database                        ║
 ║                                                                   ║
 ╚═══════════════════════════════════════════════════════════════════╝
-    """)
+    """
+    )
 
 
 def print_database_status(state: Dict[str, Any]):
@@ -58,7 +60,7 @@ def print_database_status(state: Dict[str, Any]):
     print(f"  Modules:  {state['module_count']}")
     print(f"  Cases:    {state['case_count']}")
 
-    if state['has_modulargrid_data']:
+    if state["has_modulargrid_data"]:
         print(f"  Source:   ModularGrid data present ✓")
 
     print()
@@ -75,12 +77,12 @@ def interactive_bootstrap(db: Session) -> bool:
 
     state = check_database_state(db)
 
-    if state['has_data']:
+    if state["has_data"]:
         print("✓ Database already populated!")
         print_database_status(state)
 
         response = input("Do you want to re-import or add more data? (y/N): ").strip().lower()
-        if response != 'y':
+        if response != "y":
             print("\n✓ Keeping existing data. Exiting bootstrap.\n")
             return False
     else:
@@ -152,10 +154,12 @@ def silent_bootstrap(db: Session, force: bool = False) -> Optional[Dict[str, Any
     """
     state = check_database_state(db)
 
-    if state['needs_bootstrap'] or force:
+    if state["needs_bootstrap"] or force:
         print("🔄 Auto-bootstrapping database with ModularGrid data...")
         result = import_all(db, clear_existing=force)
-        print(f"✅ Imported {result['modules']['imported']} modules, {result['cases']['imported']} cases")
+        print(
+            f"✅ Imported {result['modules']['imported']} modules, {result['cases']['imported']} cases"
+        )
         return result
     else:
         print(f"✓ Database already populated ({state['module_count']} modules)")
@@ -173,19 +177,9 @@ def main():
     """
     import argparse
 
-    parser = argparse.ArgumentParser(
-        description="PatchHive Database Bootstrap Wizard"
-    )
-    parser.add_argument(
-        "--auto",
-        action="store_true",
-        help="Automatic bootstrap (non-interactive)"
-    )
-    parser.add_argument(
-        "--force",
-        action="store_true",
-        help="Force import even if data exists"
-    )
+    parser = argparse.ArgumentParser(description="PatchHive Database Bootstrap Wizard")
+    parser.add_argument("--auto", action="store_true", help="Automatic bootstrap (non-interactive)")
+    parser.add_argument("--force", action="store_true", help="Force import even if data exists")
 
     args = parser.parse_args()
 

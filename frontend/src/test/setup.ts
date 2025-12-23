@@ -2,7 +2,7 @@
  * Vitest test setup
  * Configures testing environment and global utilities
  */
-import { expect, afterEach } from 'vitest';
+import { afterEach } from 'vitest';
 import { cleanup } from '@testing-library/react';
 import '@testing-library/jest-dom/vitest';
 
@@ -27,7 +27,7 @@ Object.defineProperty(window, 'matchMedia', {
 });
 
 // Mock IntersectionObserver
-global.IntersectionObserver = class IntersectionObserver {
+globalThis.IntersectionObserver = class IntersectionObserver {
   constructor() {}
   disconnect() {}
   observe() {}
@@ -35,10 +35,10 @@ global.IntersectionObserver = class IntersectionObserver {
     return [];
   }
   unobserve() {}
-} as any;
+} as unknown as typeof IntersectionObserver;
 
 // Mock SVG filters (for LoadingSpinner and AnimatedLogo)
-global.SVGElement.prototype.getBBox = () => ({
+(globalThis.SVGElement.prototype as unknown as { getBBox: () => DOMRect }).getBBox = () => ({
   x: 0,
   y: 0,
   width: 100,

@@ -66,7 +66,9 @@ def run_confirm_cli(
             f"(temp_id={m.temp_id})"
         )
         if _prompt_yes_no("Attach an image to an existing gallery module id?"):
-            module_gallery_id = input("  Enter gallery module id (e.g., mod.erica.vl2.core): ").strip()
+            module_gallery_id = input(
+                "  Enter gallery module id (e.g., mod.erica.vl2.core): "
+            ).strip()
             image_url = input("  Enter image url/path (stored as ref): ").strip()
             updated = attach_module_image_append_only(
                 gallery,

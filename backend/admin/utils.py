@@ -1,6 +1,7 @@
 """
 Admin utilities for audit logging.
 """
+
 from typing import Any, Optional
 
 from sqlalchemy.orm import Session

@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Callable, Dict, List, Optional, Tuple
 
+
 @dataclass(frozen=True)
 class TemplateSlot:
     """
@@ -12,6 +13,7 @@ class TemplateSlot:
     role_out: str
     role_in: str
     cable_type: str
+
 
 @dataclass(frozen=True)
 class PatchTemplate:
@@ -23,6 +25,7 @@ class PatchTemplate:
     slots: Tuple[TemplateSlot, ...]
     role_constraints: Dict[str, Tuple[str, ...]]
     post_filter: Optional[Callable[[Dict[str, str]], bool]] = None
+
 
 class PatchTemplateRegistry:
     def __init__(self) -> None:
@@ -50,9 +53,7 @@ def build_default_registry() -> PatchTemplateRegistry:
             category="Voice",
             difficulty="Beginner",
             tags=("voice", "audio_path", "monitoring"),
-            slots=(
-                TemplateSlot("SOURCE_AUDIO_OUT", "DEST_AUDIO_IN", "audio"),
-            ),
+            slots=(TemplateSlot("SOURCE_AUDIO_OUT", "DEST_AUDIO_IN", "audio"),),
             role_constraints={
                 "SOURCE_AUDIO_OUT": ("audio_out",),
                 "DEST_AUDIO_IN": ("audio_in_or_cv_or_audio_in",),

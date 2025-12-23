@@ -1,6 +1,7 @@
 """
 Referral program utilities and credit ledger helpers.
 """
+
 from __future__ import annotations
 
 import hashlib

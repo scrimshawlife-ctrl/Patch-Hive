@@ -44,6 +44,7 @@ export default function PublishPage() {
       fetchExports();
       fetchRacks();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isAuthenticated]);
 
   useEffect(() => {

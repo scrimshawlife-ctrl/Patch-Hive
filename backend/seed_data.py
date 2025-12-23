@@ -2,14 +2,15 @@
 Seed data loader for development and testing.
 Creates minimal example data: users, modules, cases.
 """
+
 from sqlalchemy.orm import Session
 
+from cases.models import Case
+from community.models import User
 from core.database import SessionLocal
 from core.security import get_password_hash
-from community.models import User
-from monetization.referrals import generate_referral_code
 from modules.models import Module
-from cases.models import Case
+from monetization.referrals import generate_referral_code
 
 
 def load_seed_data(db: Session) -> None:

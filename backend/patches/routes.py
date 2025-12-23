@@ -1,25 +1,27 @@
 """
 FastAPI routes for Patch management and generation.
 """
-from typing import Optional, Any
+
 from dataclasses import asdict
+from typing import Any, Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from core import get_db, settings
 from racks.models import Rack
 from runs.models import Run
+
+from .engine import PatchEngineConfig, generate_patches_with_ir
 from .models import Patch
 from .schemas import (
-    PatchCreate,
-    PatchUpdate,
-    PatchResponse,
-    PatchListResponse,
     GeneratePatchesRequest,
     GeneratePatchesResponse,
+    PatchCreate,
+    PatchListResponse,
+    PatchResponse,
+    PatchUpdate,
 )
-from .engine import generate_patches_with_ir, PatchEngineConfig
-from runs.models import Run
 
 router = APIRouter()
 
@@ -35,7 +37,23 @@ def create_patch(patch: PatchCreate, db: Session = Depends(get_db)):
     tags = patch.tags or _derive_tags(patch.connections)
     db_patch = Patch(
         rack_id=patch.rack_id,
-        run_id=None,
+        run_id=patch.run_id,
+        name=patch.name,
+        suggested_name=patch.suggested_name,
+        name_override=patch.name_override,
+        category=patch.category,
+        description=patch.description,
+        connections=patch.connections,
+        generation_seed=patch.generation_seed,
+        generation_version=patch.generation_version,
+        engine_config=patch.engine_config or {},
+        waveform_params=patch.waveform_params or {},
+        is_public=patch.is_public,
+        tags=tags,
+    )
+    db.add(db_patch)
+    db.commit()
+    db.refresh(db_patch)
     return build_patch_response(db, db_patch)
 
 
@@ -117,9 +135,7 @@ def delete_patch(patch_id: int, db: Session = Depends(get_db)):
 
 
 @router.post("/generate/{rack_id}", response_model=GeneratePatchesResponse)
-def generate_patches(
-    rack_id: int, request: GeneratePatchesRequest, db: Session = Depends(get_db)
-):
+def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session = Depends(get_db)):
     """Generate patches for a rack using the patch engine."""
     # Verify rack exists
     rack = db.query(Rack).filter(Rack.id == rack_id).first()
@@ -150,7 +166,19 @@ def generate_patches(
             rack_id=rack_id,
             run_id=run.id,
             name=spec.patch_name,
-    new_run.status = "completed"
+            category=spec.category,
+            description=spec.description,
+            connections=[c.to_dict() for c in spec.connections],
+            generation_seed=spec.generation_seed,
+            generation_version=settings.generation_version,
+            engine_config=config.__dict__,
+            is_public=False,
+            tags=tags,
+        )
+        db.add(db_patch)
+        saved_patches.append(db_patch)
+
+    run.status = "completed"
     db.commit()
 
     # Build responses
@@ -158,6 +186,8 @@ def generate_patches(
 
     return GeneratePatchesResponse(
         generated_count=len(patch_responses), patches=patch_responses, run_id=run.id
+    )
+
 
 def build_patch_response(db: Session, patch: Patch) -> PatchResponse:
     """Build a complete patch response with vote count."""

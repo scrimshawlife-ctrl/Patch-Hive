@@ -10,8 +10,10 @@ This allows:
 - Scalability to 8,000+ modules
 - On-demand spec fetching
 """
-from sqlalchemy import Column, Integer, String, Index
+
 from datetime import datetime
+
+from sqlalchemy import Column, Index, Integer, String
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -24,6 +26,7 @@ class ModuleCatalog(Base):
     Contains minimal info for fast queries. Full specs fetched on-demand
     when user adds module to rack.
     """
+
     __tablename__ = "module_catalog"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -46,17 +49,23 @@ class ModuleCatalog(Base):
     manufacturer_url = Column(String(500), nullable=True)
 
     # Status
-    is_available = Column(String(20), default="available", index=True)  # available, discontinued, upcoming
+    is_available = Column(
+        String(20), default="available", index=True
+    )  # available, discontinued, upcoming
 
     # Metadata
     created_at = Column(String(50), default=lambda: datetime.utcnow().isoformat())
-    updated_at = Column(String(50), default=lambda: datetime.utcnow().isoformat(), onupdate=lambda: datetime.utcnow().isoformat())
+    updated_at = Column(
+        String(50),
+        default=lambda: datetime.utcnow().isoformat(),
+        onupdate=lambda: datetime.utcnow().isoformat(),
+    )
 
     # Indexes for fast filtering
     __table_args__ = (
-        Index('idx_catalog_brand_name', 'brand', 'name'),
-        Index('idx_catalog_category_hp', 'category', 'hp'),
-        Index('idx_catalog_available', 'is_available'),
+        Index("idx_catalog_brand_name", "brand", "name"),
+        Index("idx_catalog_category_hp", "category", "hp"),
+        Index("idx_catalog_available", "is_available"),
     )
 
     def to_dict(self):
@@ -81,6 +90,7 @@ class ModuleCatalog(Base):
     def create_slug(brand: str, name: str) -> str:
         """Create URL-safe slug from brand and name."""
         import re
+
         combined = f"{brand}-{name}".lower()
-        slug = re.sub(r'[^a-z0-9]+', '-', combined)
-        return slug.strip('-')
+        slug = re.sub(r"[^a-z0-9]+", "-", combined)
+        return slug.strip("-")

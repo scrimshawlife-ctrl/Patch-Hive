@@ -1,33 +1,36 @@
 """
 FastAPI routes for Community features (users, auth, votes, comments, feed).
 """
-from typing import Optional
-from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy.orm import Session
-from sqlalchemy import or_, desc
 
-from core import get_db, get_password_hash, verify_password, create_access_token
-from racks.models import Rack
-from patches.models import Patch
-from .models import User, Vote, Comment
-from monetization.referrals import create_referral, generate_referral_code, get_referral_summary
-from monetization.schemas import ReferralSummary
-from .auth import get_current_user, require_auth
+from typing import Optional
+
+from fastapi import APIRouter, Depends, HTTPException, Query
+from sqlalchemy import desc, or_
+from sqlalchemy.orm import Session
+
 from account.models import Referral
 from account.services import ensure_referral_code
+from core import create_access_token, get_db, get_password_hash, verify_password
+from monetization.referrals import create_referral, generate_referral_code, get_referral_summary
+from monetization.schemas import ReferralSummary
+from patches.models import Patch
+from racks.models import Rack
+
+from .auth import get_current_user, require_auth
+from .models import Comment, User, Vote
 from .schemas import (
-    UserCreate,
-    UserUpdate,
-    UserResponse,
+    CommentCreate,
+    CommentResponse,
+    CommentUpdate,
+    FeedItem,
+    FeedResponse,
     LoginRequest,
     TokenResponse,
+    UserCreate,
+    UserResponse,
+    UserUpdate,
     VoteCreate,
     VoteResponse,
-    CommentCreate,
-    CommentUpdate,
-    CommentResponse,
-    FeedResponse,
-    FeedItem,
 )
 
 router = APIRouter()
@@ -82,12 +85,12 @@ def register_user(user: UserCreate, db: Session = Depends(get_db)):
         referrer = db.query(User).filter(User.referral_code == user.referral_code).first()
         if referrer and referrer.id != db_user.id:
             existing_referral = (
-                db.query(Referral)
-                .filter(Referral.referred_user_id == db_user.id)
-                .first()
+                db.query(Referral).filter(Referral.referred_user_id == db_user.id).first()
             )
             if not existing_referral:
-                referral = Referral(referrer_user_id=referrer.id, referred_user_id=db_user.id, status="pending")
+                referral = Referral(
+                    referrer_user_id=referrer.id, referred_user_id=db_user.id, status="pending"
+                )
                 db.add(referral)
                 db.commit()
 
@@ -133,7 +136,11 @@ def get_user_by_username(username: str, db: Session = Depends(get_db)):
 
 
 @router.patch("/users/me", response_model=UserResponse)
-def update_profile(user_update: UserUpdate, current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+def update_profile(
+    user_update: UserUpdate,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
     """Update current user's profile."""
     update_data = user_update.model_dump(exclude_unset=True)
     for field, value in update_data.items():
@@ -159,11 +166,15 @@ def get_referrals(current_user: User = Depends(require_auth), db: Session = Depe
 
 # Vote routes
 @router.post("/votes", response_model=VoteResponse, status_code=201)
-def create_vote(vote: VoteCreate, current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+def create_vote(
+    vote: VoteCreate, current_user: User = Depends(require_auth), db: Session = Depends(get_db)
+):
     """Create a vote (like) on a rack or patch."""
     # Validate that exactly one target is specified
     if not ((vote.rack_id is None) ^ (vote.patch_id is None)):
-        raise HTTPException(status_code=400, detail="Must specify either rack_id or patch_id, not both")
+        raise HTTPException(
+            status_code=400, detail="Must specify either rack_id or patch_id, not both"
+        )
 
     # Check if already voted
     existing = (
@@ -187,7 +198,9 @@ def create_vote(vote: VoteCreate, current_user: User = Depends(require_auth), db
 
 
 @router.delete("/votes/{vote_id}", status_code=204)
-def delete_vote(vote_id: int, current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+def delete_vote(
+    vote_id: int, current_user: User = Depends(require_auth), db: Session = Depends(get_db)
+):
     """Delete a vote."""
     vote = db.query(Vote).filter(Vote.id == vote_id, Vote.user_id == current_user.id).first()
     if not vote:
@@ -200,11 +213,17 @@ def delete_vote(vote_id: int, current_user: User = Depends(require_auth), db: Se
 
 # Comment routes
 @router.post("/comments", response_model=CommentResponse, status_code=201)
-def create_comment(comment: CommentCreate, current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+def create_comment(
+    comment: CommentCreate,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+):
     """Create a comment on a rack or patch."""
     # Validate that exactly one target is specified
     if not ((comment.rack_id is None) ^ (comment.patch_id is None)):
-        raise HTTPException(status_code=400, detail="Must specify either rack_id or patch_id, not both")
+        raise HTTPException(
+            status_code=400, detail="Must specify either rack_id or patch_id, not both"
+        )
 
     db_comment = Comment(
         user_id=current_user.id,
@@ -256,7 +275,9 @@ def update_comment(
 ):
     """Update a comment."""
     db_comment = (
-        db.query(Comment).filter(Comment.id == comment_id, Comment.user_id == current_user.id).first()
+        db.query(Comment)
+        .filter(Comment.id == comment_id, Comment.user_id == current_user.id)
+        .first()
     )
     if not db_comment:
         raise HTTPException(status_code=404, detail="Comment not found")
@@ -271,10 +292,14 @@ def update_comment(
 
 
 @router.delete("/comments/{comment_id}", status_code=204)
-def delete_comment(comment_id: int, current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
+def delete_comment(
+    comment_id: int, current_user: User = Depends(require_auth), db: Session = Depends(get_db)
+):
     """Delete a comment."""
     db_comment = (
-        db.query(Comment).filter(Comment.id == comment_id, Comment.user_id == current_user.id).first()
+        db.query(Comment)
+        .filter(Comment.id == comment_id, Comment.user_id == current_user.id)
+        .first()
     )
     if not db_comment:
         raise HTTPException(status_code=404, detail="Comment not found")
@@ -286,13 +311,17 @@ def delete_comment(comment_id: int, current_user: User = Depends(require_auth), 
 
 # Feed route
 @router.get("/feed", response_model=FeedResponse)
-def get_feed(skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100), db: Session = Depends(get_db)):
+def get_feed(
+    skip: int = Query(0, ge=0), limit: int = Query(20, ge=1, le=100), db: Session = Depends(get_db)
+):
     """Get public feed of shared racks and patches."""
     # Get public racks
     racks = db.query(Rack).filter(Rack.is_public.is_(True)).order_by(desc(Rack.created_at)).all()
 
     # Get public patches
-    patches = db.query(Patch).filter(Patch.is_public.is_(True)).order_by(desc(Patch.created_at)).all()
+    patches = (
+        db.query(Patch).filter(Patch.is_public.is_(True)).order_by(desc(Patch.created_at)).all()
+    )
 
     # Build feed items
     feed_items: list[FeedItem] = []

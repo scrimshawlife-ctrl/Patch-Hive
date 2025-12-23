@@ -44,6 +44,8 @@ def test_fuzzy_match() -> None:
         _entry("mod.make_noise.maths", "Make Noise", "Maths", 20),
         _entry("mod.make_noise.morphagene", "Make Noise", "Morphagene", 20),
     ]
-    candidate = fuzzy_match(entries, manufacturer="Make Noise", name="Math", hp_guess=20, min_score=0.5)
+    candidate = fuzzy_match(
+        entries, manufacturer="Make Noise", name="Math", hp_guess=20, min_score=0.5
+    )
     assert candidate is not None
     assert candidate.module_gallery_id == "mod.make_noise.maths"

@@ -1,22 +1,22 @@
-import os
 import importlib
 import importlib.util
+import os
 import sys
 from pathlib import Path
 from typing import Generator
 
 import pytest
-from alembic import command
-from alembic.config import Config
+from fastapi.testclient import TestClient
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from testcontainers.postgres import PostgresContainer
-from fastapi.testclient import TestClient
 
-from core.security import get_password_hash
-from community.models import User
-from modules.models import Module
+from alembic import command
+from alembic.config import Config
 from cases.models import Case
+from community.models import User
+from core.security import get_password_hash
+from modules.models import Module
 
 REPO_ROOT = Path(__file__).resolve().parents[3]
 FIXTURE_PATH = REPO_ROOT / "fixtures" / "golden_demo_seed.json"

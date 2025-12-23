@@ -16,8 +16,7 @@ export default function ModulesPage() {
         setModules(res.data.modules);
         setLoading(false);
       })
-      .catch((err) => {
-        console.error('Failed to load modules:', err);
+      .catch(() => {
         setLoading(false);
       });
   }, []);

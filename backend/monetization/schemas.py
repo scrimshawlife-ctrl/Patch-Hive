@@ -1,6 +1,7 @@
 """
 Pydantic schemas for monetization APIs.
 """
+
 from datetime import datetime
 from typing import Optional
 

@@ -51,6 +51,7 @@ def _jack_key(jack: object) -> str:
         return f"{jack.instance_id}::{jack.jack_id}"
     return str(jack)
 
+
 def build_scene(
     canon: CanonicalRig,
     patch: PatchGraph,

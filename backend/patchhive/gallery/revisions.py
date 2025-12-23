@@ -21,7 +21,9 @@ def _canonical_hash(payload: Dict[str, Any]) -> str:
     return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
 
 
-def append_revision(gallery_root: str, revision: GalleryRevision, evidence_ref: str) -> GalleryRevision:
+def append_revision(
+    gallery_root: str, revision: GalleryRevision, evidence_ref: str
+) -> GalleryRevision:
     """
     Append a gallery revision without overwriting previous versions.
 
@@ -45,7 +47,9 @@ def append_revision(gallery_root: str, revision: GalleryRevision, evidence_ref: 
 
     rev_path = revisions_dir / f"{revision.revision_id}.json"
     if rev_path.exists():
-        raise RuntimeError(f"Revision already exists for {revision.module_key}: {revision.revision_id}")
+        raise RuntimeError(
+            f"Revision already exists for {revision.module_key}: {revision.revision_id}"
+        )
 
     record = {
         "module_key": revision.module_key,

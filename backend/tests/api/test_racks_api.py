@@ -2,17 +2,19 @@
 API endpoint tests for /api/racks.
 Tests the Rack CRUD endpoints using FastAPI TestClient.
 """
+
 import pytest
+
 pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from main import app
-from racks.models import Rack, RackModule
-from modules.models import Module
 from cases.models import Case
 from community.models import User
+from main import app
+from modules.models import Module
+from racks.models import Rack, RackModule
 
 
 @pytest.fixture
@@ -34,15 +36,11 @@ def client(db_session: Session):
 class TestRacksAPI:
     """Tests for /api/racks endpoints."""
 
-    def test_create_rack_minimal(
-        self, client: TestClient, sample_case: Case, sample_vco: Module
-    ):
+    def test_create_rack_minimal(self, client: TestClient, sample_case: Case, sample_vco: Module):
         """Test creating a minimal rack with one module."""
         payload = {
             "case_id": sample_case.id,
-            "modules": [
-                {"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}
-            ],
+            "modules": [{"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}],
         }
 
         response = client.post("/api/racks", json=payload)
@@ -56,9 +54,7 @@ class TestRacksAPI:
         assert data["modules"][0]["module_id"] == sample_vco.id
         assert data["vote_count"] == 0
 
-    def test_create_rack_with_name(
-        self, client: TestClient, sample_case: Case, sample_vco: Module
-    ):
+    def test_create_rack_with_name(self, client: TestClient, sample_case: Case, sample_vco: Module):
         """Test creating a rack with custom name."""
         payload = {
             "case_id": sample_case.id,
@@ -66,9 +62,7 @@ class TestRacksAPI:
             "description": "Test rack description",
             "tags": ["ambient", "generative"],
             "is_public": True,
-            "modules": [
-                {"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}
-            ],
+            "modules": [{"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}],
         }
 
         response = client.post("/api/racks", json=payload)
@@ -108,14 +102,14 @@ class TestRacksAPI:
         assert data["modules"][1]["start_hp"] == 10
         assert data["modules"][2]["start_hp"] == 18
 
-    @pytest.mark.xfail(reason="Production bug: RackValidationError not JSON serializable", strict=True)
+    @pytest.mark.xfail(
+        reason="Production bug: RackValidationError not JSON serializable", strict=True
+    )
     def test_create_rack_invalid_case(self, client: TestClient, sample_vco: Module):
         """Test creating rack with non-existent case."""
         payload = {
             "case_id": 99999,  # Non-existent
-            "modules": [
-                {"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}
-            ],
+            "modules": [{"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}],
         }
 
         # Known issue: validation errors contain non-JSON-serializable objects
@@ -124,7 +118,9 @@ class TestRacksAPI:
         # TODO: Should be 400 when validation error serialization is fixed
         assert response.status_code == 400
 
-    @pytest.mark.xfail(reason="Production bug: RackValidationError not JSON serializable", strict=True)
+    @pytest.mark.xfail(
+        reason="Production bug: RackValidationError not JSON serializable", strict=True
+    )
     def test_create_rack_overlapping_modules(
         self, client: TestClient, sample_case: Case, sample_vco: Module
     ):
@@ -152,9 +148,7 @@ class TestRacksAPI:
         assert data["total"] == 0
         assert data["racks"] == []
 
-    def test_list_racks(
-        self, client: TestClient, sample_rack_basic: Rack, sample_rack_full: Rack
-    ):
+    def test_list_racks(self, client: TestClient, sample_rack_basic: Rack, sample_rack_full: Rack):
         """Test listing multiple racks."""
         response = client.get("/api/racks")
 
@@ -234,9 +228,7 @@ class TestRacksAPI:
         db_session.refresh(sample_rack_basic)
         assert sample_rack_basic.name == "Updated Rack Name"
 
-    def test_update_rack_description(
-        self, client: TestClient, sample_rack_basic: Rack
-    ):
+    def test_update_rack_description(self, client: TestClient, sample_rack_basic: Rack):
         """Test updating rack description."""
         payload = {"description": "New description"}
 
@@ -275,11 +267,7 @@ class TestRacksAPI:
     ):
         """Test updating rack module configuration."""
         # Add LFO to rack
-        payload = {
-            "modules": [
-                {"module_id": sample_lfo.id, "row_index": 0, "start_hp": 0}
-            ]
-        }
+        payload = {"modules": [{"module_id": sample_lfo.id, "row_index": 0, "start_hp": 0}]}
 
         response = client.patch(f"/api/racks/{sample_rack_basic.id}", json=payload)
 
@@ -290,9 +278,7 @@ class TestRacksAPI:
 
         # Verify old modules were removed
         old_modules = (
-            db_session.query(RackModule)
-            .filter(RackModule.rack_id == sample_rack_basic.id)
-            .all()
+            db_session.query(RackModule).filter(RackModule.rack_id == sample_rack_basic.id).all()
         )
         assert len(old_modules) == 1
         assert old_modules[0].module_id == sample_lfo.id
@@ -305,9 +291,7 @@ class TestRacksAPI:
 
         assert response.status_code == 404
 
-    def test_delete_rack(
-        self, client: TestClient, db_session: Session, sample_rack_basic: Rack
-    ):
+    def test_delete_rack(self, client: TestClient, db_session: Session, sample_rack_basic: Rack):
         """Test deleting a rack."""
         rack_id = sample_rack_basic.id
 
@@ -320,9 +304,7 @@ class TestRacksAPI:
         assert deleted_rack is None
 
         # Verify associated modules are also deleted (cascade)
-        remaining_modules = (
-            db_session.query(RackModule).filter(RackModule.rack_id == rack_id).all()
-        )
+        remaining_modules = db_session.query(RackModule).filter(RackModule.rack_id == rack_id).all()
         assert len(remaining_modules) == 0
 
     def test_delete_rack_not_found(self, client: TestClient):

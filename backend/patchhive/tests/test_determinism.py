@@ -16,12 +16,12 @@ from patchhive.schemas import (
     ModuleSpec,
     NormalledEdge,
     Provenance,
+    ProvenancedValue,
     ProvenanceStatus,
     ProvenanceType,
     ResolvedModuleRef,
     RigModuleInput,
     RigSpec,
-    ProvenancedValue,
 )
 
 FIXED_TIME = datetime(2024, 1, 1, tzinfo=timezone.utc)
@@ -57,9 +57,7 @@ def _build_canonical() -> CanonicalRig:
                 modes=[],
             )
         ],
-        normalled_edges=[
-            NormalledEdge(from_jack="fg:out", to_jack="fg:in", break_on_insert=True)
-        ],
+        normalled_edges=[NormalledEdge(from_jack="fg:out", to_jack="fg:in", break_on_insert=True)],
         power_12v_ma=None,
         power_minus12v_ma=None,
         power_5v_ma=None,

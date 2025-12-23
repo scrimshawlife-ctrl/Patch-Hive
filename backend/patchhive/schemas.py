@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
-from typing import Dict, List, Optional, Tuple, Literal
+from typing import Dict, List, Literal, Optional, Tuple
 
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class PHBase(BaseModel):
@@ -17,6 +17,7 @@ class PHBase(BaseModel):
 
     def to_canonical_json(self) -> str:
         return self.model_dump_json(exclude_none=True)
+
 
 class SignalKind(str, Enum):
     audio = "audio"
@@ -74,6 +75,7 @@ class FieldMeta(PHBase):
     provenance: List[Provenance] = Field(default_factory=list)
     confidence: float = 0.0
     status: FieldStatus = FieldStatus.unknown
+
 
 class JackDir(str, Enum):
     in_ = "in"

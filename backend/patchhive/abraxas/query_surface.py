@@ -43,9 +43,7 @@ def rank_rigs(
             raise ValueError(f"Unknown rig metric key: {key}")
         return float(getattr(m, key))
 
-    items.sort(
-        key=lambda it: (-metric_value(it) if descending else metric_value(it), it.rig_id)
-    )
+    items.sort(key=lambda it: (-metric_value(it) if descending else metric_value(it), it.rig_id))
     return items[: max(0, top_k)]
 
 

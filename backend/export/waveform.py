@@ -2,10 +2,10 @@
 Waveform approximation generator.
 Creates SVG waveform visualizations based on patch characteristics.
 """
-import math
-from typing import Literal, Optional
-from dataclasses import dataclass
 
+import math
+from dataclasses import dataclass
+from typing import Literal, Optional
 
 WaveformType = Literal["sine", "saw", "square", "triangle", "noise", "complex"]
 

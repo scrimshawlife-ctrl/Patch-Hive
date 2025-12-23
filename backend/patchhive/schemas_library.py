@@ -6,13 +6,7 @@ from typing import List, Optional
 
 from pydantic import Field
 
-from patchhive.schemas import (
-    PHBase,
-    PatchGraph,
-    PatchPlan,
-    SymbolicPatchEnvelope,
-    ValidationReport,
-)
+from patchhive.schemas import PatchGraph, PatchPlan, PHBase, SymbolicPatchEnvelope, ValidationReport
 
 
 class PatchCategory(str, Enum):

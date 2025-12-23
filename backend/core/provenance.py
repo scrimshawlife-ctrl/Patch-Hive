@@ -14,12 +14,13 @@ Every generated patch must have provenance metadata that includes:
 This module provides lightweight, zero-overhead provenance tracking that
 reduces operational entropy (ABX-Core v1.3 complexity rule).
 """
-from dataclasses import dataclass, field, asdict
-from typing import Dict, Any, Optional, Literal
-from datetime import datetime, timezone
-import uuid
+
 import os
 import socket
+import uuid
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
+from typing import Any, Dict, Literal, Optional
 
 PipelineType = Literal["patch_generation", "rack_layout", "export", "import"]
 
@@ -27,6 +28,7 @@ PipelineType = Literal["patch_generation", "rack_layout", "export", "import"]
 @dataclass
 class ProvenanceMetrics:
     """Optional metrics captured during execution."""
+
     duration_ms: Optional[float] = None
     cpu_time_ms: Optional[float] = None
     patch_count: Optional[int] = None
@@ -45,6 +47,7 @@ class Provenance:
     ABX-Core v1.3 requirement: All generated artifacts must have traceable
     provenance that enables full replay and debugging.
     """
+
     # Core identifiers
     run_id: str  # UUID for this specific run
     entity_type: str  # "patch", "rack", "export", etc.
@@ -97,7 +100,7 @@ class Provenance:
         pipeline: PipelineType = "patch_generation",
         parent_run_id: Optional[str] = None,
         engine_version: str = "1.3.0",
-        git_commit: Optional[str] = None
+        git_commit: Optional[str] = None,
     ) -> "Provenance":
         """
         Factory method to create a new provenance record.
@@ -110,7 +113,7 @@ class Provenance:
             pipeline=pipeline,
             parent_run_id=parent_run_id,
             engine_version=engine_version,
-            git_commit=git_commit or os.getenv("GIT_COMMIT")
+            git_commit=git_commit or os.getenv("GIT_COMMIT"),
         )
 
 

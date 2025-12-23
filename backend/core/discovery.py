@@ -1,8 +1,9 @@
 """Dynamic Function Discovery registry for AAL-core."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, Dict, Optional, Any
+from typing import Any, Callable, Dict, Optional
 
 
 @dataclass(frozen=True)

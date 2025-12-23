@@ -20,16 +20,18 @@ Security principles:
 ABX-Core v1.3 compliance: This export mechanism reduces operational entropy
 by providing Abraxas with structured, deterministic data for analysis.
 """
-from dataclasses import dataclass, field, asdict
-from typing import List, Dict, Any, Optional, Literal
-from datetime import datetime, timezone
-from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
-import hashlib
 
+import hashlib
+from dataclasses import asdict, dataclass, field
+from datetime import datetime, timezone
+from typing import Any, Dict, List, Literal, Optional
+
+from sqlalchemy import desc, func
+from sqlalchemy.orm import Session
+
+from modules.models import Module
 from patches.models import Patch
 from racks.models import Rack
-from modules.models import Module
 
 EntityType = Literal["patch", "rack", "module"]
 
@@ -41,6 +43,7 @@ class ResonanceFrame:
 
     Frames are privacy-preserving and contain only structural/behavioral metrics.
     """
+
     # Identity
     entity_type: EntityType
     entity_id_hash: str  # Hashed entity ID (privacy-preserving)
@@ -77,6 +80,7 @@ class ResonanceExport:
 
     This is the top-level object that gets sent to Abraxas.
     """
+
     # Metadata
     engine: str = "patchhive"
     version: str = "1.3.0"
@@ -103,7 +107,7 @@ class ResonanceExport:
                 "total_patches": self.total_patches,
                 "total_racks": self.total_racks,
                 "total_modules": self.total_modules,
-            }
+            },
         }
 
 
@@ -136,7 +140,7 @@ def calculate_patch_entropy(connection_count: int, module_count: int) -> float:
     """
     if module_count < 2:
         return 0.0
-    return connection_count / (module_count ** 2)
+    return connection_count / (module_count**2)
 
 
 def export_patch_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
@@ -150,12 +154,7 @@ def export_patch_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
     Returns:
         List of ResonanceFrames for patches
     """
-    patches = (
-        db.query(Patch)
-        .order_by(desc(Patch.created_at))
-        .limit(limit)
-        .all()
-    )
+    patches = db.query(Patch).order_by(desc(Patch.created_at)).limit(limit).all()
 
     frames: List[ResonanceFrame] = []
 
@@ -188,7 +187,7 @@ def export_patch_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
             is_public=patch.is_public,
             structural_entropy=entropy,
             seed_hash=hash_seed(patch.generation_seed),
-            engine_version=patch.generation_version
+            engine_version=patch.generation_version,
         )
         frames.append(frame)
 
@@ -208,20 +207,15 @@ def export_rack_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
     """
     from racks.models import RackModule
 
-    racks = (
-        db.query(Rack)
-        .order_by(desc(Rack.created_at))
-        .limit(limit)
-        .all()
-    )
+    racks = db.query(Rack).order_by(desc(Rack.created_at)).limit(limit).all()
 
     frames: List[ResonanceFrame] = []
 
     for rack in racks:
         # Count modules
-        module_count = db.query(func.count(RackModule.id)).filter(
-            RackModule.rack_id == rack.id
-        ).scalar() or 0
+        module_count = (
+            db.query(func.count(RackModule.id)).filter(RackModule.rack_id == rack.id).scalar() or 0
+        )
 
         # Calculate age
         created = rack.created_at
@@ -236,7 +230,7 @@ def export_rack_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
             module_count=module_count,
             usage_count=0,  # TODO: Add usage tracking
             is_public=rack.is_public,
-            structural_entropy=0.0  # Racks don't have entropy measure yet
+            structural_entropy=0.0,  # Racks don't have entropy measure yet
         )
         frames.append(frame)
 
@@ -244,9 +238,7 @@ def export_rack_frames(db: Session, limit: int = 100) -> List[ResonanceFrame]:
 
 
 def export_resonance_frames(
-    db: Session,
-    patch_limit: int = 100,
-    rack_limit: int = 50
+    db: Session, patch_limit: int = 100, rack_limit: int = 50
 ) -> ResonanceExport:
     """
     Export complete ResonanceFrame data for Abraxas.
@@ -275,16 +267,14 @@ def export_resonance_frames(
         frames=patch_frames + rack_frames,
         total_patches=total_patches,
         total_racks=total_racks,
-        total_modules=total_modules
+        total_modules=total_modules,
     )
 
     return export
 
 
 def export_resonance_frames_json(
-    db: Session,
-    patch_limit: int = 100,
-    rack_limit: int = 50
+    db: Session, patch_limit: int = 100, rack_limit: int = 50
 ) -> Dict[str, Any]:
     """
     Export ResonanceFrames as JSON-serializable dictionary.

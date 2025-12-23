@@ -1,4 +1,5 @@
 """Credits ledger helpers."""
+
 from sqlalchemy.orm import Session
 
 from monetization.models import CreditsLedger

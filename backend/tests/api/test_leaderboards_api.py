@@ -1,7 +1,8 @@
 """API endpoint tests for leaderboards."""
+
+import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
-import pytest
 
 from main import app
 

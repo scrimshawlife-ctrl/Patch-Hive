@@ -4,10 +4,12 @@ Module Catalog API endpoints - browse/search/filter modules.
 Fast, lightweight catalog of all available modules.
 Full specs fetched on-demand when user adds to rack.
 """
-from fastapi import APIRouter, Depends, Query
-from sqlalchemy.orm import Session
-from sqlalchemy import or_, and_
+
 from typing import List, Optional
+
+from fastapi import APIRouter, Depends, Query
+from sqlalchemy import and_, or_
+from sqlalchemy.orm import Session
 
 from core.database import get_db
 from modules.catalog import ModuleCatalog
@@ -54,10 +56,7 @@ def browse_module_catalog(
     if search:
         search_term = f"%{search}%"
         filters.append(
-            or_(
-                ModuleCatalog.brand.ilike(search_term),
-                ModuleCatalog.name.ilike(search_term)
-            )
+            or_(ModuleCatalog.brand.ilike(search_term), ModuleCatalog.name.ilike(search_term))
         )
 
     if brand:
@@ -91,12 +90,7 @@ def browse_module_catalog(
     # Apply pagination
     modules = query.offset(skip).limit(limit).all()
 
-    return {
-        "total": total,
-        "skip": skip,
-        "limit": limit,
-        "modules": [m.to_dict() for m in modules]
-    }
+    return {"total": total, "skip": skip, "limit": limit, "modules": [m.to_dict() for m in modules]}
 
 
 @router.get("/catalog/brands")
@@ -104,14 +98,16 @@ def list_catalog_brands(db: Session = Depends(get_db)):
     """Get list of all brands in catalog with module counts."""
     from sqlalchemy import func
 
-    brands = db.query(
-        ModuleCatalog.brand,
-        func.count(ModuleCatalog.id).label('count')
-    ).group_by(ModuleCatalog.brand).order_by(ModuleCatalog.brand).all()
+    brands = (
+        db.query(ModuleCatalog.brand, func.count(ModuleCatalog.id).label("count"))
+        .group_by(ModuleCatalog.brand)
+        .order_by(ModuleCatalog.brand)
+        .all()
+    )
 
     return {
         "total": len(brands),
-        "brands": [{"name": brand, "module_count": count} for brand, count in brands]
+        "brands": [{"name": brand, "module_count": count} for brand, count in brands],
     }
 
 
@@ -120,16 +116,16 @@ def list_catalog_categories(db: Session = Depends(get_db)):
     """Get list of all categories with module counts."""
     from sqlalchemy import func
 
-    categories = db.query(
-        ModuleCatalog.category,
-        func.count(ModuleCatalog.id).label('count')
-    ).group_by(ModuleCatalog.category).order_by(
-        func.count(ModuleCatalog.id).desc()
-    ).all()
+    categories = (
+        db.query(ModuleCatalog.category, func.count(ModuleCatalog.id).label("count"))
+        .group_by(ModuleCatalog.category)
+        .order_by(func.count(ModuleCatalog.id).desc())
+        .all()
+    )
 
     return {
         "total": len(categories),
-        "categories": [{"name": cat, "module_count": count} for cat, count in categories if cat]
+        "categories": [{"name": cat, "module_count": count} for cat, count in categories if cat],
     }
 
 
@@ -148,9 +144,11 @@ def get_catalog_stats(db: Session = Depends(get_db)):
     max_hp = db.query(func.max(ModuleCatalog.hp)).scalar()
 
     # Availability
-    available_count = db.query(func.count(ModuleCatalog.id)).filter(
-        ModuleCatalog.is_available == "available"
-    ).scalar()
+    available_count = (
+        db.query(func.count(ModuleCatalog.id))
+        .filter(ModuleCatalog.is_available == "available")
+        .scalar()
+    )
 
     return {
         "total_modules": total_modules or 0,
@@ -164,7 +162,7 @@ def get_catalog_stats(db: Session = Depends(get_db)):
         "availability": {
             "available": available_count or 0,
             "discontinued": total_modules - (available_count or 0) if total_modules else 0,
-        }
+        },
     }
 
 
@@ -179,6 +177,7 @@ def get_catalog_module(slug: str, db: Session = Depends(get_db)):
 
     if not module:
         from fastapi import HTTPException
+
         raise HTTPException(status_code=404, detail=f"Module '{slug}' not found in catalog")
 
     return module.to_dict()

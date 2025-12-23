@@ -1,4 +1,5 @@
 """Community domain - Users, authentication, voting, and comments."""
-from .models import User, Vote, Comment
+
+from .models import Comment, User, Vote
 
 __all__ = ["User", "Vote", "Comment"]

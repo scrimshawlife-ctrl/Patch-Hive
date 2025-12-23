@@ -8,7 +8,6 @@ from typing import Iterable, List, Set
 
 from patchhive.runes.schema import RuneManifest, parse_manifest
 
-
 CORE_HANDLERS: List[str] = [
     "patches.engine:build_rack_state_ir",
     "patches.engine:generate_patches_for_rack",
@@ -86,8 +85,7 @@ def validate_manifest(manifest: RuneManifest | None = None) -> List[str]:
             referenced_assets.add(asset)
 
     existing_assets = {
-        str(p.relative_to(Path(__file__).resolve().parent))
-        for p in assets_dir().glob("*.svg")
+        str(p.relative_to(Path(__file__).resolve().parent)) for p in assets_dir().glob("*.svg")
     }
     orphans = existing_assets - referenced_assets
     if orphans:

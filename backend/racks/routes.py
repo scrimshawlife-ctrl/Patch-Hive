@@ -1,19 +1,18 @@
 """
 FastAPI routes for Rack management.
 """
+
 from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
-from core import (
-    get_db,
-    generate_rig_suggested_name,
-    hash_string_to_seed,
-)
 from cases.models import Case
+from core import generate_rig_suggested_name, get_db, hash_string_to_seed
 from modules.models import Module
+
 from .models import Rack, RackModule
-from .schemas import RackCreate, RackUpdate, RackResponse, RackListResponse
+from .schemas import RackCreate, RackListResponse, RackResponse, RackUpdate
 from .validation import validate_rack_configuration
 
 router = APIRouter()
@@ -127,9 +126,7 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
     # Update modules if provided
     if rack_update.modules is not None:
         # Validate new configuration
-        is_valid, errors = validate_rack_configuration(
-            db, db_rack.case_id, rack_update.modules
-        )
+        is_valid, errors = validate_rack_configuration(db, db_rack.case_id, rack_update.modules)
         if not is_valid:
             raise HTTPException(
                 status_code=400, detail={"message": "Rack validation failed", "errors": errors}
@@ -189,15 +186,17 @@ def build_rack_response(db: Session, rack: Rack) -> RackResponse:
                 "module_id": rm.module_id,
                 "row_index": rm.row_index,
                 "start_hp": rm.start_hp,
-                "module": {
-                    "id": module.id,
-                    "brand": module.brand,
-                    "name": module.name,
-                    "hp": module.hp,
-                    "module_type": module.module_type,
-                }
-                if module
-                else None,
+                "module": (
+                    {
+                        "id": module.id,
+                        "brand": module.brand,
+                        "name": module.name,
+                        "hp": module.hp,
+                        "module_type": module.module_type,
+                    }
+                    if module
+                    else None
+                ),
             }
         )
 
@@ -219,15 +218,17 @@ def build_rack_response(db: Session, rack: Rack) -> RackResponse:
         created_at=rack.created_at,
         updated_at=rack.updated_at,
         modules=modules_response,
-        case={
-            "id": case.id,
-            "brand": case.brand,
-            "name": case.name,
-            "total_hp": case.total_hp,
-            "rows": case.rows,
-            "hp_per_row": case.hp_per_row,
-        }
-        if case
-        else None,
+        case=(
+            {
+                "id": case.id,
+                "brand": case.brand,
+                "name": case.name,
+                "total_hp": case.total_hp,
+                "rows": case.rows,
+                "hp_per_row": case.hp_per_row,
+            }
+            if case
+            else None
+        ),
         vote_count=vote_count,
     )

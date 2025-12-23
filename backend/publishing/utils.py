@@ -1,4 +1,5 @@
 """Utilities for publishing layer."""
+
 import re
 import uuid
 
@@ -11,4 +12,3 @@ def slugify_title(title: str) -> str:
 def unique_slug(base: str) -> str:
     suffix = uuid.uuid4().hex[:8]
     return f"{base}-{suffix}"
-

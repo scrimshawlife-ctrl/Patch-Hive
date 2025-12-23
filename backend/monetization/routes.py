@@ -1,14 +1,15 @@
 """
 FastAPI routes for monetization events.
 """
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
-from core import get_db
-from community.routes import require_auth
 from community.models import User
-from monetization.referrals import record_purchase
+from community.routes import require_auth
+from core import get_db
 from monetization.credits import get_credits_balance
+from monetization.referrals import record_purchase
 from monetization.schemas import PurchaseCreate
 
 router = APIRouter()

@@ -1,4 +1,5 @@
 """Deterministic plain sketch renderer."""
+
 from __future__ import annotations
 
 from typing import List, Tuple
@@ -36,11 +37,7 @@ def render_module_sketch_svg(
         return x, y
 
     def esc(text: str) -> str:
-        return (
-            text.replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;")
-        )
+        return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
     parts: List[str] = []
     parts.append(
@@ -54,7 +51,7 @@ def render_module_sketch_svg(
     )
     parts.append(
         f'<text x="{padding}" y="{padding+14}" font-family="monospace" font-size="12">'
-        f'{esc(entry.manufacturer)} — {esc(entry.name)} ({entry.hp}hp)</text>'
+        f"{esc(entry.manufacturer)} — {esc(entry.name)} ({entry.hp}hp)</text>"
     )
     parts.append(
         f'<line x1="{padding}" y1="{header_px-6}" '

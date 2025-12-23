@@ -2,20 +2,23 @@
 PDF export functionality for patch books.
 Generates PDFs with rack layouts, patch diagrams, and waveforms.
 """
+
 import io
 import os
 from datetime import datetime
 from typing import Optional
-from reportlab.lib.pagesizes import letter, A4
+
+from reportlab.lib.pagesizes import A4, letter
 from reportlab.lib.units import inch
-from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
+from reportlab.pdfgen import canvas
 from sqlalchemy.orm import Session
 
 from core import settings
 from patches.models import Patch
 from racks.models import Rack
-from .visualization import generate_rack_layout_svg, generate_patch_diagram_svg
+
+from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
 from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
 
 
@@ -27,9 +30,7 @@ def _load_svg2rlg():
     return svg2rlg
 
 
-def generate_patch_pdf(
-    db: Session, patch: Patch, output_path: Optional[str] = None
-) -> str:
+def generate_patch_pdf(db: Session, patch: Patch, output_path: Optional[str] = None) -> str:
     """
     Generate a PDF for a single patch.
 
@@ -138,9 +139,7 @@ def generate_patch_pdf(
         has_envelope = any(
             "envelope" in conn.get("from_port", "").lower() for conn in patch.connections
         )
-        waveform_params = infer_waveform_params_from_patch(
-            patch.category, has_lfo, has_envelope
-        )
+        waveform_params = infer_waveform_params_from_patch(patch.category, has_lfo, has_envelope)
 
         waveform_svg = generate_waveform_svg(
             waveform_params, width=800, height=200, seed=patch.generation_seed

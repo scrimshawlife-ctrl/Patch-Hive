@@ -1,12 +1,13 @@
 """Add monetization tables and referral fields.
 
 Revision ID: 20240920_add_monetization_and_referrals
-Revises: 
+Revises:
 Create Date: 2024-09-20 00:00:00.000000
 """
-from alembic import op
+
 import sqlalchemy as sa
 
+from alembic import op
 
 revision = "20240920_add_monetization_and_referrals"
 down_revision = None
@@ -80,8 +81,12 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["referrer_user_id"], ["users.id"], ondelete="CASCADE"),
         sa.ForeignKeyConstraint(["referred_user_id"], ["users.id"], ondelete="CASCADE"),
     )
-    op.create_index("ix_referrals_referrer_user_id", "referrals", ["referrer_user_id"], unique=False)
-    op.create_index("ix_referrals_referred_user_id", "referrals", ["referred_user_id"], unique=False)
+    op.create_index(
+        "ix_referrals_referrer_user_id", "referrals", ["referrer_user_id"], unique=False
+    )
+    op.create_index(
+        "ix_referrals_referred_user_id", "referrals", ["referred_user_id"], unique=False
+    )
     op.create_unique_constraint("unique_referral_referred_user", "referrals", ["referred_user_id"])
     op.create_unique_constraint(
         "unique_referrer_referred_pair", "referrals", ["referrer_user_id", "referred_user_id"]
@@ -102,9 +107,13 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(["export_id"], ["exports.id"], ondelete="SET NULL"),
     )
     op.create_index("ix_credits_ledger_user_id", "credits_ledger", ["user_id"], unique=False)
-    op.create_index("ix_credits_ledger_change_type", "credits_ledger", ["change_type"], unique=False)
+    op.create_index(
+        "ix_credits_ledger_change_type", "credits_ledger", ["change_type"], unique=False
+    )
     op.create_index("ix_credits_ledger_export_id", "credits_ledger", ["export_id"], unique=False)
-    op.create_index("ix_credits_ledger_referral_id", "credits_ledger", ["referral_id"], unique=False)
+    op.create_index(
+        "ix_credits_ledger_referral_id", "credits_ledger", ["referral_id"], unique=False
+    )
 
     op.create_foreign_key(
         "fk_referrals_first_purchase",

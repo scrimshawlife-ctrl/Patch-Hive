@@ -15,11 +15,12 @@ Complexity note: This adds a thin scheduling layer that enables future
 optimization without changing application code (satisfies ABX-Core v1.3
 complexity rule: adds flexibility with minimal overhead).
 """
-from dataclasses import dataclass, field, asdict
-from typing import Dict, Any, Optional, Callable, Literal
+
+import uuid
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
-import uuid
+from typing import Any, Callable, Dict, Literal, Optional
 
 JobType = Literal["patch_generation", "pdf_export", "svg_export", "rack_validation"]
 JobStatus = Literal["pending", "running", "completed", "failed"]
@@ -27,6 +28,7 @@ JobStatus = Literal["pending", "running", "completed", "failed"]
 
 class JobPriority(Enum):
     """Job priority levels."""
+
     LOW = 1
     NORMAL = 2
     HIGH = 3
@@ -46,6 +48,7 @@ class ERSJob:
     The job doesn't contain the actual work function,
     just metadata about what needs to be done.
     """
+
     job_id: str  # Unique job ID
     job_type: JobType  # Type of job
     priority: JobPriority = JobPriority.NORMAL
@@ -97,7 +100,7 @@ class ERSJob:
         job_type: JobType,
         params: Dict[str, Any],
         priority: JobPriority = JobPriority.NORMAL,
-        estimated_duration_ms: Optional[float] = None
+        estimated_duration_ms: Optional[float] = None,
     ) -> "ERSJob":
         """Factory method to create a new job."""
         return cls(
@@ -105,7 +108,7 @@ class ERSJob:
             job_type=job_type,
             priority=priority,
             params=params,
-            estimated_duration_ms=estimated_duration_ms
+            estimated_duration_ms=estimated_duration_ms,
         )
 
 
@@ -196,9 +199,7 @@ class ERSExecutor:
 
 # Convenience functions for common operations
 def schedule_patch_generation(
-    rack_id: int,
-    seed: int,
-    priority: JobPriority = JobPriority.NORMAL
+    rack_id: int, seed: int, priority: JobPriority = JobPriority.NORMAL
 ) -> ERSJob:
     """
     Schedule a patch generation job.
@@ -215,16 +216,13 @@ def schedule_patch_generation(
         job_type="patch_generation",
         params={"rack_id": rack_id, "seed": seed},
         priority=priority,
-        estimated_duration_ms=1000.0  # Estimate: 1 second
+        estimated_duration_ms=1000.0,  # Estimate: 1 second
     )
     register_job(job)
     return job
 
 
-def schedule_pdf_export(
-    patch_id: int,
-    priority: JobPriority = JobPriority.NORMAL
-) -> ERSJob:
+def schedule_pdf_export(patch_id: int, priority: JobPriority = JobPriority.NORMAL) -> ERSJob:
     """
     Schedule a PDF export job.
 
@@ -239,16 +237,13 @@ def schedule_pdf_export(
         job_type="pdf_export",
         params={"patch_id": patch_id},
         priority=priority,
-        estimated_duration_ms=2000.0  # Estimate: 2 seconds
+        estimated_duration_ms=2000.0,  # Estimate: 2 seconds
     )
     register_job(job)
     return job
 
 
-def schedule_svg_export(
-    patch_id: int,
-    priority: JobPriority = JobPriority.NORMAL
-) -> ERSJob:
+def schedule_svg_export(patch_id: int, priority: JobPriority = JobPriority.NORMAL) -> ERSJob:
     """
     Schedule an SVG export job.
 
@@ -263,7 +258,7 @@ def schedule_svg_export(
         job_type="svg_export",
         params={"patch_id": patch_id},
         priority=priority,
-        estimated_duration_ms=500.0  # Estimate: 500ms
+        estimated_duration_ms=500.0,  # Estimate: 500ms
     )
     register_job(job)
     return job

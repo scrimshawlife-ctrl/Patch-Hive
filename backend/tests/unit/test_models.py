@@ -1,15 +1,17 @@
 """
 Tests for SQLAlchemy database models.
 """
-import pytest
-from datetime import datetime
-from sqlalchemy.orm import Session
-from sqlalchemy.exc import IntegrityError
 
-from modules.models import Module
+from datetime import datetime
+
+import pytest
+from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
 from cases.models import Case
+from community.models import Comment, User, Vote
+from modules.models import Module
 from racks.models import Rack, RackModule
-from community.models import User, Vote, Comment
 
 
 class TestModuleModel:
@@ -317,7 +319,9 @@ class TestRackModel:
         assert rack.case_id == sample_case.id
         assert rack.name == "My Rack"
 
-    def test_rack_user_relationship(self, db_session: Session, sample_user: User, sample_case: Case):
+    def test_rack_user_relationship(
+        self, db_session: Session, sample_user: User, sample_case: Case
+    ):
         """Test rack-user relationship."""
         rack = Rack(
             user_id=sample_user.id,
@@ -331,7 +335,9 @@ class TestRackModel:
         assert rack.user.id == sample_user.id
         assert rack.user.username == sample_user.username
 
-    def test_rack_case_relationship(self, db_session: Session, sample_user: User, sample_case: Case):
+    def test_rack_case_relationship(
+        self, db_session: Session, sample_user: User, sample_case: Case
+    ):
         """Test rack-case relationship."""
         rack = Rack(
             user_id=sample_user.id,
@@ -367,7 +373,9 @@ class TestRackModel:
         with pytest.raises(IntegrityError):
             db_session.commit()
 
-    def test_rack_default_public_false(self, db_session: Session, sample_user: User, sample_case: Case):
+    def test_rack_default_public_false(
+        self, db_session: Session, sample_user: User, sample_case: Case
+    ):
         """Test that is_public defaults to False."""
         rack = Rack(
             user_id=sample_user.id,
@@ -379,7 +387,9 @@ class TestRackModel:
 
         assert rack.is_public is False
 
-    def test_rack_tags_default_empty(self, db_session: Session, sample_user: User, sample_case: Case):
+    def test_rack_tags_default_empty(
+        self, db_session: Session, sample_user: User, sample_case: Case
+    ):
         """Test that tags default to empty list."""
         rack = Rack(
             user_id=sample_user.id,
@@ -487,7 +497,9 @@ class TestVoteModel:
         assert vote.user_id == sample_user.id
         assert vote.patch_id == patch.id
 
-    def test_create_vote_on_rack(self, db_session: Session, sample_user: User, sample_rack_basic: Rack):
+    def test_create_vote_on_rack(
+        self, db_session: Session, sample_user: User, sample_rack_basic: Rack
+    ):
         """Test creating a vote on a rack."""
         vote = Vote(
             user_id=sample_user.id,
@@ -538,9 +550,7 @@ class TestVoteModel:
 class TestCommentModel:
     """Tests for Comment model."""
 
-    def test_create_comment(
-        self, db_session: Session, sample_user: User, sample_rack_basic: Rack
-    ):
+    def test_create_comment(self, db_session: Session, sample_user: User, sample_rack_basic: Rack):
         """Test creating a comment."""
         from patches.models import Patch
 

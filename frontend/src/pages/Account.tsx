@@ -5,7 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { accountApi, authApi, exportApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
-import type { CreditsSummary, ExportRecord, ReferralSummary, User } from '@/types/api';
+import type { CreditsSummary, UserExportRecord, ReferralSummary, User } from '@/types/api';
 
 const sectionStyle: React.CSSProperties = {
   background: '#111',
@@ -24,7 +24,7 @@ export default function AccountPage() {
   const navigate = useNavigate();
   const { isAuthenticated, setAuth } = useAuthStore();
   const [credits, setCredits] = useState<CreditsSummary | null>(null);
-  const [exports, setExports] = useState<ExportRecord[]>([]);
+  const [exports, setExports] = useState<UserExportRecord[]>([]);
   const [referrals, setReferrals] = useState<ReferralSummary | null>(null);
   const [profile, setProfile] = useState<User | null>(null);
   const [displayName, setDisplayName] = useState('');
@@ -47,7 +47,7 @@ export default function AccountPage() {
         authApi.getMe(),
       ]);
       setCredits(creditsRes.data);
-      setExports(exportsRes.data);
+      setExports(exportsRes.data as unknown as UserExportRecord[]);
       setReferrals(referralsRes.data);
       setProfile(profileRes.data);
       setDisplayName(profileRes.data.display_name || profileRes.data.username);

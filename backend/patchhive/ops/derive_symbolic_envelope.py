@@ -53,8 +53,7 @@ def derive_symbolic_envelope(patch: PatchGraph, plan: PatchPlan) -> SymbolicPatc
             break
 
     chaos = [
-        max(0.0, min(1.0, (0.35 * x) + (0.35 * depth) + (0.30 * cable_term)))
-        for x in temporal
+        max(0.0, min(1.0, (0.35 * x) + (0.35 * depth) + (0.30 * cable_term))) for x in temporal
     ]
 
     macro_n = len(patch.macros)

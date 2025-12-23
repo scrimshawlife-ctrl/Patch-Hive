@@ -6,24 +6,21 @@ ABX-Core v1.3 compliance:
 - SEED enforcement: all imported data includes source metadata
 - Deterministic: import can be replayed with same results
 """
-from sqlalchemy.orm import Session
-from typing import List, Dict, Any
 
+from typing import Any, Dict, List
+
+from sqlalchemy.orm import Session
+
+from cases.models import Case
+from community.models import Comment, User, Vote
 from core.database import SessionLocal
 from core.provenance import Provenance
+from integrations.modulargrid_data import CASES_DATABASE, MANUFACTURERS, MODULES_DATABASE
 
 # Import all models to resolve SQLAlchemy relationships
 from modules.models import Module
-from cases.models import Case
-from racks.models import Rack, RackModule
-from community.models import User, Vote, Comment
 from patches.models import Patch
-
-from integrations.modulargrid_data import (
-    MANUFACTURERS,
-    MODULES_DATABASE,
-    CASES_DATABASE,
-)
+from racks.models import Rack, RackModule
 
 
 def import_modules(db: Session, clear_existing: bool = False) -> Dict[str, Any]:
@@ -38,10 +35,7 @@ def import_modules(db: Session, clear_existing: bool = False) -> Dict[str, Any]:
         Dict with import statistics and provenance
     """
     # Create provenance record
-    prov = Provenance.create(
-        entity_type="module_import",
-        pipeline="data_import"
-    )
+    prov = Provenance.create(entity_type="module_import", pipeline="data_import")
 
     # Clear existing if requested
     if clear_existing:
@@ -105,10 +99,7 @@ def import_cases(db: Session, clear_existing: bool = False) -> Dict[str, Any]:
         Dict with import statistics and provenance
     """
     # Create provenance record
-    prov = Provenance.create(
-        entity_type="case_import",
-        pipeline="data_import"
-    )
+    prov = Provenance.create(entity_type="case_import", pipeline="data_import")
 
     # Clear existing if requested
     if clear_existing:
@@ -174,10 +165,7 @@ def import_all(db: Session, clear_existing: bool = False) -> Dict[str, Any]:
     print("\n=== Importing ModularGrid Data ===\n")
 
     # Create overall provenance
-    prov = Provenance.create(
-        entity_type="full_import",
-        pipeline="data_import"
-    )
+    prov = Provenance.create(entity_type="full_import", pipeline="data_import")
 
     print("--- Importing Modules ---")
     modules_result = import_modules(db, clear_existing)
@@ -215,20 +203,10 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Import ModularGrid data into PatchHive")
     parser.add_argument(
-        "--clear",
-        action="store_true",
-        help="Clear existing ModularGrid data before importing"
+        "--clear", action="store_true", help="Clear existing ModularGrid data before importing"
     )
-    parser.add_argument(
-        "--modules-only",
-        action="store_true",
-        help="Import only modules"
-    )
-    parser.add_argument(
-        "--cases-only",
-        action="store_true",
-        help="Import only cases"
-    )
+    parser.add_argument("--modules-only", action="store_true", help="Import only modules")
+    parser.add_argument("--cases-only", action="store_true", help="Import only cases")
 
     args = parser.parse_args()
 

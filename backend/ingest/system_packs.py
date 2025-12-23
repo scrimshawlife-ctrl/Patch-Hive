@@ -4,16 +4,19 @@ System Packs Loader
 Loads reference patches from the system_packs/ directory.
 System packs provide validated, canonical patch definitions for various synthesizer systems.
 """
+
 import json
-import yaml
-from pathlib import Path
-from typing import List, Dict, Any, Optional
 from dataclasses import dataclass
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml
 
 
 @dataclass
 class SystemPackPatch:
     """Represents a patch from a system pack."""
+
     id: str
     name: str
     system: str
@@ -29,6 +32,7 @@ class SystemPackPatch:
 @dataclass
 class SystemPack:
     """Represents a system pack with metadata and patches."""
+
     name: str
     system: str
     version: str
@@ -70,7 +74,8 @@ class SystemPackLoader:
             return []
 
         return [
-            d.name for d in self.packs_root.iterdir()
+            d.name
+            for d in self.packs_root.iterdir()
             if d.is_dir() and (d / "pack.manifest.json").exists()
         ]
 
@@ -101,7 +106,7 @@ class SystemPackLoader:
         if not manifest_path.exists():
             raise FileNotFoundError(f"Manifest not found: {manifest_path}")
 
-        with open(manifest_path, 'r') as f:
+        with open(manifest_path, "r") as f:
             manifest = json.load(f)
 
         # Load patches
@@ -111,7 +116,7 @@ class SystemPackLoader:
             if not patch_file.exists():
                 raise FileNotFoundError(f"Patch file not found: {patch_file}")
 
-            with open(patch_file, 'r') as f:
+            with open(patch_file, "r") as f:
                 patch_data = yaml.safe_load(f)
 
             patch = SystemPackPatch(
@@ -124,7 +129,7 @@ class SystemPackLoader:
                 modules=patch_data.get("modules", {}),
                 wiring=patch_data.get("wiring", []),
                 notes=patch_data.get("notes"),
-                file_path=str(patch_file)
+                file_path=str(patch_file),
             )
             patches.append(patch)
 
@@ -137,7 +142,7 @@ class SystemPackLoader:
             description=manifest["description"],
             patches=patches,
             schema_file=str(pack_dir / manifest["schema"]["file"]),
-            ontology=manifest.get("ontology", {})
+            ontology=manifest.get("ontology", {}),
         )
 
         # Cache and return
@@ -165,7 +170,7 @@ class SystemPackLoader:
         self,
         pack_name: Optional[str] = None,
         tags: Optional[List[str]] = None,
-        system: Optional[str] = None
+        system: Optional[str] = None,
     ) -> List[SystemPackPatch]:
         """
         Search for patches across packs.
@@ -225,14 +230,10 @@ class SystemPackLoader:
                 "pack_name": pack_name,
                 "system": pack.system,
                 "patches_loaded": len(pack.patches),
-                "errors": []
+                "errors": [],
             }
         except Exception as e:
-            return {
-                "valid": False,
-                "pack_name": pack_name,
-                "errors": [str(e)]
-            }
+            return {"valid": False, "pack_name": pack_name, "errors": [str(e)]}
 
 
 # Factory function for dependency injection

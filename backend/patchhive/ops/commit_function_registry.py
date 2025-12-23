@@ -3,13 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from patchhive.registry.function_store import JackFunctionStore
-from patchhive.schemas import (
-    FieldMeta,
-    FieldStatus,
-    JackFunctionEntry,
-    Provenance,
-    ProvenanceType,
-)
+from patchhive.schemas import FieldMeta, FieldStatus, JackFunctionEntry, Provenance, ProvenanceType
 
 
 def _now_utc() -> datetime:
@@ -42,7 +36,9 @@ def confirm_and_commit_function(
     confirmed = proposed.model_copy(
         update={
             "rev": _now_utc(),
-            "description": proposed.description.replace("Needs confirmation.", "Confirmed by user."),
+            "description": proposed.description.replace(
+                "Needs confirmation.", "Confirmed by user."
+            ),
             "provenance": list(meta.provenance),
             "meta": meta,
         }

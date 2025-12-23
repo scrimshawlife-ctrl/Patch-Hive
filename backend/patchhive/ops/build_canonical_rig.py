@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 from patchhive.gallery.store import ModuleGalleryStore
-from patchhive.schemas import (
-    CanonicalRig,
-    CanonicalRigJack,
-    CanonicalRigModule,
+from patchhive.schemas import CanonicalRig, CanonicalRigJack, CanonicalRigModule, RigSpec
+
 
 def build_canonical_rig(rig: RigSpec, *, gallery_store: ModuleGalleryStore) -> CanonicalRig:
     """

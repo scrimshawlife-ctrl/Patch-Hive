@@ -112,6 +112,7 @@ def _jack_role_candidates(canon: CanonicalRig) -> Dict[str, List[str]]:
         buckets[key] = sorted(set(buckets[key]))
     return buckets
 
+
 def _enumerate_assignments(
     template: PatchTemplate,
     role_buckets: Dict[str, List[str]],

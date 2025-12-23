@@ -1,6 +1,7 @@
 """
 FastAPI routes for admin console operations.
 """
+
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -9,11 +10,14 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from admin.dependencies import require_admin_mutate, require_admin_read
+from admin.models import PendingFunction
 from admin.schemas import (
+    AdminActionReason,
     AdminAvatarUpdate,
     AdminCacheInvalidate,
     AdminCreditsGrant,
     AdminExportResponse,
+    AdminFunctionApprove,
     AdminGalleryRevision,
     AdminGalleryRevisionList,
     AdminLeaderboardEntry,
@@ -21,20 +25,17 @@ from admin.schemas import (
     AdminModuleImport,
     AdminModuleMerge,
     AdminModuleStatusUpdate,
+    AdminPendingFunctionList,
     AdminRoleUpdate,
-    AdminActionReason,
     AdminRunList,
     AdminRunResponse,
     AdminUserList,
     AdminUserResponse,
-    AdminPendingFunctionList,
-    AdminFunctionApprove,
 )
 from admin.utils import log_admin_action
 from community.models import User
 from core import get_db
 from gallery.models import GalleryRevision
-from admin.models import PendingFunction
 from modules.models import Module
 from monetization.models import CreditsLedger, Export
 from runs.models import Run
@@ -512,7 +513,7 @@ def trending_modules(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_admin_read),
 ):
-    from racks.models import RackModule, Rack
+    from racks.models import Rack, RackModule
 
     since = datetime.utcnow() - timedelta(days=window_days)
     rows = (

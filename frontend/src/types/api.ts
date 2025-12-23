@@ -50,7 +50,7 @@ export interface Case {
   power_5v_ma?: number;
   description?: string;
   manufacturer_url?: string;
-  meta?: Record<string, any>;
+  meta?: Record<string, unknown>;
   source: string;
   source_reference?: string;
   created_at: string;
@@ -128,15 +128,14 @@ export interface Patch {
   category: string;
   description?: string;
   tags?: string[];
-  suggested_name?: string;
   difficulty?: string;
   diagram_svg_url?: string;
   connections: Connection[];
   generation_seed: number;
   generation_version: string;
-  engine_config?: Record<string, any>;
+  engine_config?: Record<string, unknown>;
   waveform_svg_path?: string;
-  waveform_params?: Record<string, any>;
+  waveform_params?: Record<string, unknown>;
   is_public: boolean;
   created_at: string;
   updated_at: string;
@@ -173,19 +172,6 @@ export interface GeneratePatchesResponse {
   run_id?: number;
 }
 
-// Run types
-export interface Run {
-  id: number;
-  rack_id: number;
-  status: string;
-  created_at: string;
-}
-
-export interface RunListResponse {
-  total: number;
-  runs: Run[];
-}
-
 export interface RunPatchesResponse {
   run_id: number;
   total: number;
@@ -200,7 +186,6 @@ export interface User {
   email: string;
   display_name?: string;
   avatar_url?: string;
-  display_name?: string;
   allow_public_avatar?: boolean;
   bio?: string;
   role: string;
@@ -221,7 +206,7 @@ export interface CreditsSummary {
   entries: CreditLedgerEntry[];
 }
 
-export interface ExportRecord {
+export interface UserExportRecord {
   id: number;
   export_type: string;
   entity_id: number;

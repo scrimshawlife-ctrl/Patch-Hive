@@ -18,3 +18,4 @@ def validate_patch(patch: PatchGraph, plan: Optional[PatchPlan] = None) -> Valid
         illegal_connections=[],
         silence_risk=[],
         runaway_risk=[],
+    )

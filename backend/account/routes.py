@@ -1,14 +1,21 @@
 """Routes for account dashboard data."""
-from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
 
-from core import get_db, settings
-from community.routes import require_auth
+from fastapi import APIRouter, Depends
+from sqlalchemy import desc, func
+from sqlalchemy.orm import Session
+
 from community.models import User
+from community.routes import require_auth
+from core import get_db, settings
+
 from .models import CreditLedgerEntry, ExportRecord, Referral
-from .schemas import CreditsSummaryResponse, ExportRecordResponse, ReferralSummaryResponse, ReferralRecordResponse
-from .services import ensure_referral_code, mask_user_id, build_referral_link
+from .schemas import (
+    CreditsSummaryResponse,
+    ExportRecordResponse,
+    ReferralRecordResponse,
+    ReferralSummaryResponse,
+)
+from .services import build_referral_link, ensure_referral_code, mask_user_id
 
 router = APIRouter()
 

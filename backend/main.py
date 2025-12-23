@@ -2,25 +2,27 @@
 PatchHive Backend API
 Main FastAPI application entry point.
 """
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
+
 from contextlib import asynccontextmanager
 
-from core import settings, init_db
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
+from admin.models import AdminAuditLog, PendingFunction  # noqa: F401
+from cases.models import Case  # noqa: F401
+from community.models import Comment, User, Vote  # noqa: F401
+from core import init_db, settings
+from gallery.models import GalleryRevision  # noqa: F401
+from modules.catalog import ModuleCatalog  # noqa: F401
 
 # Import all models to register them with SQLAlchemy before init_db()
 from modules.models import Module  # noqa: F401
-from modules.catalog import ModuleCatalog  # noqa: F401
-from cases.models import Case  # noqa: F401
-from racks.models import Rack, RackModule  # noqa: F401
-from patches.models import Patch  # noqa: F401
-from community.models import User, Vote, Comment  # noqa: F401
 from monetization.models import CreditsLedger, Export, License, Referral  # noqa: F401
-from admin.models import AdminAuditLog, PendingFunction  # noqa: F401
-from gallery.models import GalleryRevision  # noqa: F401
-from runs.models import Run  # noqa: F401
+from patches.models import Patch  # noqa: F401
 from publishing.models import Publication, PublicationReport  # noqa: F401
-from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
+from runs.models import Run  # noqa: F401
 
 
 @asynccontextmanager
@@ -79,21 +81,22 @@ async def root():
     }
 
 
-# Import and register routers  # noqa: E402
-from modules.routes import router as modules_router  # noqa: E402
-from modules.catalog_routes import router as catalog_router  # noqa: E402
+from account.routes import router as account_router  # noqa: E402
+from admin.routes import router as admin_router  # noqa: E402
 from cases.routes import router as cases_router  # noqa: E402
-from racks.routes import router as racks_router  # noqa: E402
-from patches.routes import router as patches_router  # noqa: E402
-from runs.routes import router as runs_router  # noqa: E402
 from community.routes import router as community_router  # noqa: E402
 from export.routes import router as export_router  # noqa: E402
 from integrations.router import router as integrations_router  # noqa: E402
-from monetization.routes import router as monetization_router  # noqa: E402
-from admin.routes import router as admin_router  # noqa: E402
-from publishing.routes import router as publishing_router  # noqa: E402
-from account.routes import router as account_router  # noqa: E402
 from leaderboards.routes import router as leaderboards_router  # noqa: E402
+from modules.catalog_routes import router as catalog_router  # noqa: E402
+
+# Import and register routers  # noqa: E402
+from modules.routes import router as modules_router  # noqa: E402
+from monetization.routes import router as monetization_router  # noqa: E402
+from patches.routes import router as patches_router  # noqa: E402
+from publishing.routes import router as publishing_router  # noqa: E402
+from racks.routes import router as racks_router  # noqa: E402
+from runs.routes import router as runs_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
