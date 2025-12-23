@@ -35,24 +35,7 @@ def create_patch(patch: PatchCreate, db: Session = Depends(get_db)):
     tags = patch.tags or _derive_tags(patch.connections)
     db_patch = Patch(
         rack_id=patch.rack_id,
-        run_id=patch.run_id,
-        name=patch.name,
-        suggested_name=patch.suggested_name,
-        name_override=patch.name_override,
-        category=patch.category,
-        description=patch.description,
-        connections=patch.connections,
-        generation_seed=patch.generation_seed,
-        generation_version=patch.generation_version,
-        engine_config=patch.engine_config,
-        waveform_params=patch.waveform_params,
-        is_public=patch.is_public,
-        tags=tags,
-    )
-    db.add(db_patch)
-    db.commit()
-    db.refresh(db_patch)
-
+        run_id=None,
     return build_patch_response(db, db_patch)
 
 
@@ -151,10 +134,10 @@ def generate_patches(
     )
 
     # Create run
-    new_run = Run(rack_id=rack_id, status="running")
-    db.add(new_run)
-    db.flush()
-
+    run = Run(rack_id=rack_id, status="completed")
+    db.add(run)
+    db.commit()
+    db.refresh(run)
     generation_ir, patch_graphs, provenance = generate_patches_with_ir(
         db, rack, seed=request.seed, config=config
     )
@@ -165,25 +148,8 @@ def generate_patches(
         tags = _derive_tags([c.to_dict() for c in spec.connections])
         db_patch = Patch(
             rack_id=rack_id,
-            run_id=new_run.id,
+            run_id=run.id,
             name=spec.patch_name,
-            suggested_name=spec.patch_name,
-            name_override=None,
-            category=spec.category,
-            description=spec.description,
-            connections=[c.to_dict() for c in spec.connections],
-            generation_seed=spec.generation_seed,
-            generation_version=settings.patch_engine_version,
-            engine_config=asdict(generation_ir.params),
-            provenance=provenance.to_dict(),
-            generation_ir=generation_ir.to_dict(),
-            generation_ir_hash=spec.generation_ir_hash,
-            is_public=False,
-            tags=tags,
-        )
-        db.add(db_patch)
-        saved_patches.append(db_patch)
-
     new_run.status = "completed"
     db.commit()
 
@@ -191,9 +157,7 @@ def generate_patches(
     patch_responses = [build_patch_response(db, p) for p in saved_patches]
 
     return GeneratePatchesResponse(
-        generated_count=len(patch_responses), patches=patch_responses, run_id=new_run.id
-    )
-
+        generated_count=len(patch_responses), patches=patch_responses, run_id=run.id
 
 def build_patch_response(db: Session, patch: Patch) -> PatchResponse:
     """Build a complete patch response with vote count."""

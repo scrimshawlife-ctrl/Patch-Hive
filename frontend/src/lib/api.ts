@@ -129,13 +129,7 @@ export const patchApi = {
 
 // Run API
 export const runApi = {
-  list: (params?: { skip?: number; limit?: number; rack_id?: number }) =>
-    api.get<RunListResponse>('/runs', { params }),
-
-  get: (runId: number) => api.get<Run>(`/runs/${runId}`),
-
-  create: (data: { rack_id: number; status?: string }) => api.post<Run>('/runs', data),
-
+  list: (rackId: number) => api.get<RunListResponse>('/runs', { params: { rack_id: rackId } }),
   patches: (runId: number) => api.get<RunPatchesResponse>(`/runs/${runId}/patches`),
 };
 
