@@ -35,7 +35,7 @@ PatchHive is a modular web application that helps users design, catalog, share, 
 
 <div align="center">
 
-**[🎛️ Live Demo](#) • [📖 Documentation](docs/) • [🐛 Report Bug](../../issues) • [✨ Request Feature](../../issues)**
+**[🎛️ Live Demo](https://patchhive-frontend.onrender.com) • [📖 Documentation](docs/) • [🐛 Report Bug](../../issues) • [✨ Request Feature](../../issues)**
 
 </div>
 
@@ -45,6 +45,7 @@ PatchHive is a modular web application that helps users design, catalog, share, 
 
 - [✨ Key Highlights](#-key-highlights)
 - [🎬 Demo](#-demo)
+- [📸 Screenshots](#-screenshots)
 - [🎯 Features](#-features)
 - [🏗️ Technology Stack](#️-technology-stack)
 - [📁 Project Structure](#-project-structure)
@@ -97,9 +98,20 @@ SEED enforcement: every module, rack, and patch tracks its source and generation
 
 <div align="center">
 
-**🚧 Screenshots and demo video coming soon 🚧**
+**Explore the live build:** https://patchhive-frontend.onrender.com  
+**API docs:** https://patchhive-api.onrender.com/docs
 
-*UI components are implemented. Visual documentation in progress.*
+Preview below in [Screenshots](#-screenshots).
+
+</div>
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+
+![PatchHive interface preview](docs/assets/social-preview.svg)
 
 </div>
 
