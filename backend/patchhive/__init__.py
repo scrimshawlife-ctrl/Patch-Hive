@@ -1,1 +1,1 @@
-"""PatchHive shared schemas and utilities."""
+"""PatchHive patch library generation package."""
