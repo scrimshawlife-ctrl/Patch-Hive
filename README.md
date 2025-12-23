@@ -29,13 +29,32 @@
 
 <br>
 
+<p align="center">
 PatchHive is a modular web application that helps users design, catalog, share, and explore Eurorack modular synthesizer systems and their possible patches. Built following Applied Alchemy Labs (AAL) architecture principles with ABX-Core v1.2 compliance.
+</p>
 
 <div align="center">
 
 **[🎛️ Live Demo](#) • [📖 Documentation](docs/) • [🐛 Report Bug](../../issues) • [✨ Request Feature](../../issues)**
 
 </div>
+
+---
+
+## 📑 Table of Contents
+
+- [✨ Key Highlights](#-key-highlights)
+- [🎬 Demo](#-demo)
+- [🎯 Features](#-features)
+- [🏗️ Technology Stack](#️-technology-stack)
+- [📁 Project Structure](#-project-structure)
+- [🚀 Quick Start](#-quick-start)
+- [☁️ Deployment](#️-deployment)
+- [🧪 Development](#-development)
+- [📚 Documentation](#-documentation)
+- [🗺️ Roadmap](#️-roadmap)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
 ---
 
@@ -86,240 +105,387 @@ SEED enforcement: every module, rack, and patch tracks its source and generation
 
 ---
 
-## Features
+## 🎯 Features
 
-### 1. Module & Case Library
-- Comprehensive catalog of Eurorack modules with full metadata
-- Module specifications: HP width, power draw, I/O ports, tags, descriptions
-- Case library with power and layout constraints
-- Import from multiple sources:
+### 📚 Module & Case Library
+
+<details>
+<summary><b>Click to expand</b></summary>
+
+- **Comprehensive Catalog** - Eurorack modules with full metadata
+- **Detailed Specifications**
+  - HP width and physical dimensions
+  - Power draw (+12V, -12V, +5V)
+  - I/O ports and connectivity
+  - Tags and categorization
+  - Manufacturer details
+- **Case Management**
+  - Power supply constraints
+  - Layout configurations
+  - Row and HP capacity tracking
+- **Multiple Import Methods**
   - Manual entry via UI
-  - CSV upload
-  - ModularGrid adapter (boundary-only; implementation provided externally)
-- Full data provenance tracking (SEED principle)
+  - CSV bulk upload
+  - ModularGrid integration (interface ready)
+- **Full Data Provenance**
+  - Source tracking (Manual, CSV, ModularGrid)
+  - Import timestamps and references
+  - SEED principle compliance
+</details>
 
-### 2. Rack Builder
-- Interactive rack design with case selection
-- Module placement with validation:
-  - HP capacity per row
-  - Power draw limits (+12V, -12V, +5V)
+### 🎛️ Rack Builder
+
+<details>
+<summary><b>Click to expand</b></summary>
+
+- **Interactive Design Interface**
+  - Visual module placement
+  - Drag-and-drop support
+  - Real-time validation feedback
+- **Smart Validation Engine**
+  - HP capacity verification per row
+  - Power draw limits enforcement
   - Overlap detection
-- Automatic deterministic naming (e.g., "Midnight Swarm", "Solar Lattice")
-- Save and share configurations
+  - Cable reach analysis
+- **Automatic Features**
+  - Deterministic naming (e.g., "Midnight Swarm", "Solar Lattice")
+  - Layout optimization suggestions
+  - Power consumption summaries
+- **Save & Share**
+  - Public/private rack configurations
+  - Community sharing and discovery
+  - Version history tracking
 
-### 3. Deterministic Patch Generation Engine
-- Rule-based patch generation from rack configurations
-- Deterministic: same seed + rack = same patches
-- Patch categories:
-  - Voice, Modulation, Clock-Rhythm, Generative
-  - Utility, Performance Macro, Texture-FX, Study, Experimental-Feedback
-- Connection graph representation (modules as nodes, cables as edges)
-- Full provenance: seed, engine version, config stored with each patch
+</details>
+### ⚡ Deterministic Patch Generation
 
-### 4. Visualization & Export
-- **Rack Layout View**: Visual module arrangement with HP positions
-- **Patch Diagram**: Schematic showing cable connections between modules
-- **Waveform Approximation**: Simplified synthesis model for audio visualization
-- **PDF Export**: Generate patch books with diagrams and descriptions
-- **SVG Export**: Individual diagrams for rack layouts, patches, and waveforms
+<details>
+<summary><b>Click to expand</b></summary>
 
-### 5. Community Layer
-- User authentication and profiles
-- Public/private rack and patch sharing
-- Community feed with latest creations
-- Voting/favoriting system
-- Comments on racks and patches
+- **Rule-Based Engine**
+  - Analyzes module capabilities and connections
+  - Signal flow validation
+  - Category-aware patch generation
+- **Deterministic Behavior**
+  - Same seed + rack configuration = identical patches
+  - Full reproducibility guaranteed
+  - Version-locked engine behavior
+- **Patch Categories**
+  - **Tonal**: Pads, Leads, Basses
+  - **Rhythmic**: Percussion, Drums, Sequences
+  - **Textural**: FX, Ambient, Generative
+  - **Utility**: Processing, Mixing, Routing
+- **Connection Graph**
+  - Modules as nodes
+  - Cables as directed edges
+  - Signal type tracking (CV, Gate, Audio)
+- **Full Provenance**
+  - Generation seed stored with each patch
+  - Engine version tracking
+  - Configuration snapshots
+  - Timestamp metadata
+
+</details>
+
+### 🎨 Visualization & Export
+
+<details>
+<summary><b>Click to expand</b></summary>
+
+- **Rack Layout View**
+  - Visual module arrangement
+  - HP position indicators
+  - Power consumption overlay
+  - Cable routing visualization
+- **Patch Diagrams**
+  - Schematic-style connection views
+  - Color-coded signal types
+  - Port labeling
+  - Flow direction indicators
+- **Waveform Approximation**
+  - Simplified synthesis model
+  - Visual audio output preview
+  - Frequency and amplitude analysis
+- **Export Formats**
+  - **PDF**: Complete patch books with diagrams and descriptions
+  - **SVG**: Individual scalable vector graphics
+  - **JSON**: Raw data for external tools
+  - **CSV**: Module and patch lists
+
+</details>
+
+### 👥 Community Features
+
+<details>
+<summary><b>Click to expand</b></summary>
+
+- **User Management**
+  - Authentication and profiles
+  - Portfolio of racks and patches
+  - Activity history
+- **Sharing & Discovery**
+  - Public/private visibility controls
+  - Community feed with latest creations
+  - Search and filter by tags, modules, categories
+- **Social Engagement**
+  - Voting and favoriting system
+  - Comments on racks and patches
+  - User following and notifications
+- **Collaboration**
+  - Rack forking and remixing
+  - Patch variation exploration
+  - Community challenges and contests
+
+</details>
 
 ---
 
-## Technology Stack
+## 🏗️ Technology Stack
 
 ### Backend
-- **Python 3.11+** with FastAPI
-- **PostgreSQL** (SQLite compatible for development)
-- **SQLAlchemy** for ORM with Alembic migrations
-- **Pydantic** for schema validation
-- **JWT** authentication
-- **ReportLab** for PDF generation
-- **SVG** generation for visualizations
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **Python** | 3.11+ | Core language |
+| **FastAPI** | 0.104+ | Web framework |
+| **PostgreSQL** | 15+ | Primary database |
+| **SQLAlchemy** | 2.0+ | ORM and migrations |
+| **Pydantic** | 2.0+ | Schema validation |
+| **JWT** | Latest | Authentication |
+| **ReportLab** | Latest | PDF generation |
+| **Alembic** | Latest | Database migrations |
 
 ### Frontend
-- **TypeScript + React** with Vite
-- **React Router** for navigation
-- **Zustand** for state management
-- **Axios** for API communication
+
+| Technology | Version | Purpose |
+|------------|---------|---------|
+| **TypeScript** | 5.2+ | Type-safe JavaScript |
+| **React** | 18.2+ | UI framework |
+| **Vite** | 5.0+ | Build tool |
+| **React Router** | 6.0+ | Navigation |
+| **Zustand** | 4.0+ | State management |
+| **Axios** | Latest | HTTP client |
 
 ### Infrastructure
-- **Docker** with docker-compose
-- Monorepo structure for backend, frontend, and shared types
+
+- **Docker & Docker Compose** - Containerization and orchestration
+- **GitHub Actions** - CI/CD pipeline
+- **Monorepo Structure** - Unified codebase management
 
 ---
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 patchhive/
-├── backend/
-│   ├── core/           # Config, database, security, naming
-│   ├── modules/        # Module catalog management
-│   ├── cases/          # Case catalog management
-│   ├── racks/          # Rack builder and validation
-│   ├── patches/        # Patch engine, storage, routes
-│   ├── community/      # Users, auth, voting, comments
-│   ├── export/         # PDF, SVG generation
-│   ├── ingest/         # External data import (ModularGrid, CSV)
-│   ├── alembic/        # Database migrations
-│   ├── main.py         # FastAPI app entry point
-│   └── seed_data.py    # Development seed data loader
-├── frontend/
+│
+├── 🔧 backend/
+│   ├── core/              # Configuration, database, security
+│   ├── modules/           # Module catalog management
+│   ├── cases/             # Case catalog management
+│   ├── racks/             # Rack builder and validation
+│   ├── patches/           # Patch generation engine
+│   ├── community/         # Users, auth, social features
+│   ├── export/            # PDF and SVG generation
+│   ├── ingest/            # External data import
+│   ├── alembic/           # Database migrations
+│   ├── main.py            # FastAPI application entry
+│   └── seed_data.py       # Development seed data
+│
+├── 🎨 frontend/
 │   ├── src/
-│   │   ├── components/ # Reusable UI components
-│   │   ├── pages/      # Page components
-│   │   ├── lib/        # API client, state management
-│   │   ├── types/      # TypeScript type definitions
-│   │   └── main.tsx    # React app entry point
+│   │   ├── components/    # Reusable UI components
+│   │   ├── pages/         # Page components
+│   │   ├── lib/           # API client, utilities
+│   │   ├── types/         # TypeScript definitions
+│   │   └── main.tsx       # React application entry
 │   ├── index.html
 │   └── vite.config.ts
-├── infra/
+│
+├── 🐳 infra/
 │   ├── docker-compose.yml
 │   ├── Dockerfile.backend
 │   └── Dockerfile.frontend
-└── docs/
-    ├── ARCHITECTURE.md
-    ├── PATCH_ENGINE.md
-    ├── DATA_MODEL.md
-    └── ABX_CORE_COMPLIANCE.md
+│
+└── 📖 docs/
+    ├── ARCHITECTURE.md           # System architecture
+    ├── PATCH_ENGINE.md           # Patch generation details
+    ├── DATA_MODEL.md             # Database schema
+    ├── ABX_CORE_COMPLIANCE.md    # Architecture compliance
+    ├── DEPLOYMENT_OPTIONS.md     # Deployment guides
+    └── ...
 ```
 
 ---
 
-## Quick Start
+## 🚀 Quick Start
 
 ### Prerequisites
-- Docker and Docker Compose
-- OR: Python 3.11+, Node.js 20+, PostgreSQL 15+
 
-### Using Docker (Recommended)
+Choose one of the following:
+
+**Option A (Recommended):**
+- Docker Desktop or Docker Engine + Docker Compose
+
+**Option B (Manual):**
+- Python 3.11 or higher
+- Node.js 20 or higher
+- PostgreSQL 15 or higher
+
+---
+
+### ⚡ Option A: Docker Setup (Recommended)
+
+The fastest way to get PatchHive running:
 
 ```bash
-# Clone repository
+# 1. Clone the repository
 git clone https://github.com/scrimshawlife-ctrl/Patch-Hive.git
 cd Patch-Hive
 
-# Start all services with one command
+# 2. Start all services
 docker compose up -d
 
-# Or use the Makefile
+# Alternative: Use the Makefile
 make dev
-
-# Access the application:
-# - Frontend: http://localhost:5173
-# - Backend: http://localhost:8000/docs
-# - Database: localhost:5432
 ```
 
-📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
+**Access the application:**
 
-### Manual Setup (Without Docker)
+| Service | URL | Description |
+|---------|-----|-------------|
+| Frontend | http://localhost:5173 | React UI |
+| Backend API | http://localhost:8000/docs | Interactive API docs |
+| Database | localhost:5432 | PostgreSQL |
 
-#### Backend
+**Useful commands:**
 
 ```bash
+make help          # Show all available commands
+make logs          # Follow service logs
+make test          # Run all tests
+make db-backup     # Backup database
+make restart       # Restart all services
+make clean         # Stop and remove containers
+```
+
+📖 **[Complete Docker Guide →](docs/DOCKER_DEPLOYMENT.md)**
+
+---
+
+### 🛠️ Option B: Manual Setup
+
+#### Backend Setup
+
+```bash
+# Navigate to backend directory
 cd backend
 
 # Install dependencies
 pip install -e .
 
-# Set up database (PostgreSQL)
+# Configure database connection
 export DATABASE_URL="postgresql://patchhive:patchhive@localhost:5432/patchhive"
 
-# Run migrations
+# Run database migrations
 alembic upgrade head
 
-# Load seed data (optional)
+# (Optional) Load seed data for development
 python seed_data.py
 
-# Start server
+# Start the development server
 uvicorn main:app --reload
 ```
 
-#### Frontend
+Backend will be available at: **http://localhost:8000/docs**
+
+#### Frontend Setup
 
 ```bash
+# Navigate to frontend directory
 cd frontend
 
 # Install dependencies
 npm install
 
-# Start development server
+# Start the development server
 npm run dev
 ```
 
+Frontend will be available at: **http://localhost:5173**
+
 ---
 
-## 🚀 Deployment
+## ☁️ Deployment
 
 PatchHive supports deployment to **7+ platforms**. Choose based on your needs:
 
-📖 **[Complete Deployment Comparison →](docs/DEPLOYMENT_OPTIONS.md)**
+### 🎯 Quick Deploy Options
 
-### Quick Deploy Options
+<table>
+<tr>
+<td width="50%">
 
-#### Deploy to Azure (Recommended for Production)
+#### Azure (Production-Ready)
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fscrimshawlife-ctrl%2FPatch-Hive%2Fmain%2Finfra%2Fmain.bicep)
 
-**Quick Deploy with Azure Developer CLI:**
+**Quick Deploy:**
 ```bash
 azd up
 ```
 
-**What gets deployed:**
-- Azure PostgreSQL Flexible Server (15)
-- Azure App Service for backend (Python 3.11)
-- Azure Static Web Apps for frontend (Free tier)
-- Automatic SSL certificates
-- Application Insights (monitoring)
+**Includes:**
+- PostgreSQL Flexible Server (15)
+- App Service (Python 3.11)
+- Static Web Apps (Frontend)
+- Auto SSL certificates
+- Application Insights
 
-📖 **Detailed Guide**: [AZURE_DEPLOYMENT.md](docs/AZURE_DEPLOYMENT.md)
+**Cost:** ~$25-30/month (production)
 
-**Estimated Cost:** ~$25-30/month (production tier) | Free tier available
+📖 [Azure Guide](docs/AZURE_DEPLOYMENT.md)
 
-#### Deploy to Render (Easiest Free Option)
+</td>
+<td width="50%">
+
+#### Render (Free Tier)
 
 [![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/scrimshawlife-ctrl/Patch-Hive)
 
-**One-Click Deployment:**
-1. Click the button above or go to [Render Dashboard](https://render.com)
-2. Connect your GitHub repository
-3. Render detects `render.yaml` and deploys:
-   - PostgreSQL database (free tier)
-   - FastAPI backend (free tier)
-   - React frontend (free tier)
-4. Services live in ~10 minutes
+**One-Click Deploy:**
+1. Click the button above
+2. Connect GitHub repository
+3. Services deploy automatically
+4. Live in ~10 minutes
 
-📖 **Detailed Guide**: [RENDER_DEPLOYMENT.md](docs/RENDER_DEPLOYMENT.md)
+**Includes:**
+- PostgreSQL database (free tier)
+- FastAPI backend (free tier)
+- React frontend (free tier)
 
-**Cost:** Free tier available | Services spin down after 15min inactivity
+**Cost:** Free (with limitations)
 
-#### Deployment Comparison
+📖 [Render Guide](docs/RENDER_DEPLOYMENT.md)
 
-| Feature | Azure | Render |
-|---------|-------|--------|
-| **Cost (Free Tier)** | $200 credit (1 month) | ✅ Forever free (with limitations) |
-| **Cost (Production)** | ~$25-30/month | ~$25/month |
-| **Auto-scaling** | ✅ Yes | Limited on free tier |
-| **Custom Domains** | ✅ Free SSL | ✅ Free SSL |
-| **Database Backups** | ✅ Automated (7-30 days) | ✅ 90 days on free tier |
-| **Cold Start** | Fast (~5 seconds) | ~30 seconds on free tier |
-| **Regions** | 60+ regions worldwide | Limited regions |
-| **CI/CD Integration** | GitHub Actions built-in | Automatic on git push |
-| **Monitoring** | Application Insights included | Basic metrics |
-| **Best For** | Production, enterprise | Quick prototypes, free hosting |
+</td>
+</tr>
+</table>
 
-#### Self-Hosted with Docker
+### 📊 Platform Comparison
 
-Perfect for on-premise or custom VPS deployment:
+| Platform | Free Tier | Production Cost | Auto-scaling | Custom Domains | Best For |
+|----------|-----------|-----------------|--------------|----------------|----------|
+| **Azure** | $200 credit | ~$25-30/mo | ✅ Yes | ✅ Free SSL | Production, Enterprise |
+| **Render** | ✅ Forever | ~$25/mo | Limited | ✅ Free SSL | Prototypes, Free hosting |
+| **Railway** | $5 credit | $5-50/mo | ✅ Yes | ✅ Free SSL | MVPs, Startups |
+| **DigitalOcean** | $200 credit | $12-50/mo | ✅ Yes | ✅ Free SSL | Simple production |
+| **Fly.io** | Free tier | $0-30/mo | ✅ Yes | ✅ Free SSL | Edge deployment |
+| **Vercel** | ✅ Generous | Free-$20/mo | ✅ Yes | ✅ Free SSL | Frontend only |
+
+### 🐳 Self-Hosted with Docker
+
+Perfect for on-premise or custom VPS:
 
 ```bash
 # Production deployment
@@ -329,114 +495,28 @@ docker compose -f docker-compose.prod.yml up -d
 make prod
 ```
 
-📖 **Full Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
-
-**Best for:** On-premise, custom VPS, full control
-
-#### Additional Platform Options
-
-| Platform | Best For | Cost | Setup Time |
-|----------|----------|------|------------|
-| **Railway** | MVPs, startups | $5-50/mo | 15 min |
-| **DigitalOcean** | Simple production | $12-50/mo | 15 min |
-| **Fly.io** | Edge deployment | $0-30/mo | 15 min |
-| **Vercel** | Frontend only | Free-$20/mo | 5 min |
-
-📖 **[View Full Comparison & Setup Guides →](docs/DEPLOYMENT_OPTIONS.md)**
-
-**Complete guide includes:**
-- ✅ Detailed cost comparisons for all platforms
-- ✅ Platform-specific setup instructions
-- ✅ Configuration files included for each platform
-- ✅ Security considerations and compliance
-- ✅ Migration guides between platforms
-- ✅ Recommendation decision tree
+📖 **[Full Deployment Comparison & Guides →](docs/DEPLOYMENT_OPTIONS.md)**
 
 ---
 
-## ABX-Core v1.2 Compliance
+## 🧪 Development
 
-PatchHive adheres to Applied Alchemy Labs architecture principles:
+### Running Tests
 
-- **Modularity**: Clean domain separation (modules, cases, racks, patches, community)
-- **Determinism**: Patch generation is fully deterministic from seed
-- **Entropy Minimization**: No random behavior without explicit seeding
-- **Eurorack Mental Model**: Everything modeled as modules, cases, patches, signals
-- **SEED Enforcement**: Full provenance tracking:
-  - Data source (Manual, CSV, ModularGrid, etc.)
-  - Import timestamps and references
-  - Generation seeds and engine versions
-  - Configuration metadata
-
-See [ABX_CORE_COMPLIANCE.md](docs/ABX_CORE_COMPLIANCE.md) for detailed compliance documentation.
-
----
-
-## API Documentation
-
-Once the backend is running, visit:
-- **Interactive API Docs**: http://localhost:8000/docs
-- **OpenAPI Schema**: http://localhost:8000/openapi.json
-
-Key endpoints:
-- `/api/modules` - Module catalog CRUD
-- `/api/cases` - Case catalog CRUD
-- `/api/racks` - Rack builder with validation
-- `/api/patches` - Patch storage and generation
-- `/api/patches/generate/{rack_id}` - Generate patches for a rack
-- `/api/community` - Users, auth, voting, comments, feed
-- `/api/export` - PDF and SVG export
-
----
-
-## Development
-
-### Quick Start with Docker (Recommended)
-
-The fastest way to get PatchHive running locally:
-
-```bash
-# Start everything with one command
-docker compose up -d
-
-# Or use the Makefile
-make dev
-```
-
-**Access the application:**
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:8000/docs
-- Database: localhost:5432
-
-**Useful commands:**
-```bash
-make help          # Show all available commands
-make logs          # Follow logs
-make test          # Run all tests
-make db-backup     # Backup database
-make restart       # Restart services
-```
-
-📖 **Full Docker Guide**: [DOCKER_DEPLOYMENT.md](docs/DOCKER_DEPLOYMENT.md)
-
----
-
-### Manual Setup (Alternative)
-
-If you prefer running services directly without Docker:
-
-### Backend Testing
-
+**Backend tests:**
 ```bash
 cd backend
-pytest
+pytest                     # Run all tests
+pytest -v                  # Verbose output
+pytest tests/test_racks/   # Specific test directory
+pytest -k "test_name"      # Specific test pattern
 ```
 
-### Frontend Linting
-
+**Frontend linting:**
 ```bash
 cd frontend
-npm run lint
+npm run lint              # Check for issues
+npm run lint:fix          # Auto-fix issues
 ```
 
 ### Database Migrations
@@ -444,69 +524,186 @@ npm run lint
 ```bash
 cd backend
 
-# Create new migration
-alembic revision --autogenerate -m "Description"
+# Create a new migration
+alembic revision --autogenerate -m "Add new feature"
 
 # Apply migrations
 alembic upgrade head
 
-# Rollback
+# Rollback one migration
 alembic downgrade -1
+
+# View migration history
+alembic history
+```
+
+### Code Quality Tools
+
+```bash
+# Backend
+cd backend
+black .                   # Format code
+ruff check .              # Lint code
+mypy .                    # Type checking
+
+# Frontend
+cd frontend
+npm run format            # Format with Prettier
+npm run type-check        # TypeScript validation
 ```
 
 ---
 
-## License
+## 🔒 ABX-Core v1.2 Compliance
 
-MIT License - See [LICENSE](LICENSE) file for details
+PatchHive adheres to Applied Alchemy Labs architecture principles:
 
----
+| Principle | Implementation |
+|-----------|----------------|
+| **Modularity** | Clean domain separation (modules, cases, racks, patches, community) |
+| **Determinism** | Patch generation is fully deterministic from seed |
+| **Entropy Minimization** | No random behavior without explicit seeding |
+| **Mental Model** | Everything modeled as modules, cases, patches, and signals |
+| **SEED Enforcement** | Full provenance tracking of all data sources and transformations |
 
-## Roadmap
+**Provenance Tracking includes:**
+- Data source identification (Manual, CSV, ModularGrid)
+- Import timestamps and references
+- Generation seeds and engine versions
+- Configuration snapshots and metadata
+- Transformation history
 
-### Phase 1 (Current)
-- ✅ Module & Case library management
-- ✅ Rack builder with validation
-- ✅ Deterministic patch generation engine
-- ✅ Waveform approximation visualization
-- ✅ PDF export
-- ✅ Community features (auth, voting, feed)
-
-### Phase 2 (Future)
-- ModularGrid import implementation
-- Enhanced rack builder UI with drag-and-drop
-- Real-time collaborative rack editing
-- Advanced patch filtering and search
-- Rack templates and presets
-- Audio preview generation (actual DSP)
-
-### Phase 3 (Future)
-- Mobile app (React Native)
-- AI-assisted patch generation
-- Integration with hardware modular systems
-- Marketplace for custom patches
-- Educational content and tutorials
+📖 **[Detailed Compliance Documentation →](docs/ABX_CORE_COMPLIANCE.md)**
 
 ---
 
-## Contributing
+## 📚 Documentation
 
-Contributions are welcome! Please:
-1. Fork the repository
-2. Create a feature branch
-3. Follow existing code style and ABX-Core principles
-4. Add tests for new features
-5. Submit a pull request
+### Core Documentation
+
+- **[Architecture Overview](docs/ARCHITECTURE.md)** - System design and component interactions
+- **[Patch Engine Deep Dive](docs/PATCH_ENGINE.md)** - Patch generation algorithm details
+- **[Data Model](docs/DATA_MODEL.md)** - Database schema and relationships
+- **[ABX-Core Compliance](docs/ABX_CORE_COMPLIANCE.md)** - Architecture principles adherence
+
+### Deployment Guides
+
+- **[Deployment Options Comparison](docs/DEPLOYMENT_OPTIONS.md)** - Platform comparison and recommendations
+- **[Azure Deployment](docs/AZURE_DEPLOYMENT.md)** - Production deployment to Azure
+- **[Render Deployment](docs/RENDER_DEPLOYMENT.md)** - Free tier deployment to Render
+- **[Docker Deployment](docs/DOCKER_DEPLOYMENT.md)** - Self-hosted Docker setup
+
+### API Documentation
+
+Once the backend is running, interactive API documentation is available at:
+
+- **Swagger UI**: http://localhost:8000/docs
+- **ReDoc**: http://localhost:8000/redoc
+- **OpenAPI Schema**: http://localhost:8000/openapi.json
+
+**Key API Endpoints:**
+
+| Endpoint | Description |
+|----------|-------------|
+| `/api/modules` | Module catalog CRUD operations |
+| `/api/cases` | Case catalog management |
+| `/api/racks` | Rack builder with validation |
+| `/api/patches` | Patch storage and retrieval |
+| `/api/patches/generate/{rack_id}` | Generate patches for a rack |
+| `/api/community` | Users, auth, voting, comments |
+| `/api/export` | PDF and SVG export services |
 
 ---
 
-## Documentation
+## 🗺️ Roadmap
 
-- [Architecture Overview](docs/ARCHITECTURE.md)
-- [Patch Engine Deep Dive](docs/PATCH_ENGINE.md)
-- [Data Model](docs/DATA_MODEL.md)
-- [ABX-Core Compliance](docs/ABX_CORE_COMPLIANCE.md)
+### ✅ Phase 1 - Core Platform (Current)
+
+- [x] Module & Case library management
+- [x] Rack builder with validation
+- [x] Deterministic patch generation engine
+- [x] Waveform approximation visualization
+- [x] PDF export functionality
+- [x] Community features (auth, voting, feed)
+- [x] Docker deployment support
+- [x] Comprehensive test coverage
+
+### 🚧 Phase 2 - Enhanced Features (In Progress)
+
+- [ ] ModularGrid import implementation
+- [ ] Enhanced rack builder UI with drag-and-drop
+- [ ] Real-time collaborative rack editing
+- [ ] Advanced patch filtering and search
+- [ ] Rack templates and preset library
+- [ ] Audio preview generation (actual DSP)
+- [ ] Performance optimizations
+
+### 🔮 Phase 3 - Advanced Features (Future)
+
+- [ ] Mobile application (React Native)
+- [ ] AI-assisted patch generation
+- [ ] Hardware modular system integration
+- [ ] Community marketplace for patches
+- [ ] Educational content and tutorials
+- [ ] Plugin system for custom modules
+- [ ] Multi-language support
 
 ---
+
+## 🤝 Contributing
+
+We welcome contributions from the community! Here's how you can help:
+
+### Getting Started
+
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes** following our code style
+4. **Write or update tests** for your changes
+5. **Commit your changes**: `git commit -m 'Add amazing feature'`
+6. **Push to your branch**: `git push origin feature/amazing-feature`
+7. **Open a Pull Request**
+
+### Guidelines
+
+- Follow existing code style and conventions
+- Adhere to ABX-Core v1.2 principles
+- Add tests for new features
+- Update documentation as needed
+- Keep commits atomic and well-described
+- Be respectful and constructive in discussions
+
+### Development Standards
+
+- **Backend**: Follow PEP 8, use type hints, maintain test coverage
+- **Frontend**: Follow ESLint rules, use TypeScript, document components
+- **Documentation**: Update relevant docs with feature changes
+- **Testing**: Maintain or improve test coverage
+
+📖 **[More details in CONTRIBUTING.md](CONTRIBUTING.md)** *(coming soon)*
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Applied Alchemy Labs** for ABX-Core architecture principles
+- **ModularGrid** for module database inspiration
+- **Eurorack community** for endless creativity and inspiration
+
+---
+
+<div align="center">
 
 **Built with ABX-Core v1.2 | SEED-Enforced | Deterministic | Modular**
+
+---
+
+**[⬆ Back to Top](#patchhive)**
+
+</div>
