@@ -18,13 +18,25 @@ def _run_fingerprint(patches: list[dict]) -> str:
     return sha256("".join(fingerprint_list).encode()).hexdigest()
 
 
+def _build_modules_payload(modules, row_hp: int) -> list[dict]:
+    payload = []
+    row_index = 0
+    start_hp = 0
+    for module in modules:
+        if start_hp + module.hp > row_hp:
+            row_index += 1
+            start_hp = 0
+        payload.append({"module_id": module.id, "row_index": row_index, "start_hp": start_hp})
+        start_hp += module.hp
+    return payload
+
+
 def test_create_rig_multi_rig(api_client, create_user, seed_minimal_modules):
     create_user("user1", "pass123")
-    modules_payload = []
-    start_hp = 0
-    for module in seed_minimal_modules["modules"][:8]:
-        modules_payload.append({"module_id": module.id, "row_index": 0, "start_hp": start_hp})
-        start_hp += module.hp
+    modules_payload = _build_modules_payload(
+        seed_minimal_modules["modules"][:8],
+        seed_minimal_modules["case"].hp_per_row[0],
+    )
 
     payload = {
         "case_id": seed_minimal_modules["case"].id,
@@ -71,11 +83,10 @@ def test_golden_demo_fingerprint(api_client, golden_demo_seed):
 def test_generate_patch_library_deterministic(api_client, db_session: Session, create_user, seed_minimal_modules):
     create_user("user2", "pass123")
 
-    modules_payload = []
-    start_hp = 0
-    for module in seed_minimal_modules["modules"][:8]:
-        modules_payload.append({"module_id": module.id, "row_index": 0, "start_hp": start_hp})
-        start_hp += module.hp
+    modules_payload = _build_modules_payload(
+        seed_minimal_modules["modules"][:8],
+        seed_minimal_modules["case"].hp_per_row[0],
+    )
 
     rack_resp = api_client.post(
         "/api/racks",
@@ -207,11 +218,10 @@ def test_patch_naming_humor_gating(api_client, seed_minimal_modules, create_user
 def test_run_history(api_client, create_user, seed_minimal_modules):
     create_user("user4", "pass123")
 
-    modules_payload = []
-    start_hp = 0
-    for module in seed_minimal_modules["modules"][:6]:
-        modules_payload.append({"module_id": module.id, "row_index": 0, "start_hp": start_hp})
-        start_hp += module.hp
+    modules_payload = _build_modules_payload(
+        seed_minimal_modules["modules"][:6],
+        seed_minimal_modules["case"].hp_per_row[0],
+    )
 
     rack_resp = api_client.post(
         "/api/racks",

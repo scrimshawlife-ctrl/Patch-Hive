@@ -33,7 +33,7 @@ def get_run_patches(run_id: int, db: Session = Depends(get_db)):
     run = db.query(Run).filter(Run.id == run_id).first()
     if not run:
         raise HTTPException(status_code=404, detail="Run not found")
-    patches = db.query(Patch).filter(Patch.run_id == run_id).all()
+    patches = db.query(Patch).filter(Patch.run_id == run_id).order_by(Patch.id.asc()).all()
     patch_responses = [build_patch_response(db, patch) for patch in patches]
     return RunPatchesResponse(
         run_id=run_id,
