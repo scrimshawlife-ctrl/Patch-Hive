@@ -4,7 +4,9 @@ This module provides an interface for importing module data from ModularGrid.
 
 Implementation lives outside core PatchHive and must be injected explicitly.
 """
-from typing import List, Dict, Any, Optional
+
+from typing import Any, Dict, List, Optional
+
 from sqlalchemy.orm import Session
 
 from modules.models import Module

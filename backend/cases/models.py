@@ -1,8 +1,10 @@
 """
 SQLAlchemy models for Eurorack cases.
 """
+
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, JSON
+
+from sqlalchemy import JSON, Column, DateTime, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -22,9 +24,7 @@ class Case(Base):
     # Layout
     total_hp = Column(Integer, nullable=False)  # Total width in HP
     rows = Column(Integer, nullable=False, default=1)  # Number of rows
-    hp_per_row = Column(
-        JSON, nullable=False, default=list
-    )  # HP per row, e.g., [84, 84] for 2x84HP
+    hp_per_row = Column(JSON, nullable=False, default=list)  # HP per row, e.g., [84, 84] for 2x84HP
 
     # Power specifications
     power_12v_ma = Column(Integer, nullable=True)  # +12V rail capacity in mA

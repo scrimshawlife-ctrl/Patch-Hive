@@ -4,8 +4,8 @@ Revision ID: 20240921_make_referrals_append_only
 Revises: 20240920_add_monetization_and_referrals
 Create Date: 2024-09-21 00:00:00.000000
 """
-from alembic import op
 
+from alembic import op
 
 revision = "20240921_make_referrals_append_only"
 down_revision = "20240920_add_monetization_and_referrals"
@@ -19,9 +19,7 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    op.create_unique_constraint(
-        "unique_referral_referred_user", "referrals", ["referred_user_id"]
-    )
+    op.create_unique_constraint("unique_referral_referred_user", "referrals", ["referred_user_id"])
     op.create_unique_constraint(
         "unique_referrer_referred_pair", "referrals", ["referrer_user_id", "referred_user_id"]
     )

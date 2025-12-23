@@ -1,6 +1,11 @@
 from __future__ import annotations
 
-from patchhive.runes.registry import load_manifest, rune_id_for, validate_manifest, iter_core_handlers
+from patchhive.runes.registry import (
+    iter_core_handlers,
+    load_manifest,
+    rune_id_for,
+    validate_manifest,
+)
 
 
 def test_manifest_validates() -> None:

@@ -4,8 +4,10 @@ Revision ID: 20240926_acceptance_features
 Revises: 20240922_admin_console
 Create Date: 2024-09-26
 """
-from alembic import op
+
 import sqlalchemy as sa
+
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "20240926_acceptance_features"
@@ -16,13 +18,19 @@ depends_on = None
 
 def upgrade() -> None:
     op.add_column("patches", sa.Column("run_id", sa.Integer(), nullable=True))
-    op.add_column("patches", sa.Column("tags", sa.JSON(), nullable=False, server_default=sa.text("'[]'")))
+    op.add_column(
+        "patches", sa.Column("tags", sa.JSON(), nullable=False, server_default=sa.text("'[]'"))
+    )
     op.create_index("ix_patches_run_id", "patches", ["run_id"], unique=False)
-    op.create_foreign_key("fk_patches_run_id", "patches", "runs", ["run_id"], ["id"], ondelete="SET NULL")
+    op.create_foreign_key(
+        "fk_patches_run_id", "patches", "runs", ["run_id"], ["id"], ondelete="SET NULL"
+    )
 
     op.add_column("exports", sa.Column("run_id", sa.Integer(), nullable=True))
     op.create_index("ix_exports_run_id", "exports", ["run_id"], unique=False)
-    op.create_foreign_key("fk_exports_run_id", "exports", "runs", ["run_id"], ["id"], ondelete="SET NULL")
+    op.create_foreign_key(
+        "fk_exports_run_id", "exports", "runs", ["run_id"], ["id"], ondelete="SET NULL"
+    )
 
     op.create_table(
         "pending_functions",
@@ -35,7 +43,9 @@ def upgrade() -> None:
         sa.Column("resolved_at", sa.DateTime(), nullable=True),
         sa.ForeignKeyConstraint(["module_id"], ["modules.id"], ondelete="CASCADE"),
     )
-    op.create_index("ix_pending_functions_module_id", "pending_functions", ["module_id"], unique=False)
+    op.create_index(
+        "ix_pending_functions_module_id", "pending_functions", ["module_id"], unique=False
+    )
 
 
 def downgrade() -> None:

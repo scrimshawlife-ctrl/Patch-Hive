@@ -58,8 +58,7 @@ def infer_capabilities(canon: CanonicalRig) -> Dict[str, ModuleCaps]:
 
         # sequencer-ish: clock in + pitch/gate out
         if SignalKind.clock in kinds_in and any(
-            kind in kinds_out
-            for kind in (SignalKind.gate, SignalKind.trigger, SignalKind.pitch_cv)
+            kind in kinds_out for kind in (SignalKind.gate, SignalKind.trigger, SignalKind.pitch_cv)
         ):
             caps.add("sequencer_like")
 

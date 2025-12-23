@@ -1,4 +1,5 @@
 """Structure-aware naming helpers for PatchHive."""
+
 from collections import Counter
 from hashlib import sha256
 from typing import Dict
@@ -31,25 +32,25 @@ def derive_patch_semantics(
     inc = Counter(kinds_in)
 
     source = (
-        "Voice" if outc[SignalKind.audio]
-        else "Random" if outc[SignalKind.random]
-        else "LFO" if outc[SignalKind.lfo]
-        else "Clock" if outc[SignalKind.clock]
-        else "Source"
+        "Voice"
+        if outc[SignalKind.audio]
+        else (
+            "Random"
+            if outc[SignalKind.random]
+            else "LFO" if outc[SignalKind.lfo] else "Clock" if outc[SignalKind.clock] else "Source"
+        )
     )
 
     transform = (
-        "Shaped" if inc[SignalKind.audio] and inc[SignalKind.cv]
-        else "Filtered" if inc[SignalKind.audio]
-        else "Modulated" if inc[SignalKind.cv]
-        else "Path"
+        "Shaped"
+        if inc[SignalKind.audio] and inc[SignalKind.cv]
+        else "Filtered" if inc[SignalKind.audio] else "Modulated" if inc[SignalKind.cv] else "Path"
     )
 
     control = (
-        "Enveloped" if outc[SignalKind.envelope]
-        else "Cycled" if outc[SignalKind.lfo]
-        else "Drifting" if outc[SignalKind.random]
-        else "Free"
+        "Enveloped"
+        if outc[SignalKind.envelope]
+        else "Cycled" if outc[SignalKind.lfo] else "Drifting" if outc[SignalKind.random] else "Free"
     )
 
     clocked = "Clock-Rhythm" if (outc[SignalKind.clock] or inc[SignalKind.clock]) else "Free"

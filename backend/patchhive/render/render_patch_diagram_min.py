@@ -44,8 +44,8 @@ def render_patch_diagram_min(
         y += 18
 
     svg = (
-        f"<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"{width}\" height=\"{height}\">"
-        f"<rect x=\"0\" y=\"0\" width=\"{width}\" height=\"{height}\" fill=\"white\"/>"
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}">'
+        f'<rect x="0" y="0" width="{width}" height="{height}" fill="white"/>'
         f"{''.join(lines)}"
         "</svg>"
     )

@@ -4,9 +4,10 @@ Revision ID: 20240923_rig_patch_naming
 Revises: 20240922_admin_console
 Create Date: 2024-09-23 00:00:00.000000
 """
-from alembic import op
+
 import sqlalchemy as sa
 
+from alembic import op
 
 revision = "20240923_rig_patch_naming"
 down_revision = "20240922_admin_console"

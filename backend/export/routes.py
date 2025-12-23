@@ -1,22 +1,25 @@
 """
 FastAPI routes for export functionality (PDF, SVG).
 """
-from fastapi import APIRouter, Depends, HTTPException, Query
-from fastapi.responses import FileResponse, Response
-from sqlalchemy.orm import Session
+
 from hashlib import sha256
 from pathlib import Path
 
-from core import get_db, settings
-from community.routes import require_auth
+from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.responses import FileResponse, Response
+from sqlalchemy.orm import Session
+
 from community.models import User
-from monetization.models import CreditsLedger, Export
+from community.routes import require_auth
+from core import get_db, settings
 from monetization.credits import get_credits_balance
-from runs.models import Run
+from monetization.models import CreditsLedger, Export
 from patches.models import Patch
 from racks.models import Rack
+from runs.models import Run
+
 from .pdf import generate_patch_pdf, generate_rack_pdf
-from .visualization import generate_rack_layout_svg, generate_patch_diagram_svg
+from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
 from .waveform import generate_waveform_svg, infer_waveform_params_from_patch
 
 router = APIRouter()
@@ -103,9 +106,7 @@ def export_patch_waveform_svg(patch_id: int, db: Session = Depends(get_db)):
         has_envelope = any(
             "envelope" in conn.get("from_port", "").lower() for conn in patch.connections
         )
-        waveform_params = infer_waveform_params_from_patch(
-            patch.category, has_lfo, has_envelope
-        )
+        waveform_params = infer_waveform_params_from_patch(patch.category, has_lfo, has_envelope)
 
         svg = generate_waveform_svg(waveform_params, seed=patch.generation_seed)
         return Response(content=svg, media_type="image/svg+xml")
@@ -127,7 +128,9 @@ def export_patchbook_pdf(
 
     cached = (
         db.query(Export)
-        .filter(Export.run_id == run_id, Export.export_type == "patchbook", Export.status == "completed")
+        .filter(
+            Export.run_id == run_id, Export.export_type == "patchbook", Export.status == "completed"
+        )
         .first()
     )
     if cached:

@@ -1,6 +1,7 @@
 """
 Admin authorization dependencies.
 """
+
 from fastapi import Depends, HTTPException
 
 from community.models import User

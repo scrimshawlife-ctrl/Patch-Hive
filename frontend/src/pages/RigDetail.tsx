@@ -51,8 +51,9 @@ export default function RigDetailPage() {
       await exportApi.patchbookExport(runId);
       setExportStatus('Export queued');
       refreshCredits();
-    } catch (err: any) {
-      setExportStatus(err.response?.data?.detail || 'Export failed');
+    } catch (err: unknown) {
+      const error = err as { response?: { data?: { detail?: string } } };
+      setExportStatus(error.response?.data?.detail || 'Export failed');
     }
   };
 

@@ -1,6 +1,7 @@
 """
 API endpoint tests for /api/admin.
 """
+
 import pytest
 
 pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
@@ -8,10 +9,10 @@ pytest.importorskip("httpx", reason="httpx is required for FastAPI TestClient")
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from core.security import create_access_token
-from main import app
 from admin.models import AdminAuditLog
 from community.models import User
+from core.security import create_access_token
+from main import app
 from modules.models import Module
 from monetization.models import CreditsLedger
 
@@ -69,11 +70,15 @@ def test_admin_grant_credits_writes_audit_log(db_session: Session):
     )
     assert response.status_code == 201
 
-    ledger_entries = db_session.query(CreditsLedger).filter(CreditsLedger.user_id == target.id).all()
+    ledger_entries = (
+        db_session.query(CreditsLedger).filter(CreditsLedger.user_id == target.id).all()
+    )
     assert len(ledger_entries) == 1
     assert ledger_entries[0].credits_delta == 5
 
-    audit_entries = db_session.query(AdminAuditLog).filter(AdminAuditLog.action_type == "credits.grant").all()
+    audit_entries = (
+        db_session.query(AdminAuditLog).filter(AdminAuditLog.action_type == "credits.grant").all()
+    )
     assert len(audit_entries) == 1
     assert audit_entries[0].reason == "manual grant"
     app.dependency_overrides.clear()

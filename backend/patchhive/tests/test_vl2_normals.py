@@ -11,12 +11,12 @@ from patchhive.schemas import (
     ModuleSpec,
     NormalledEdge,
     Provenance,
+    ProvenancedValue,
     ProvenanceStatus,
     ProvenanceType,
     ResolvedModuleRef,
     RigModuleInput,
     RigSpec,
-    ProvenancedValue,
 )
 
 FIXED_TIME = datetime(2024, 1, 1, tzinfo=timezone.utc)

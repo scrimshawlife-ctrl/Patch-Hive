@@ -1,16 +1,18 @@
 """
 SQLAlchemy models for publishing layer (exports, publications, reports).
 """
+
 from datetime import datetime
+
 from sqlalchemy import (
+    JSON,
+    Boolean,
     Column,
+    DateTime,
+    ForeignKey,
     Integer,
     String,
     Text,
-    DateTime,
-    ForeignKey,
-    Boolean,
-    JSON,
     UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
@@ -24,9 +26,15 @@ class Export(Base):
     __tablename__ = "exports"
 
     id = Column(Integer, primary_key=True, index=True)
-    owner_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    patch_id = Column(Integer, ForeignKey("patches.id", ondelete="SET NULL"), nullable=True, index=True)
-    rack_id = Column(Integer, ForeignKey("racks.id", ondelete="SET NULL"), nullable=True, index=True)
+    owner_user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    patch_id = Column(
+        Integer, ForeignKey("patches.id", ondelete="SET NULL"), nullable=True, index=True
+    )
+    rack_id = Column(
+        Integer, ForeignKey("racks.id", ondelete="SET NULL"), nullable=True, index=True
+    )
     export_type = Column(String(20), nullable=False, index=True)  # "patch" or "rack"
 
     license = Column(String(100), nullable=False, default="CC BY-NC 4.0")
@@ -53,7 +61,9 @@ class Publication(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     export_id = Column(Integer, ForeignKey("exports.id", ondelete="RESTRICT"), nullable=False)
-    publisher_user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    publisher_user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
 
     slug = Column(String(160), unique=True, nullable=False, index=True)
     visibility = Column(String(20), nullable=False, default="unlisted")  # unlisted/public
@@ -70,7 +80,9 @@ class Publication(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     removed_reason = Column(String(500), nullable=True)
-    moderation_audit_id = Column(Integer, ForeignKey("admin_audit_log.id", ondelete="SET NULL"), nullable=True)
+    moderation_audit_id = Column(
+        Integer, ForeignKey("admin_audit_log.id", ondelete="SET NULL"), nullable=True
+    )
 
     export = relationship("Export")
     publisher = relationship("User")
@@ -83,7 +95,9 @@ class PublicationReport(Base):
     __tablename__ = "publication_reports"
 
     id = Column(Integer, primary_key=True, index=True)
-    publication_id = Column(Integer, ForeignKey("publications.id", ondelete="CASCADE"), nullable=False)
+    publication_id = Column(
+        Integer, ForeignKey("publications.id", ondelete="CASCADE"), nullable=False
+    )
     reporter_user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     reason = Column(String(200), nullable=False)
     details = Column(Text, nullable=True)

@@ -1,12 +1,13 @@
 """API endpoint tests for account dashboard endpoints."""
+
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from main import app
-from core import create_access_token
-from community.models import User
 from account.models import CreditLedgerEntry, Referral
+from community.models import User
+from core import create_access_token
+from main import app
 
 
 @pytest.fixture

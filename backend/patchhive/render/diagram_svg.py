@@ -47,9 +47,7 @@ def scene_to_svg(scene: DiagramScene) -> str:
             )
 
     lx, ly = 60, scene.height - 220
-    parts.append(
-        f'<text x="{lx}" y="{ly}" font-size="16" font-family="monospace">Cables</text>'
-    )
+    parts.append(f'<text x="{lx}" y="{ly}" font-size="16" font-family="monospace">Cables</text>')
     y = ly + 24
     for line in scene.legend_lines[:30]:
         parts.append(

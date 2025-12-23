@@ -63,7 +63,7 @@ def main():
         result = loader.validate_pack("vl2")
         print(f"  Valid: {result['valid']}")
         print(f"  Patches loaded: {result.get('patches_loaded', 0)}")
-        if result.get('errors'):
+        if result.get("errors"):
             print(f"  Errors: {result['errors']}")
 
 

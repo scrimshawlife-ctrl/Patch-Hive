@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections import Counter
-from typing import Dict, Iterable, Any
+from typing import Any, Dict, Iterable
 
 
 def _get_attr(conn: Any, key: str, default: Any = None) -> Any:

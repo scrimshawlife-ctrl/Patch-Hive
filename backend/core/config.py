@@ -2,6 +2,7 @@
 Core configuration for PatchHive backend.
 Uses pydantic-settings for environment-based configuration.
 """
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 

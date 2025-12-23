@@ -9,9 +9,10 @@ the complete state of a patch generation pipeline. It is:
 
 This satisfies the ABX-Core v1.3 requirement that "deterministic IR be a first-class object."
 """
-from dataclasses import dataclass, field, asdict
-from typing import List, Dict, Any, Optional, Literal
+
 import json
+from dataclasses import asdict, dataclass, field
+from typing import Any, Dict, List, Literal, Optional
 
 PatchCategory = Literal[
     "Voice",
@@ -29,6 +30,7 @@ PatchCategory = Literal[
 @dataclass
 class ModuleIR:
     """IR representation of a module in the rack."""
+
     module_id: int
     module_name: str
     module_type: str  # "vco", "vcf", "vca", etc.
@@ -39,6 +41,7 @@ class ModuleIR:
 @dataclass
 class RackStateIR:
     """IR representation of the rack state at generation time."""
+
     rack_id: int
     rack_name: str
     case_hp: int
@@ -53,6 +56,7 @@ class RackStateIR:
 @dataclass
 class PatchGenerationParams:
     """Parameters for patch generation."""
+
     max_patches: int = 20
     allow_feedback: bool = False
     prefer_simple: bool = False
@@ -71,6 +75,7 @@ class PatchGenerationIR:
     to the patch generation pipeline, reducing entropy and improving debuggability
     (satisfies ABX-Core v1.3 complexity rule).
     """
+
     # Core identifiers
     run_id: str  # UUID for this generation run
     rack_state: RackStateIR
@@ -107,7 +112,7 @@ class PatchGenerationIR:
             rack_name=rack_state_data["rack_name"],
             case_hp=rack_state_data["case_hp"],
             case_rows=rack_state_data["case_rows"],
-            modules=modules
+            modules=modules,
         )
 
         params = PatchGenerationParams(**data["params"])
@@ -121,7 +126,7 @@ class PatchGenerationIR:
             abx_core_version=data["abx_core_version"],
             created_at=data["created_at"],
             git_commit=data.get("git_commit"),
-            host=data.get("host")
+            host=data.get("host"),
         )
 
     @classmethod
@@ -136,6 +141,7 @@ class PatchGenerationIR:
         Uses rack_id + seed + params as the deterministic key.
         """
         import hashlib
+
         key = f"{self.rack_state.rack_id}:{self.seed}:{self.params.max_patches}:{self.params.allow_feedback}"
         return hashlib.sha256(key.encode()).hexdigest()[:16]
 
@@ -143,6 +149,7 @@ class PatchGenerationIR:
 @dataclass
 class ConnectionIR:
     """IR representation of a cable connection."""
+
     from_module_id: int
     from_port: str
     to_module_id: int
@@ -160,6 +167,7 @@ class PatchGraphIR:
 
     This is the output of the patch generation pipeline.
     """
+
     patch_name: str
     category: PatchCategory
     connections: List[ConnectionIR] = field(default_factory=list)
@@ -176,5 +184,5 @@ class PatchGraphIR:
             "connections": [c.to_dict() for c in self.connections],
             "description": self.description,
             "generation_ir_hash": self.generation_ir_hash,
-            "generation_seed": self.generation_seed
+            "generation_seed": self.generation_seed,
         }

@@ -1,23 +1,26 @@
 """
 Pytest configuration and fixtures for PatchHive backend tests.
 """
+
 import pytest
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
+from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from core.database import Base
-from modules.models import Module
-from cases.models import Case
-from racks.models import Rack, RackModule
-from patches.models import Patch  # Import to ensure patches table is created
-from community.models import User, Vote, Comment  # Import to ensure tables are created
-from monetization.models import CreditsLedger, Export, License, Referral  # noqa: F401
-from admin.models import AdminAuditLog, PendingFunction  # Import to ensure tables are created
-from gallery.models import GalleryRevision  # noqa: F401
-from runs.models import Run  # noqa: F401
-from publishing.models import Publication, PublicationReport  # Import to ensure tables are created
 from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
+from admin.models import AdminAuditLog  # Import to ensure tables are created
+from admin.models import PendingFunction
+from cases.models import Case
+from community.models import Comment  # Import to ensure tables are created
+from community.models import User, Vote
+from core.database import Base
+from gallery.models import GalleryRevision  # noqa: F401
+from modules.models import Module
+from monetization.models import CreditsLedger, Export, License, Referral  # noqa: F401
+from patches.models import Patch  # Import to ensure patches table is created
+from publishing.models import Publication, PublicationReport  # Import to ensure tables are created
+from racks.models import Rack, RackModule
+from runs.models import Run  # noqa: F401
 
 
 @pytest.fixture(scope="function")
@@ -316,7 +319,6 @@ def sample_rack_empty(db_session: Session, sample_user: User, sample_case: Case)
         name="Empty Rack",
         case_id=sample_case.id,
         description="Test empty rack",
-        
     )
     db_session.add(rack)
     db_session.commit()
@@ -339,7 +341,6 @@ def sample_rack_basic(
         name="Basic Rack",
         case_id=sample_case.id,
         description="Test basic rack",
-        
     )
     db_session.add(rack)
     db_session.flush()
@@ -373,7 +374,6 @@ def sample_rack_full(
         name="Full Rack",
         case_id=sample_case.id,
         description="Test full rack",
-        
     )
     db_session.add(rack)
     db_session.flush()

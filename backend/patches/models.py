@@ -1,8 +1,10 @@
 """
 SQLAlchemy models for patches (connection graphs between modules).
 """
+
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, JSON
+
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -19,7 +21,9 @@ class Patch(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     # Association with rack/run
-    rack_id = Column(Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True)
+    rack_id = Column(
+        Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True
+    )
     run_id = Column(Integer, ForeignKey("runs.id", ondelete="SET NULL"), nullable=True, index=True)
 
     # Metadata

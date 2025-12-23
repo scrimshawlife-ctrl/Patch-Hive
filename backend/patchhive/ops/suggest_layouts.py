@@ -33,7 +33,9 @@ def suggest_layouts(
     placements: List[LayoutPlacement] = []
     cursor = 0.0
     for module in sorted(rig.modules, key=lambda m: m.instance_id):
-        placements.append(LayoutPlacement(instance_id=module.instance_id, x_hp=cursor, hp=module.hp))
+        placements.append(
+            LayoutPlacement(instance_id=module.instance_id, x_hp=cursor, hp=module.hp)
+        )
         cursor += float(module.hp or 0)
 
     return [

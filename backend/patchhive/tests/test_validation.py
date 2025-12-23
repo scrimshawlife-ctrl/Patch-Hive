@@ -3,11 +3,11 @@ from datetime import datetime, timezone
 from patchhive.ops.build_canonical_rig import build_canonical_rig
 from patchhive.ops.validate_patch import validate_patch
 from patchhive.schemas import (
-    ModuleGalleryEntry,
     JackSpec,
+    ModuleGalleryEntry,
+    PatchCable,
     PatchGraph,
     PatchNode,
-    PatchCable,
     ProvenanceRecord,
 )
 
@@ -22,7 +22,9 @@ def test_validation_flags_illegal_connections() -> None:
         hp=8,
         power=None,
         jacks=[
-            JackSpec(jack_id="out", label="OUT", name="out", signal_type="audio", direction="output"),
+            JackSpec(
+                jack_id="out", label="OUT", name="out", signal_type="audio", direction="output"
+            ),
             JackSpec(jack_id="in", label="IN", name="in", signal_type="audio", direction="input"),
         ],
         modes=None,

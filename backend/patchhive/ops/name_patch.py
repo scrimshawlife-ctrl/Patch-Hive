@@ -41,9 +41,13 @@ def name_patch(archetype: str, patch: PatchGraph, tags: List[str]) -> str:
     noun = (
         "Voice"
         if cat == "Voice"
-        else ("Clockwright" if cat == "Clocked" else ("Generator" if cat == "Generative" else "Study"))
+        else (
+            "Clockwright" if cat == "Clocked" else ("Generator" if cat == "Generative" else "Study")
+        )
     )
-    verb = "Pulse" if "clock" in archetype else ("Drift" if "generative" in archetype else "Cutglass")
+    verb = (
+        "Pulse" if "clock" in archetype else ("Drift" if "generative" in archetype else "Cutglass")
+    )
 
     focus = "Path"
     if any("mod" in t for t in tags):

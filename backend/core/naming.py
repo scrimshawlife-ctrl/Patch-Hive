@@ -3,48 +3,170 @@ Deterministic naming service for rigs and patches.
 Rigs are descriptive based on core module and role.
 Patches are structure-derived with humor gating.
 """
+
 from __future__ import annotations
 
 import hashlib
 import json
 import re
 from hashlib import sha256
-from typing import Literal, Iterable, Any, Dict
+from typing import Any, Dict, Iterable, Literal
 
 from core.ops.derive_patch_semantics import derive_patch_semantics
 
 ADJECTIVES = [
-    "Midnight", "Solar", "Cosmic", "Quantum", "Crystal", "Digital", "Analog",
-    "Warm", "Cold", "Deep", "Bright", "Dark", "Neon", "Vintage", "Future",
-    "Chaotic", "Ordered", "Strange", "Harmonic", "Dissonant", "Rhythmic",
-    "Melodic", "Textural", "Ambient", "Industrial", "Organic", "Synthetic",
-    "Ethereal", "Gritty", "Smooth", "Rough", "Glitchy", "Flowing", "Frozen",
-    "Burning", "Electric", "Magnetic", "Gravitational", "Temporal", "Spatial",
-    "Fractal", "Recursive", "Modular", "Linear", "Circular", "Spiral",
-    "Prismatic", "Monochrome", "Iridescent", "Phosphorescent"
+    "Midnight",
+    "Solar",
+    "Cosmic",
+    "Quantum",
+    "Crystal",
+    "Digital",
+    "Analog",
+    "Warm",
+    "Cold",
+    "Deep",
+    "Bright",
+    "Dark",
+    "Neon",
+    "Vintage",
+    "Future",
+    "Chaotic",
+    "Ordered",
+    "Strange",
+    "Harmonic",
+    "Dissonant",
+    "Rhythmic",
+    "Melodic",
+    "Textural",
+    "Ambient",
+    "Industrial",
+    "Organic",
+    "Synthetic",
+    "Ethereal",
+    "Gritty",
+    "Smooth",
+    "Rough",
+    "Glitchy",
+    "Flowing",
+    "Frozen",
+    "Burning",
+    "Electric",
+    "Magnetic",
+    "Gravitational",
+    "Temporal",
+    "Spatial",
+    "Fractal",
+    "Recursive",
+    "Modular",
+    "Linear",
+    "Circular",
+    "Spiral",
+    "Prismatic",
+    "Monochrome",
+    "Iridescent",
+    "Phosphorescent",
 ]
 
 NOUNS = [
-    "Swarm", "Lattice", "Matrix", "Cascade", "Vortex", "Nexus", "Prism",
-    "Echo", "Pulse", "Wave", "Drift", "Storm", "Shimmer", "Resonance",
-    "Sequence", "Pattern", "Circuit", "Signal", "Field", "Spectrum",
-    "Harmonics", "Overtones", "Frequencies", "Oscillations", "Modulations",
-    "Envelope", "Filter", "Distortion", "Reverb", "Delay", "Chorus",
-    "Phaser", "Flanger", "Tremolo", "Vibrato", "Arpeggio", "Glissando",
-    "Cluster", "Texture", "Atmosphere", "Landscape", "Terrain", "Horizon",
-    "Nebula", "Galaxy", "Constellation", "Aurora", "Eclipse", "Supernova"
+    "Swarm",
+    "Lattice",
+    "Matrix",
+    "Cascade",
+    "Vortex",
+    "Nexus",
+    "Prism",
+    "Echo",
+    "Pulse",
+    "Wave",
+    "Drift",
+    "Storm",
+    "Shimmer",
+    "Resonance",
+    "Sequence",
+    "Pattern",
+    "Circuit",
+    "Signal",
+    "Field",
+    "Spectrum",
+    "Harmonics",
+    "Overtones",
+    "Frequencies",
+    "Oscillations",
+    "Modulations",
+    "Envelope",
+    "Filter",
+    "Distortion",
+    "Reverb",
+    "Delay",
+    "Chorus",
+    "Phaser",
+    "Flanger",
+    "Tremolo",
+    "Vibrato",
+    "Arpeggio",
+    "Glissando",
+    "Cluster",
+    "Texture",
+    "Atmosphere",
+    "Landscape",
+    "Terrain",
+    "Horizon",
+    "Nebula",
+    "Galaxy",
+    "Constellation",
+    "Aurora",
+    "Eclipse",
+    "Supernova",
 ]
 
 PATCH_PREFIXES = [
-    "Deep", "Bright", "Warm", "Cold", "Soft", "Hard", "Wide", "Narrow",
-    "Fast", "Slow", "Evolving", "Static", "Random", "Sequenced", "Clock-Rhythm",
-    "Free", "Chaotic", "Ordered", "Dense", "Sparse", "Rich", "Minimal"
+    "Deep",
+    "Bright",
+    "Warm",
+    "Cold",
+    "Soft",
+    "Hard",
+    "Wide",
+    "Narrow",
+    "Fast",
+    "Slow",
+    "Evolving",
+    "Static",
+    "Random",
+    "Sequenced",
+    "Clock-Rhythm",
+    "Free",
+    "Chaotic",
+    "Ordered",
+    "Dense",
+    "Sparse",
+    "Rich",
+    "Minimal",
 ]
 
 PATCH_TYPES = [
-    "Bass", "Lead", "Pad", "Pluck", "Drone", "Percussion", "FX", "Noise",
-    "Sweep", "Stab", "Chord", "Arpeggio", "Sequence", "Texture", "Atmosphere",
-    "Glitch", "Loop", "Burst", "Pulse", "Wave", "Grain", "Cloud"
+    "Bass",
+    "Lead",
+    "Pad",
+    "Pluck",
+    "Drone",
+    "Percussion",
+    "FX",
+    "Noise",
+    "Sweep",
+    "Stab",
+    "Chord",
+    "Arpeggio",
+    "Sequence",
+    "Texture",
+    "Atmosphere",
+    "Glitch",
+    "Loop",
+    "Burst",
+    "Pulse",
+    "Wave",
+    "Grain",
+    "Cloud",
 ]
 
 MECHANISM_TOKENS = [
@@ -88,8 +210,8 @@ def generate_rack_name(seed: int) -> str:
     """
     # Use hash of seed to pick words
     hash_bytes = hashlib.sha256(str(seed).encode()).digest()
-    adj_idx = int.from_bytes(hash_bytes[0:4], 'big') % len(ADJECTIVES)
-    noun_idx = int.from_bytes(hash_bytes[4:8], 'big') % len(NOUNS)
+    adj_idx = int.from_bytes(hash_bytes[0:4], "big") % len(ADJECTIVES)
+    noun_idx = int.from_bytes(hash_bytes[4:8], "big") % len(NOUNS)
 
     return f"{ADJECTIVES[adj_idx]} {NOUNS[noun_idx]}"
 
@@ -127,7 +249,7 @@ def generate_patch_name(
         "Texture-FX",
         "Study",
         "Experimental-Feedback",
-    ]
+    ],
 ) -> str:
     """
     Generate a deterministic patch name from a seed and category.
@@ -141,11 +263,11 @@ def generate_patch_name(
     """
     # Use hash of seed to pick words
     hash_bytes = hashlib.sha256(str(seed).encode()).digest()
-    prefix_idx = int.from_bytes(hash_bytes[0:4], 'big') % len(PATCH_PREFIXES)
-    type_idx = int.from_bytes(hash_bytes[4:8], 'big') % len(PATCH_TYPES)
+    prefix_idx = int.from_bytes(hash_bytes[0:4], "big") % len(PATCH_PREFIXES)
+    type_idx = int.from_bytes(hash_bytes[4:8], "big") % len(PATCH_TYPES)
 
     # Sometimes add a prefix, sometimes just use type
-    use_prefix = int.from_bytes(hash_bytes[8:9], 'big') % 2 == 0
+    use_prefix = int.from_bytes(hash_bytes[8:9], "big") % 2 == 0
 
     if use_prefix:
         return f"{PATCH_PREFIXES[prefix_idx]} {PATCH_TYPES[type_idx]}"
@@ -183,7 +305,7 @@ def name_patch_v2(
 
 def hash_string_to_seed(input_str: str) -> int:
     """Convert a string to a deterministic integer seed."""
-    return int.from_bytes(hashlib.sha256(input_str.encode()).digest()[:4], 'big')
+    return int.from_bytes(hashlib.sha256(input_str.encode()).digest()[:4], "big")
 
 
 def build_patch_feature_vector(
@@ -432,6 +554,10 @@ def _has_contradictory_routing(modules_by_id: Dict[int, Any], connections: Itera
 
         if "ENV" in from_type and _is_clock_module(to_module):
             env_to_clock = True
-        if _is_clock_module(from_module) and "ENV" in to_type and cable_type in {"clock", "gate", "cv"}:
+        if (
+            _is_clock_module(from_module)
+            and "ENV" in to_type
+            and cable_type in {"clock", "gate", "cv"}
+        ):
             clock_to_env = True
     return clock_to_env and env_to_clock

@@ -1,11 +1,14 @@
 """
 Rack validation logic - ensures modules fit in case and power constraints are met.
 """
+
 from typing import List, Tuple
+
 from sqlalchemy.orm import Session
 
 from cases.models import Case
 from modules.models import Module
+
 from .schemas import RackModuleSpec, RackValidationError
 
 

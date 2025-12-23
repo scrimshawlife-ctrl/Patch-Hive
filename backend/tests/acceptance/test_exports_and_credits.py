@@ -1,4 +1,5 @@
 from pathlib import Path
+
 from sqlalchemy.orm import Session
 
 from monetization.models import CreditsLedger, Export
@@ -32,7 +33,9 @@ def test_export_blocked_without_credits(api_client, db_session: Session, golden_
     assert not exports
 
 
-def test_admin_grant_then_export_succeeds(api_client, db_session: Session, golden_demo_seed, admin_user):
+def test_admin_grant_then_export_succeeds(
+    api_client, db_session: Session, golden_demo_seed, admin_user
+):
     admin_login = api_client.post(
         "/api/community/auth/login",
         json={"username": admin_user.username, "password": "admin-pass"},
@@ -91,7 +94,9 @@ def test_admin_grant_then_export_succeeds(api_client, db_session: Session, golde
     assert cached_data["cached"] is True
 
 
-def test_failed_export_does_not_consume_credits(api_client, db_session: Session, golden_demo_seed, admin_user):
+def test_failed_export_does_not_consume_credits(
+    api_client, db_session: Session, golden_demo_seed, admin_user
+):
     admin_login = api_client.post(
         "/api/community/auth/login",
         json={"username": admin_user.username, "password": "admin-pass"},

@@ -2,12 +2,14 @@
 Patch and rack visualization generator.
 Creates SVG diagrams showing module layouts and patch connections.
 """
-from typing import List, Dict, Any
+
+from typing import Any, Dict, List
+
 from sqlalchemy.orm import Session
 
-from racks.models import Rack, RackModule
-from modules.models import Module
 from cases.models import Case
+from modules.models import Module
+from racks.models import Rack, RackModule
 
 
 def generate_rack_layout_svg(db: Session, rack: Rack, width: int = 1200, hp_width: int = 10) -> str:

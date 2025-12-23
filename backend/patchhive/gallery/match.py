@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 from difflib import SequenceMatcher
 from typing import Iterable
+
 from patchhive.schemas import ModuleGalleryEntry
 
 
@@ -24,7 +25,9 @@ def match_module(
     for entry in entries:
         score = SequenceMatcher(None, normalized_name, _normalize(entry.name)).ratio()
         if manufacturer and entry.manufacturer:
-            score = (score * 0.8) + (0.2 * SequenceMatcher(None, normalized_mfr, _normalize(entry.manufacturer)).ratio())
+            score = (score * 0.8) + (
+                0.2 * SequenceMatcher(None, normalized_mfr, _normalize(entry.manufacturer)).ratio()
+            )
         scored.append((entry, score))
     scored.sort(key=lambda item: (-item[1], item[0].name))
     return scored

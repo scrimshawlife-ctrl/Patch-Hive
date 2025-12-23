@@ -25,7 +25,9 @@ def test_gallery_append_only(tmp_path) -> None:
         manufacturer="VL2",
         width_hp=6,
         sections=[ModuleSection(section_id="osc", label="Osc", capability_profile=[], jacks=[])],
-        normalled_edges=[NormalledEdge(from_jack="osc:out", to_jack="osc:in", break_on_insert=True)],
+        normalled_edges=[
+            NormalledEdge(from_jack="osc:out", to_jack="osc:in", break_on_insert=True)
+        ],
         power_12v_ma=None,
         power_minus12v_ma=None,
         power_5v_ma=None,

@@ -1,15 +1,16 @@
 """Public leaderboards for module popularity."""
+
 from datetime import datetime, timedelta
 from typing import Optional
 
 from fastapi import APIRouter, Depends, Query
+from sqlalchemy import desc, func
 from sqlalchemy.orm import Session
-from sqlalchemy import func, desc
 
+from account.schemas import LeaderboardEntryResponse
 from core import get_db
 from modules.models import Module
-from racks.models import RackModule, Rack
-from account.schemas import LeaderboardEntryResponse
+from racks.models import Rack, RackModule
 
 router = APIRouter()
 

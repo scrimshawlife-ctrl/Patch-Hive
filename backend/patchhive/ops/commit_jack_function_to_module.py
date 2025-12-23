@@ -4,13 +4,7 @@ from datetime import datetime, timezone
 
 from patchhive.gallery.store import ModuleGalleryStore
 from patchhive.ops.ensure_gallery_sketch import ensure_sketch
-from patchhive.schemas import (
-    FieldMeta,
-    FieldStatus,
-    ModuleGalleryEntry,
-    Provenance,
-    ProvenanceType,
-)
+from patchhive.schemas import FieldMeta, FieldStatus, ModuleGalleryEntry, Provenance, ProvenanceType
 
 
 def _now_utc() -> datetime:

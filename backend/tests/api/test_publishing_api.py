@@ -1,24 +1,26 @@
 """
 API tests for publishing endpoints.
 """
+
 from datetime import datetime
 
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from main import app
-from core import get_db, create_access_token
+from admin.models import AdminAuditLog
 from community.models import User
-from racks.models import Rack
+from core import create_access_token, get_db
+from main import app
 from patches.models import Patch
 from publishing.models import Export, Publication
-from admin.models import AdminAuditLog
+from racks.models import Rack
 
 
 @pytest.fixture
 def client(db_session: Session):
     """Create a test client with database override."""
+
     def override_get_db():
         try:
             yield db_session
@@ -50,7 +52,9 @@ def _create_patch(db_session: Session, rack: Rack) -> Patch:
     return patch
 
 
-def _create_export(db_session: Session, owner: User, patch: Patch | None, rack: Rack | None) -> Export:
+def _create_export(
+    db_session: Session, owner: User, patch: Patch | None, rack: Rack | None
+) -> Export:
     export = Export(
         owner_user_id=owner.id,
         patch_id=patch.id if patch else None,
@@ -61,7 +65,11 @@ def _create_export(db_session: Session, owner: User, patch: Patch | None, rack: 
         generated_at=datetime.utcnow(),
         patch_count=1,
         manifest_hash="hash-123",
-        artifact_urls={"pdf": "/tmp/example.pdf", "svg": "/tmp/example.svg", "zip": "/tmp/example.zip"},
+        artifact_urls={
+            "pdf": "/tmp/example.pdf",
+            "svg": "/tmp/example.svg",
+            "zip": "/tmp/example.zip",
+        },
     )
     db_session.add(export)
     db_session.commit()
@@ -179,7 +187,9 @@ class TestPublishingAPI:
         assert "publisher_user_id" not in response.text
         assert data["publisher_display"] == "PatchHive User"
 
-    def test_allow_download_gating(self, client: TestClient, db_session: Session, sample_user: User, sample_case):
+    def test_allow_download_gating(
+        self, client: TestClient, db_session: Session, sample_user: User, sample_case
+    ):
         rack = Rack(user_id=sample_user.id, name="Rack", case_id=sample_case.id)
         db_session.add(rack)
         db_session.commit()
@@ -234,6 +244,10 @@ class TestPublishingAPI:
         assert publication.status == "hidden"
         assert publication.moderation_audit_id is not None
 
-        audit = db_session.query(AdminAuditLog).filter(AdminAuditLog.id == publication.moderation_audit_id).first()
+        audit = (
+            db_session.query(AdminAuditLog)
+            .filter(AdminAuditLog.id == publication.moderation_audit_id)
+            .first()
+        )
         assert audit is not None
         assert audit.action_type == "hide_publication"

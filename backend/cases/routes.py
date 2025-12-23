@@ -1,13 +1,16 @@
 """
 FastAPI routes for Case management.
 """
+
 from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from core import get_db
+
 from .models import Case
-from .schemas import CaseCreate, CaseUpdate, CaseResponse, CaseListResponse
+from .schemas import CaseCreate, CaseListResponse, CaseResponse, CaseUpdate
 
 router = APIRouter()
 

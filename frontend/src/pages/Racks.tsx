@@ -63,7 +63,7 @@ export default function RacksPage() {
 
   const loadRuns = async (rackId: number) => {
     try {
-      const response = await runApi.list({ rack_id: rackId, limit: 50 });
+      const response = await runApi.list(rackId);
       setRuns(response.data.runs);
       if (response.data.runs.length) {
         setSelectedRunId(response.data.runs[0].id);
@@ -80,7 +80,7 @@ export default function RacksPage() {
 
   const loadPatches = async (runId: number) => {
     try {
-      const response = await patchApi.list({ run_id: runId, limit: 100 });
+      const response = await runApi.patches(runId);
       setPatches(response.data.patches);
     } catch (err) {
       setPatches([]);
@@ -107,6 +107,7 @@ export default function RacksPage() {
 
   useEffect(() => {
     loadRacks();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

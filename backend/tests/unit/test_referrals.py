@@ -1,6 +1,7 @@
 """
 Tests for referral credit rewards.
 """
+
 from sqlalchemy.orm import Session
 
 from community.models import User
@@ -29,12 +30,7 @@ def test_referral_reward_on_first_purchase(db_session: Session):
     referral = create_referral(db_session, referrer=referrer, referred=referred)
     db_session.commit()
 
-    assert (
-        db_session.query(CreditsLedger)
-        .filter(CreditsLedger.change_type == "Grant")
-        .count()
-        == 0
-    )
+    assert db_session.query(CreditsLedger).filter(CreditsLedger.change_type == "Grant").count() == 0
 
     record_purchase(db_session, user=referred, credits_delta=5, notes="Credits purchase")
     db_session.commit()
@@ -94,11 +90,7 @@ def test_purchase_without_referral_no_reward(db_session: Session):
     record_purchase(db_session, user=user, credits_delta=3)
     db_session.commit()
 
-    rewards = (
-        db_session.query(CreditsLedger)
-        .filter(CreditsLedger.change_type == "Grant")
-        .all()
-    )
+    rewards = db_session.query(CreditsLedger).filter(CreditsLedger.change_type == "Grant").all()
     assert rewards == []
 
 

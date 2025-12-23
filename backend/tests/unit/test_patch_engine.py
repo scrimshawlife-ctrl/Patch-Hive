@@ -1,19 +1,20 @@
 """
 Tests for the deterministic patch generation engine.
 """
+
 import pytest
 from sqlalchemy.orm import Session
 
+from modules.models import Module
 from patches.engine import (
-    ModuleAnalyzer,
-    PatchGenerator,
-    PatchEngineConfig,
-    generate_patches_for_rack,
     Connection,
+    ModuleAnalyzer,
+    PatchEngineConfig,
+    PatchGenerator,
     PatchSpec,
+    generate_patches_for_rack,
 )
 from racks.models import Rack
-from modules.models import Module
 
 
 class TestModuleAnalyzer:
@@ -262,9 +263,7 @@ class TestDeterminism:
             # At least the names should differ (they use the seed)
             assert patches1[0].name != patches2[0].name
 
-    def test_determinism_across_multiple_runs(
-        self, db_session: Session, sample_rack_full: Rack
-    ):
+    def test_determinism_across_multiple_runs(self, db_session: Session, sample_rack_full: Rack):
         """Test determinism across multiple generation runs."""
         seed = 99999
         num_runs = 5
@@ -394,9 +393,7 @@ class TestPatchTypes:
 class TestEdgeCases:
     """Tests for edge cases and error conditions."""
 
-    def test_empty_rack_generates_no_patches(
-        self, db_session: Session, sample_rack_empty: Rack
-    ):
+    def test_empty_rack_generates_no_patches(self, db_session: Session, sample_rack_empty: Rack):
         """Test that empty rack generates no patches."""
         patches = generate_patches_for_rack(db_session, sample_rack_empty, seed=42)
         assert len(patches) == 0

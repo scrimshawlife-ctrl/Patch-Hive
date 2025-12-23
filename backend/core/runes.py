@@ -13,11 +13,12 @@ Complexity note: Runes add minimal overhead (~microseconds per operation)
 while providing significant operational visibility (satisfies ABX-Core v1.3
 complexity rule: new complexity reduces entropy).
 """
-from dataclasses import dataclass, field, asdict
-from typing import Dict, Any, Optional, Callable, List
+
+import uuid
+from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from functools import wraps
-import uuid
+from typing import Any, Callable, Dict, List, Optional
 
 # Rune operation types (extensible)
 RuneType = str  # "RACK_VALIDATE", "PATCH_GENERATE", "EXPORT_PDF", etc.
@@ -31,6 +32,7 @@ class RuneTag:
     Runes are lightweight operation markers that carry metadata
     for observability and scheduling.
     """
+
     rune_id: str  # Unique ID for this rune instance
     rune_type: RuneType  # Operation type
     started_at: str  # ISO8601 UTC timestamp
@@ -74,7 +76,7 @@ class RuneTag:
         rune_type: RuneType,
         entity_type: Optional[str] = None,
         entity_id: Optional[str] = None,
-        parent_rune_id: Optional[str] = None
+        parent_rune_id: Optional[str] = None,
     ) -> "RuneTag":
         """Factory method to create a new rune tag."""
         return cls(
@@ -83,7 +85,7 @@ class RuneTag:
             started_at=datetime.now(timezone.utc).isoformat(),
             entity_type=entity_type,
             entity_id=entity_id,
-            parent_rune_id=parent_rune_id
+            parent_rune_id=parent_rune_id,
         )
 
 
@@ -134,7 +136,7 @@ def with_rune(
     rune_type: RuneType,
     entity_type: Optional[str] = None,
     entity_id_param: Optional[str] = None,  # Name of parameter to use as entity_id
-    capture_result: bool = False
+    capture_result: bool = False,
 ) -> Callable:
     """
     Decorator to automatically tag a function with a rune.
@@ -153,6 +155,7 @@ def with_rune(
     Returns:
         Decorated function
     """
+
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -177,11 +180,7 @@ def with_rune(
                 entity_id = str(entity_id)
 
             # Create rune
-            rune = RuneTag.create(
-                rune_type=rune_type,
-                entity_type=entity_type,
-                entity_id=entity_id
-            )
+            rune = RuneTag.create(rune_type=rune_type, entity_type=entity_type, entity_id=entity_id)
 
             # Execute function
             try:
@@ -204,6 +203,7 @@ def with_rune(
                 register_rune(rune)
 
         return wrapper
+
     return decorator
 
 
@@ -217,18 +217,19 @@ class RuneContext:
             # Do work
             rune.add_metric("pages", 10)
     """
+
     def __init__(
         self,
         rune_type: RuneType,
         entity_type: Optional[str] = None,
         entity_id: Optional[str] = None,
-        parent_rune_id: Optional[str] = None
+        parent_rune_id: Optional[str] = None,
     ):
         self.rune = RuneTag.create(
             rune_type=rune_type,
             entity_type=entity_type,
             entity_id=entity_id,
-            parent_rune_id=parent_rune_id
+            parent_rune_id=parent_rune_id,
         )
 
     def __enter__(self) -> RuneTag:
@@ -246,6 +247,7 @@ class RuneContext:
 # Standard rune types for PatchHive operations
 class RuneTypes:
     """Standard rune types used in PatchHive."""
+
     RACK_VALIDATE = "RACK_VALIDATE"
     RACK_CREATE = "RACK_CREATE"
     PATCH_GENERATE = "PATCH_GENERATE"

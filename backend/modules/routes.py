@@ -1,14 +1,17 @@
 """
 FastAPI routes for Module management.
 """
-from typing import Optional
+
 from datetime import datetime
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from core import get_db
+
 from .models import Module
-from .schemas import ModuleCreate, ModuleUpdate, ModuleResponse, ModuleListResponse
+from .schemas import ModuleCreate, ModuleListResponse, ModuleResponse, ModuleUpdate
 
 router = APIRouter()
 

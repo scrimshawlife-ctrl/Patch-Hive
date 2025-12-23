@@ -1,9 +1,10 @@
 """
 SQLAlchemy models for gallery revisions (append-only).
 """
+
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, DateTime, JSON
+from sqlalchemy import JSON, Column, DateTime, Integer, String
 
 from core.database import Base
 

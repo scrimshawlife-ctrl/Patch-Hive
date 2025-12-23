@@ -1,6 +1,6 @@
 import json
-from pathlib import Path
 from hashlib import sha256
+from pathlib import Path
 
 from sqlalchemy.orm import Session
 
@@ -80,7 +80,9 @@ def test_golden_demo_fingerprint(api_client, golden_demo_seed):
     assert _run_fingerprint(patches) == expected["run_fingerprint"]
 
 
-def test_generate_patch_library_deterministic(api_client, db_session: Session, create_user, seed_minimal_modules):
+def test_generate_patch_library_deterministic(
+    api_client, db_session: Session, create_user, seed_minimal_modules
+):
     create_user("user2", "pass123")
 
     modules_payload = _build_modules_payload(

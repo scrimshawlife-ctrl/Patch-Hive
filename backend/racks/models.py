@@ -1,8 +1,10 @@
 """
 SQLAlchemy models for user racks (case + module configurations).
 """
+
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, JSON
+
+from sqlalchemy import JSON, Boolean, Column, DateTime, ForeignKey, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -16,8 +18,12 @@ class Rack(Base):
     id = Column(Integer, primary_key=True, index=True)
 
     # Ownership
-    user_id = Column(Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
-    case_id = Column(Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    case_id = Column(
+        Integer, ForeignKey("cases.id", ondelete="CASCADE"), nullable=False, index=True
+    )
 
     # Metadata
     name = Column(String(200), nullable=False)  # Auto-generated or user-specified
@@ -51,8 +57,12 @@ class RackModule(Base):
 
     id = Column(Integer, primary_key=True, index=True)
 
-    rack_id = Column(Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True)
-    module_id = Column(Integer, ForeignKey("modules.id", ondelete="CASCADE"), nullable=False, index=True)
+    rack_id = Column(
+        Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    module_id = Column(
+        Integer, ForeignKey("modules.id", ondelete="CASCADE"), nullable=False, index=True
+    )
 
     # Position in rack
     row_index = Column(Integer, nullable=False)  # 0-indexed row number

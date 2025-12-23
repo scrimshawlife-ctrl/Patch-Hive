@@ -3,16 +3,18 @@ API endpoints for ModularGrid integration.
 
 ABX-Core v1.3: Full provenance tracking for all import operations.
 """
+
+from typing import Any, Dict
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from typing import Dict, Any
 
 from core.database import get_db
 from integrations.modulargrid_importer import (
-    import_modules,
-    import_cases,
-    import_all,
     get_manufacturers_list,
+    import_all,
+    import_cases,
+    import_modules,
 )
 
 router = APIRouter(prefix="/modulargrid", tags=["modulargrid"])

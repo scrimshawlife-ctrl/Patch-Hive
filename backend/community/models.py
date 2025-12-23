@@ -1,8 +1,19 @@
 """
 SQLAlchemy models for community features (users, votes, comments).
 """
+
 from datetime import datetime
-from sqlalchemy import Column, Integer, String, Text, DateTime, ForeignKey, Boolean, UniqueConstraint
+
+from sqlalchemy import (
+    Boolean,
+    Column,
+    DateTime,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -31,10 +42,16 @@ class User(Base):
     racks = relationship("Rack", back_populates="user", cascade="all, delete-orphan")
     votes = relationship("Vote", back_populates="user", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
-    credit_entries = relationship("CreditsLedger", back_populates="user", cascade="all, delete-orphan")
+    credit_entries = relationship(
+        "CreditsLedger", back_populates="user", cascade="all, delete-orphan"
+    )
     exports = relationship("Export", back_populates="user", cascade="all, delete-orphan")
-    referrals_sent = relationship("Referral", foreign_keys="Referral.referrer_user_id", back_populates="referrer")
-    referral_received = relationship("Referral", foreign_keys="Referral.referred_user_id", back_populates="referred")
+    referrals_sent = relationship(
+        "Referral", foreign_keys="Referral.referrer_user_id", back_populates="referrer"
+    )
+    referral_received = relationship(
+        "Referral", foreign_keys="Referral.referred_user_id", back_populates="referred"
+    )
     referrer = relationship("User", remote_side=[id], backref="referrals")
 
 

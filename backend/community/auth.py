@@ -1,9 +1,12 @@
 """Authentication helpers for community routes."""
+
 from typing import Optional
+
 from fastapi import Depends, Header, HTTPException
 from sqlalchemy.orm import Session
 
-from core import get_db, decode_access_token
+from core import decode_access_token, get_db
+
 from .models import User
 
 
