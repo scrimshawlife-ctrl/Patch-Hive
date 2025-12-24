@@ -12,10 +12,7 @@ from .models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION
 from .render_pdf import build_patchbook_pdf_bytes
 
 
-def build_patchbook_pdf_bytes_from_payload(
-    db: Session,
-    payload: PatchBookExportRequest,
-) -> tuple[bytes, str]:
+def build_patchbook_document_from_payload(db: Session, payload: PatchBookExportRequest):
     if not payload.rack_id and not payload.patch_ids:
         raise ValueError("rack_id or patch_ids required")
 
@@ -36,7 +33,14 @@ def build_patchbook_pdf_bytes_from_payload(
     if not patches:
         raise ValueError("No patches available for rack")
 
-    document = build_patchbook_document(db, rack, patches)
+    return build_patchbook_document(db, rack, patches, tier=payload.tier)
+
+
+def build_patchbook_pdf_bytes_from_payload(
+    db: Session,
+    payload: PatchBookExportRequest,
+) -> tuple[bytes, str]:
+    document = build_patchbook_document_from_payload(db, payload)
     content_hash = compute_patchbook_content_hash(
         document.model_dump(mode="json"),
         PATCHBOOK_TEMPLATE_VERSION,

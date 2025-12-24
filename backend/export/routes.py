@@ -22,7 +22,7 @@ from runs.models import Run
 from .pdf import generate_patch_pdf, generate_rack_pdf
 from .visualization import generate_patch_diagram_svg, generate_rack_layout_svg
 from .patchbook.build import build_patchbook_pdf_bytes_from_payload
-from .patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION
+from .patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION, PatchBookTier
 
 router = APIRouter()
 
@@ -99,6 +99,7 @@ def export_patch_diagram_svg(patch_id: int, db: Session = Depends(get_db)):
 def export_patchbook_pdf(
     run_id: int,
     force_fail: bool = Query(False),
+    tier: PatchBookTier = Query(PatchBookTier.CORE),
     db: Session = Depends(get_db),
     current_user: User = Depends(require_auth),
 ):
@@ -145,7 +146,7 @@ def export_patchbook_pdf(
         raise HTTPException(status_code=404, detail="No patches available for run")
 
     payload = PatchBookExportRequest(
-        rack_id=rack.id, patch_ids=[patch.id for patch in patches]
+        rack_id=rack.id, patch_ids=[patch.id for patch in patches], tier=tier
     )
     try:
         pdf_bytes, content_hash = build_patchbook_pdf_bytes_from_payload(db, payload)
