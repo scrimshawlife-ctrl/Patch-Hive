@@ -11,6 +11,19 @@ from patches.models import Patch
 from racks.models import Rack, RackModule
 
 from .branding import get_patchbook_branding
+from .book_analytics import (
+    compute_compatibility_report,
+    compute_golden_rack_arrangement,
+    compute_learning_path,
+)
+from .computation import (
+    PatchInsights,
+    compute_patch_fingerprint,
+    compute_patch_variants,
+    compute_performance_macros,
+    compute_stability_envelope,
+    compute_troubleshooting_tree,
+)
 from .models import (
     IOEndpoint,
     ParameterSnapshot,
@@ -18,9 +31,11 @@ from .models import (
     PatchBookHeader,
     PatchBookPage,
     PatchModulePosition,
+    PatchBookTier,
 )
 from .patching_order import generate_patching_order
 from .render_schematic import render_patch_schematic
+from .tiers import get_tier_features
 
 
 def _build_module_inventory(rack_modules: list[RackModule], modules: dict[int, Module]) -> list[PatchModulePosition]:
@@ -102,9 +117,11 @@ def build_patchbook_document(
     db: Session,
     rack: Rack,
     patches: list[Patch],
+    tier: PatchBookTier = PatchBookTier.CORE,
     content_hash: str | None = None,
 ) -> PatchBookDocument:
     """Build PatchBook document from rack and patches."""
+    tier_features = get_tier_features(tier)
     rack_modules = (
         db.query(RackModule)
         .filter(RackModule.rack_id == rack.id)
@@ -118,6 +135,8 @@ def build_patchbook_document(
     modules = {module_id: module for module_id, module in modules.items() if module}
 
     pages: list[PatchBookPage] = []
+    insights: list[PatchInsights] = []
+    learning_payload: list[dict[str, str | int]] = []
     for patch in sorted(patches, key=lambda item: item.id):
         module_inventory = _build_module_inventory(rack_modules, modules)
 
@@ -132,6 +151,50 @@ def build_patchbook_document(
         schematic = render_patch_schematic(db, rack, patch.connections)
         patching_order = generate_patching_order(patch.connections, modules)
 
+        parameter_payload = [
+            {
+                "module_id": snapshot.module_id,
+                "module_name": snapshot.module_name,
+                "parameter": snapshot.parameter,
+                "value": snapshot.value,
+            }
+            for snapshot in parameter_snapshot
+        ]
+
+        patch_fingerprint = None
+        patch_insight = None
+        if tier_features.patch_fingerprint:
+            patch_fingerprint, patch_insight = compute_patch_fingerprint(
+                patch.connections,
+                parameter_payload,
+                module_inventory,
+                allow_rack_fit=tier_features.rack_fit_score,
+            )
+            insights.append(patch_insight)
+            learning_payload.append({"patch_id": patch.id, "patch_name": patch.name})
+
+        stability_envelope = (
+            compute_stability_envelope(patch.connections, parameter_payload, module_inventory, patch_insight)
+            if tier_features.stability_envelope and patch_insight
+            else None
+        )
+
+        troubleshooting_tree = (
+            compute_troubleshooting_tree(patch.connections, parameter_payload, module_inventory)
+            if tier_features.troubleshooting_tree
+            else None
+        )
+
+        performance_macros = (
+            compute_performance_macros(parameter_payload) if tier_features.performance_macros else None
+        )
+
+        variants = (
+            compute_patch_variants(patch.connections, parameter_payload, module_inventory, patch_insight)
+            if tier_features.patch_variants and patch_insight
+            else None
+        )
+
         pages.append(
             PatchBookPage(
                 header=header,
@@ -140,9 +203,33 @@ def build_patchbook_document(
                 parameter_snapshot=parameter_snapshot,
                 schematic=schematic,
                 patching_order=patching_order,
-                variants=None,
+                variants=variants if variants else None,
+                patch_fingerprint=patch_fingerprint,
+                stability_envelope=stability_envelope,
+                troubleshooting_tree=troubleshooting_tree,
+                performance_macros=performance_macros if performance_macros else None,
             )
         )
 
     branding = get_patchbook_branding()
-    return PatchBookDocument(branding=branding, pages=pages, content_hash=content_hash)
+    golden_rack_arrangement = (
+        compute_golden_rack_arrangement(pages[0].module_inventory, [conn for patch in patches for conn in patch.connections])
+        if tier_features.golden_rack_arrangement and pages
+        else None
+    )
+    compatibility_report = (
+        compute_compatibility_report(pages[0].module_inventory, insights) if tier_features.compatibility_report else None
+    )
+    learning_path = (
+        compute_learning_path(learning_payload, insights) if tier_features.learning_path and insights else None
+    )
+
+    return PatchBookDocument(
+        branding=branding,
+        pages=pages,
+        content_hash=content_hash,
+        tier_name=tier.value,
+        golden_rack_arrangement=golden_rack_arrangement,
+        compatibility_report=compatibility_report,
+        learning_path=learning_path,
+    )

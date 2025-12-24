@@ -70,10 +70,20 @@ def _page_footer(c: canvas.Canvas, document: PatchBookDocument, page_index: int,
     template = document.branding.template_version
     content_hash = document.content_hash or ""
     c.drawString(inch, 0.55 * inch, f"PatchHive PatchBook Template v{template}")
+    c.drawString(inch + 220, 0.55 * inch, f"Tier: {document.tier_name}")
     c.drawRightString(width - inch, 0.55 * inch, f"Page {page_index + 1} of {total_pages}")
     if content_hash:
         c.setFont("Helvetica", 6)
         c.drawString(inch, 0.38 * inch, f"Content Hash: {content_hash}")
+    if document.tier_name == "free":
+        c.setFont("Helvetica-Bold", 24)
+        c.setFillColorRGB(0.85, 0.85, 0.85)
+        c.saveState()
+        c.translate(width / 2, 0.4 * inch)
+        c.rotate(15)
+        c.drawCentredString(0, 0, "PREVIEW")
+        c.restoreState()
+        c.setFillColorRGB(0, 0, 0)
 
 
 def _render_module_inventory(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) -> float:
@@ -152,8 +162,137 @@ def _render_variants(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) 
     if not page.variants:
         return y
     y = _draw_section_title(c, "Variants", x, y)
-    variant_lines = [f"{variant.name}: {variant.description or ''}" for variant in page.variants]
+    variant_lines = []
+    for variant in page.variants:
+        variant_lines.append(f"{variant.variant_type.upper()}: {variant.behavioral_delta_summary}")
+        if variant.wiring_diff:
+            variant_lines.append("Wiring diff:")
+            for delta in variant.wiring_diff[:3]:
+                variant_lines.append(
+                    f"- {delta.action} {delta.from_module} {delta.from_port} -> {delta.to_module} {delta.to_port}"
+                )
+        if variant.parameter_deltas:
+            variant_lines.append("Parameter deltas:")
+            for delta in variant.parameter_deltas[:3]:
+                variant_lines.append(
+                    f"- {delta.module_name} {delta.parameter}: {delta.from_value} → {delta.to_value}"
+                )
     return _draw_lines(c, variant_lines, x, y, font_size=8)
+
+
+def _render_patch_fingerprint(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) -> float:
+    if not page.patch_fingerprint:
+        return y
+    fingerprint = page.patch_fingerprint
+    y = _draw_section_title(c, "Patch Fingerprint", x, y)
+    lines = [
+        f"Topology Hash: {fingerprint.topology_hash[:16]}",
+        f"Cable count: {fingerprint.complexity_vector.cable_count}",
+        f"Unique jacks: {fingerprint.complexity_vector.unique_jack_count}",
+        f"Mod sources: {fingerprint.complexity_vector.modulation_source_count}",
+        f"Probability loci: {fingerprint.complexity_vector.probability_locus_count}",
+        f"Feedback: {'Yes' if fingerprint.complexity_vector.feedback_present else 'No'}",
+        f"Rack fit score: {fingerprint.rack_fit_score}" if fingerprint.rack_fit_score is not None else None,
+        (
+            "Roles: "
+            f"T{fingerprint.dominant_roles.time}% "
+            f"V{fingerprint.dominant_roles.voice}% "
+            f"M{fingerprint.dominant_roles.modulation}% "
+            f"P{fingerprint.dominant_roles.probability}% "
+            f"G{fingerprint.dominant_roles.gesture}%"
+        ),
+    ]
+    lines = [line for line in lines if line]
+    return _draw_lines(c, lines, x, y, font_size=8)
+
+
+def _render_stability_envelope(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) -> float:
+    if not page.stability_envelope:
+        return y
+    envelope = page.stability_envelope
+    y = _draw_section_title(c, "Stability Envelope", x, y)
+    lines = [f"Class: {envelope.stability_class}"]
+    if envelope.primary_instability_sources:
+        lines.append("Instability sources: " + ", ".join(envelope.primary_instability_sources))
+    lines.extend([f"Safe start: {item}" for item in envelope.safe_start_ranges])
+    lines.extend([f"Recovery: {item}" for item in envelope.recovery_procedure])
+    return _draw_lines(c, lines, x, y, font_size=8)
+
+
+def _render_troubleshooting_tree(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) -> float:
+    if not page.troubleshooting_tree:
+        return y
+    tree = page.troubleshooting_tree
+    y = _draw_section_title(c, "Troubleshooting Tree", x, y)
+    lines = []
+    for title, items in (
+        ("No sound", tree.no_sound_checks),
+        ("No modulation", tree.no_modulation_checks),
+        ("Timing instability", tree.timing_instability_checks),
+        ("Gain staging", tree.gain_staging_checks),
+    ):
+        if items:
+            lines.append(f"{title}:")
+            lines.extend([f"- {item}" for item in items])
+    return _draw_lines(c, lines, x, y, font_size=8)
+
+
+def _render_performance_macros(page: PatchBookPage, c: canvas.Canvas, x: float, y: float) -> float:
+    if not page.performance_macros:
+        return y
+    y = _draw_section_title(c, "Performance Macros", x, y)
+    lines = []
+    for macro in page.performance_macros:
+        lines.append(f"{macro.macro_id}: {macro.expected_effect}")
+        lines.append(f"Controls: {', '.join(macro.controls_involved)}")
+        lines.append(f"Safe bounds: {macro.safe_bounds} ({macro.risk_level})")
+    return _draw_lines(c, lines, x, y, font_size=8)
+
+
+def _render_book_insights(document: PatchBookDocument, c: canvas.Canvas) -> bool:
+    if not (document.golden_rack_arrangement or document.compatibility_report or document.learning_path):
+        return False
+    _, height = letter
+    c.setFont("Helvetica-Bold", 14)
+    c.drawString(inch, height - inch, "PatchBook Insights")
+    y = height - 1.3 * inch
+
+    if document.golden_rack_arrangement:
+        arrangement = document.golden_rack_arrangement
+        y = _draw_section_title(c, "Golden Rack Arrangement", inch, y)
+        for layout in arrangement.layouts:
+            y = _draw_lines(c, [f"Layout {layout.layout_id} score: {layout.score}"], inch, y, font_size=9)
+        y = _draw_lines(c, arrangement.scoring_explanation, inch, y, font_size=8)
+        y = _draw_lines(c, [arrangement.adjacency_heatmap_summary], inch, y, font_size=8)
+        if arrangement.missing_utility_warnings:
+            y = _draw_lines(c, arrangement.missing_utility_warnings, inch, y, font_size=8)
+        y -= 6
+
+    if document.compatibility_report:
+        report = document.compatibility_report
+        y = _draw_section_title(c, "Compatibility & Gap Report", inch, y)
+        if report.required_missing_utilities:
+            missing = ", ".join(report.required_missing_utilities)
+            y = _draw_lines(c, [f"Missing utilities: {missing}"], inch, y, font_size=8)
+        if report.workaround_suggestions:
+            y = _draw_lines(c, ["Workarounds:"] + report.workaround_suggestions, inch, y, font_size=8)
+        if report.patch_compatibility_warnings:
+            y = _draw_lines(c, ["Warnings:"] + report.patch_compatibility_warnings, inch, y, font_size=8)
+        y -= 6
+
+    if document.learning_path:
+        path = document.learning_path
+        y = _draw_section_title(c, "Learning Path", inch, y)
+        for step in path.ordered_patch_sequence:
+            y = _draw_lines(
+                c,
+                [f"{step.patch_name}: {step.concept} (effort {step.effort_score})"],
+                inch,
+                y,
+                font_size=8,
+            )
+        y = _draw_lines(c, [f"Effort progression: {path.effort_score_progression}"], inch, y, font_size=8)
+    return True
 
 
 def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
@@ -166,7 +305,8 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
         document.content_hash or "",
     )
 
-    total_pages = len(document.pages)
+    has_insights = bool(document.golden_rack_arrangement or document.compatibility_report or document.learning_path)
+    total_pages = len(document.pages) + (1 if has_insights else 0)
     for idx, page in enumerate(document.pages):
         y = _page_header(c, page, document.branding.wordmark_svg)
         left_column_x = inch
@@ -178,12 +318,19 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
 
         y_right = _render_schematic(page, c, right_column_x, y)
         y_right = _render_patching_order(page, c, right_column_x, y_right - 8)
+        y_right = _render_patch_fingerprint(page, c, right_column_x, y_right - 8)
+        y_right = _render_stability_envelope(page, c, right_column_x, y_right - 8)
+        y_right = _render_troubleshooting_tree(page, c, right_column_x, y_right - 8)
+        y_right = _render_performance_macros(page, c, right_column_x, y_right - 8)
         y_right = _render_variants(page, c, right_column_x, y_right - 8)
 
         _page_footer(c, document, idx, total_pages)
         if idx < total_pages - 1:
             c.showPage()
 
+    if has_insights:
+        _render_book_insights(document, c)
+        _page_footer(c, document, total_pages - 1, total_pages)
     c.save()
     buffer.seek(0)
     return buffer.read()
