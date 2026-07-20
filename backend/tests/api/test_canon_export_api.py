@@ -1,0 +1,238 @@
+"""API tests for the canonical export/download/webhook HTTP surface."""
+
+from __future__ import annotations
+
+import hashlib
+import hmac
+import json
+from datetime import datetime, timezone
+
+import pytest
+from fastapi.testclient import TestClient
+from sqlalchemy.orm import Session
+
+from canon.models import CanonicalCreditLedgerEntryRecord
+from community.models import User
+from core import create_access_token, settings
+from main import app
+from tests.unit.test_canon_contracts import _persist_hierarchy
+
+NOW = datetime(2025, 1, 1, tzinfo=timezone.utc)
+
+
+@pytest.fixture
+def client(db_session: Session):
+    from core import get_db
+
+    def override_get_db():
+        try:
+            yield db_session
+        finally:
+            pass
+
+    app.dependency_overrides[get_db] = override_get_db
+    yield TestClient(app)
+    app.dependency_overrides.clear()
+
+
+def _auth_headers(user: User) -> dict[str, str]:
+    token = create_access_token({"user_id": user.id, "username": user.username})
+    return {"Authorization": f"Bearer {token}"}
+
+
+def _grant(db_session: Session, user_id: int, amount: int = 10) -> None:
+    db_session.add(
+        CanonicalCreditLedgerEntryRecord(
+            id=f"grant-{user_id}-{amount}",
+            user_id=user_id,
+            delta=amount,
+            entry_type="grant",
+            idempotency_key=f"grant-{user_id}-{amount}",
+            created_at=NOW,
+        )
+    )
+    db_session.commit()
+
+
+def test_canonical_export_requires_auth(client: TestClient) -> None:
+    resp = client.post(
+        "/api/canon/exports",
+        json={
+            "source_run_id": "run-1",
+            "source_rig_revision_id": "rig-rev-1",
+            "artifact_manifest_hash": "a" * 64,
+            "idempotency_key": "idem-auth-1",
+        },
+    )
+    assert resp.status_code == 401
+
+
+def test_canonical_export_and_download_token_flow(client: TestClient, db_session: Session) -> None:
+    user, _patch = _persist_hierarchy(db_session)
+    _grant(db_session, user.id, 10)
+
+    create = client.post(
+        "/api/canon/exports",
+        headers=_auth_headers(user),
+        json={
+            "source_run_id": "run-1",
+            "source_rig_revision_id": "rig-rev-1",
+            "artifact_manifest_hash": "a" * 64,
+            "formats": ["pdf", "json"],
+            "license": "personal",
+            "idempotency_key": "idem-export-1",
+        },
+    )
+    assert create.status_code == 201, create.text
+    body = create.json()
+    assert body["status"] == "queued"
+    assert body["credit_cost"] == settings.patchbook_export_cost
+    export_id = body["export_id"]
+
+    # Idempotent retry returns the same export and does not re-debit.
+    retry = client.post(
+        "/api/canon/exports",
+        headers=_auth_headers(user),
+        json={
+            "source_run_id": "run-1",
+            "source_rig_revision_id": "rig-rev-1",
+            "artifact_manifest_hash": "a" * 64,
+            "formats": ["pdf", "json"],
+            "license": "personal",
+            "idempotency_key": "idem-export-1",
+        },
+    )
+    assert retry.status_code == 201
+    assert retry.json()["export_id"] == export_id
+
+    balance = client.get("/api/canon/credits/balance", headers=_auth_headers(user))
+    assert balance.status_code == 200
+    assert balance.json()["balance"] == 10 - settings.patchbook_export_cost
+
+    token_resp = client.post(
+        f"/api/canon/exports/{export_id}/download-token",
+        headers=_auth_headers(user),
+        json={"ttl_seconds": 120},
+    )
+    assert token_resp.status_code == 200, token_resp.text
+    token = token_resp.json()["token"]
+
+    verify = client.post(
+        f"/api/canon/exports/{export_id}/download",
+        headers=_auth_headers(user),
+        json={"token": token},
+    )
+    assert verify.status_code == 200, verify.text
+    assert verify.json()["export_id"] == export_id
+    assert verify.json()["user_id"] == str(user.id)
+
+
+def test_canonical_export_insufficient_credits(client: TestClient, db_session: Session) -> None:
+    user, _patch = _persist_hierarchy(db_session)
+    resp = client.post(
+        "/api/canon/exports",
+        headers=_auth_headers(user),
+        json={
+            "source_run_id": "run-1",
+            "source_rig_revision_id": "rig-rev-1",
+            "artifact_manifest_hash": "a" * 64,
+            "idempotency_key": "idem-no-credits",
+        },
+    )
+    assert resp.status_code == 402
+    assert resp.json()["detail"] == "INSUFFICIENT_CREDITS"
+
+
+def _signature(payload: bytes, secret: str, timestamp: int) -> str:
+    digest = hmac.new(
+        secret.encode(), f"{timestamp}.".encode() + payload, hashlib.sha256
+    ).hexdigest()
+    return f"t={timestamp},v1={digest}"
+
+
+def test_stripe_webhook_rejects_livemode_in_test_mode(
+    client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    monkeypatch.setattr(settings, "stripe_test_mode", True)
+    monkeypatch.setattr(settings, "stripe_webhook_secret", "whsec_test_secret_value_1234")
+    monkeypatch.setattr(settings, "environment", "development")
+    monkeypatch.setattr(settings, "allow_production_payments", False)
+
+    # Bind the module-level settings used by the route.
+    import canon.routes as canon_routes
+
+    monkeypatch.setattr(canon_routes, "settings", settings)
+
+    import time
+
+    timestamp = int(time.time())
+    payload = json.dumps({"id": "evt_live", "type": "charge.succeeded", "livemode": True}).encode()
+    resp = client.post(
+        "/api/canon/webhooks/stripe",
+        content=payload,
+        headers={
+            "Content-Type": "application/json",
+            "Stripe-Signature": _signature(payload, "whsec_test_secret_value_1234", timestamp),
+        },
+    )
+    assert resp.status_code == 409, resp.text
+    assert resp.json()["detail"] == "LIVEMODE_EVENT_REJECTED"
+
+
+def test_stripe_webhook_disabled_in_production_without_payments(
+    client: TestClient, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    import canon.routes as canon_routes
+
+    monkeypatch.setattr(settings, "environment", "production")
+    monkeypatch.setattr(settings, "allow_production_payments", False)
+    monkeypatch.setattr(canon_routes, "settings", settings)
+
+    resp = client.post(
+        "/api/canon/webhooks/stripe",
+        content=b"{}",
+        headers={"Stripe-Signature": "t=1,v1=abc"},
+    )
+    assert resp.status_code == 403
+    assert resp.json()["detail"] == "PRODUCTION_PAYMENTS_DISABLED"
+
+
+def test_payment_startup_policy_fail_closed() -> None:
+    from canon.routes import validate_payment_startup_policy
+    from types import SimpleNamespace
+
+    # Safe production defaults.
+    validate_payment_startup_policy(
+        SimpleNamespace(
+            environment="production",
+            allow_production_payments=False,
+            stripe_test_mode=True,
+            stripe_webhook_secret="",
+            download_token_secret="",
+            secret_key="x" * 32,
+        )
+    )
+
+    with pytest.raises(RuntimeError, match="STRIPE_TEST_MODE"):
+        validate_payment_startup_policy(
+            SimpleNamespace(
+                environment="production",
+                allow_production_payments=False,
+                stripe_test_mode=False,
+                stripe_webhook_secret="",
+                download_token_secret="",
+                secret_key="x" * 32,
+            )
+        )
+
+    with pytest.raises(RuntimeError, match="STRIPE_WEBHOOK_SECRET"):
+        validate_payment_startup_policy(
+            SimpleNamespace(
+                environment="production",
+                allow_production_payments=True,
+                stripe_test_mode=False,
+                stripe_webhook_secret="short",
+                download_token_secret="y" * 32,
+                secret_key="x" * 32,
+            )
+        )

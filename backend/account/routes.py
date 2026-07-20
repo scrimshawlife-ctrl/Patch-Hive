@@ -1,11 +1,11 @@
 """Routes for account dashboard data."""
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import desc, func
 from sqlalchemy.orm import Session
 
+from community.auth import require_auth
 from community.models import User
-from community.routes import require_auth
 from core import get_db, settings
 
 from .models import CreditLedgerEntry, ExportRecord, Referral
@@ -54,6 +54,8 @@ def get_exports(current_user: User = Depends(require_auth), db: Session = Depend
 @router.get("/referrals", response_model=ReferralSummaryResponse)
 def get_referrals(current_user: User = Depends(require_auth), db: Session = Depends(get_db)):
     """Get referral summary for the current user."""
+    if not settings.enable_legacy_referrals:
+        raise HTTPException(status_code=404, detail="Referrals are not enabled")
     referral_code = ensure_referral_code(db, current_user)
     referrals = (
         db.query(Referral)

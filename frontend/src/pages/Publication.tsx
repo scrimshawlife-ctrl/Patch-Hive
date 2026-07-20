@@ -19,7 +19,7 @@ export default function PublicationPage() {
       try {
         const response = await publishingApi.getPublication(slug);
         setPublication(response.data);
-      } catch (err) {
+      } catch {
         setError('Publication not found.');
       } finally {
         setLoading(false);
@@ -42,7 +42,7 @@ export default function PublicationPage() {
       setReportStatus('Report submitted.');
       setReportReason('');
       setReportDetails('');
-    } catch (err) {
+    } catch {
       setReportStatus('Unable to submit report.');
     }
   };

@@ -46,10 +46,14 @@ class ExportRecord(Base):
     user = relationship("User", back_populates="exports")
 
 
-class Referral(Base):
-    """Referral relationship between users."""
+class AccountReferral(Base):
+    """Legacy account-dashboard referral projection.
 
-    __tablename__ = "referrals"
+    This is deliberately isolated from the canonical append-only ``referrals``
+    ledger owned by :mod:`monetization.models`.
+    """
+
+    __tablename__ = "account_referrals"
 
     id = Column(Integer, primary_key=True, index=True)
     referrer_user_id = Column(
@@ -70,8 +74,15 @@ class Referral(Base):
     )
 
     __table_args__ = (
-        UniqueConstraint("referred_user_id", name="unique_referral_referred_user"),
+        UniqueConstraint("referred_user_id", name="unique_account_referral_referred_user"),
         UniqueConstraint(
-            "referrer_user_id", "referred_user_id", name="unique_referrer_referred_pair"
+            "referrer_user_id",
+            "referred_user_id",
+            name="unique_account_referrer_referred_pair",
         ),
     )
+
+
+# Compatibility export for the historical account API. The mapped class keeps a
+# distinct registry name, avoiding SQLAlchemy's ambiguous ``Referral`` lookup.
+Referral = AccountReferral

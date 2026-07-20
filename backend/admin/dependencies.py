@@ -5,7 +5,7 @@ Admin authorization dependencies.
 from fastapi import Depends, HTTPException
 
 from community.models import User
-from community.routes import require_auth
+from community.auth import require_auth
 
 READ_ROLES = {"Admin", "Ops", "Support", "ReadOnly"}
 MUTATE_ROLES = {"Admin", "Ops"}

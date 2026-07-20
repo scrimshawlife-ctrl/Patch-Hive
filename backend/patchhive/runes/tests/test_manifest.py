@@ -24,3 +24,15 @@ def test_core_handlers_are_mapped() -> None:
     mapped = {rune.maps_to for rune in manifest.runes}
     for handler in iter_core_handlers():
         assert handler in mapped
+
+
+def test_canonical_operations_have_complete_execution_contracts() -> None:
+    manifest = load_manifest()
+    assert len(manifest.operations) == 8
+    for operation in manifest.operations:
+        assert operation.input_schema.startswith("patchhive.canon.v1#")
+        assert operation.output_schema.startswith("patchhive.canon.v1#")
+        assert operation.version
+        assert operation.authority_requirement
+        assert operation.failure_taxonomy
+        assert operation.test_vectors

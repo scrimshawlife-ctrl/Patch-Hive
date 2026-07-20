@@ -54,7 +54,7 @@ class Export(Base):
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
-    user = relationship("User", backref="exports")
+    user = relationship("User", backref="monetization_exports")
     license = relationship("License", back_populates="exports")
     patch = relationship("Patch", backref="exports")
     rack = relationship("Rack", backref="exports")
@@ -79,8 +79,12 @@ class Referral(Base):
     rewarded_at = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
 
-    referrer = relationship("User", foreign_keys=[referrer_user_id], backref="referrals_sent")
-    referred = relationship("User", foreign_keys=[referred_user_id], backref="referrals_received")
+    referrer = relationship(
+        "User", foreign_keys=[referrer_user_id], backref="monetization_referrals_sent"
+    )
+    referred = relationship(
+        "User", foreign_keys=[referred_user_id], backref="monetization_referrals_received"
+    )
     first_purchase = relationship("CreditsLedger", foreign_keys=[first_purchase_id])
 
 

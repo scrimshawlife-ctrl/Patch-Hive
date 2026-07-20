@@ -2,6 +2,7 @@
 FastAPI routes for export functionality (PDF, SVG).
 """
 
+import os
 from datetime import datetime
 from hashlib import sha256
 from pathlib import Path
@@ -10,8 +11,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
+from community.auth import require_auth
 from community.models import User
-from community.routes import require_auth
 from core import get_db, settings
 from monetization.credits import get_credits_balance
 from monetization.models import CreditsLedger, Export
@@ -129,7 +130,14 @@ def export_patchbook_pdf(
     if balance < settings.patchbook_export_cost:
         raise HTTPException(status_code=402, detail="Insufficient credits")
 
-    if force_fail and settings.test_mode:
+    # Accept either the reloaded Settings flag or the process env used by acceptance.
+    # Route modules may hold a pre-reload Settings instance while tests set TEST_MODE later.
+    test_mode_enabled = settings.test_mode or os.environ.get("TEST_MODE", "").lower() in {
+        "1",
+        "true",
+        "yes",
+    }
+    if force_fail and test_mode_enabled:
         raise HTTPException(status_code=500, detail="Forced export failure")
 
     rack = db.query(Rack).filter(Rack.id == run.rack_id).first()

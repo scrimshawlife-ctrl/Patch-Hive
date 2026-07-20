@@ -1,5 +1,7 @@
 # Azure Deployment Guide for PatchHive
 
+> Operational notice: this campaign did not deploy. Before any future deployment follow [Operations](OPERATIONS.md), keep historical feature flags off, and keep production payments disabled.
+
 Complete guide for deploying PatchHive to Microsoft Azure using Azure App Service, Static Web Apps, and PostgreSQL Flexible Server.
 
 ## 📋 Table of Contents

@@ -1,169 +1,152 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { runApi, monetizationApi, exportApi } from '@/lib/api';
+import { exportApi, monetizationApi, runApi } from '@/lib/api';
 import type { Run } from '@/types/api';
 
-const TOOLTIP_COPY = [
-  'This category reflects the structural role of the patch: voice, modulation, rhythm, utility, or experimental.',
-  'Difficulty is calculated from modulation depth, routing density, and feedback presence.',
-  'This label appears when the patch structure shows unusual complexity or self-interaction.',
-  'Each run is a preserved generation. Re-running never overwrites previous results.',
-  'This name was generated automatically from the patch structure. You can rename it.',
-  'Exports turn patches into printable artifacts. Viewing diagrams is always free.',
-  'Credits are only used when exporting. Failed exports do not consume credits.',
-  'Functions describe how a jack behaves. Unknown or proprietary functions are flagged for review.',
-];
+type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
+
+const tabLabels: Record<WorkspaceTab, string> = {
+  overview: 'Overview',
+  patches: 'Patches',
+  exports: 'Exports',
+  gallery: 'Module gallery',
+};
 
 export default function RigDetailPage() {
   const { rigId } = useParams();
-  const [runs, setRuns] = useState<Run[]>([]);
-  const [activeTab, setActiveTab] = useState<'overview' | 'patches' | 'exports'>('overview');
-  const [credits, setCredits] = useState<number>(0);
-  const [exportStatus, setExportStatus] = useState<string>('');
-
   const rigIdNum = Number(rigId);
+  const [runs, setRuns] = useState<Run[]>([]);
+  const [activeTab, setActiveTab] = useState<WorkspaceTab>('overview');
+  const [activeRunId, setActiveRunId] = useState<number | null>(null);
+  const [credits, setCredits] = useState(0);
+  const [exportStatus, setExportStatus] = useState('');
+  const [loading, setLoading] = useState(true);
   const hasRuns = runs.length > 0;
+  const tabs = useMemo<WorkspaceTab[]>(
+    () => (hasRuns ? ['overview', 'patches', 'exports', 'gallery'] : ['overview', 'gallery']),
+    [hasRuns],
+  );
 
   useEffect(() => {
     if (!rigIdNum) return;
+    setLoading(true);
     runApi
       .list(rigIdNum)
-      .then((res) => setRuns(res.data.runs))
-      .catch(() => setRuns([]));
+      .then((response) => {
+        const ordered = [...response.data.runs].sort(
+          (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+        );
+        setRuns(ordered);
+        setActiveRunId(ordered[0]?.id ?? null);
+      })
+      .catch(() => setRuns([]))
+      .finally(() => setLoading(false));
   }, [rigIdNum]);
 
   const refreshCredits = () => {
-    monetizationApi
-      .balance()
-      .then((res) => setCredits(res.data.balance))
-      .catch(() => setCredits(0));
+    monetizationApi.balance().then((response) => setCredits(response.data.balance)).catch(() => setCredits(0));
   };
 
-  useEffect(() => {
-    refreshCredits();
-  }, []);
+  useEffect(refreshCredits, []);
 
   const handleExport = async () => {
-    if (!hasRuns) return;
+    if (!activeRunId) return;
     setExportStatus('');
     try {
-      const runId = runs[0].id;
-      await exportApi.patchbookExport(runId);
-      setExportStatus('Export queued');
+      await exportApi.patchbookExport(activeRunId);
+      setExportStatus('Export queued. Your immutable source run is preserved.');
       refreshCredits();
-    } catch (err: unknown) {
-      const error = err as { response?: { data?: { detail?: string } } };
-      setExportStatus(error.response?.data?.detail || 'Export failed');
+    } catch (error: unknown) {
+      const apiError = error as { response?: { data?: { detail?: string } } };
+      setExportStatus(apiError.response?.data?.detail || 'Export failed; no successful debit recorded.');
     }
   };
 
   return (
-    <div style={{ padding: '2rem' }}>
-      <h1>Rig {rigId}</h1>
+    <section aria-labelledby="rig-title">
+      <header className="workspace-header">
+        <div>
+          <p className="eyebrow">Canonical rig workspace</p>
+          <h1 id="rig-title">Rig {rigId}</h1>
+          <p className="muted">Revisions and runs are preserved; personal patch notes remain editable.</p>
+        </div>
+        {hasRuns ? (
+          <div className="field">
+            <label htmlFor="run-selector">Source run</label>
+            <select
+              id="run-selector"
+              value={activeRunId ?? ''}
+              onChange={(event) => setActiveRunId(Number(event.target.value))}
+            >
+              {runs.map((run, index) => (
+                <option key={run.id} value={run.id}>
+                  {index === 0 ? 'Latest · ' : ''}Run {run.id} · {new Date(run.created_at).toLocaleDateString()}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
+      </header>
 
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
-        <button
-          type="button"
-          onClick={() => setActiveTab('overview')}
-          style={{
-            padding: '0.5rem 1rem',
-            borderRadius: '4px',
-            border: activeTab === 'overview' ? '2px solid #00ff88' : '1px solid #333',
-            background: '#111',
-            color: '#fff',
-          }}
-        >
-          Overview
-        </button>
-        {hasRuns && (
+      <div className="tab-list" role="tablist" aria-label="Rig workspace">
+        {tabs.map((tab) => (
           <button
+            className="tab"
+            id={`tab-${tab}`}
+            key={tab}
             type="button"
-            onClick={() => setActiveTab('patches')}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              border: activeTab === 'patches' ? '2px solid #00ff88' : '1px solid #333',
-              background: '#111',
-              color: '#fff',
-            }}
+            role="tab"
+            aria-selected={activeTab === tab}
+            aria-controls={`panel-${tab}`}
+            onClick={() => setActiveTab(tab)}
           >
-            Patches
+            {tabLabels[tab]}
           </button>
-        )}
-        {hasRuns && (
-          <button
-            type="button"
-            onClick={() => setActiveTab('exports')}
-            style={{
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              border: activeTab === 'exports' ? '2px solid #00ff88' : '1px solid #333',
-              background: '#111',
-              color: '#fff',
-            }}
-          >
-            Exports
-          </button>
-        )}
+        ))}
       </div>
 
-      {!hasRuns && (
-        <p style={{ color: '#888' }}>
-          No runs yet. Generate a run to unlock patches and exports.
-        </p>
-      )}
+      {loading ? <div className="panel" role="status">Loading rig history…</div> : null}
 
-      {activeTab === 'overview' && (
-        <div>
-          <p style={{ color: '#ccc' }}>Overview of this rig and its patch runs.</p>
-          <p style={{ color: '#888' }}>Runs available: {runs.length}</p>
+      {!loading && activeTab === 'overview' ? (
+        <div className="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
+          <h2>{hasRuns ? 'Rig ready' : 'Build the source of truth'}</h2>
+          <p className="muted">
+            {hasRuns
+              ? `${runs.length} immutable generation ${runs.length === 1 ? 'run' : 'runs'} available.`
+              : 'Add modules manually or review photo evidence before generating.'}
+          </p>
+          {!hasRuns ? <button className="button button-primary" type="button">Generate patch library</button> : null}
         </div>
-      )}
+      ) : null}
 
-      {activeTab === 'patches' && hasRuns && (
-        <div>
-          <h2>Patches</h2>
-          <p style={{ color: '#ccc' }}>Generated patches are ready for review.</p>
+      {!loading && activeTab === 'patches' && hasRuns ? (
+        <div className="panel" id="panel-patches" role="tabpanel" aria-labelledby="tab-patches">
+          <p className="eyebrow">Run {activeRunId}</p>
+          <h2>Patch library</h2>
+          <p className="muted">Inspect graph, cable table, five-phase plan, validation, and variations.</p>
         </div>
-      )}
+      ) : null}
 
-      {activeTab === 'exports' && hasRuns && (
-        <div>
+      {!loading && activeTab === 'exports' && hasRuns ? (
+        <div className="panel" id="panel-exports" role="tabpanel" aria-labelledby="tab-exports">
+          <p className="eyebrow">Monetization boundary</p>
           <h2>Exports</h2>
-          <p style={{ color: '#ccc' }}>Credits balance: {credits}</p>
-          <button
-            type="button"
-            onClick={handleExport}
-            disabled={credits <= 0}
-            style={{
-              padding: '0.75rem 1rem',
-              borderRadius: '4px',
-              border: 'none',
-              background: credits > 0 ? '#00ff88' : '#333',
-              color: '#000',
-              cursor: credits > 0 ? 'pointer' : 'not-allowed',
-              fontWeight: 'bold',
-            }}
-          >
-            Export Patch Book
+          <p>Available credits: <strong>{credits}</strong></p>
+          <button className="button button-primary" type="button" onClick={handleExport} disabled={credits <= 0}>
+            Export PDF patch book
           </button>
-          {credits <= 0 && (
-            <p style={{ color: '#ff6666', marginTop: '0.5rem' }}>Insufficient credits</p>
-          )}
-          {exportStatus && <p style={{ color: '#ccc' }}>{exportStatus}</p>}
+          {credits <= 0 ? <p className="status status-warning">Credits are required only for exports.</p> : null}
+          {exportStatus ? <p role="status" className="status">{exportStatus}</p> : null}
         </div>
-      )}
+      ) : null}
 
-      <section style={{ marginTop: '2rem' }}>
-        <h3>Patch Guidance</h3>
-        <ul style={{ color: '#bbb' }}>
-          {TOOLTIP_COPY.map((copy) => (
-            <li key={copy} style={{ marginBottom: '0.5rem' }}>
-              {copy}
-            </li>
-          ))}
-        </ul>
-      </section>
-    </div>
+      {!loading && activeTab === 'gallery' ? (
+        <div className="panel" id="panel-gallery" role="tabpanel" aria-labelledby="tab-gallery">
+          <p className="eyebrow">Evidence and revisions</p>
+          <h2>Module gallery</h2>
+          <p className="muted">Confirmed gallery evidence is separated from inferred, disputed, and missing specifications.</p>
+        </div>
+      ) : null}
+    </section>
   );
 }

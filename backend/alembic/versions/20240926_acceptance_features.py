@@ -1,7 +1,7 @@
 """Acceptance test scaffolding additions.
 
 Revision ID: 20240926_acceptance_features
-Revises: 20240922_admin_console
+Revises: 20240923_rig_patch_naming
 Create Date: 2024-09-26
 """
 
@@ -11,19 +11,14 @@ from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = "20240926_acceptance_features"
-down_revision = "20240922_admin_console"
+down_revision = "20240923_rig_patch_naming"
 branch_labels = None
 depends_on = None
 
 
 def upgrade() -> None:
-    op.add_column("patches", sa.Column("run_id", sa.Integer(), nullable=True))
     op.add_column(
         "patches", sa.Column("tags", sa.JSON(), nullable=False, server_default=sa.text("'[]'"))
-    )
-    op.create_index("ix_patches_run_id", "patches", ["run_id"], unique=False)
-    op.create_foreign_key(
-        "fk_patches_run_id", "patches", "runs", ["run_id"], ["id"], ondelete="SET NULL"
     )
 
     op.add_column("exports", sa.Column("run_id", sa.Integer(), nullable=True))
@@ -56,7 +51,4 @@ def downgrade() -> None:
     op.drop_index("ix_exports_run_id", table_name="exports")
     op.drop_column("exports", "run_id")
 
-    op.drop_constraint("fk_patches_run_id", "patches", type_="foreignkey")
-    op.drop_index("ix_patches_run_id", table_name="patches")
     op.drop_column("patches", "tags")
-    op.drop_column("patches", "run_id")

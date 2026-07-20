@@ -2,12 +2,12 @@
 FastAPI routes for monetization events.
 """
 
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
+from community.auth import require_auth
 from community.models import User
-from community.routes import require_auth
-from core import get_db
+from core import get_db, settings
 from monetization.credits import get_credits_balance
 from monetization.referrals import record_purchase
 from monetization.schemas import PurchaseCreate
@@ -22,6 +22,8 @@ def create_purchase(
     db: Session = Depends(get_db),
 ):
     """Record a paid purchase event for referral eligibility."""
+    if not settings.enable_legacy_referrals:
+        raise HTTPException(status_code=404, detail="Referrals are not enabled")
     record_purchase(
         db,
         user=current_user,

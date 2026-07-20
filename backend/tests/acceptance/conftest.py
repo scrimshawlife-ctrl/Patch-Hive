@@ -39,12 +39,21 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
     os.environ["TEST_MODE"] = "true"
     os.environ["EXPORT_DIR"] = str(tmp_path_factory.mktemp("exports"))
 
+    import core
     import core.config
     import core.database
+    import export.routes
     import main
+    import monetization.routes
+    import patches.routes
 
     importlib.reload(core.config)
     importlib.reload(core.database)
+    # Route modules bind `settings` at import time; re-point them at the reloaded instance.
+    core.settings = core.config.settings
+    export.routes.settings = core.config.settings
+    patches.routes.settings = core.config.settings
+    monetization.routes.settings = core.config.settings
     importlib.reload(main)
 
     alembic_cfg = Config(str(Path(__file__).resolve().parents[1] / ".." / "alembic.ini"))
@@ -57,7 +66,7 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
 
 @pytest.fixture(autouse=True)
 def _clean_db(migrated_db: sessionmaker) -> None:
-    engine = migrated_db.bind
+    engine = migrated_db.kw["bind"]
     with engine.begin() as conn:
         tables = conn.execute(
             text("SELECT tablename FROM pg_tables WHERE schemaname='public'")
@@ -87,7 +96,7 @@ def create_user(db_session: Session):
     def _create(username: str, password: str, role: str = "User") -> User:
         user = User(
             username=username,
-            email=f"{username}@patchhive.test",
+            email=f"{username}@example.com",
             password_hash=get_password_hash(password),
             display_name=username,
             role=role,

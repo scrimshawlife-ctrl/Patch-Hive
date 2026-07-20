@@ -158,8 +158,10 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
         db, rack, seed=request.seed, config=config
     )
 
-    # Save patches to database
+    # Save patches to database with full IR/provenance for deterministic replay.
     saved_patches = []
+    ir_dict = generation_ir.to_dict()
+    provenance_dict = provenance.to_dict()
     for spec in patch_graphs:
         tags = _derive_tags([c.to_dict() for c in spec.connections])
         db_patch = Patch(
@@ -170,8 +172,12 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
             description=spec.description,
             connections=[c.to_dict() for c in spec.connections],
             generation_seed=spec.generation_seed,
-            generation_version=settings.generation_version,
+            generation_version=settings.patch_engine_version,
+            suggested_name=spec.patch_name,
             engine_config=config.__dict__,
+            provenance=provenance_dict,
+            generation_ir=ir_dict,
+            generation_ir_hash=getattr(spec, "generation_ir_hash", None),
             is_public=False,
             tags=tags,
         )
@@ -212,7 +218,6 @@ def build_patch_response(db: Session, patch: Patch) -> PatchResponse:
         waveform_params=patch.waveform_params,
         is_public=patch.is_public,
         tags=patch.tags or [],
-        suggested_name=patch.name,
         difficulty=_derive_difficulty(patch.connections),
         diagram_svg_url=f"/api/export/patches/{patch.id}/diagram.svg",
         created_at=patch.created_at,

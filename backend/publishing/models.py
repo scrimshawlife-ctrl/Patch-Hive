@@ -20,10 +20,10 @@ from sqlalchemy.orm import relationship
 from core.database import Base
 
 
-class Export(Base):
-    """Export artifacts generated from patches or racks."""
+class PublicationExport(Base):
+    """Historical public-sharing export, isolated from paid MVP exports."""
 
-    __tablename__ = "exports"
+    __tablename__ = "publication_exports"
 
     id = Column(Integer, primary_key=True, index=True)
     owner_user_id = Column(
@@ -60,7 +60,9 @@ class Publication(Base):
     __table_args__ = (UniqueConstraint("export_id", name="unique_publication_export"),)
 
     id = Column(Integer, primary_key=True, index=True)
-    export_id = Column(Integer, ForeignKey("exports.id", ondelete="RESTRICT"), nullable=False)
+    export_id = Column(
+        Integer, ForeignKey("publication_exports.id", ondelete="RESTRICT"), nullable=False
+    )
     publisher_user_id = Column(
         Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
     )
@@ -84,9 +86,14 @@ class Publication(Base):
         Integer, ForeignKey("admin_audit_log.id", ondelete="SET NULL"), nullable=True
     )
 
-    export = relationship("Export")
+    export = relationship("PublicationExport")
     publisher = relationship("User")
     moderation_audit = relationship("AdminAuditLog")
+
+
+# Historical route compatibility. Keeping the mapped class name distinct avoids
+# colliding with the canonical paid-export model in ``monetization.models``.
+Export = PublicationExport
 
 
 class PublicationReport(Base):

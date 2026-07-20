@@ -1,4 +1,6 @@
-# Publishing API Contract
+# Publishing API Contract (historical, feature-flagged)
+
+> This surface is outside the canonical MVP. It is disabled unless `ENABLE_LEGACY_PUBLISHING=true`, is absent from active navigation, and must not be represented as a current product capability.
 
 Base URL: `/api`
 

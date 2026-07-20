@@ -64,7 +64,7 @@ export default function PublishPage() {
       await publishingApi.createExport({ source_type: sourceType, source_id: Number(sourceId) });
       await fetchExports();
       setStatus('Export generated.');
-    } catch (err) {
+    } catch {
       setStatus('Unable to generate export.');
     }
   };
@@ -89,7 +89,7 @@ export default function PublishPage() {
       setDescription('');
       setCoverImageUrl('');
       setStatus('Publication created.');
-    } catch (err) {
+    } catch {
       setStatus('Unable to publish export.');
     }
   };

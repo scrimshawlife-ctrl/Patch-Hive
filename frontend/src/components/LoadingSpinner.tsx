@@ -12,8 +12,10 @@ interface LoadingSpinnerProps {
 
 export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 80, message }) => {
   return (
-    <div className="loading-spinner-container">
+    <div className="loading-spinner-container" role="status" aria-live="polite">
       <svg
+        role="img"
+        aria-label={message || 'Loading'}
         width={size}
         height={size}
         viewBox="0 0 100 100"
