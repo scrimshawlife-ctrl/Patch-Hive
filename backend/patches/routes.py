@@ -158,8 +158,10 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
         db, rack, seed=request.seed, config=config
     )
 
-    # Save patches to database
+    # Save patches to database with full IR/provenance for deterministic replay.
     saved_patches = []
+    ir_dict = generation_ir.to_dict()
+    provenance_dict = provenance.to_dict()
     for spec in patch_graphs:
         tags = _derive_tags([c.to_dict() for c in spec.connections])
         db_patch = Patch(
@@ -173,6 +175,9 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
             generation_version=settings.patch_engine_version,
             suggested_name=spec.patch_name,
             engine_config=config.__dict__,
+            provenance=provenance_dict,
+            generation_ir=ir_dict,
+            generation_ir_hash=getattr(spec, "generation_ir_hash", None),
             is_public=False,
             tags=tags,
         )
