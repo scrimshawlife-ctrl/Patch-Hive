@@ -10,7 +10,7 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Modules, cases, racks, validation | CANON_MVP | Retained and adapted; immutable revisions are canonical truth |
 | Runs, patch generation, naming | CANON_MVP | Retained where compatible; canonical compiler emits full artifact set |
 | PatchBook/PDF, SVG, JSON, ZIP | CANON_MVP | Export boundary; deterministic PDF metadata and text companion |
-| Credits, ledger, Stripe events | CANON_MVP | Canonical atomic ledger and replay-safe test-mode adapter |
+| Credits, ledger, Stripe events | CANON_MVP | Canonical atomic ledger and replay-safe test-mode adapter exposed at `/api/canon/*` |
 | Admin diagnostics/auditing | CANON_SUPPORTING | RBAC retained; canonical audit events append-only |
 | Image/provider detection | CANON_SUPPORTING | Untrusted evidence only; validation, scan adapter, re-encoding, metadata stripping |
 | Integration/catalog adapters | CANON_SUPPORTING | Retained behind bounded adapters |

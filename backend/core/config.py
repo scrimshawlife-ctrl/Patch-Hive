@@ -51,6 +51,9 @@ class Settings(BaseSettings):
     patchbook_export_cost: int = 3
     stripe_test_mode: bool = True
     allow_production_payments: bool = False
+    # Empty defaults: development may derive local secrets; production policy enforces real ones.
+    stripe_webhook_secret: str = ""
+    download_token_secret: str = ""
 
     # File Storage
     export_dir: str = "./exports"

@@ -44,6 +44,9 @@ from runs.models import Run  # noqa: F401
 async def lifespan(app: FastAPI):
     """Application lifespan manager."""
     # Startup
+    from canon.routes import validate_payment_startup_policy
+
+    validate_payment_startup_policy(settings)
     print(f"Starting {settings.app_name} v{settings.app_version}")
     print(f"ABX-Core version: {settings.abx_core_version}")
     init_db()
@@ -111,6 +114,7 @@ from racks.routes import router as racks_router  # noqa: E402
 from racks.recommendation.routes import router as rack_recommendation_router  # noqa: E402
 from runs.routes import router as runs_router  # noqa: E402
 
+from canon.routes import router as canon_router  # noqa: E402
 from community.auth_routes import router as auth_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
@@ -121,6 +125,7 @@ app.include_router(rack_recommendation_router, prefix="/api/racks", tags=["racks
 app.include_router(patches_router, prefix="/api/patches", tags=["patches"])
 app.include_router(runs_router, prefix="/api/runs", tags=["runs"])
 app.include_router(export_router, prefix="/api/export", tags=["export"])
+app.include_router(canon_router, prefix="/api/canon", tags=["canon"])
 app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
