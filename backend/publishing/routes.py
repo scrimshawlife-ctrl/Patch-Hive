@@ -313,8 +313,10 @@ def get_publication(slug: str, db: Session = Depends(get_db)):
 
     export = publication.export
     publisher = publication.publisher
-    publisher_display = publisher.display_name or "PatchHive User"
-    avatar_url = publisher.avatar_url if publisher.allow_public_avatar else None
+    # Public profiles are outside the canonical MVP. Historical publications
+    # therefore expose neither display names nor avatars.
+    publisher_display = "PatchHive User"
+    avatar_url = None
 
     download_urls = None
     if publication.allow_download:
@@ -467,6 +469,7 @@ def _audit_moderation(
     }
     audit = AdminAuditLog(
         actor_user_id=actor.id,
+        actor_role=actor.role,
         action_type=action_type,
         target_type="publication",
         target_id=publication.id,

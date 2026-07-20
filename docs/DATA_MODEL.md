@@ -1,5 +1,7 @@
 # Data Model
 
+> Canonical alignment notice: the authoritative hierarchy is `User → Rig → immutable RigRevision → immutable GenerationRun → exactly one PatchLibrary → immutable GeneratedPatch`, with mutable `UserPatchAnnotation` overlays. Canonical tables are created by `20240927_canon_alignment`. Older mutable/share-oriented descriptions below are historical when they conflict.
+
 This document describes PatchHive's complete data model and database schema.
 
 ## Entity Relationship Diagram

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from enum import Enum
+import json
 from typing import Dict, List, Literal, Optional, Tuple
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -16,7 +17,24 @@ class PHBase(BaseModel):
         return self.model_dump(mode="json", exclude_none=True)
 
     def to_canonical_json(self) -> str:
-        return self.model_dump_json(exclude_none=True)
+        return json.dumps(
+            self.to_canonical_dict(),
+            sort_keys=True,
+            separators=(",", ":"),
+            ensure_ascii=False,
+        )
+
+
+class CapabilityCategory(str, Enum):
+    sources = "sources"
+    shapers = "shapers"
+    controllers = "controllers"
+    modulators = "modulators"
+    routers_mix = "routers_mix"
+    clock_domain = "clock_domain"
+    fx_space = "fx_space"
+    io_external = "io_external"
+    normals_internal = "normals_internal"
 
 
 class SignalKind(str, Enum):
@@ -261,7 +279,16 @@ class SymbolicPatchEnvelope(PHBase):
 
 
 class RigMetricsPacket(PHBase):
+    rig_id: str = ""
+    module_count: int = 0
+    category_counts: Dict[CapabilityCategory, int] = Field(default_factory=dict)
+    modulation_budget: float = 0.0
     routing_flex_score: float
+    clock_coherence_score: float = 0.0
+    chaos_headroom: float = 0.0
+    learning_gradient_index: float = 0.0
+    performance_density_index: float = 0.0
+    meta: Optional[FieldMeta] = None
 
 
 class LayoutType(str, Enum):

@@ -22,6 +22,17 @@ CORE_HANDLERS: List[str] = [
     "export.waveform:generate_waveform_svg",
 ]
 
+CORE_OPERATIONS = {
+    "RUNE.PATCHHIVE.DETECT_MODULES",
+    "RUNE.PATCHHIVE.RESOLVE_MODULES",
+    "RUNE.PATCHHIVE.ENSURE_MODULE_SPECS",
+    "RUNE.PATCHHIVE.BUILD_CANONICAL_RIG",
+    "RUNE.PATCHHIVE.MAP_METRICS",
+    "RUNE.PATCHHIVE.SUGGEST_LAYOUTS",
+    "RUNE.PATCHHIVE.GENERATE_PATCH",
+    "RUNE.PATCHHIVE.VALIDATE_PATCH",
+}
+
 
 def rune_id_for(*, maps_to: str, name: str) -> str:
     payload = f"patchhive:{maps_to}:{name}"
@@ -94,6 +105,28 @@ def validate_manifest(manifest: RuneManifest | None = None) -> List[str]:
     missing_handlers = [h for h in CORE_HANDLERS if h not in mapped_handlers]
     if missing_handlers:
         errors.append(f"Core handlers without rune mapping: {missing_handlers}")
+
+    operation_names = {operation.name for operation in manifest.operations}
+    missing_operations = CORE_OPERATIONS - operation_names
+    if missing_operations:
+        errors.append(f"Missing canonical rune operations: {sorted(missing_operations)}")
+    if len(operation_names) != len(manifest.operations):
+        errors.append("Duplicate canonical rune operation name")
+    for operation in manifest.operations:
+        expected_id = rune_id_for(maps_to=operation.maps_to, name=operation.name)
+        if operation.rune_id != expected_id:
+            errors.append(
+                f"Rune operation {operation.name} has non-deterministic id: "
+                f"{operation.rune_id} != {expected_id}"
+            )
+        if operation.determinism_class not in {"deterministic", "evidence_acquisition"}:
+            errors.append(f"Invalid determinism class for {operation.name}")
+        if not operation.failure_taxonomy or not operation.test_vectors:
+            errors.append(f"Incomplete failure taxonomy or test vectors for {operation.name}")
+        try:
+            resolve_callable(operation.maps_to)
+        except Exception as exc:  # pragma: no cover - captured for report
+            errors.append(f"maps_to not importable ({operation.maps_to}): {exc}")
 
     return errors
 

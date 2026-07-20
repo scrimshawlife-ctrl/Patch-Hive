@@ -1,5 +1,111 @@
 {
   "engine_version": "1.0.0",
+  "operations": [
+    {
+      "rune_id": "d71fe081895fc8e8",
+      "name": "RUNE.PATCHHIVE.DETECT_MODULES",
+      "maps_to": "canon.runes:detect_modules",
+      "input_schema": "patchhive.canon.v1#EvidenceRecord",
+      "output_schema": "patchhive.canon.v1#DetectedModule",
+      "version": "1.0.0",
+      "determinism_class": "evidence_acquisition",
+      "permitted_side_effects": ["read_provider", "write_evidence"],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["UNSUPPORTED_MEDIA", "PROVIDER_FAILURE", "UNTRUSTED_OUTPUT"],
+      "test_vectors": ["fixture_photo_success", "provider_timeout", "malformed_provider_output"]
+    },
+    {
+      "rune_id": "ecc25f5788263f33",
+      "name": "RUNE.PATCHHIVE.RESOLVE_MODULES",
+      "maps_to": "canon.runes:resolve_modules",
+      "input_schema": "patchhive.canon.v1#DetectedModule",
+      "output_schema": "patchhive.canon.v1#ResolvedModuleRef",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": [],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["NO_MATCH", "AMBIGUOUS_MATCH", "GALLERY_UNAVAILABLE"],
+      "test_vectors": ["exact_match", "ambiguous_match", "missing_match"]
+    },
+    {
+      "rune_id": "e2941494da8a61cc",
+      "name": "RUNE.PATCHHIVE.ENSURE_MODULE_SPECS",
+      "maps_to": "canon.runes:ensure_module_specs",
+      "input_schema": "patchhive.canon.v1#ResolvedModuleRef",
+      "output_schema": "patchhive.canon.v1#ModuleRevision",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": ["append_module_revision"],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["SPEC_MISSING", "EVIDENCE_INSUFFICIENT", "REVISION_CONFLICT"],
+      "test_vectors": ["known_spec", "missing_fields_preserved", "append_only_revision"]
+    },
+    {
+      "rune_id": "3fc632a30f3ccecc",
+      "name": "RUNE.PATCHHIVE.BUILD_CANONICAL_RIG",
+      "maps_to": "canon.runes:build_canonical_rig",
+      "input_schema": "patchhive.canon.v1#RigSpec",
+      "output_schema": "patchhive.canon.v1#CanonicalRig",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": [],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["MODULE_NOT_FOUND", "REVISION_NOT_CONFIRMED", "RIG_INVALID"],
+      "test_vectors": ["empty_rig", "stable_module_order", "missing_revision"]
+    },
+    {
+      "rune_id": "e1ca1b747a99ae0e",
+      "name": "RUNE.PATCHHIVE.MAP_METRICS",
+      "maps_to": "canon.runes:map_metrics",
+      "input_schema": "patchhive.canon.v1#CanonicalRig",
+      "output_schema": "patchhive.canon.v1#RigMetricsPacket",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": [],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["METRIC_INPUT_INVALID", "UNKNOWN_CAPABILITY"],
+      "test_vectors": ["known_rig", "unknown_power", "repeatability"]
+    },
+    {
+      "rune_id": "21f1b573f7241f07",
+      "name": "RUNE.PATCHHIVE.SUGGEST_LAYOUTS",
+      "maps_to": "canon.runes:suggest_layouts",
+      "input_schema": "patchhive.canon.v1#RigMetricsPacket",
+      "output_schema": "patchhive.canon.v1#SuggestedLayout",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": [],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["CASE_OVERFLOW", "LAYOUT_UNSATISFIABLE"],
+      "test_vectors": ["single_row", "multi_row", "stable_tie_break"]
+    },
+    {
+      "rune_id": "f775f16ae5a564ae",
+      "name": "RUNE.PATCHHIVE.GENERATE_PATCH",
+      "maps_to": "canon.compiler:compile_patch",
+      "input_schema": "patchhive.canon.v1#GenerationRequest",
+      "output_schema": "patchhive.canon.v1#PatchCompilation",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": ["append_run_artifacts"],
+      "authority_requirement": "rig_owner",
+      "failure_taxonomy": ["NO_VALID_TOPOLOGY", "UNSUPPORTED_CAPABILITY", "COMPILATION_FAILED"],
+      "test_vectors": ["basic_voice", "seed_replay", "unsafe_voltage"]
+    },
+    {
+      "rune_id": "5b61d077a9bb3e00",
+      "name": "RUNE.PATCHHIVE.VALIDATE_PATCH",
+      "maps_to": "canon.compiler:validate_patch_graph",
+      "input_schema": "patchhive.canon.v1#PatchGraph",
+      "output_schema": "patchhive.canon.v1#ValidationReport",
+      "version": "1.0.0",
+      "determinism_class": "deterministic",
+      "permitted_side_effects": [],
+      "authority_requirement": "authenticated_user",
+      "failure_taxonomy": ["PORT_INVALID", "SIGNAL_MISMATCH", "VOLTAGE_UNSAFE", "FEEDBACK_UNDECLARED"],
+      "test_vectors": ["valid_graph", "direction_error", "feedback_cycle", "missing_seal"]
+    }
+  ],
   "runes": [
     {
       "assets": [

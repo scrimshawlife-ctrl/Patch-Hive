@@ -43,6 +43,8 @@ env/
 htmlcov/
 .tox/
 .hypothesis/
+test-results/
+playwright-report/
 
 # Database
 *.db

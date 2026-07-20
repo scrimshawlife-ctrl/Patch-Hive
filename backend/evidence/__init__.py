@@ -1,0 +1,1 @@
+"""Untrusted evidence acquisition adapters."""

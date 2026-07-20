@@ -56,7 +56,7 @@ export default function RacksPage() {
       if (response.data.racks.length && selectedRackId === null) {
         setSelectedRackId(response.data.racks[0].id);
       }
-    } catch (err) {
+    } catch {
       setError('Unable to load rigs. Please try again.');
     }
   };
@@ -71,7 +71,7 @@ export default function RacksPage() {
         setSelectedRunId(null);
       }
       return response.data.runs;
-    } catch (err) {
+    } catch {
       setRuns([]);
       setSelectedRunId(null);
       return [];
@@ -82,7 +82,7 @@ export default function RacksPage() {
     try {
       const response = await runApi.patches(runId);
       setPatches(response.data.patches);
-    } catch (err) {
+    } catch {
       setPatches([]);
     }
   };
@@ -98,7 +98,7 @@ export default function RacksPage() {
         await loadPatches(latestRuns[0].id);
       }
       setActiveTab('patches');
-    } catch (err) {
+    } catch {
       setError('Patch generation failed. Please retry.');
     } finally {
       setLoading(false);

@@ -1,5 +1,7 @@
 # Patch Generation Engine
 
+> Canonical alignment notice: `backend/canon/compiler.py` is the authoritative deterministic boundary. It emits `PatchGraph`, the five-phase `PatchPlan`, `ValidationReport`, deterministic variation identity, `StageReceipt` records, and `ArtifactManifest`. Older generator details below are compatibility implementation notes.
+
 This document provides a deep dive into PatchHive's deterministic patch generation engine.
 
 ## Overview

@@ -12,3 +12,8 @@ def apply_deterministic_pdf_metadata(
     c.setCreator("PatchHive PatchBook")
     c.setTitle("PatchHive PatchBook")
     c.setSubject(f"PatchHive PatchBook Template v{template_version} ({content_hash})")
+
+
+def normalize_pdf_metadata(payload: bytes) -> bytes:
+    """Remove the standard timestamp key without changing PDF byte offsets."""
+    return payload.replace(b"/CreationDate", b"/BuildTimeUTC")

@@ -212,7 +212,6 @@ def build_patch_response(db: Session, patch: Patch) -> PatchResponse:
         waveform_params=patch.waveform_params,
         is_public=patch.is_public,
         tags=patch.tags or [],
-        suggested_name=patch.name,
         difficulty=_derive_difficulty(patch.connections),
         diagram_svg_url=f"/api/export/patches/{patch.id}/diagram.svg",
         created_at=patch.created_at,

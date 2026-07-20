@@ -1,5 +1,7 @@
 # PatchHive Architecture
 
+> Canonical alignment notice: the authoritative MVP is a FastAPI/React modular monolith with pure domain code in `backend/canon`, persistence adapters in `backend/canon/models.py` and `repository.py`, and historical social/publishing routes disabled by default. See [Canon alignment](CANON_ALIGNMENT.md). Statements below describing older surfaces are retained as historical detail where they conflict.
+
 This document describes the high-level architecture of PatchHive and how the different components interact.
 
 ## Overview

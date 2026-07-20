@@ -10,7 +10,7 @@ from reportlab.lib.units import inch
 from reportlab.pdfgen import canvas
 
 from .models import PatchBookDocument, PatchBookPage
-from .pdf_meta import apply_deterministic_pdf_metadata
+from .pdf_meta import apply_deterministic_pdf_metadata, normalize_pdf_metadata
 
 
 def _load_svg2rlg():
@@ -27,7 +27,7 @@ def _draw_wordmark(c: canvas.Canvas, svg_text: str | None, x: float, y: float) -
         c.drawString(x, y + 10, "PatchHive")
         return
     svg2rlg = _load_svg2rlg()
-    drawing = svg2rlg(io.StringIO(svg_text))
+    drawing = svg2rlg(io.BytesIO(svg_text.encode("utf-8")))
     if not drawing:
         return
     scale = min(1.0, 140 / drawing.width)
@@ -123,7 +123,7 @@ def _render_schematic(page: PatchBookPage, c: canvas.Canvas, x: float, y: float)
     y = _draw_section_title(c, "Patch Schematic", x, y)
     if page.schematic.diagram_svg:
         svg2rlg = _load_svg2rlg()
-        drawing = svg2rlg(io.StringIO(page.schematic.diagram_svg))
+        drawing = svg2rlg(io.BytesIO(page.schematic.diagram_svg.encode("utf-8")))
         if drawing:
             max_width = 6.5 * inch
             max_height = 2.5 * inch
@@ -295,10 +295,22 @@ def _render_book_insights(document: PatchBookDocument, c: canvas.Canvas) -> bool
     return True
 
 
+def _render_text_companion(page: PatchBookPage, c: canvas.Canvas) -> None:
+    """Render a text-first alternative to the visual patch schematic."""
+    _, height = letter
+    c.setFont("Helvetica-Bold", 16)
+    c.drawString(inch, height - inch, f"Text Companion — {page.header.title}")
+    y = height - 1.35 * inch
+    y = _render_module_inventory(page, c, inch, y)
+    y = _render_io_inventory(page, c, inch, y - 8)
+    y = _render_wiring_list(page, c, inch, y - 8)
+    _render_patching_order(page, c, inch, y - 8)
+
+
 def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
     """Build PatchBook PDF in-memory bytes."""
     buffer = io.BytesIO()
-    c = canvas.Canvas(buffer, pagesize=letter, invariant=1)
+    c = canvas.Canvas(buffer, pagesize=letter, invariant=1, pageCompression=0)
     apply_deterministic_pdf_metadata(
         c,
         document.branding.template_version,
@@ -306,8 +318,9 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
     )
 
     has_insights = bool(document.golden_rack_arrangement or document.compatibility_report or document.learning_path)
-    total_pages = len(document.pages) + (1 if has_insights else 0)
+    total_pages = len(document.pages) * 2 + (1 if has_insights else 0)
     for idx, page in enumerate(document.pages):
+        visual_page_index = idx * 2
         y = _page_header(c, page, document.branding.wordmark_svg)
         left_column_x = inch
         right_column_x = 4.2 * inch
@@ -324,8 +337,11 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
         y_right = _render_performance_macros(page, c, right_column_x, y_right - 8)
         y_right = _render_variants(page, c, right_column_x, y_right - 8)
 
-        _page_footer(c, document, idx, total_pages)
-        if idx < total_pages - 1:
+        _page_footer(c, document, visual_page_index, total_pages)
+        c.showPage()
+        _render_text_companion(page, c)
+        _page_footer(c, document, visual_page_index + 1, total_pages)
+        if visual_page_index + 1 < total_pages - 1:
             c.showPage()
 
     if has_insights:
@@ -333,4 +349,4 @@ def build_patchbook_pdf_bytes(document: PatchBookDocument) -> bytes:
         _page_footer(c, document, total_pages - 1, total_pages)
     c.save()
     buffer.seek(0)
-    return buffer.read()
+    return normalize_pdf_metadata(buffer.read())

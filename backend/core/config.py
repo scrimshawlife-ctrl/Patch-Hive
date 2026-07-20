@@ -19,6 +19,7 @@ class Settings(BaseSettings):
     app_name: str = "PatchHive"
     app_version: str = "0.1.0"
     debug: bool = False
+    environment: str = "development"
 
     # Database
     database_url: str = "postgresql://patchhive:patchhive@localhost:5432/patchhive"
@@ -35,11 +36,19 @@ class Settings(BaseSettings):
     # Frontend
     frontend_base_url: str = "http://localhost:5173"
 
+    # Canonical scope gates. Historical surfaces are off unless explicitly enabled.
+    enable_legacy_social: bool = False
+    enable_legacy_publishing: bool = False
+    enable_legacy_leaderboards: bool = False
+    enable_legacy_referrals: bool = False
+
     # Patch Engine
     patch_engine_version: str = "1.0.0"
     max_patches_per_generation: int = 20
     default_generation_seed: int = 42
     patchbook_export_cost: int = 3
+    stripe_test_mode: bool = True
+    allow_production_payments: bool = False
 
     # File Storage
     export_dir: str = "./exports"

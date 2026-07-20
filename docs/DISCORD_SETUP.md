@@ -1,4 +1,6 @@
-# PatchHive Discord Server Setup Guide
+# PatchHive Discord Server Setup Guide (historical, non-MVP)
+
+> Community integrations are outside the canonical MVP and are not enabled by this campaign.
 
 ## Overview
 

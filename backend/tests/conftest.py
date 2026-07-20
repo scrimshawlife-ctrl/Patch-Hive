@@ -2,15 +2,36 @@
 Pytest configuration and fixtures for PatchHive backend tests.
 """
 
+import os
+
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
+# Keep regression coverage for isolated historical routes without enabling them by default.
+os.environ.setdefault("ENABLE_LEGACY_SOCIAL", "true")
+os.environ.setdefault("ENABLE_LEGACY_PUBLISHING", "true")
+os.environ.setdefault("ENABLE_LEGACY_LEADERBOARDS", "true")
+os.environ.setdefault("ENABLE_LEGACY_REFERRALS", "true")
+
 from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
 from admin.models import AdminAuditLog  # Import to ensure tables are created
 from admin.models import PendingFunction
 from cases.models import Case
+from canon.models import ArtifactManifestRecord  # noqa: F401
+from canon.models import CanonicalAdminAuditEventRecord  # noqa: F401
+from canon.models import CanonicalCreditLedgerEntryRecord  # noqa: F401
+from canon.models import CanonicalExportRecord  # noqa: F401
+from canon.models import GeneratedPatchRecord  # noqa: F401
+from canon.models import GenerationJobRecord  # noqa: F401
+from canon.models import GenerationRunRecord  # noqa: F401
+from canon.models import ModuleRevisionRecord  # noqa: F401
+from canon.models import PatchLibraryRecord  # noqa: F401
+from canon.models import RigRevisionRecord  # noqa: F401
+from canon.models import StageReceiptRecord  # noqa: F401
+from canon.models import StripeEventRecordModel  # noqa: F401
+from canon.models import UserPatchAnnotationRecord  # noqa: F401
 from community.models import Comment  # Import to ensure tables are created
 from community.models import User, Vote
 from core.database import Base

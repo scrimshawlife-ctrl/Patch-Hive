@@ -3,6 +3,7 @@ SQLAlchemy models for community features (users, votes, comments).
 """
 
 from datetime import datetime
+import secrets
 
 from sqlalchemy import (
     Boolean,
@@ -33,7 +34,9 @@ class User(Base):
     avatar_url = Column(String(500), nullable=True)
     allow_public_avatar = Column(Boolean, default=True, nullable=False)
     bio = Column(Text, nullable=True)
-    referral_code = Column(String(32), unique=True, nullable=False, index=True)
+    referral_code = Column(
+        String(32), unique=True, nullable=False, index=True, default=lambda: secrets.token_hex(8)
+    )
     referred_by = Column(Integer, ForeignKey("users.id"), nullable=True, index=True)
     created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
@@ -43,16 +46,29 @@ class User(Base):
     votes = relationship("Vote", back_populates="user", cascade="all, delete-orphan")
     comments = relationship("Comment", back_populates="user", cascade="all, delete-orphan")
     credit_entries = relationship(
-        "CreditsLedger", back_populates="user", cascade="all, delete-orphan"
+        "CreditLedgerEntry", back_populates="user", cascade="all, delete-orphan"
     )
-    exports = relationship("Export", back_populates="user", cascade="all, delete-orphan")
+    exports = relationship("ExportRecord", back_populates="user", cascade="all, delete-orphan")
     referrals_sent = relationship(
-        "Referral", foreign_keys="Referral.referrer_user_id", back_populates="referrer"
+        "AccountReferral",
+        foreign_keys="AccountReferral.referrer_user_id",
+        back_populates="referrer",
     )
     referral_received = relationship(
-        "Referral", foreign_keys="Referral.referred_user_id", back_populates="referred"
+        "AccountReferral",
+        foreign_keys="AccountReferral.referred_user_id",
+        back_populates="referred",
     )
     referrer = relationship("User", remote_side=[id], backref="referrals")
+
+    @property
+    def is_admin(self) -> bool:
+        """Compatibility view over the canonical role-based authorization field."""
+        return self.role == "Admin"
+
+    @is_admin.setter
+    def is_admin(self, value: bool) -> None:
+        self.role = "Admin" if value else "User"
 
 
 class Vote(Base):

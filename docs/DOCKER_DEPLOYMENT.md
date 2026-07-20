@@ -1,5 +1,7 @@
 # Docker Deployment Guide
 
+> Operational notice: this campaign did not deploy. Before any future deployment follow [Operations](OPERATIONS.md), apply the canonical Alembic head, and retain test-mode Stripe settings.
+
 Complete guide for running PatchHive with Docker and Docker Compose for local development and self-hosted production deployment.
 
 ## 📋 Table of Contents
