@@ -10,7 +10,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "20240920_add_monetization_and_referrals"
-down_revision = None
+down_revision = "20240919_legacy_foundation"
 branch_labels = None
 depends_on = None
 
