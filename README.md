@@ -6,17 +6,16 @@ PatchHive is a deterministic Eurorack **rig and patch documentation** workspace.
 
 | Item | Value |
 |------|--------|
-| **Active work** | Canon MVP alignment campaign |
-| **Branch** | [`codex/patchhive-oneshot-canon-alignment`](https://github.com/scrimshawlife-ctrl/Patch-Hive/tree/codex/patchhive-oneshot-canon-alignment) |
-| **PR** | [#47 — feat: align PatchHive canonical MVP](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) (draft, mergeable, CI green) |
-| **Issue** | [#46 — PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) |
-| **Baseline main** | `9cae772` (pre-canon; social-heavy surface) |
-| **Campaign HEAD** | `1ab518c` |
+| **Canon MVP on main** | **MERGED** via [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) |
+| **main HEAD** | `a162f8547a2da261ca09523f86a4019c42eb04c8` |
+| **Merge commit** | `a162f85` — *Merge pull request #47* |
+| **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
+| **Pre-merge baseline** | `9cae772` |
 | **Alembic head** | `20240928_fix_schema_gaps` |
 | **Production deploy** | Not performed — payments remain test-mode only |
-| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) · [CURRENT_STATE.md](CURRENT_STATE.md) |
+| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) P1+ · [CURRENT_STATE.md](CURRENT_STATE.md) |
 
-> **Note:** If you are on `main` before PR #47 merges, this README describes the **campaign target**. Prefer checking out the campaign branch for the canonical codebase.
+Default branch is `main`. No campaign branch checkout required.
 
 ## Canonical MVP
 

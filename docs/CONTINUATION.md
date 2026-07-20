@@ -1,12 +1,12 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-20  
-**Active campaign branch:** `codex/patchhive-oneshot-canon-alignment` @ `1ab518c`  
-**Tracking:** Issue #46 · PR #47  
+**main HEAD:** `a162f85` (merge of PR #47)  
+**Tracking:** Issue #46 closed · PR #47 **MERGED**  
 
 ## Where we are
 
-Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are implemented on the campaign branch with green CI. Main (`9cae772`) still reflects the pre-canon monorepo (social/publish-heavy README, no `backend/canon` MVP).
+Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are **merged to main** (`a162f85`) with green CI at PR head. Pre-merge baseline was `9cae772`.
 
 ### Done on campaign branch (OBSERVED)
 
@@ -22,7 +22,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are implemented on the c
 
 ### Explicitly not done
 
-- [ ] Merge PR #47 to `main`
+- [x] Merge PR #47 to `main` — **DONE** `a162f85` @ 2026-07-20T23:46:29Z
 - [ ] Production or staging deploy
 - [ ] Live Stripe / `ALLOW_PRODUCTION_PAYMENTS=true`
 - [ ] Full retirement of legacy rack/patch/export dual paths
@@ -33,10 +33,10 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are implemented on the c
 
 ### P0 — Ship gate
 
-1. Human review of PR #47 (authority: operator merge only).
-2. Confirm `alembic heads` == `20240928_fix_schema_gaps` on clean checkout.
+1. ~~Human review of PR #47~~ **DONE** — merged `--merge --delete-branch`.
+2. Confirm `alembic heads` == `20240928_fix_schema_gaps` on clean `main` checkout.
 3. Confirm flags: all `ENABLE_LEGACY_*` false; `STRIPE_TEST_MODE=true`; `ALLOW_PRODUCTION_PAYMENTS=false`.
-4. After merge: tag `v0.2.0-canon-mvp` (optional) and cut release notes from this file + PR body.
+4. Optional: tag `v0.2.0-canon-mvp` and cut release notes from this file + PR body.
 
 ### P1 — Dual-path reduction
 
@@ -76,9 +76,9 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are implemented on the c
 ## Verification commands (copy/paste)
 
 ```bash
-# Campaign branch
-git fetch origin && git checkout codex/patchhive-oneshot-canon-alignment
-git rev-parse HEAD   # expect 1ab518c… until new commits
+# main (post-merge)
+git fetch origin && git checkout main && git pull
+git rev-parse HEAD   # expect a162f85… or later
 
 cd backend
 python -m pip install -e '.[dev]'
@@ -105,8 +105,10 @@ CI authoritative when local Docker/Postgres missing.
 
 ## Exit criteria for “canon MVP on main”
 
-1. PR #47 merged  
-2. Main CI green on merge commit  
-3. Docs on main: README + CURRENT_STATE + CONTINUATION + CANON_ALIGNMENT agree on HEAD/classification  
+1. ~~PR #47 merged~~ **DONE**  
+2. Main CI green on merge commit — confirm Actions on `a162f85`  
+3. Docs on main: README + CURRENT_STATE + CONTINUATION agree on merged HEAD — this pass  
 4. No production payment flags enabled  
 5. Staging optional but recommended before any public traffic claim  
+
+**Active engineering now starts at P1** (dual-path reduction).
