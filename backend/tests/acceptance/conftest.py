@@ -57,7 +57,7 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
 
 @pytest.fixture(autouse=True)
 def _clean_db(migrated_db: sessionmaker) -> None:
-    engine = migrated_db.bind
+    engine = migrated_db.kw["bind"]
     with engine.begin() as conn:
         tables = conn.execute(
             text("SELECT tablename FROM pg_tables WHERE schemaname='public'")
