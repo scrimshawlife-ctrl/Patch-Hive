@@ -39,12 +39,21 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
     os.environ["TEST_MODE"] = "true"
     os.environ["EXPORT_DIR"] = str(tmp_path_factory.mktemp("exports"))
 
+    import core
     import core.config
     import core.database
+    import export.routes
     import main
+    import monetization.routes
+    import patches.routes
 
     importlib.reload(core.config)
     importlib.reload(core.database)
+    # Route modules bind `settings` at import time; re-point them at the reloaded instance.
+    core.settings = core.config.settings
+    export.routes.settings = core.config.settings
+    patches.routes.settings = core.config.settings
+    monetization.routes.settings = core.config.settings
     importlib.reload(main)
 
     alembic_cfg = Config(str(Path(__file__).resolve().parents[1] / ".." / "alembic.ini"))

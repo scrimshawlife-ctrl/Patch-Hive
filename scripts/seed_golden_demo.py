@@ -363,6 +363,7 @@ def seed_golden_demo(db: Session, fixture_path: Path = FIXTURE_PATH) -> SeedResu
             rack_id=rack.id,
             run_id=run.id,
             name=graph.patch_name,
+            suggested_name=graph.patch_name,
             category=graph.category,
             description=graph.description,
             connections=[c.to_dict() for c in graph.connections],

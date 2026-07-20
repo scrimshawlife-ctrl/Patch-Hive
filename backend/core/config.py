@@ -44,6 +44,8 @@ class Settings(BaseSettings):
 
     # Patch Engine
     patch_engine_version: str = "1.0.0"
+    # Compatibility alias used by some call sites / older tests.
+    generation_version: str = "1.0.0"
     max_patches_per_generation: int = 20
     default_generation_seed: int = 42
     patchbook_export_cost: int = 3

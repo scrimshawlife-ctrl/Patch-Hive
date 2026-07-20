@@ -9,7 +9,9 @@ from patches.models import Patch
 
 def _patch_fingerprint(patch: dict) -> str:
     cables_json = json.dumps(patch["connections"], sort_keys=True)
-    payload = f"{cables_json}|{patch['suggested_name']}|{patch['category']}|{patch['difficulty']}"
+    # Prefer the displayed name: override > suggested > stored name.
+    display_name = patch.get("name_override") or patch.get("suggested_name") or patch.get("name")
+    payload = f"{cables_json}|{display_name}|{patch['category']}|{patch['difficulty']}"
     return sha256(payload.encode()).hexdigest()
 
 
