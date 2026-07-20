@@ -311,7 +311,8 @@ def validate_payment_startup_policy(app_settings: Any = settings) -> None:
     test_mode = bool(getattr(app_settings, "stripe_test_mode", True))
     webhook_secret = str(getattr(app_settings, "stripe_webhook_secret", "") or "").strip()
     download_secret = str(
-        getattr(app_settings, "download_token_secret", "") or getattr(app_settings, "secret_key", "")
+        getattr(app_settings, "download_token_secret", "")
+        or getattr(app_settings, "secret_key", "")
     ).strip()
 
     if not allow:

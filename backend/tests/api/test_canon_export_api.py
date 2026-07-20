@@ -67,9 +67,7 @@ def test_canonical_export_requires_auth(client: TestClient) -> None:
     assert resp.status_code == 401
 
 
-def test_canonical_export_and_download_token_flow(
-    client: TestClient, db_session: Session
-) -> None:
+def test_canonical_export_and_download_token_flow(client: TestClient, db_session: Session) -> None:
     user, _patch = _persist_hierarchy(db_session)
     _grant(db_session, user.id, 10)
 
@@ -129,9 +127,7 @@ def test_canonical_export_and_download_token_flow(
     assert verify.json()["user_id"] == str(user.id)
 
 
-def test_canonical_export_insufficient_credits(
-    client: TestClient, db_session: Session
-) -> None:
+def test_canonical_export_insufficient_credits(client: TestClient, db_session: Session) -> None:
     user, _patch = _persist_hierarchy(db_session)
     resp = client.post(
         "/api/canon/exports",
@@ -170,9 +166,7 @@ def test_stripe_webhook_rejects_livemode_in_test_mode(
     import time
 
     timestamp = int(time.time())
-    payload = json.dumps(
-        {"id": "evt_live", "type": "charge.succeeded", "livemode": True}
-    ).encode()
+    payload = json.dumps({"id": "evt_live", "type": "charge.succeeded", "livemode": True}).encode()
     resp = client.post(
         "/api/canon/webhooks/stripe",
         content=payload,
