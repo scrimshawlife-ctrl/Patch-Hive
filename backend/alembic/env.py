@@ -1,23 +1,30 @@
 """Alembic environment configuration."""
 
+import os
 from logging.config import fileConfig
 
 from sqlalchemy import engine_from_config, pool
 
 from account.models import CreditLedgerEntry, ExportRecord, Referral  # noqa: F401
 from alembic import context
-from cases.models import Case
-from community.models import Comment, User, Vote
+from cases.models import Case  # noqa: F401
+from canon import models as canonical_models  # noqa: F401
+from community.models import Comment, User, Vote  # noqa: F401
 
 # Import all models to ensure they're registered with Base.metadata
 from core.database import Base
-from modules.models import Module
-from patches.models import Patch
-from racks.models import Rack, RackModule
+from modules.models import Module  # noqa: F401
+from patches.models import Patch  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
+
+# CI and deployed environments must be able to override the development URL.
+# Escape percent signs because Alembic's ConfigParser treats them as interpolation.
+if database_url := os.getenv("DATABASE_URL"):
+    config.set_main_option("sqlalchemy.url", database_url.replace("%", "%%"))
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
