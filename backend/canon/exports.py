@@ -10,7 +10,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Any
 
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
 from canon.contracts import ExportRequest, canonical_sha256
@@ -40,6 +41,22 @@ def credit_balance(session: Session, user_id: int) -> int:
     )
 
 
+def _serialize_user_credits(session: Session, user_id: int) -> None:
+    """Serialize concurrent debit attempts for one user when the dialect supports it."""
+    bind = session.get_bind()
+    dialect = bind.dialect.name if bind is not None else ""
+    if dialect == "postgresql":
+        # Transaction-scoped advisory lock; key is the signed 32-bit form of user_id.
+        session.execute(text("SELECT pg_advisory_xact_lock(:key)"), {"key": int(user_id)})
+        return
+    # Best-effort lock for SQLite/tests: lock existing ledger rows for the user.
+    session.scalars(
+        select(CanonicalCreditLedgerEntryRecord)
+        .where(CanonicalCreditLedgerEntryRecord.user_id == user_id)
+        .with_for_update()
+    ).all()
+
+
 def request_export(
     session: Session,
     request: ExportRequest,
@@ -49,6 +66,17 @@ def request_export(
 ) -> CanonicalExportRecord:
     """Create an export and its debit atomically; retries return the first export."""
 
+    existing = session.scalar(
+        select(CanonicalExportRecord).where(
+            CanonicalExportRecord.idempotency_key == request.idempotency_key
+        )
+    )
+    if existing is not None:
+        return existing
+
+    _serialize_user_credits(session, request.user_id)
+
+    # Re-check after acquiring the user lock in case a concurrent writer won.
     existing = session.scalar(
         select(CanonicalExportRecord).where(
             CanonicalExportRecord.idempotency_key == request.idempotency_key
@@ -84,8 +112,19 @@ def request_export(
         export_id=export_id,
         created_at=request.requested_at,
     )
-    session.add_all((export, debit))
-    session.flush()
+    try:
+        with session.begin_nested():
+            session.add_all((export, debit))
+            session.flush()
+    except IntegrityError:
+        winner = session.scalar(
+            select(CanonicalExportRecord).where(
+                CanonicalExportRecord.idempotency_key == request.idempotency_key
+            )
+        )
+        if winner is not None:
+            return winner
+        raise
     return export
 
 

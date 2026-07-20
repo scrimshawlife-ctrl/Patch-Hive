@@ -111,6 +111,8 @@ from racks.routes import router as racks_router  # noqa: E402
 from racks.recommendation.routes import router as rack_recommendation_router  # noqa: E402
 from runs.routes import router as runs_router  # noqa: E402
 
+from community.auth_routes import router as auth_router  # noqa: E402
+
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
 app.include_router(cases_router, prefix="/api/cases", tags=["cases"])
@@ -123,6 +125,8 @@ app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 app.include_router(account_router, prefix="/api/me", tags=["account"])
+# Auth stays available regardless of legacy-social flags.
+app.include_router(auth_router, prefix="/api/community", tags=["auth"])
 
 if settings.enable_legacy_social:
     from community.routes import router as community_router

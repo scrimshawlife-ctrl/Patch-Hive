@@ -262,7 +262,7 @@ def _ensure_user(db: Session, username: str, password: str, role: str) -> User:
         return user
     user = User(
         username=username,
-        email=f"{username}@patchhive.test",
+        email=f"{username}@example.com",
         password_hash=get_password_hash(password),
         display_name=username,
         role=role,

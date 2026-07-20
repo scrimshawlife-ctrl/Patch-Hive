@@ -29,6 +29,8 @@ def test_admin_audit_log_module_tombstone(
     )
     resp.raise_for_status()
 
+    # API handlers commit on a separate session; drop identity-map cache before assert.
+    db_session.expire_all()
     module = db_session.query(Module).filter(Module.id == module_id).first()
     assert module.status == "tombstoned"
 
@@ -80,6 +82,7 @@ def test_pending_function_review_queue(api_client, db_session: Session, admin_us
     )
     approve_resp.raise_for_status()
 
+    db_session.expire_all()
     pending = db_session.query(PendingFunction).filter(PendingFunction.id == pending.id).first()
     assert pending.status == "approved"
     assert pending.canonical_function == "clock_out"

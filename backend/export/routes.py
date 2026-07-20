@@ -11,7 +11,7 @@ from fastapi.responses import FileResponse, Response
 from sqlalchemy.orm import Session
 
 from community.models import User
-from community.routes import require_auth
+from community.auth import require_auth
 from core import get_db, settings
 from monetization.credits import get_credits_balance
 from monetization.models import CreditsLedger, Export
