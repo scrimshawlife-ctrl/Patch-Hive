@@ -1,10 +1,11 @@
 # CURRENT_STATE
 
 **Authoritative as of:** 2026-07-20  
-**Branch:** `codex/patchhive-oneshot-canon-alignment`  
-**HEAD:** `1ab518cbda16f162cceb15e906a503296eeff2bf`  
-**Baseline (main):** `9cae772413a4f35a6c116923b2d85250452cd0b7`  
-**Campaign:** [Issue #46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) · [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) (draft, MERGEABLE, CI green)
+**Branch:** `main`  
+**HEAD:** `a162f8547a2da261ca09523f86a4019c42eb04c8`  
+**Merge:** [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) MERGED at `2026-07-20T23:46:29Z`  
+**Campaign:** [Issue #46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
+**Pre-merge baseline:** `9cae772413a4f35a6c116923b2d85250452cd0b7`
 
 This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY_STATUS.md`, pre-canon `CURRENT_STATE` claims). For inventory classification see [docs/CANON_ALIGNMENT.md](docs/CANON_ALIGNMENT.md). For ordered next work see [docs/CONTINUATION.md](docs/CONTINUATION.md).
 
@@ -20,8 +21,8 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Legacy social/publish/leaderboards/referrals | Feature-flagged **off** by default; not in primary nav |
 | Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` |
 | Alembic head | **`20240928_fix_schema_gaps`** (revises `20240927_canon_alignment`) |
-| CI | Backend Tests (3.11/3.12 + Postgres), Code Quality, Security/SBOM — green on PR head |
-| Production deploy | **Not performed** this campaign (`NOT_COMPUTABLE` without ops access) |
+| CI at merge | Backend Tests (3.11/3.12 + Postgres), Code Quality, Security/SBOM — green on PR head `69d11b0` |
+| Production deploy | **Not performed** (`NOT_COMPUTABLE` without ops access) |
 
 ## Stack (active)
 
@@ -41,25 +42,25 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Duplicate package | top-level / nested `patchhive` | HISTORICAL — removal after import telemetry |
 | Vision / ModularGrid | adapters fail closed | External implementation required |
 
-## Validation snapshot (campaign PR body + CI)
+## Validation snapshot (PR #47 + CI)
 
 - Local (pre-CI, host without Docker): backend `144 passed, 2 xfailed` (acceptance excluded); frontend `49 passed`; Playwright `4 passed`
 - Acceptance on bare hosts without Postgres/Docker: **`NOT_COMPUTABLE`** — CI with Postgres 15 is authoritative
 - Deterministic golden compilation hash (campaign): `c2356d416b9784d4487ffadf1fc6aafb974644f0767a5a36cba44d7f397934ee`
-- PR checks at head: Backend Tests, Code Quality, Security — **SUCCESS**
+- PR checks at head `69d11b0`: Backend Tests, Code Quality, Security — **SUCCESS**
 
 ## Authority boundary (still in force)
 
-May inspect, modify, test, commit, push campaign branch, open/update draft PR.  
-**Do not:** merge without operator intent, deploy production, enable live Stripe, charge users, delete production data, or activate hardware.
+Post-merge engineering may continue on feature branches.  
+**Do not:** deploy production, enable live Stripe, charge users, delete production data, or activate hardware without separate operator authorization.
 
 ## Immediate continuation priorities
 
 See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 
-1. Operator review + merge PR #47 when ready  
-2. Post-merge: dual-path cleanup (legacy racks/patches → full canon routes)  
-3. Remove or quarantine duplicate `patchhive` package after import audit  
-4. Ops: real Postgres staging deploy (not production payments)  
-5. Frontend dead pages (`Feed`, `Publish`, `Publication`, leaderboards) — delete or archive behind flags  
-6. Expand Playwright beyond mocked MVP when staging exists  
+1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
+2. Dual-path cleanup (legacy racks/patches → full canon routes) — **P1**
+3. Remove or quarantine duplicate `patchhive` package after import audit — **P2**
+4. Ops: real Postgres staging deploy (not production payments) — **P3**
+5. Frontend dead pages (`Feed`, `Publish`, `Publication`, leaderboards) — delete or archive — **P2**
+6. Expand Playwright beyond mocked MVP when staging exists — **P3/P4**
