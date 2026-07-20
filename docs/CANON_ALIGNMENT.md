@@ -20,6 +20,7 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Referrals | FEATURE_FLAGGED_FUTURE | Flag defaults off; retained regression coverage only |
 | Contests, marketplace, curriculum/workshop tools | DEAD_OR_UNUSED | Outside MVP; no active implementation work |
 | Duplicate top-level `patchhive` package | HISTORICAL | Not the canonical backend package; scheduled for removal after compatibility audit |
+| `backend/patchhive/tests` duplicate-package corpus | HISTORICAL | Excluded from canonical pytest discovery; imports target superseded v1 symbols and require a separate compatibility/removal decision |
 | README social claims and Discord materials | HISTORICAL | Superseded by this document and current README |
 | Live deployment state and production data | NOT_COMPUTABLE | No production access or deployment performed |
 | PostgreSQL/Docker integration on machines without Docker | NOT_COMPUTABLE | CI service workflow is authoritative when run |
@@ -38,5 +39,6 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 
 - Legacy persistence models remain for compatibility and are not yet migrated into every canonical route.
 - The duplicate historical package requires a later removal PR after import telemetry.
+- Its stale duplicate-package test corpus remains preserved but is not evidence for the canonical backend; no tests were deleted.
 - Full PostgreSQL transaction and browser E2E execution depend on Docker/browser availability.
 - Tagged PDF semantics are limited by ReportLab; every generated PatchBook includes a text-first companion page.
