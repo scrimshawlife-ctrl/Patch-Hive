@@ -18,6 +18,16 @@ depends_on = None
 def upgrade() -> None:
     """Create only fields that predate the existing 2024-09-20 revision."""
 
+    # Several retained historical revision identifiers exceed Alembic's
+    # default VARCHAR(32), so widen the bookkeeping column before advancing.
+    op.alter_column(
+        "alembic_version",
+        "version_num",
+        existing_type=sa.String(length=32),
+        type_=sa.String(length=64),
+        existing_nullable=False,
+    )
+
     op.create_table(
         "users",
         sa.Column("id", sa.Integer(), primary_key=True),
