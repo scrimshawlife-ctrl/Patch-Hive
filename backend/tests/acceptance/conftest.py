@@ -87,7 +87,7 @@ def create_user(db_session: Session):
     def _create(username: str, password: str, role: str = "User") -> User:
         user = User(
             username=username,
-            email=f"{username}@patchhive.test",
+            email=f"{username}@example.com",
             password_hash=get_password_hash(password),
             display_name=username,
             role=role,

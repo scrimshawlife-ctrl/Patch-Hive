@@ -112,6 +112,20 @@ def upgrade() -> None:
     op.create_index("ix_racks_case_id", "racks", ["case_id"])
 
     op.create_table(
+        "rack_modules",
+        sa.Column("id", sa.Integer(), primary_key=True),
+        sa.Column("rack_id", sa.Integer(), nullable=False),
+        sa.Column("module_id", sa.Integer(), nullable=False),
+        sa.Column("row_index", sa.Integer(), nullable=False),
+        sa.Column("start_hp", sa.Integer(), nullable=False),
+        sa.ForeignKeyConstraint(["rack_id"], ["racks.id"], ondelete="CASCADE"),
+        sa.ForeignKeyConstraint(["module_id"], ["modules.id"], ondelete="CASCADE"),
+    )
+    op.create_index("ix_rack_modules_id", "rack_modules", ["id"])
+    op.create_index("ix_rack_modules_rack_id", "rack_modules", ["rack_id"])
+    op.create_index("ix_rack_modules_module_id", "rack_modules", ["module_id"])
+
+    op.create_table(
         "patches",
         sa.Column("id", sa.Integer(), primary_key=True),
         sa.Column("rack_id", sa.Integer(), nullable=False),
@@ -139,5 +153,5 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    for table in ("patches", "racks", "modules", "cases", "users"):
+    for table in ("patches", "rack_modules", "racks", "modules", "cases", "users"):
         op.drop_table(table)
