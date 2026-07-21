@@ -273,7 +273,14 @@ def main(argv: list[str] | None = None) -> int:
         "notes": "Multi-source rotation research sealed via Abraxas PR #984; HP/power null when unknown.",
         "content_hashes": payload["content_hashes"],
     }
-    (out / "seed-phase2-v1.sources.json").write_text(json.dumps(sources, indent=2) + "\n")
+    sources_path = out / "seed-phase2-v1.sources.json"
+    sources_path.write_text(json.dumps(sources, indent=2) + "\n")
+
+    # Package under backend/ for Docker/Render images that only ship backend/
+    backend_pack = REPO / "backend" / "data" / "synth-catalog"
+    backend_pack.mkdir(parents=True, exist_ok=True)
+    shutil.copy(seed_path, backend_pack / "seed-phase2-v1.json")
+    shutil.copy(sources_path, backend_pack / "seed-phase2-v1.sources.json")
 
     # Refresh audit copies when building from Abraxas packet
     for name in (

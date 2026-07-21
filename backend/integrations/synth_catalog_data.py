@@ -15,9 +15,29 @@ from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-# Repo root relative to backend/integrations/
-_REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_SEED_PATH = _REPO_ROOT / "data" / "synth-catalog" / "seed-phase2-v1.json"
+# Path resolution supports:
+# - monorepo checkout: <repo>/data/synth-catalog/seed-phase2-v1.json
+# - Docker/Render backend-only image: /app/data/synth-catalog/... (backend tree)
+_INTEGRATIONS_DIR = Path(__file__).resolve().parent
+_BACKEND_ROOT = _INTEGRATIONS_DIR.parent
+_REPO_ROOT = _BACKEND_ROOT.parent
+
+
+def resolve_seed_path(explicit: str | Path | None = None) -> Path:
+    """Return first existing sealed seed path (or preferred default if none exist)."""
+    if explicit:
+        return Path(explicit).expanduser().resolve()
+    candidates = [
+        _BACKEND_ROOT / "data" / "synth-catalog" / "seed-phase2-v1.json",
+        _REPO_ROOT / "data" / "synth-catalog" / "seed-phase2-v1.json",
+    ]
+    for path in candidates:
+        if path.is_file():
+            return path
+    return candidates[0]
+
+
+DEFAULT_SEED_PATH = resolve_seed_path()
 
 SOURCE_NAME = "SynthCatalogResearch"
 SOURCE_REFERENCE_DEFAULT = "data/synth-catalog/seed-phase2-v1.json"
@@ -158,7 +178,7 @@ def map_availability(status: str) -> str:
 @lru_cache(maxsize=4)
 def load_seed(path: Optional[str] = None) -> Dict[str, Any]:
     """Load sealed seed JSON. Cached by absolute path string."""
-    seed_path = Path(path) if path else DEFAULT_SEED_PATH
+    seed_path = resolve_seed_path(path)
     if not seed_path.is_file():
         raise FileNotFoundError(f"Synth catalog seed not found: {seed_path}")
     return json.loads(seed_path.read_text(encoding="utf-8"))
@@ -166,14 +186,14 @@ def load_seed(path: Optional[str] = None) -> Dict[str, Any]:
 
 def get_catalog_modules(path: Optional[str] = None) -> List[Dict[str, Any]]:
     """Lightweight catalog rows (brand/name/hp/category/availability)."""
-    seed = load_seed(str(Path(path).resolve()) if path else None)
+    seed = load_seed(str(resolve_seed_path(path)) if path else None)
     return list(seed.get("catalog_modules") or [])
 
 
 def get_full_spec_modules(path: Optional[str] = None) -> List[Dict[str, Any]]:
     """Full Module table rows when present; fall back to curated constant."""
     try:
-        seed = load_seed(str(Path(path).resolve()) if path else None)
+        seed = load_seed(str(resolve_seed_path(path)) if path else None)
         full = seed.get("full_spec_modules")
         if full:
             return list(full)
@@ -184,14 +204,14 @@ def get_full_spec_modules(path: Optional[str] = None) -> List[Dict[str, Any]]:
 
 def get_brand_index(path: Optional[str] = None) -> List[str]:
     """767-brand index from research Phase 1."""
-    seed = load_seed(str(Path(path).resolve()) if path else None)
+    seed = load_seed(str(resolve_seed_path(path)) if path else None)
     brands = seed.get("brands") or []
     return list(brands)
 
 
 def get_major_brands(path: Optional[str] = None) -> List[str]:
     try:
-        seed = load_seed(str(Path(path).resolve()) if path else None)
+        seed = load_seed(str(resolve_seed_path(path)) if path else None)
         major = seed.get("major_brands")
         if major:
             return list(major)
@@ -201,7 +221,8 @@ def get_major_brands(path: Optional[str] = None) -> List[str]:
 
 
 def seed_stats(path: Optional[str] = None) -> Dict[str, Any]:
-    seed = load_seed(str(Path(path).resolve()) if path else None)
+    resolved = resolve_seed_path(path)
+    seed = load_seed(str(resolved) if path else None)
     catalog = seed.get("catalog_modules") or []
     return {
         "fixture_version": seed.get("fixture_version"),
@@ -213,5 +234,5 @@ def seed_stats(path: Optional[str] = None) -> Dict[str, Any]:
         "hp_known_count": sum(1 for m in catalog if m.get("hp") is not None),
         "content_hashes": seed.get("content_hashes"),
         "abraxas_pr": seed.get("abraxas_pr"),
-        "seed_path": str(DEFAULT_SEED_PATH if not path else Path(path).resolve()),
+        "seed_path": str(resolved),
     }
