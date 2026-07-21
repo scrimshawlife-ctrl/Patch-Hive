@@ -9,7 +9,17 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import CheckConstraint, Column, DateTime, ForeignKey, Index, Integer, String, Text, UniqueConstraint
+from sqlalchemy import (
+    CheckConstraint,
+    Column,
+    DateTime,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    Text,
+    UniqueConstraint,
+)
 from sqlalchemy.orm import relationship
 
 from core.database import Base
@@ -52,7 +62,7 @@ class CaseSourcePolicyPacket(Base):
             name="ck_case_source_policy_evidence_status",
         ),
         CheckConstraint(
-            "review_state IN ('unreviewed','accepted','rejected','conflicted','needs_review')",
+            "review_state IN ('unreviewed','pending','accepted','rejected','blocked','conflicted','needs_review')",
             name="ck_case_source_policy_review_state",
         ),
         Index("ix_case_source_policy_evidence", "evidence_status", "review_state"),
