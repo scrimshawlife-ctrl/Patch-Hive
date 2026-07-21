@@ -69,9 +69,20 @@ export const moduleApi = {
 };
 
 // Case API
+export type CaseListParams = {
+  skip?: number;
+  limit?: number;
+  brand?: string;
+  min_hp?: number;
+  max_hp?: number;
+  q?: string;
+  format_family?: string;
+  powered?: boolean;
+  min_rows?: number;
+};
+
 export const caseApi = {
-  list: (params?: { skip?: number; limit?: number; brand?: string; min_hp?: number }) =>
-    api.get<CaseListResponse>('/cases', { params }),
+  list: (params?: CaseListParams) => api.get<CaseListResponse>('/cases', { params }),
 
   get: (id: number) => api.get<Case>(`/cases/${id}`),
 

@@ -102,21 +102,21 @@ class TestRacksAPI:
         assert data["modules"][1]["start_hp"] == 10
         assert data["modules"][2]["start_hp"] == 18
 
-    @pytest.mark.xfail(
-        reason="Production bug: RackValidationError not JSON serializable", strict=True
-    )
     def test_create_rack_invalid_case(self, client: TestClient, sample_vco: Module):
-        """Test creating rack with non-existent case."""
+        """Test creating rack with non-existent case returns serializable 400."""
         payload = {
             "case_id": 99999,  # Non-existent
             "modules": [{"module_id": sample_vco.id, "row_index": 0, "start_hp": 0}],
         }
 
-        # Known issue: validation errors contain non-JSON-serializable objects
         response = client.post("/api/racks", json=payload)
 
-        # TODO: Should be 400 when validation error serialization is fixed
         assert response.status_code == 400
+        body = response.json()
+        detail = body.get("detail") or body
+        assert detail.get("message") == "Rack validation failed"
+        assert isinstance(detail.get("errors"), list)
+        assert detail["errors"][0]["field"] == "case_id"
 
     @pytest.mark.xfail(
         reason="Production bug: RackValidationError not JSON serializable", strict=True
