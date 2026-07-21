@@ -26,6 +26,7 @@ interface FusedEntityView {
   conflict: boolean;
   conflict_notes: string[];
   classification_status: string;
+  representative_candidate_id?: string | null;
 }
 
 /** Demo ranked set when no rack id is available (create flow). */
@@ -157,6 +158,46 @@ export default function RackBuilderPage() {
 
   const setStatus = (id: string, status: CandidateStatus) => {
     setCandidates((prev) => prev.map((c) => (c.id === id ? { ...c, status } : c)));
+  };
+
+  /** Apply a fusion-panel decision onto the matching candidate row (still user-initiated). */
+  const applyFusedDecision = (entity: FusedEntityView, status: CandidateStatus) => {
+    const targetId = entity.representative_candidate_id;
+    if (!targetId) {
+      setError('Fused entity has no representative candidate id to resolve.');
+      return;
+    }
+    if (entity.conflict && status === 'confirmed') {
+      setError(
+        'Cannot confirm a conflicted fusion from the panel — resolve the underlying candidates individually.',
+      );
+      return;
+    }
+    setError('');
+    setStatus(targetId, status);
+    // If other observations for same fuse exist in candidate list with same key labels, leave them;
+    // user still reviews the ranked list. Mark matching id only.
+  };
+
+  const confirmAllNonConflictFused = () => {
+    setError('');
+    const confirmIds = new Set(
+      fused
+        .filter((e) => !e.conflict && e.representative_candidate_id)
+        .map((e) => e.representative_candidate_id as string),
+    );
+    const blocked = fused.length - confirmIds.size;
+    if (!confirmIds.size) {
+      setError(
+        blocked
+          ? 'No non-conflict fused entities to confirm. Resolve conflicts in the candidate list.'
+          : 'No fused entities available.',
+      );
+      return;
+    }
+    setCandidates((prev) =>
+      prev.map((c) => (confirmIds.has(c.id) ? { ...c, status: 'confirmed' as const } : c)),
+    );
   };
 
   const detectModules = async () => {
@@ -393,35 +434,83 @@ export default function RackBuilderPage() {
               {fused.length === 0 ? (
                 <p className="muted">No fused entities yet.</p>
               ) : (
-                <ul style={{ listStyle: 'none', padding: 0 }}>
-                  {fused.map((entity) => (
-                    <li
-                      key={entity.fuse_id}
-                      className="detection-row"
-                      style={{ marginBottom: '0.75rem' }}
+                <>
+                  <div style={{ marginBottom: '0.75rem' }}>
+                    <button
+                      className="button button-secondary"
+                      type="button"
+                      onClick={confirmAllNonConflictFused}
+                      disabled={evidenceState === 'confirmed'}
                     >
-                      <div>
-                        <strong>
-                          {entity.manufacturer || 'Unknown'} · {entity.model || entity.fuse_id}
-                        </strong>
-                        <p className="muted">
-                          Support: {entity.observation_count} observation(s) across{' '}
-                          {entity.supporting_image_ids.length} image(s) · mean confidence{' '}
-                          {(entity.mean_confidence * 100).toFixed(0)}%
-                        </p>
-                        <p
-                          className={`status status-${
-                            entity.conflict ? 'danger' : 'warning'
-                          }`}
+                      Confirm all non-conflict fused
+                    </button>
+                    <p className="muted" style={{ marginTop: '0.5rem' }}>
+                      Applies confirm only to non-conflict fusions via their representative candidate.
+                      Conflicts must be resolved in the candidate list below.
+                    </p>
+                  </div>
+                  <ul style={{ listStyle: 'none', padding: 0 }}>
+                    {fused.map((entity) => (
+                      <li
+                        key={entity.fuse_id}
+                        className="detection-row"
+                        style={{ marginBottom: '0.75rem' }}
+                      >
+                        <div>
+                          <strong>
+                            {entity.manufacturer || 'Unknown'} · {entity.model || entity.fuse_id}
+                          </strong>
+                          <p className="muted">
+                            Support: {entity.observation_count} observation(s) across{' '}
+                            {entity.supporting_image_ids.length} image(s) · mean confidence{' '}
+                            {(entity.mean_confidence * 100).toFixed(0)}%
+                            {entity.representative_candidate_id
+                              ? ` · rep ${entity.representative_candidate_id}`
+                              : ''}
+                          </p>
+                          <p
+                            className={`status status-${
+                              entity.conflict ? 'danger' : 'warning'
+                            }`}
+                          >
+                            {entity.conflict
+                              ? `Conflict: ${entity.conflict_notes.join('; ') || 'disagreement'}`
+                              : `Status: ${entity.classification_status} (not confirmed)`}
+                          </p>
+                        </div>
+                        <div
+                          className="detection-actions"
+                          aria-label={`Resolve fused ${entity.model || entity.fuse_id}`}
                         >
-                          {entity.conflict
-                            ? `Conflict: ${entity.conflict_notes.join('; ') || 'disagreement'}`
-                            : `Status: ${entity.classification_status} (not confirmed)`}
-                        </p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
+                          <button
+                            className="button button-secondary"
+                            type="button"
+                            disabled={entity.conflict || !entity.representative_candidate_id}
+                            onClick={() => applyFusedDecision(entity, 'confirmed')}
+                          >
+                            Confirm fused match
+                          </button>
+                          <button
+                            className="button button-quiet"
+                            type="button"
+                            disabled={!entity.representative_candidate_id}
+                            onClick={() => applyFusedDecision(entity, 'rejected')}
+                          >
+                            Reject fused
+                          </button>
+                          <button
+                            className="button button-quiet"
+                            type="button"
+                            disabled={!entity.representative_candidate_id}
+                            onClick={() => applyFusedDecision(entity, 'deferred')}
+                          >
+                            Defer fused
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </>
               )}
             </div>
           )}
