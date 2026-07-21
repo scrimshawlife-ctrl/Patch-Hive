@@ -113,7 +113,7 @@ Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not 
 | ID | Slice | Exit criteria |
 |----|--------|----------------|
 | **A** | On `POST /api/patches/generate/{rack_id}`, after legacy `Run` create, call `ensure_legacy_run_export_bridge` | **DONE** (feat/p1-slice-a-generate-bridge) — response includes bridge fields |
-| **B** | Optional thin `GET /api/canon/runs?rig_id=` alias returning same bridge DTO | FE can migrate one call site; legacy list remains |
+| **B** | Optional thin `GET /api/canon/runs?rig_id=` alias returning same bridge DTO | **DONE** — shared `runs.listing`; FE uses `canonApi.listRuns` |
 | **C** | Generator writes real `RigRevisionRecord` content hash from rack snapshot (still may keep `legacy-rack-*` id until revision chain exists) | **DONE** — `build_rack_content_snapshot` + content-bound manifest |
 | **D** | P2 move unrouted FE pages to `frontend/src/legacy/` | **DONE** (feat/p2-d-e-hygiene) |
 | **E** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` default after caller audit | **DONE** (default false; opt-in only) |

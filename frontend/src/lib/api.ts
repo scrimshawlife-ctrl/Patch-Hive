@@ -118,9 +118,11 @@ export const patchApi = {
     api.post<GeneratePatchesResponse>(`/patches/generate/${rackId}`, request),
 };
 
-// Run API
+// Run API — list prefers canon alias; patches still legacy until dual-written.
 export const runApi = {
-  list: (rackId: number) => api.get<RunListResponse>('/runs', { params: { rack_id: rackId } }),
+  /** @deprecated Prefer `canonApi.listRuns` (same bridge DTO). */
+  list: (rackId: number) =>
+    api.get<RunListResponse>('/canon/runs', { params: { rig_id: rackId } }),
   patches: (runId: number) => api.get<RunPatchesResponse>(`/runs/${runId}/patches`),
 };
 
@@ -160,6 +162,10 @@ export const exportApi = {
 
 // Canonical credits + exports (preferred MVP monetization boundary)
 export const canonApi = {
+  /** Matrix slice B — same bridge DTO as GET /api/runs?rack_id= */
+  listRuns: (rigId: number) =>
+    api.get<RunListResponse>('/canon/runs', { params: { rig_id: rigId } }),
+
   getBalance: () => api.get<{ balance: number }>('/canon/credits/balance'),
 
   getCreditsSummary: () =>

@@ -37,7 +37,7 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `GET /api/canon/exports` | `/api/me/credits`, `/api/me/exports` still on server |
 | PDF/SVG file bytes | still `/api/export/...` GETs | Artifact delivery only — **no new debits** |
 | Acceptance debit tests | **`POST /api/canon/exports`** | Legacy path only if `ENABLE_LEGACY_PATCHBOOK_DEBIT=true` |
-| RigDetail export ids | **`run.source_run_id` / `run.rig_revision_id` / `run.artifact_manifest_hash`** from GET `/api/runs` | Client hash invent removed; ids still `legacy-*` namespace |
+| RigDetail / Racks run list | **`canonApi.listRuns` → GET `/api/canon/runs?rig_id=`** | Legacy `GET /api/runs?rack_id=` remains |
 
 ### DEPRECATIONS
 

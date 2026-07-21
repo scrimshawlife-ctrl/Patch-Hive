@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { exportApi, patchApi, rackApi, runApi } from '@/lib/api';
+import { canonApi, exportApi, patchApi, rackApi, runApi } from '@/lib/api';
 import type { Patch, Rack, Run } from '@/types/api';
 
 type TabKey = 'overview' | 'patches' | 'exports' | 'modules';
@@ -63,7 +63,7 @@ export default function RacksPage() {
 
   const loadRuns = async (rackId: number) => {
     try {
-      const response = await runApi.list(rackId);
+      const response = await canonApi.listRuns(rackId);
       setRuns(response.data.runs);
       if (response.data.runs.length) {
         setSelectedRunId(response.data.runs[0].id);
