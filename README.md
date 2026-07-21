@@ -12,9 +12,9 @@ PatchHive is a deterministic Eurorack **rig-intelligence and patch-book publishi
 | **P1 dual-path slices A–E** | **MERGED** (generate bridge, canon runs, content hash, FE quarantine, legacy debit off) |
 | **Visual System Intelligence specs** | On main — [docs/VISUAL_SYSTEM_INTELLIGENCE.md](docs/VISUAL_SYSTEM_INTELLIGENCE.md), ADR-005 |
 | **VSI P0 contracts (campaign)** | Provider-neutral vision adapter, inventory revision, confirmed-hardware patch gates — see draft PR on `grok/patchhive-visual-system-canon-audit` |
-| **main baseline for campaign** | `2b72d5b10fef1ab70c74d3c40379eb1593cf8293` |
+| **main HEAD** | `6a85beb` — [PR #66](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/66) **MERGED** (VSI P0) |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
-| **Alembic head** | `20240928_fix_schema_gaps` |
+| **Alembic head** | `20240929_visual_inventory_evidence` |
 | **Production deploy** | Not performed — payments remain test-mode only |
 | **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) · [docs/evidence/WORK_PACKAGES.md](docs/evidence/WORK_PACKAGES.md) · [CURRENT_STATE.md](CURRENT_STATE.md) |
 

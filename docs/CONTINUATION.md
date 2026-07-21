@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main baseline:** `2b72d5b10fef1ab70c74d3c40379eb1593cf8293`  
-**Tracking:** Issue #46 closed · PR #47–#65 product/docs path on main  
-**Active campaign branch:** `grok/patchhive-visual-system-canon-audit`
+**main HEAD:** `6a85beb32cc8aee0344832de7efda64e645badcc`  
+**Tracking:** Issue #46 closed · PR #47–#66 on main  
+**PR #66:** **MERGED** (VSI P0 contracts, inventory, native bridge IDs, multi-image evidence, confirmation API)
 
 ## Where we are
 
@@ -120,10 +120,12 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 2. ~~**WP-06:** Alembic inventory + image assets~~ **DONE** (`20240929_visual_inventory_evidence`)
 3. ~~Native bridge IDs~~ **DONE** (`rig-rev-*` / `gen-run-*`)
 4. ~~Multi-image upload + retention~~ **DONE** (`POST/GET/DELETE /api/racks/{id}/evidence/images`)
-5. ~~Ranked candidate confirmation API + multi-candidate RackBuilder~~ **DONE** (GET candidates / POST confirmations + UX)
-6. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`)
-7. Live cloud vision adapter behind consent (next)
-8. **Land PR #66** — CI green @ `feec4c9`+; human merge when ready
+5. ~~Ranked candidate confirmation API + multi-candidate RackBuilder~~ **DONE**
+6. Evaluation dataset + metrics harness — **ACTIVE** (`evidence/evaluation.py` + `fixtures/vision_eval/`; production accuracy remains `NOT_COMPUTABLE`)
+7. Consent-gated cloud vision adapter — **ACTIVE** (`evidence/cloud_provider.py`; live calls fail-closed)
+8. ~~Land PR #66~~ **DONE** (`6a85beb`)
+9. Wire RackBuilder file upload/confirm to live rack evidence APIs (next)
+10. Cases/Patches list pages beyond stubs (P4)
 
 ### P5 — Explicitly deferred
 
