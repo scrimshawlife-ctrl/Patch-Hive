@@ -96,3 +96,8 @@ class GeneratePatchesResponse(BaseModel):
     generated_count: int
     patches: list[PatchResponse]
     run_id: Optional[int] = None
+    # Matrix slice A: server-authored export bridge (same fields as RunResponse).
+    export_bridge_ready: bool = False
+    source_run_id: Optional[str] = None
+    rig_revision_id: Optional[str] = None
+    artifact_manifest_hash: Optional[str] = None

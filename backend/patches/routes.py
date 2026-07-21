@@ -10,6 +10,7 @@ from sqlalchemy.orm import Session
 
 from core import get_db, settings
 from racks.models import Rack
+from runs.bridge import ensure_legacy_run_export_bridge
 from runs.models import Run
 
 from .engine import PatchEngineConfig, generate_patches_with_ir
@@ -154,6 +155,10 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
     db.add(run)
     db.commit()
     db.refresh(run)
+    # Matrix slice A: ensure canon FK targets + export bridge as soon as the run exists
+    # (do not rely solely on GET /api/runs side-effect).
+    bridge = ensure_legacy_run_export_bridge(db, run)
+    db.commit()
     generation_ir, patch_graphs, provenance = generate_patches_with_ir(
         db, rack, seed=request.seed, config=config
     )
@@ -191,7 +196,13 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
     patch_responses = [build_patch_response(db, p) for p in saved_patches]
 
     return GeneratePatchesResponse(
-        generated_count=len(patch_responses), patches=patch_responses, run_id=run.id
+        generated_count=len(patch_responses),
+        patches=patch_responses,
+        run_id=run.id,
+        export_bridge_ready=bridge.export_bridge_ready,
+        source_run_id=bridge.source_run_id,
+        rig_revision_id=bridge.rig_revision_id,
+        artifact_manifest_hash=bridge.artifact_manifest_hash,
     )
 
 
