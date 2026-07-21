@@ -624,14 +624,24 @@ export default function RigDetailPage() {
             Debits post only via <code>/api/canon/exports</code>. Bound to revision{' '}
             <code>{activeRun?.rig_revision_id}</code>.
           </p>
-          <button
-            className="button button-primary"
-            type="button"
-            onClick={handleExport}
-            disabled={credits <= 0 || exporting || !activeRun}
-          >
-            {exporting ? 'Requesting…' : 'Export PDF patch book'}
-          </button>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+            <button
+              className="button button-primary"
+              type="button"
+              onClick={handleExport}
+              disabled={credits <= 0 || exporting || !activeRun}
+            >
+              {exporting ? 'Requesting…' : 'Export PDF patch book'}
+            </button>
+            {activeRun?.export_bridge_ready ? (
+              <a
+                className="button button-secondary"
+                href={`/rigs/${rigIdNum}/patchbook-studio?source_run_id=${encodeURIComponent(activeRun.source_run_id)}&source_rig_revision_id=${encodeURIComponent(activeRun.rig_revision_id)}&artifact_manifest_hash=${encodeURIComponent(activeRun.artifact_manifest_hash)}`}
+              >
+                Open Style Studio
+              </a>
+            ) : null}
+          </div>
           {credits <= 0 ? (
             <p className="status status-warning">Credits are required only for exports.</p>
           ) : null}

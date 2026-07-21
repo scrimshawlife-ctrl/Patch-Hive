@@ -206,6 +206,11 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
         saved_patches.append(db_patch)
 
     run.status = "completed"
+    db.flush()
+    # Path A (KD-20): dual-write sealed GeneratedPatchRecord for Design Engine spine
+    from export.patchbook.design.dual_write import dual_write_generated_patches
+
+    dual_write_generated_patches(db, bridge=bridge, patches=saved_patches)
     db.commit()
 
     # Build responses

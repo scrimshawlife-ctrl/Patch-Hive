@@ -6,6 +6,7 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from canon.models import (
+    GeneratedPatchRecord,
     GenerationRunRecord,
     PatchLibraryRecord,
     RigRevisionRecord,
@@ -65,10 +66,24 @@ def test_generate_patches_ensures_export_bridge(
     assert isinstance(rev.canonical_rig.get("modules"), list)
     assert len(str(rev.canonical_hash)) == 64
     assert db_session.get(GenerationRunRecord, body["source_run_id"]) is not None
-    assert db_session.get(PatchLibraryRecord, f"library-{body['source_run_id']}") is not None
+    library = db_session.get(PatchLibraryRecord, f"library-{body['source_run_id']}")
+    assert library is not None
     inv = db_session.get(SystemInventoryRevisionRecord, body["inventory_revision_id"])
     assert inv is not None
     assert inv.rack_id == sample_rack_basic.id
+
+    # Path A dual-write: sealed GeneratedPatchRecord rows for Design Engine spine
+    sealed = (
+        db_session.query(GeneratedPatchRecord)
+        .filter(GeneratedPatchRecord.patch_library_id == library.id)
+        .order_by(GeneratedPatchRecord.position.asc())
+        .all()
+    )
+    assert len(sealed) == body["generated_count"]
+    assert sealed[0].patch_graph and sealed[0].patch_plan
+    assert len(str(sealed[0].canonical_hash)) == 64
+    # library row remains append-only; integrity is on GeneratedPatchRecord hashes
+    assert len(str(library.canonical_hash)) == 64
 
     # List runs still ready without additional invent
     listed = client.get(f"/api/runs?rack_id={sample_rack_basic.id}")

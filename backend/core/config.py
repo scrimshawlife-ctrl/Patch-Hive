@@ -70,7 +70,17 @@ class Settings(BaseSettings):
 
     # File Storage
     export_dir: str = "./exports"
+    export_store_root: str = "./exports"
     waveform_dir: str = "./waveforms"
+
+    # PatchBook Design Engine (presentation layer; defaults off — no behavior change)
+    enable_patchbook_design_engine: bool = False
+    enable_canon_export_fulfillment: bool = False
+    enable_inline_export_fulfillment: bool = False
+    enable_patchbook_publication_profile: bool = False
+    require_sealed_generated_patches: bool = False
+    design_engine_default_tier: str = "core"
+    export_fulfill_max_attempts: int = 5
 
     # ABX-Core / SEED
     abx_core_version: str = "1.3"

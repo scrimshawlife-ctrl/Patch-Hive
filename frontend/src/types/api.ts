@@ -228,6 +228,10 @@ export interface CanonicalExportRecord {
   source_rig_revision_id: string;
   idempotency_key: string;
   created_at: string;
+  composition_hash?: string | null;
+  style_recipe_hash?: string | null;
+  error_code?: string | null;
+  pack_manifest_hash?: string | null;
 }
 
 export interface UserExportRecord {
