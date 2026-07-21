@@ -69,7 +69,9 @@ def parse_integer_run_id(source_run_id: str) -> int:
     # legacy-run-N
     if source_run_id.startswith("legacy-run-"):
         return int(source_run_id.split("-")[-1])
-    raise ContentSpineError("EXPORT_RUN_ID_UNPARSEABLE", f"Cannot parse run id from {source_run_id}")
+    raise ContentSpineError(
+        "EXPORT_RUN_ID_UNPARSEABLE", f"Cannot parse run id from {source_run_id}"
+    )
 
 
 def library_content_hash(items: list[LoadedLibraryItem] | tuple[LoadedLibraryItem, ...]) -> str:
@@ -90,7 +92,9 @@ def load_patch_compilations(
 ) -> LoadedLibrary:
     """Path A then Path B. Never uses builder.py as Layer A."""
 
-    library = session.query(PatchLibraryRecord).filter(PatchLibraryRecord.run_id == source_run_id).first()
+    library = (
+        session.query(PatchLibraryRecord).filter(PatchLibraryRecord.run_id == source_run_id).first()
+    )
     if library is not None:
         if library.artifact_manifest_hash != artifact_manifest_hash:
             raise ContentSpineError(
@@ -112,11 +116,18 @@ def load_patch_compilations(
                 )
                 for row in generated
             )
+            # Prefer sealed row hashes (reconstruction may re-wrap receipts)
+            content_hash = canonical_sha256(
+                [
+                    {"position": int(row.position), "canonical_hash": str(row.canonical_hash)}
+                    for row in generated
+                ]
+            )
             return LoadedLibrary(
                 source_run_id=source_run_id,
                 source_rig_revision_id=source_rig_revision_id,
                 bridge_artifact_manifest_hash=artifact_manifest_hash,
-                library_content_hash=library_content_hash(items),
+                library_content_hash=content_hash,
                 load_path="generated_patches",
                 items=items,
             )
@@ -157,19 +168,18 @@ def _load_path_b(
     expected = native_artifact_manifest_hash(int_run_id, rack_id, content_hash)
     if expected != artifact_manifest_hash:
         # Also accept library row hash if present without recompute match (bridge may have used live snapshot)
-        library = session.query(PatchLibraryRecord).filter(PatchLibraryRecord.run_id == source_run_id).first()
+        library = (
+            session.query(PatchLibraryRecord)
+            .filter(PatchLibraryRecord.run_id == source_run_id)
+            .first()
+        )
         if library is None or library.artifact_manifest_hash != artifact_manifest_hash:
             raise ContentSpineError(
                 "EXPORT_BRIDGE_HASH_MISMATCH",
                 "artifact_manifest_hash does not match sealed rig revision binding",
             )
 
-    patches = (
-        session.query(Patch)
-        .filter(Patch.run_id == int_run_id)
-        .order_by(Patch.id.asc())
-        .all()
-    )
+    patches = session.query(Patch).filter(Patch.run_id == int_run_id).order_by(Patch.id.asc()).all()
     if not patches:
         # Fallback: rack-scoped patches for the run's rack if run_id not stamped
         patches = (
@@ -256,7 +266,9 @@ def seal_orm_patch_to_compilation(
 
     # Labels from snapshot when available
     snapshot_modules = {
-        str(m.get("module_id")): m for m in (rig_snapshot.get("modules") or []) if isinstance(m, dict)
+        str(m.get("module_id")): m
+        for m in (rig_snapshot.get("modules") or [])
+        if isinstance(m, dict)
     }
 
     nodes: list[PatchNode] = []
@@ -279,7 +291,10 @@ def seal_orm_patch_to_compilation(
             port_id = f"{mid}:{port_name}:{direction}"
             signal = "unknown"
             for conn in connections:
-                if str(conn.get("from_module_id")) == mid and str(conn.get("from_port")) == port_name:
+                if (
+                    str(conn.get("from_module_id")) == mid
+                    and str(conn.get("from_port")) == port_name
+                ):
                     signal = _map_signal(conn.get("cable_type"))
                 if str(conn.get("to_module_id")) == mid and str(conn.get("to_port")) == port_name:
                     signal = _map_signal(conn.get("cable_type"))

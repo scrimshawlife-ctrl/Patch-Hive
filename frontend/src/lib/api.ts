@@ -319,7 +319,38 @@ export const canonApi = {
     license?: string;
     credit_cost?: number | null;
     idempotency_key: string;
+    style_recipe?: Record<string, unknown> | null;
   }) => api.post<CanonicalExportRecord>('/canon/exports', body),
+
+  /** Free Design Engine preview — no debit (KD-15). */
+  previewExport: (body: {
+    source_run_id: string;
+    source_rig_revision_id: string;
+    artifact_manifest_hash: string;
+    style_recipe?: Record<string, unknown> | null;
+    max_pages?: number;
+  }) =>
+    api.post<{
+      resolved_recipe: Record<string, unknown>;
+      resolution_events: Array<{
+        code: string;
+        severity: string;
+        message: string;
+        field?: string | null;
+      }>;
+      style_recipe_hash: string;
+      library_content_hash: string;
+      load_path: string;
+      page_summaries: Array<{
+        position: number;
+        title: string;
+        intent: string;
+        edge_count: number;
+        steps: Array<{ phase: string; instruction: string }>;
+        warnings?: Array<{ code: string; severity: string; message: string }>;
+      }>;
+      composition_preview_hash?: string | null;
+    }>('/canon/exports/preview', body),
 
   createDownloadToken: (exportId: string, ttl_seconds = 300) =>
     api.post<{ export_id: string; token: string; ttl_seconds: number }>(

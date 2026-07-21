@@ -68,7 +68,9 @@ def fulfill_export(session: Session, export_id: str) -> FulfillResult:
         compensate_failed_export(session, export, occurred_at=datetime.now(timezone.utc))
         export.error_code = export.error_code or "EXPORT_FULFILL_MAX_ATTEMPTS"
         session.flush()
-        return FulfillResult(export_id=export_id, status=export.status, error_code=export.error_code)
+        return FulfillResult(
+            export_id=export_id, status=export.status, error_code=export.error_code
+        )
 
     export.status = "running"
     export.fulfill_attempts = attempts + 1

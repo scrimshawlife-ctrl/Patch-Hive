@@ -71,6 +71,24 @@ class CanonicalExportResponse(BaseModel):
     pack_manifest_hash: str | None = None
 
 
+class StylePreviewRequest(BaseModel):
+    source_run_id: str = Field(..., min_length=1, max_length=64)
+    source_rig_revision_id: str = Field(..., min_length=1, max_length=64)
+    artifact_manifest_hash: str = Field(..., min_length=64, max_length=64)
+    style_recipe: dict[str, Any] | None = None
+    max_pages: int = Field(default=3, ge=1, le=5)
+
+
+class StylePreviewResponse(BaseModel):
+    resolved_recipe: dict[str, Any]
+    resolution_events: list[dict[str, Any]]
+    style_recipe_hash: str
+    library_content_hash: str
+    load_path: str
+    page_summaries: list[dict[str, Any]]
+    composition_preview_hash: str | None = None
+
+
 class DownloadTokenCreate(BaseModel):
     ttl_seconds: int = Field(default=300, ge=1, le=15 * 60)
 
@@ -376,6 +394,80 @@ def list_canonical_exports(
     return [_export_response(row) for row in rows]
 
 
+@router.post("/exports/preview", response_model=StylePreviewResponse)
+def preview_patchbook_style(
+    body: StylePreviewRequest,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> StylePreviewResponse:
+    """Free preview: resolve recipe + load content spine; no debit (KD-15)."""
+    _ = current_user
+    from canon.entitlements import get_design_entitlements, tier_allows_family
+    from export.patchbook.design.constraints import StyleResolveError, resolve_style_recipe
+    from export.patchbook.design.content_spine import ContentSpineError, load_patch_compilations
+    from export.patchbook.design.recipe import (
+        RequestStyleRecipe,
+        default_request_recipe,
+        recipe_hash,
+    )
+
+    entitlements = get_design_entitlements(current_user.id)
+    try:
+        if body.style_recipe is not None:
+            request_recipe = RequestStyleRecipe.model_validate(body.style_recipe)
+        else:
+            request_recipe = default_request_recipe()
+        resolved = resolve_style_recipe(
+            request_recipe,
+            resolved_tier=entitlements.tier,
+            family_allowed=tier_allows_family(entitlements.tier, request_recipe.template_family),
+            publication_enabled=entitlements.publication_enabled,
+        )
+    except StyleResolveError as exc:
+        raise HTTPException(status_code=400, detail=exc.code) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail=f"INVALID_STYLE_RECIPE:{exc}") from exc
+
+    try:
+        library = load_patch_compilations(
+            db,
+            source_run_id=body.source_run_id,
+            source_rig_revision_id=body.source_rig_revision_id,
+            artifact_manifest_hash=body.artifact_manifest_hash,
+            require_sealed=bool(settings.require_sealed_generated_patches),
+        )
+    except ContentSpineError as exc:
+        raise HTTPException(status_code=400, detail=exc.code) from exc
+
+    summaries: list[dict[str, Any]] = []
+    for item in library.items[: body.max_pages]:
+        plan = item.compilation.patch_plan
+        graph = item.compilation.patch_graph
+        summaries.append(
+            {
+                "position": item.position,
+                "title": plan.title,
+                "intent": plan.intent,
+                "edge_count": len(graph.edges),
+                "steps": [{"phase": s.phase, "instruction": s.instruction} for s in plan.steps[:8]],
+                "warnings": [
+                    {"code": i.code, "severity": i.severity, "message": i.message}
+                    for i in item.compilation.validation_report.issues[:5]
+                ],
+            }
+        )
+
+    return StylePreviewResponse(
+        resolved_recipe=resolved.model_dump(mode="json"),
+        resolution_events=[e.model_dump(mode="json") for e in resolved.events],
+        style_recipe_hash=recipe_hash(resolved),
+        library_content_hash=library.library_content_hash,
+        load_path=library.load_path,
+        page_summaries=summaries,
+        composition_preview_hash=None,
+    )
+
+
 @router.post("/exports", response_model=CanonicalExportResponse, status_code=201)
 def create_canonical_export(
     body: CanonicalExportCreate,
@@ -396,7 +488,11 @@ def create_canonical_export(
     if settings.enable_patchbook_design_engine or settings.enable_canon_export_fulfillment:
         from canon.entitlements import get_design_entitlements, tier_allows_family
         from export.patchbook.design.constraints import StyleResolveError, resolve_style_recipe
-        from export.patchbook.design.recipe import RequestStyleRecipe, default_request_recipe, recipe_hash
+        from export.patchbook.design.recipe import (
+            RequestStyleRecipe,
+            default_request_recipe,
+            recipe_hash,
+        )
 
         entitlements = get_design_entitlements(current_user.id)
         try:

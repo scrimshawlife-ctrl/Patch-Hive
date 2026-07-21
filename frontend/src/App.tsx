@@ -17,6 +17,7 @@ import PatchesPage from '@/pages/Patches';
 import RackBuilderPage from '@/pages/RackBuilder';
 import RacksPage from '@/pages/Racks';
 import RigDetailPage from '@/pages/RigDetail';
+import PatchBookStyleStudioPage from '@/pages/PatchBookStyleStudio';
 
 type Theme = 'dark' | 'light';
 
@@ -72,6 +73,7 @@ function App() {
             <Route path="/racks/new" element={<RackBuilderPage />} />
             <Route path="/racks/:id/edit" element={<RackBuilderPage />} />
             <Route path="/rigs/:rigId" element={<RigDetailPage />} />
+            <Route path="/rigs/:rigId/patchbook-studio" element={<PatchBookStyleStudioPage />} />
             <Route path="/patches" element={<PatchesPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/account" element={<AccountPage />} />
