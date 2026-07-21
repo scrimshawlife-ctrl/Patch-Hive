@@ -55,8 +55,9 @@ services:
       start_period: 40s
 
   # Frontend (React/Vite) - Development mode
+  # Node 20.19+ / 22+ required by vite@8 / vitest@4 (node:util.styleText).
   frontend-dev:
-    image: node:18-alpine
+    image: node:22-alpine
     container_name: patchhive-frontend-dev
     working_dir: /app
     restart: unless-stopped
