@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- `canon.gallery_revisions` append-only file store; `patchhive.gallery.revisions` is a compatibility shim; gallery revision tests no longer mark `legacy_pipeline`.
 - Migrated schema roundtrip off historical `patchhive` onto `canon.contracts.RigMetricsPacket` (one fewer `legacy_pipeline` importer).
 - Canon compiler edge-case tests: signal mismatch, direction, feedback declare/undeclared, attenuation, normals, empty graph.
 - `patchhive` import telemetry quarantine: markers, package-test norecursedirs, CI import guard, `just telemetry-patchhive` / `test-historical`.

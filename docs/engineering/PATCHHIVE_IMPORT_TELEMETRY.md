@@ -45,9 +45,9 @@ rg 'from patchhive|import patchhive' backend/patches backend/racks backend/main.
 | `tests/unit/test_export_pack.py` | 6 | Export pack |
 | `tests/unit/test_pipeline_run.py` | 4 | Pipeline run |
 | `tests/unit/test_function_store_commit.py` | 3 | Function registry |
-| `tests/unit/test_gallery_revisions.py` | — | Gallery append-only |
 
-~~`tests/test_schema_roundtrip.py`~~ **MIGRATED** → `tests/unit/test_canon_contracts.py` (`RigMetricsPacket` on `canon.contracts`; no `patchhive` import).
+~~`tests/test_schema_roundtrip.py`~~ **MIGRATED** → `tests/unit/test_canon_contracts.py` (`RigMetricsPacket`).  
+~~`tests/unit/test_gallery_revisions.py`~~ **MIGRATED** → `canon.gallery_revisions` (patchhive re-exports for runes).
 
 These remaining files carry `pytest.mark.legacy_pipeline` and stay in **default** `pytest tests` until dual-write retirement.
 
