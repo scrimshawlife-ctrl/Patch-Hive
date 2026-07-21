@@ -8,12 +8,18 @@ from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
 from cases.models import Case
+from canon.models import GenerationRunRecord, PatchLibraryRecord, RigRevisionRecord
 from community.models import User
 from main import app
 from racks.models import Rack
-from runs.bridge import legacy_artifact_manifest_hash, legacy_rig_revision_id, legacy_source_run_id
+from runs.bridge import (
+    build_rack_content_snapshot,
+    legacy_artifact_manifest_hash,
+    legacy_rig_revision_id,
+    legacy_source_run_id,
+    rack_content_hash,
+)
 from runs.models import Run
-from canon.models import GenerationRunRecord, PatchLibraryRecord, RigRevisionRecord
 
 
 def _client(db_session: Session) -> TestClient:
@@ -54,6 +60,12 @@ def _seed_run(db_session: Session) -> Run:
 def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Session) -> None:
     client = _client(db_session)
     run = _seed_run(db_session)
+    rack = db_session.get(Rack, run.rack_id)
+    assert rack is not None
+    content_hash = rack_content_hash(build_rack_content_snapshot(db_session, rack))
+    expected_manifest = legacy_artifact_manifest_hash(
+        int(run.id), int(run.rack_id), content_hash=content_hash
+    )
 
     resp = client.get(f"/api/runs?rack_id={run.rack_id}")
     assert resp.status_code == 200, resp.text
@@ -64,14 +76,15 @@ def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Ses
     assert row["rack_id"] == run.rack_id
     assert row["rig_revision_id"] == legacy_rig_revision_id(int(run.rack_id))
     assert row["source_run_id"] == legacy_source_run_id(int(run.id))
-    assert row["artifact_manifest_hash"] == legacy_artifact_manifest_hash(
-        int(run.id), int(run.rack_id)
-    )
+    assert row["artifact_manifest_hash"] == expected_manifest
     assert row["export_bridge_ready"] is True
     assert len(row["artifact_manifest_hash"]) == 64
     assert row.get("created_at")
 
-    assert db_session.get(RigRevisionRecord, row["rig_revision_id"]) is not None
+    rev = db_session.get(RigRevisionRecord, row["rig_revision_id"])
+    assert rev is not None
+    assert str(rev.canonical_hash) == content_hash
+    assert rev.canonical_rig.get("schema") == "patchhive.rack-snapshot.v1"
     assert db_session.get(GenerationRunRecord, row["source_run_id"]) is not None
     assert db_session.get(PatchLibraryRecord, f"library-{row['source_run_id']}") is not None
 
@@ -79,6 +92,7 @@ def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Ses
     resp2 = client.get(f"/api/runs?rack_id={run.rack_id}")
     assert resp2.status_code == 200
     assert resp2.json()["runs"][0]["source_run_id"] == row["source_run_id"]
+    assert resp2.json()["runs"][0]["artifact_manifest_hash"] == expected_manifest
 
     app.dependency_overrides.clear()
 

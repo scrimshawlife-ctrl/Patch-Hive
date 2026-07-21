@@ -38,6 +38,11 @@ def test_generate_patches_ensures_export_bridge(
     assert body["artifact_manifest_hash"] and len(body["artifact_manifest_hash"]) == 64
 
     assert db_session.get(RigRevisionRecord, body["rig_revision_id"]) is not None
+    rev = db_session.get(RigRevisionRecord, body["rig_revision_id"])
+    assert rev is not None
+    assert rev.canonical_rig.get("schema") == "patchhive.rack-snapshot.v1"
+    assert isinstance(rev.canonical_rig.get("modules"), list)
+    assert len(str(rev.canonical_hash)) == 64
     assert db_session.get(GenerationRunRecord, body["source_run_id"]) is not None
     assert db_session.get(PatchLibraryRecord, f"library-{body['source_run_id']}") is not None
 

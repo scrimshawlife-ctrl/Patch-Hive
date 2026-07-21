@@ -71,7 +71,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 3. ~~**Run / revision bridge honesty**~~ **DONE** (PR #54 — server DTO + ensure canon rows; namespace still legacy-* until native generator)  
 
 4. ~~**Inventory dual-path plan (design-first, then thin PR)**~~ **DESIGN DONE** — matrix in [CANON_ALIGNMENT.md](CANON_ALIGNMENT.md#inventory-dual-path-matrix-design-first)  
-   - Slices **A**, **D**, **E** **DONE**; **B** optional alias; **C** content-hash revision open.  
+   - Slices **A**, **C**, **D**, **E** **DONE**; **B** optional alias open.  
    - Do **not** big-bang delete racks routers.  
    - **Exit (design):** matrix merged. **Exit (code):** slice A green on CI.
 ### P2 — Package and dead-UI hygiene
