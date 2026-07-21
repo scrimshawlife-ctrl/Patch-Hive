@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { publishingApi, rackApi, patchApi } from '@/lib/api';
+import { publishingApi } from '@/legacy/apiClients';
+import { rackApi, patchApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 import type { ExportRecord, Rack, Patch } from '@/types/api';
 
