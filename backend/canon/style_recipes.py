@@ -67,6 +67,7 @@ def create_user_recipe(
     name: str,
     recipe_payload: dict,
     notes: str | None = None,
+    is_shared: bool = False,
 ) -> UserStyleRecipeRecord:
     name = _validate_name(name)
     recipe = _parse_recipe(recipe_payload)
@@ -93,7 +94,7 @@ def create_user_recipe(
         notes=(notes or "")[:500] or None,
         recipe_json=recipe.model_dump(mode="json"),
         recipe_hash=recipe_hash(recipe),
-        is_shared=False,
+        is_shared=bool(is_shared),
         created_at=now,
         updated_at=now,
     )
@@ -110,6 +111,7 @@ def update_user_recipe(
     name: str | None = None,
     recipe_payload: dict | None = None,
     notes: str | None = None,
+    is_shared: bool | None = None,
 ) -> UserStyleRecipeRecord:
     row = get_user_recipe(session, user_id, recipe_id)
     if row is None:
@@ -132,6 +134,8 @@ def update_user_recipe(
         row.recipe_hash = recipe_hash(recipe)
     if notes is not None:
         row.notes = notes[:500] or None
+    if is_shared is not None:
+        row.is_shared = bool(is_shared)
     row.updated_at = datetime.now(timezone.utc)
     session.flush()
     return row

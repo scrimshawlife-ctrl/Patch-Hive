@@ -12,7 +12,10 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Literal
 
+from pathlib import Path
+
 from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -88,12 +91,14 @@ class StyleRecipeCreate(BaseModel):
     name: str = Field(..., min_length=1, max_length=120)
     style_recipe: dict[str, Any]
     notes: str | None = Field(default=None, max_length=500)
+    is_shared: bool = False
 
 
 class StyleRecipeUpdate(BaseModel):
     name: str | None = Field(default=None, min_length=1, max_length=120)
     style_recipe: dict[str, Any] | None = None
     notes: str | None = Field(default=None, max_length=500)
+    is_shared: bool | None = None
 
 
 class StyleRecipeResponse(BaseModel):
@@ -102,6 +107,7 @@ class StyleRecipeResponse(BaseModel):
     notes: str | None
     style_recipe: dict[str, Any]
     recipe_hash: str
+    is_shared: bool = False
     created_at: datetime
     updated_at: datetime
 
@@ -197,9 +203,35 @@ def _style_recipe_response(row: UserStyleRecipeRecord) -> StyleRecipeResponse:
         notes=row.notes,
         style_recipe=row.recipe_json if isinstance(row.recipe_json, dict) else {},
         recipe_hash=row.recipe_hash,
+        is_shared=bool(getattr(row, "is_shared", False)),
         created_at=row.created_at,
         updated_at=row.updated_at,
     )
+
+
+_ARTIFACT_FILES: dict[str, tuple[str, str]] = {
+    # artifact key -> (relative path under pack, media type)
+    "pdf": ("PatchBook.pdf", "application/pdf"),
+    "companion": ("technical/companion.txt", "text/plain; charset=utf-8"),
+    "manifest": ("manifest/patch-book.json", "application/json"),
+}
+
+
+def _require_download_grant(
+    *,
+    export: CanonicalExportRecord,
+    user: User,
+    token: str,
+) -> None:
+    try:
+        verify_download_token(
+            token,
+            export_id=export.id,
+            user_id=str(user.id),
+            secret=_download_secret(),
+        )
+    except DownloadTokenError as exc:
+        raise HTTPException(status_code=403, detail=str(exc)) from exc
 
 
 def _load_request_recipe_payload(
@@ -485,6 +517,7 @@ def create_style_recipe(
             name=body.name,
             recipe_payload=body.style_recipe,
             notes=body.notes,
+            is_shared=body.is_shared,
         )
         db.commit()
         db.refresh(row)
@@ -492,6 +525,20 @@ def create_style_recipe(
         db.rollback()
         status = 409 if exc.code in {"RECIPE_NAME_CONFLICT", "RECIPE_LIBRARY_FULL"} else 400
         raise HTTPException(status_code=status, detail=exc.code) from exc
+    return _style_recipe_response(row)
+
+
+@router.get("/style-recipes/shared/{recipe_id}", response_model=StyleRecipeResponse)
+def get_shared_style_recipe(
+    recipe_id: str,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> StyleRecipeResponse:
+    """Load a recipe marked is_shared by any user (authenticated read)."""
+    _ = current_user
+    row = db.get(UserStyleRecipeRecord, recipe_id)
+    if row is None or not row.is_shared:
+        raise HTTPException(status_code=404, detail="RECIPE_NOT_FOUND")
     return _style_recipe_response(row)
 
 
@@ -526,6 +573,7 @@ def update_style_recipe(
             name=body.name,
             recipe_payload=body.style_recipe,
             notes=body.notes,
+            is_shared=body.is_shared,
         )
         db.commit()
         db.refresh(row)
@@ -839,6 +887,70 @@ def verify_download(
         user_id=grant.user_id,
         expires_at=grant.expires_at,
         status=export.status,
+    )
+
+
+@router.get("/exports/{export_id}/artifacts/{artifact}")
+def download_export_artifact(
+    export_id: str,
+    artifact: str,
+    token: str = Query(..., min_length=16),
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> Response:
+    """Stream a Design Engine pack artifact after download-token verification.
+
+    Artifacts: ``pdf`` | ``companion`` | ``manifest`` | ``zip``
+    """
+    export = db.get(CanonicalExportRecord, export_id)
+    if export is None or export.user_id != current_user.id:
+        raise HTTPException(status_code=404, detail="Export not found")
+    if export.status != "succeeded" and settings.enable_canon_export_fulfillment:
+        raise HTTPException(status_code=409, detail="Export pack not ready")
+
+    _require_download_grant(export=export, user=current_user, token=token)
+
+    from canon.fulfillment import pack_dir_for_export
+
+    pack_dir = pack_dir_for_export(export.id)
+    if not pack_dir.exists():
+        # Fall back to artifact_uri if set
+        uri = getattr(export, "artifact_uri", None)
+        if uri:
+            pack_dir = Path(uri)
+    if not pack_dir.exists():
+        raise HTTPException(status_code=404, detail="PACK_NOT_FOUND")
+
+    if artifact == "zip":
+        import io
+        import zipfile
+
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+            for path in sorted(pack_dir.rglob("*")):
+                if path.is_file():
+                    zf.write(path, arcname=str(path.relative_to(pack_dir)))
+        data = buf.getvalue()
+        return Response(
+            content=data,
+            media_type="application/zip",
+            headers={
+                "Content-Disposition": f'attachment; filename="patchbook-{export.id}.zip"',
+            },
+        )
+
+    if artifact not in _ARTIFACT_FILES:
+        raise HTTPException(status_code=400, detail="UNKNOWN_ARTIFACT")
+    rel, media = _ARTIFACT_FILES[artifact]
+    file_path = pack_dir / rel
+    if not file_path.is_file():
+        raise HTTPException(status_code=404, detail="ARTIFACT_NOT_FOUND")
+    filename = file_path.name
+    return FileResponse(
+        path=file_path,
+        media_type=media,
+        filename=filename,
+        content_disposition_type="attachment",
     )
 
 

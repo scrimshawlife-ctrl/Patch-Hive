@@ -22,6 +22,7 @@ type ServerRecipe = {
   notes: string | null;
   style_recipe: Record<string, unknown>;
   recipe_hash: string;
+  is_shared?: boolean;
   created_at: string;
   updated_at: string;
 };
@@ -110,8 +111,40 @@ export default function PatchBookStyleStudioPage() {
   const [serverLibrary, setServerLibrary] = useState<ServerRecipe[]>([]);
   const [recipeName, setRecipeName] = useState('');
   const [libraryBusy, setLibraryBusy] = useState(false);
+  const [lastExportId, setLastExportId] = useState<string | null>(null);
+  const [downloading, setDownloading] = useState(false);
 
   const artistic = ARTISTIC_MODES.includes(recipe.mode);
+
+  const downloadArtifact = async (exportId: string, artifact: 'pdf' | 'zip') => {
+    setDownloading(true);
+    try {
+      const tokenResp = await canonApi.createDownloadToken(exportId, 300);
+      const url = canonApi.exportArtifactUrl(exportId, artifact, tokenResp.data.token);
+      const auth = localStorage.getItem('auth_token');
+      const res = await fetch(url, {
+        headers: auth ? { Authorization: `Bearer ${auth}` } : {},
+      });
+      if (!res.ok) {
+        setStatus(`Download failed (${res.status})`);
+        return;
+      }
+      const blob = await res.blob();
+      const objectUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = objectUrl;
+      a.download = artifact === 'zip' ? `patchbook-${exportId}.zip` : `patchbook-${exportId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(objectUrl);
+      setStatus(`Downloaded ${artifact} for ${exportId}`);
+    } catch {
+      setStatus('Download failed — is fulfillment enabled and export succeeded?');
+    } finally {
+      setDownloading(false);
+    }
+  };
 
   const refreshServerLibrary = useCallback(async () => {
     try {
@@ -189,12 +222,16 @@ export default function PatchBookStyleStudioPage() {
         idempotency_key: `studio-${bridge.source_run_id}-${crypto.randomUUID()}`,
         style_recipe: buildRequestBody(),
       });
+      setLastExportId(created.data.export_id);
       setStatus(
         `Export ${created.data.export_id} · ${created.data.status}` +
           (created.data.composition_hash
             ? ` · composition ${created.data.composition_hash.slice(0, 12)}…`
             : ''),
       );
+      if (created.data.status === 'succeeded') {
+        // Auto-offer download path in status; user clicks buttons below
+      }
     } catch (error: unknown) {
       const apiError = error as { response?: { data?: { detail?: string }; status?: number } };
       if (apiError.response?.status === 402) {
@@ -523,6 +560,33 @@ export default function PatchBookStyleStudioPage() {
                       void (async () => {
                         setLibraryBusy(true);
                         try {
+                          await canonApi.updateStyleRecipe(entry.id, {
+                            is_shared: !entry.is_shared,
+                          });
+                          await refreshServerLibrary();
+                          setStatus(
+                            entry.is_shared
+                              ? `“${entry.name}” is private again`
+                              : `“${entry.name}” shared (readable via /style-recipes/shared/{id})`,
+                          );
+                        } catch {
+                          setStatus('Share toggle failed');
+                        } finally {
+                          setLibraryBusy(false);
+                        }
+                      })();
+                    }}
+                  >
+                    {entry.is_shared ? 'Unshare' : 'Share'}
+                  </button>{' '}
+                  <button
+                    className="button button-quiet"
+                    type="button"
+                    disabled={libraryBusy}
+                    onClick={() => {
+                      void (async () => {
+                        setLibraryBusy(true);
+                        try {
                           await canonApi.deleteStyleRecipe(entry.id);
                           await refreshServerLibrary();
                           setStatus(`Deleted “${entry.name}”`);
@@ -566,6 +630,26 @@ export default function PatchBookStyleStudioPage() {
           <p role="status" className="status" style={{ marginTop: '0.75rem' }}>
             {status}
           </p>
+        ) : null}
+        {lastExportId ? (
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginTop: '0.75rem' }}>
+            <button
+              className="button button-secondary"
+              type="button"
+              disabled={downloading}
+              onClick={() => void downloadArtifact(lastExportId, 'pdf')}
+            >
+              {downloading ? 'Downloading…' : 'Download PDF'}
+            </button>
+            <button
+              className="button button-quiet"
+              type="button"
+              disabled={downloading}
+              onClick={() => void downloadArtifact(lastExportId, 'zip')}
+            >
+              Download ZIP pack
+            </button>
+          </div>
         ) : null}
       </div>
 

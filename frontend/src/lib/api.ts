@@ -391,6 +391,49 @@ export const canonApi = {
       { ttl_seconds },
     ),
 
+  /** Build authenticated artifact URL (requires prior download token). */
+  exportArtifactUrl: (
+    exportId: string,
+    artifact: 'pdf' | 'companion' | 'manifest' | 'zip',
+    token: string,
+  ) => {
+    const base = API_BASE_URL.replace(/\/$/, '');
+    const q = new URLSearchParams({ token });
+    return `${base}/canon/exports/${encodeURIComponent(exportId)}/artifacts/${artifact}?${q}`;
+  },
+
+  updateStyleRecipe: (
+    recipeId: string,
+    body: {
+      name?: string;
+      style_recipe?: Record<string, unknown>;
+      notes?: string | null;
+      is_shared?: boolean;
+    },
+  ) =>
+    api.patch<{
+      id: string;
+      name: string;
+      notes: string | null;
+      style_recipe: Record<string, unknown>;
+      recipe_hash: string;
+      is_shared: boolean;
+      created_at: string;
+      updated_at: string;
+    }>(`/canon/style-recipes/${encodeURIComponent(recipeId)}`, body),
+
+  getSharedStyleRecipe: (recipeId: string) =>
+    api.get<{
+      id: string;
+      name: string;
+      notes: string | null;
+      style_recipe: Record<string, unknown>;
+      recipe_hash: string;
+      is_shared: boolean;
+      created_at: string;
+      updated_at: string;
+    }>(`/canon/style-recipes/shared/${encodeURIComponent(recipeId)}`),
+
   listRevisions: (rigId: number) =>
     api.get<{
       total: number;
