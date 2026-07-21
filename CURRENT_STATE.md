@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `296fc3bc2548628be504a16d6ca3134fb6fa8a55`  
+**HEAD:** `cf443574baf3849c814b837bc8efa8407092207e`  
 **Latest product merge:** [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) MERGED (run DTO export bridge)
 **Prior P1 acceptance merge:** [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) MERGED (P1 acceptance → canon ledger)
 **Prior P1 client merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49)  
