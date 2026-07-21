@@ -26,9 +26,13 @@ cd backend && python -m integrations.synth_catalog_importer --dry-run \
 # Catalog + curated full-spec
 python -m integrations.synth_catalog_importer
 
+# Fill null HP from manufacturer-curated specs (never invent)
+python -m integrations.synth_catalog_importer --enrich-hp
+
 # Or justfile
 just synth-catalog-import --dry-run
 just synth-catalog-import
+just synth-catalog-import -- --enrich-hp
 ```
 
 ## Provenance rules

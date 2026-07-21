@@ -18,6 +18,7 @@ from integrations.modulargrid_importer import (
 )
 from integrations.synth_catalog_data import seed_stats
 from integrations.synth_catalog_importer import (
+    enrich_catalog_hp_from_known_specs,
     import_all as import_synth_catalog_all,
     import_catalog as import_synth_catalog_rows,
     import_full_spec_modules as import_synth_full_spec,
@@ -164,3 +165,15 @@ def import_synth_all(
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}") from e
+
+
+@synth_catalog_router.post("/enrich/hp")
+def enrich_synth_catalog_hp(
+    dry_run: bool = False,
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Fill null module_catalog.hp from curated ModularGrid + modules table."""
+    try:
+        return enrich_catalog_hp_from_known_specs(db, dry_run=dry_run)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Enrich failed: {str(e)}") from e

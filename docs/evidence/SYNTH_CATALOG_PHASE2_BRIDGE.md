@@ -48,12 +48,14 @@ Dry-run + SQLite admit receipts:
 - Null HP/power/depth when research did not record values
 - Access basis: `manual_research` / `CATALOG_OBSERVED` (not a ModularGrid bulk dump)
 
-## Follow-ups (not in this PR)
+## Follow-ups
 
-1. Enrich HP/power for high-priority Phase 2 rows (manufacturer-confirmed only)
-2. Catalog API `source` filter once `module_catalog` gains a source column (optional migration)
-3. Staging admit against live Postgres (`just synth-catalog-import` with `DATABASE_URL`)
-4. Phase 3 mid-tier seed when research packet advances
+1. ~~Staging admit against live Postgres~~ → see `SYNTH_CATALOG_STAGING_IMPORT.md`
+2. ~~HP enrich from curated ModularGrid / modules table~~ → `--enrich-hp` / `POST /api/synth-catalog/enrich/hp`
+3. Catalog API `source` filter once `module_catalog` gains a source column (optional migration)
+4. Broader HP/power enrichment from manufacturer-confirmed research (Phase 2 was sparse)
+5. Phase 3 mid-tier seed when research packet advances
+6. Rebuild staging backend container so `/api/synth-catalog/*` is live on :8000
 
 ## Operator commands
 

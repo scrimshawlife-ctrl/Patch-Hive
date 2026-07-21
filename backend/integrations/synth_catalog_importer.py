@@ -23,6 +23,7 @@ from cases.models import Case  # noqa: F401 — SQLAlchemy mapper registration
 from community.models import Comment, User, Vote  # noqa: F401
 from core.database import SessionLocal
 from core.provenance import Provenance
+from integrations.modulargrid_data import MODULES_DATABASE
 from integrations.synth_catalog_data import (
     DEFAULT_SEED_PATH,
     SOURCE_NAME,
@@ -229,6 +230,125 @@ def manufacturers_payload() -> Dict[str, Any]:
     }
 
 
+def _known_hp_index(db: Session) -> Dict[tuple[str, str], Dict[str, Any]]:
+    """
+    Build (brand_lower, name_lower) → {hp, category, source} from
+    manufacturer-curated ModularGrid data + existing modules rows.
+    Never invents values.
+    """
+    known: Dict[tuple[str, str], Dict[str, Any]] = {}
+
+    for row in MODULES_DATABASE:
+        brand = (row.get("brand") or "").strip()
+        name = (row.get("name") or "").strip()
+        hp = row.get("hp")
+        if not brand or not name or hp is None:
+            continue
+        known[(brand.lower(), name.lower())] = {
+            "hp": int(hp),
+            "category": row.get("module_type"),
+            "spec_source": "ModularGridCurated",
+        }
+
+    for m in db.query(Module).filter(Module.hp.isnot(None)).all():
+        key = (m.brand.lower(), m.name.lower())
+        # Prefer curated constant; modules table fills gaps only
+        if key in known:
+            continue
+        known[key] = {
+            "hp": int(m.hp),
+            "category": m.module_type,
+            "spec_source": f"modules:{m.source}",
+        }
+
+    return known
+
+
+def enrich_catalog_hp_from_known_specs(
+    db: Session,
+    *,
+    dry_run: bool = False,
+    fill_category: bool = True,
+) -> Dict[str, Any]:
+    """
+    Fill null module_catalog.hp (and empty category) from known manufacturer specs.
+
+    Sources (fail-closed — only explicit values):
+    1. integrations.modulargrid_data.MODULES_DATABASE
+    2. existing modules table rows with non-null hp
+
+    Never overwrites a non-null catalog.hp.
+    """
+    prov = Provenance.create(entity_type="synth_catalog_hp_enrich", pipeline="import")
+    known = _known_hp_index(db)
+
+    updated_hp = 0
+    updated_category = 0
+    examined = 0
+    samples: List[Dict[str, Any]] = []
+
+    candidates = (
+        db.query(ModuleCatalog)
+        .filter((ModuleCatalog.hp.is_(None)) | (ModuleCatalog.category.is_(None)))
+        .all()
+    )
+
+    for entry in candidates:
+        examined += 1
+        key = (entry.brand.lower(), entry.name.lower())
+        spec = known.get(key)
+        if not spec:
+            continue
+        changed = False
+        if entry.hp is None and spec.get("hp") is not None:
+            if not dry_run:
+                entry.hp = spec["hp"]
+            updated_hp += 1
+            changed = True
+        if (
+            fill_category
+            and (not entry.category or entry.category == "UTIL")
+            and spec.get("category")
+            and entry.category != spec["category"]
+        ):
+            # Only replace UTIL/null with a more specific curated type
+            if not entry.category or entry.category == "UTIL":
+                if not dry_run:
+                    entry.category = spec["category"]
+                updated_category += 1
+                changed = True
+        if changed and len(samples) < 20:
+            samples.append(
+                {
+                    "brand": entry.brand,
+                    "name": entry.name,
+                    "hp": spec.get("hp"),
+                    "category": spec.get("category"),
+                    "spec_source": spec.get("spec_source"),
+                }
+            )
+
+    if not dry_run:
+        db.commit()
+
+    prov.mark_completed()
+    prov.add_metric("updated_hp", updated_hp)
+    prov.add_metric("updated_category", updated_category)
+    prov.add_metric("examined", examined)
+    prov.add_metric("known_specs", len(known))
+
+    return {
+        "status": "success",
+        "dry_run": dry_run,
+        "examined": examined,
+        "known_specs": len(known),
+        "updated_hp": updated_hp,
+        "updated_category": updated_category,
+        "samples": samples,
+        "provenance": prov.to_dict(),
+    }
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = argparse.ArgumentParser(description="Import Synth Catalog Research into PatchHive")
     parser.add_argument(
@@ -246,6 +366,11 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     parser.add_argument("--dry-run", action="store_true")
     parser.add_argument(
+        "--enrich-hp",
+        action="store_true",
+        help="Fill null catalog HP from ModularGrid curated + modules table",
+    )
+    parser.add_argument(
         "--receipt",
         type=Path,
         default=None,
@@ -255,7 +380,9 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     db = SessionLocal()
     try:
-        if args.catalog_only:
+        if args.enrich_hp:
+            result = enrich_catalog_hp_from_known_specs(db, dry_run=args.dry_run)
+        elif args.catalog_only:
             result = import_catalog(db, args.seed, dry_run=args.dry_run)
         elif args.full_spec_only:
             result = import_full_spec_modules(
