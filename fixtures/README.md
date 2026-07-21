@@ -19,6 +19,8 @@ python scripts/seed_golden_demo.py --print-hashes
 | `Cases4PatchHive.md` | Source research report (50 cases, master + power tables) |
 | `cases_research_2026.json` | Parsed rows matching `cases` table / `CaseCreate` schema |
 
+Legacy `cases` table path:
+
 ```bash
 # Re-parse markdown → JSON
 just cases-parse
@@ -30,6 +32,18 @@ just cases-dry-run
 # Upsert into DB (requires DATABASE_URL + backend deps)
 just cases-import --replace-source
 ```
+
+Normalized case catalog seed (additive `case_catalog` schema):
+
+```bash
+just case-catalog-seed
+just case-catalog-seed-dry-run
+```
+
+Artifacts land under `data/cases/` (`seed-v1.json`, `seed-v1.sources.json`,
+`seed-v1.coverage.json`, `receipts/seed-v1.dry-run.json`). See
+[data/cases/README.md](../data/cases/README.md) and
+[docs/evidence/CASE_CATALOG_SEED_V1_RECEIPT.md](../docs/evidence/CASE_CATALOG_SEED_V1_RECEIPT.md).
 
 Staging walkthrough: [docs/design/CASES_STAGING_BOOTSTRAP.md](../docs/design/CASES_STAGING_BOOTSTRAP.md).
 

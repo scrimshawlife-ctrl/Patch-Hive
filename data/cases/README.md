@@ -21,10 +21,17 @@ Unknown values must be omitted or set to `null`. Do not encode unknown values as
 data/cases/
   README.md
   schema.example.json
-  seed-v1.json                 # added after research verification
-  seed-v1.sources.json         # source manifest
+  seed-v1.json                 # research-candidate seed (50 cases)
+  seed-v1.sources.json         # source and licensing manifest
+  seed-v1.coverage.json        # field coverage statistics
   receipts/
-    seed-v1.dry-run.json
+    seed-v1.dry-run.json       # dry-run receipt bound to seed SHA-256
+```
+
+Regenerate the seed from the research fixture:
+
+```bash
+python3 scripts/build_case_catalog_seed.py
 ```
 
 ## Required identity fields

@@ -1,0 +1,62 @@
+{
+  "dataset_version": "case-catalog-seed-v1",
+  "case_count": 50,
+  "format_family_counts": {
+    "buchla_200": 7,
+    "eurorack": 36,
+    "frac": 1,
+    "mu_5u": 3,
+    "serge_4u": 3
+  },
+  "confidence_counts": {
+    "low": 24,
+    "medium": 26
+  },
+  "field_coverage": {
+    "powered_true": {
+      "count": 47,
+      "pct": 94.0
+    },
+    "powered_false": {
+      "count": 3,
+      "pct": 6.0
+    },
+    "powered_null": {
+      "count": 0,
+      "pct": 0.0
+    },
+    "power_pos12_ma": {
+      "count": 22,
+      "pct": 44.0
+    },
+    "depth_mm": {
+      "count": 29,
+      "pct": 58.0
+    },
+    "outer_width_mm": {
+      "count": 17,
+      "pct": 34.0
+    },
+    "weight_kg": {
+      "count": 17,
+      "pct": 34.0
+    },
+    "price_observation": {
+      "count": 32,
+      "pct": 64.0
+    },
+    "source_packets_present": {
+      "count": 50,
+      "pct": 100.0
+    }
+  },
+  "source_packet_total": 635,
+  "mean_source_packets_per_case": 12.7,
+  "publication_state": "research_candidate_not_verified_canonical",
+  "notes": [
+    "Coverage measures normalized seed fields, not manufacturer-verified completeness.",
+    "Null remains the honest state for unspecified research cells."
+  ],
+  "seed_sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
+  "source_document_sha256": "e310933e71469f97b13eda3e1132797c8dd298b28cc9a571848d39ff5c7335e3"
+}

@@ -116,6 +116,31 @@ cases-import *args:
 	fi
 	backend/.venv/bin/python scripts/import_cases_research.py {{args}}
 
+# Build normalized case-catalog seed + source/coverage manifests from research fixture
+case-catalog-seed:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	python3 scripts/build_case_catalog_seed.py
+
+# Dry-run seed-v1 into an isolated SQLite catalog schema (no durable writes)
+case-catalog-seed-dry-run:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}/backend"
+	rm -f case_catalog_seed_test.db
+	DATABASE_URL=sqlite:///./case_catalog_seed_test.db ../backend/.venv/bin/python - <<'PY'
+	from cases.models import CaseCatalog  # noqa: F401
+	from cases.source_policy import CaseSourcePolicyPacket  # noqa: F401
+	from core.database import Base, engine
+
+	Base.metadata.create_all(bind=engine)
+	PY
+	DATABASE_URL=sqlite:///./case_catalog_seed_test.db ../backend/.venv/bin/python -m integrations.case_catalog_populator \
+	  --input ../data/cases/seed-v1.json \
+	  --dry-run \
+	  --receipt ../data/cases/receipts/seed-v1.dry-run.json
+
 coverage:
 	#!/usr/bin/env bash
 	set -euo pipefail

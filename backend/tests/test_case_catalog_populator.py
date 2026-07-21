@@ -63,7 +63,6 @@ def _record() -> dict:
                 "normalized_value": "55.0",
                 "confidence": "verified",
                 "policy": {
-                    "source_name": "Test Instruments",
                     "access_basis": "official_publication",
                     "license_status": "public technical documentation",
                     "evidence_status": "MANUAL_CONFIRMED",
@@ -72,6 +71,7 @@ def _record() -> dict:
                     "retrieved_at": "2026-07-21T12:05:00Z",
                     "content_hash": "a" * 64,
                     "normalizer_version": "case-catalog-v1",
+                    "notes": "Depth from official manual table",
                 },
             }
         ],
@@ -118,6 +118,7 @@ def test_import_is_idempotent_and_preserves_policy(db_session: Session) -> None:
     assert packet.evidence_status == "MANUAL_CONFIRMED"
     assert packet.review_state == "accepted"
     assert packet.content_hash == "a" * 64
+    assert packet.notes == "Depth from official manual table"
 
 
 def test_dry_run_rolls_back_all_catalog_writes(db_session: Session) -> None:

@@ -1,0 +1,11 @@
+{
+  "dry_run": true,
+  "input_path": "../data/cases/seed-v1.json",
+  "input_records": 50,
+  "input_sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
+  "inserted": 50,
+  "rejected": 0,
+  "status": "success",
+  "updated": 0,
+  "warnings": []
+}

@@ -146,8 +146,8 @@ def _upsert_policy_packet(
         .first()
     ) or CaseSourcePolicyPacket(source_id=source.id)
     db.add(packet)
+    # Persist only columns that exist on CaseSourcePolicyPacket.
     for field in (
-        "source_name",
         "external_record_id",
         "access_basis",
         "license_status",
@@ -156,10 +156,14 @@ def _upsert_policy_packet(
         "content_hash",
         "normalizer_version",
         "reviewed_by",
-        "policy_notes",
     ):
         if field in policy_data:
             setattr(packet, field, policy_data[field])
+    # Accept either "notes" or legacy seed key "policy_notes".
+    if "notes" in policy_data:
+        packet.notes = policy_data["notes"]
+    elif "policy_notes" in policy_data:
+        packet.notes = policy_data["policy_notes"]
     for field in ("observed_at", "retrieved_at", "reviewed_at"):
         if policy_data.get(field) is not None:
             setattr(packet, field, _parse_datetime(policy_data[field], field))

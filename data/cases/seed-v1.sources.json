@@ -1,0 +1,78 @@
+{
+  "manifest_version": "1.0",
+  "dataset_version": "case-catalog-seed-v1",
+  "normalizer_version": "case-catalog-v1",
+  "generated_at": "2026-07-21T20:24:00Z",
+  "purpose": "Source and licensing manifest for the first modular case catalog seed. Research synthesis supports candidate catalog population; it is not manufacturer-verified canonical truth.",
+  "inputs": [
+    {
+      "path": "fixtures/Cases4PatchHive.md",
+      "role": "primary_research_report",
+      "sha256": "e310933e71469f97b13eda3e1132797c8dd298b28cc9a571848d39ff5c7335e3",
+      "access_basis": "manual_research",
+      "license_status": "research_synthesis",
+      "redistribution": "Internal research notes compiled from public manufacturer and retailer observations. Do not republish as official manufacturer copy."
+    },
+    {
+      "path": "fixtures/cases_research_2026.json",
+      "role": "parsed_research_fixture",
+      "sha256": "a7e92e1bdf2a6099a444a5098c4f08b3e89984560747403df5b51e7d9255b808",
+      "access_basis": "manual_research",
+      "license_status": "research_synthesis"
+    },
+    {
+      "path": "data/cases/seed-v1.json",
+      "role": "canonical_import_seed",
+      "sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
+      "access_basis": "manual_research",
+      "license_status": "research_synthesis"
+    }
+  ],
+  "sources": [
+    {
+      "source_id": "cases4patchhive-2026",
+      "source_type": "research_synthesis",
+      "source_name": "Cases4PatchHive research master table (2026)",
+      "source_url": "https://github.com/scrimshawlife-ctrl/Patch-Hive/blob/main/fixtures/Cases4PatchHive.md",
+      "access_basis": "manual_research",
+      "license_status": "research_synthesis",
+      "evidence_status": "UNKNOWN",
+      "review_state": "pending",
+      "content_hash": "e310933e71469f97b13eda3e1132797c8dd298b28cc9a571848d39ff5c7335e3",
+      "fields_permitted": [
+        "manufacturer",
+        "model",
+        "format_family",
+        "capacity",
+        "row layout",
+        "depth",
+        "outer dimensions",
+        "weight",
+        "materials",
+        "power rails when explicitly published in research capture",
+        "price observations",
+        "mounting notes"
+      ],
+      "fields_restricted": [
+        "panel images",
+        "verbatim retailer marketing copy",
+        "manufacturer trademarks as branding assets"
+      ],
+      "notes": "Compiled for PatchHive catalog bootstrap. Field-level packets on each seed record inherit this document hash. Official manufacturer pages and manuals remain higher authority for verified publication."
+    }
+  ],
+  "policy": {
+    "unknown_values": "null_only",
+    "verified_publication_requires": [
+      "official_publication or higher access_basis",
+      "non-unknown license_status",
+      "content_hash",
+      "review_state accepted"
+    ],
+    "seed_publication_state": "research_candidate_not_verified_canonical"
+  },
+  "counts": {
+    "cases": 50,
+    "field_source_packets": 635
+  }
+}
