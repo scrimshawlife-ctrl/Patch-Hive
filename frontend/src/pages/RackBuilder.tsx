@@ -16,6 +16,18 @@ interface ReviewCandidate {
   moduleRevisionId: string;
 }
 
+interface FusedEntityView {
+  fuse_id: string;
+  manufacturer?: string | null;
+  model?: string | null;
+  observation_count: number;
+  supporting_image_ids: string[];
+  mean_confidence: number;
+  conflict: boolean;
+  conflict_notes: string[];
+  classification_status: string;
+}
+
 /** Demo ranked set when no rack id is available (create flow). */
 const DEMO_CANDIDATES: ReviewCandidate[] = [
   {
@@ -52,6 +64,9 @@ function mapApiCandidates(rows: EvidenceCandidate[]): ReviewCandidate[] {
   }));
 }
 
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+const MAX_BYTES = 12 * 1024 * 1024;
+
 export default function RackBuilderPage() {
   const { id: routeId } = useParams<{ id: string }>();
   const rackId = routeId && /^\d+$/.test(routeId) ? Number(routeId) : null;
@@ -60,13 +75,17 @@ export default function RackBuilderPage() {
   const [racks, setRacks] = useState<Rack[]>([]);
   const [selectedRackId, setSelectedRackId] = useState<number | null>(rackId);
   const [evidenceState, setEvidenceState] = useState<EvidenceState>('idle');
-  const [fileName, setFileName] = useState('');
-  const [pendingFile, setPendingFile] = useState<File | null>(null);
+  const [fileLabel, setFileLabel] = useState('');
+  const [pendingFiles, setPendingFiles] = useState<File[]>([]);
   const [error, setError] = useState('');
   const [candidates, setCandidates] = useState<ReviewCandidate[]>(DEMO_CANDIDATES);
   const [inventoryRevisionId, setInventoryRevisionId] = useState<string | null>(null);
   const [readyForGeneration, setReadyForGeneration] = useState(false);
   const [fromLiveApi, setFromLiveApi] = useState(false);
+  const [fused, setFused] = useState<FusedEntityView[]>([]);
+  const [reconcileStatus, setReconcileStatus] = useState<string | null>(null);
+  const [reconcileNote, setReconcileNote] = useState<string | null>(null);
+  const [imageCount, setImageCount] = useState(0);
 
   const activeRackId = selectedRackId ?? rackId;
 
@@ -97,19 +116,40 @@ export default function RackBuilderPage() {
   const allResolved = ranked.every((c) => c.status !== 'inferred');
   const confirmedCount = ranked.filter((c) => c.status === 'confirmed').length;
 
-  const selectPhoto = (file?: File) => {
+  const selectPhotos = (list?: FileList | null) => {
     setError('');
     setInventoryRevisionId(null);
     setReadyForGeneration(false);
-    if (!file) return;
-    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 12 * 1024 * 1024) {
-      setError('Choose a JPEG, PNG, or WebP image no larger than 12 MB.');
+    setFused([]);
+    setReconcileStatus(null);
+    setReconcileNote(null);
+    setImageCount(0);
+    if (!list || list.length === 0) return;
+
+    const accepted: File[] = [];
+    const reasons: string[] = [];
+    Array.from(list).forEach((file) => {
+      if (!ALLOWED_TYPES.includes(file.type) || file.size > MAX_BYTES) {
+        reasons.push(`${file.name}: type/size rejected`);
+        return;
+      }
+      accepted.push(file);
+    });
+    if (!accepted.length) {
+      setError(reasons.join('; ') || 'Choose JPEG, PNG, or WebP images ≤ 12 MB.');
       setEvidenceState('idle');
-      setPendingFile(null);
+      setPendingFiles([]);
       return;
     }
-    setFileName(file.name);
-    setPendingFile(file);
+    if (reasons.length) {
+      setError(`Some files skipped: ${reasons.join('; ')}`);
+    }
+    setPendingFiles(accepted);
+    setFileLabel(
+      accepted.length === 1
+        ? accepted[0].name
+        : `${accepted.length} photos (${accepted.map((f) => f.name).join(', ')})`,
+    );
     setFromLiveApi(false);
     setCandidates(DEMO_CANDIDATES.map((c) => ({ ...c, status: 'inferred' as const })));
     setEvidenceState('ready');
@@ -121,15 +161,15 @@ export default function RackBuilderPage() {
 
   const detectModules = async () => {
     setError('');
-    if (!pendingFile) {
-      setError('Choose a rig photo first.');
+    if (!pendingFiles.length) {
+      setError('Choose at least one rig photo first.');
       return;
     }
-    // Live path: upload to evidence API then list ranked candidates.
+    // Live path: multi-image upload → candidates → multi-photo reconcile
     if (activeRackId != null) {
       setEvidenceState('uploading');
       try {
-        const upload = await evidenceApi.uploadImages(activeRackId, [pendingFile], {
+        const upload = await evidenceApi.uploadImages(activeRackId, pendingFiles, {
           run_vision_mock: true,
           consent_provider_processing: false,
         });
@@ -147,11 +187,23 @@ export default function RackBuilderPage() {
           setCandidates(DEMO_CANDIDATES.map((c) => ({ ...c, status: 'inferred' })));
           setFromLiveApi(false);
         }
+        try {
+          const recon = await evidenceApi.reconcile(activeRackId);
+          setFused(recon.data.fused_entities ?? []);
+          setReconcileStatus(recon.data.status);
+          setReconcileNote(recon.data.note);
+          setImageCount(recon.data.image_count);
+        } catch {
+          setFused([]);
+          setReconcileStatus(null);
+          setReconcileNote('Reconciliation API unavailable; showing per-image candidates only.');
+        }
         setEvidenceState('review');
       } catch {
         setError('Evidence upload or detection failed. Falling back to local demo candidates.');
         setCandidates(DEMO_CANDIDATES.map((c) => ({ ...c, status: 'inferred' })));
         setFromLiveApi(false);
+        setFused([]);
         setEvidenceState('review');
       }
       return;
@@ -159,6 +211,13 @@ export default function RackBuilderPage() {
     // Create flow without rack: local demo only.
     setFromLiveApi(false);
     setCandidates(DEMO_CANDIDATES.map((c) => ({ ...c, status: 'inferred' })));
+    setFused([]);
+    setReconcileStatus(pendingFiles.length >= 2 ? 'DEMO_MULTI' : 'DEMO_SINGLE');
+    setReconcileNote(
+      pendingFiles.length >= 2
+        ? 'Demo mode: multi-photo fusion requires a live rig target.'
+        : 'Demo mode: select a rig for live multi-photo reconciliation.',
+    );
     setEvidenceState('review');
   };
 
@@ -198,7 +257,6 @@ export default function RackBuilderPage() {
       }
     }
 
-    // Demo / offline synthetic revision id
     const material = ranked
       .filter((c) => c.status === 'confirmed')
       .map((c) => `${c.id}:${c.moduleRevisionId}`)
@@ -218,8 +276,8 @@ export default function RackBuilderPage() {
           <p className="eyebrow">Create rig</p>
           <h1 id="builder-title">Establish your module inventory</h1>
           <p className="muted">
-            Choose modules manually or use a photo as reviewable evidence. Detection is never treated as
-            truth.
+            Choose modules manually or use one or more photos as reviewable evidence. Multi-photo fusion
+            never auto-confirms inventory.
           </p>
         </div>
       </header>
@@ -227,8 +285,8 @@ export default function RackBuilderPage() {
       {!liveMode ? (
         <div className="panel" style={{ marginBottom: '1rem' }}>
           <p className="muted">
-            Photo evidence binds to an existing rig. Select a rig for live upload, or continue with local
-            demo detection on this page.
+            Photo evidence binds to an existing rig. Select a rig for live multi-photo upload, or continue
+            with local demo detection.
           </p>
           {racks.length > 0 ? (
             <label htmlFor="evidence-rack">
@@ -273,21 +331,22 @@ export default function RackBuilderPage() {
         </article>
 
         <article className="panel" aria-labelledby="photo-title">
-          <p className="eyebrow">Method 02 · evidence acquisition</p>
-          <h2 id="photo-title">Review a rig photo</h2>
+          <p className="eyebrow">Method 02 · multi-photo evidence</p>
+          <h2 id="photo-title">Review rig photo(s)</h2>
           <div className="field">
             <label htmlFor="rig-photo">Rig photo</label>
             <input
               id="rig-photo"
               type="file"
               accept="image/jpeg,image/png,image/webp"
+              multiple
               aria-describedby="photo-help photo-error"
-              onChange={(event) => selectPhoto(event.target.files?.[0])}
+              onChange={(event) => selectPhotos(event.target.files)}
             />
             <span id="photo-help" className="muted">
-              JPEG, PNG, or WebP · 12 MB maximum. Files are re-encoded and metadata is removed.
+              JPEG, PNG, or WebP · 12 MB each · multiple angles supported.
               {activeRackId != null
-                ? ` Live API: POST /api/racks/${activeRackId}/evidence/images`
+                ? ` Live: upload + GET /api/racks/${activeRackId}/evidence/reconcile`
                 : ' Demo mode until a target rig is selected.'}
             </span>
             {error ? (
@@ -298,7 +357,7 @@ export default function RackBuilderPage() {
           </div>
           {evidenceState === 'ready' ? (
             <div className="evidence-ready">
-              <p className="status status-success">Ready to scan: {fileName}</p>
+              <p className="status status-success">Ready to scan: {fileLabel}</p>
               <button className="button button-secondary" type="button" onClick={() => void detectModules()}>
                 Detect modules
               </button>
@@ -306,7 +365,7 @@ export default function RackBuilderPage() {
           ) : null}
           {evidenceState === 'uploading' ? (
             <p className="status" role="status">
-              Uploading and detecting…
+              Uploading {pendingFiles.length} image(s) and reconciling…
             </p>
           ) : null}
         </article>
@@ -319,9 +378,53 @@ export default function RackBuilderPage() {
             <h2 id="review-title">Review ranked detection candidates</h2>
             <p className="muted">
               Provider suggestions remain inferred until you confirm an authoritative gallery match.
-              Confidence is not color-only — status text is always shown.
+              Multi-photo fusion is advisory only.
             </p>
           </div>
+
+          {(fused.length > 0 || reconcileStatus) && (
+            <div className="panel" aria-label="Multi-photo reconciliation" style={{ marginBottom: '1rem' }}>
+              <h3>Multi-photo reconciliation</h3>
+              <p className="muted" role="status">
+                Status: {reconcileStatus ?? '—'}
+                {imageCount ? ` · ${imageCount} image(s)` : ''}
+                {reconcileNote ? ` · ${reconcileNote}` : ''}
+              </p>
+              {fused.length === 0 ? (
+                <p className="muted">No fused entities yet.</p>
+              ) : (
+                <ul style={{ listStyle: 'none', padding: 0 }}>
+                  {fused.map((entity) => (
+                    <li
+                      key={entity.fuse_id}
+                      className="detection-row"
+                      style={{ marginBottom: '0.75rem' }}
+                    >
+                      <div>
+                        <strong>
+                          {entity.manufacturer || 'Unknown'} · {entity.model || entity.fuse_id}
+                        </strong>
+                        <p className="muted">
+                          Support: {entity.observation_count} observation(s) across{' '}
+                          {entity.supporting_image_ids.length} image(s) · mean confidence{' '}
+                          {(entity.mean_confidence * 100).toFixed(0)}%
+                        </p>
+                        <p
+                          className={`status status-${
+                            entity.conflict ? 'danger' : 'warning'
+                          }`}
+                        >
+                          {entity.conflict
+                            ? `Conflict: ${entity.conflict_notes.join('; ') || 'disagreement'}`
+                            : `Status: ${entity.classification_status} (not confirmed)`}
+                        </p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
 
           <ul className="candidate-list" aria-label="Ranked module candidates">
             {ranked.map((candidate) => (

@@ -23,7 +23,7 @@
 | Patch Book one-page compiler | SPEC_ONLY / PARTIAL | export/pdf, patchbook packages | patchbook tests | PATCH_BOOK_GENERATOR | full page-fit 0.3.x |
 | deterministic SVG/PDF/JSON/ZIP | PARTIAL | export routes | unit/api | EXPORT docs | manifest completeness |
 | provenance retention | PARTIAL | EvidenceRecord, ProviderReceipt, Provenance | unit | CANON | image retention product policy |
-| multi-photo reconciliation | PARTIAL | `evidence/reconciliation.py`, GET .../evidence/reconcile | unit+api | VSI WS6 | UI for fused review still thin |
+| multi-photo reconciliation | PARTIAL | `evidence/reconciliation.py`, GET .../evidence/reconcile, RackBuilder multi-file + fusion panel | unit+api+e2e | VSI WS6 | accuracy metrics still NOT_COMPUTABLE |
 | evaluation metrics dataset | NOT_COMPUTABLE | — | — | VSI §12 | licensed dataset required |
 
 ## Gap priority (execution)
