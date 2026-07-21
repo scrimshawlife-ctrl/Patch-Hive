@@ -33,6 +33,7 @@ from integrations.synth_catalog_data import (
     get_full_spec_modules,
     get_major_brands,
     load_seed,
+    resolve_seed_path,
     seed_stats,
 )
 from modules.catalog import ModuleCatalog
@@ -52,8 +53,8 @@ def import_catalog(
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """Admit research catalog rows into module_catalog (skip existing slugs)."""
-    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
-    rows = get_catalog_modules(str(path.resolve()))
+    path = resolve_seed_path(seed_path)
+    rows = get_catalog_modules(str(path))
     prov = Provenance.create(entity_type="synth_catalog_import", pipeline="import")
 
     imported = 0
@@ -118,8 +119,8 @@ def import_full_spec_modules(
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """Admit curated full-spec modules into modules table."""
-    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
-    modules = get_full_spec_modules(str(path.resolve()) if path.is_file() else None)
+    path = resolve_seed_path(seed_path)
+    modules = get_full_spec_modules(str(path) if path.is_file() else None)
     prov = Provenance.create(entity_type="synth_catalog_module_import", pipeline="import")
 
     if clear_existing and not dry_run:
@@ -198,7 +199,7 @@ def import_all(
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """Import catalog + full-spec tiers."""
-    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
+    path = resolve_seed_path(seed_path)
     prov = Provenance.create(entity_type="synth_catalog_full_import", pipeline="import")
 
     catalog_result = import_catalog(db, path, dry_run=dry_run)
@@ -215,7 +216,7 @@ def import_all(
         "dry_run": dry_run,
         "catalog": catalog_result,
         "full_spec": full_result,
-        "stats": seed_stats(str(path.resolve()) if path.is_file() else None),
+        "stats": seed_stats(str(path) if path.is_file() else None),
         "provenance": prov.to_dict(),
     }
 

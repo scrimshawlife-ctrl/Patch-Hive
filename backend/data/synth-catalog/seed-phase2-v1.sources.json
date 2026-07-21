@@ -1,0 +1,14 @@
+{
+  "packet_version": "1.0",
+  "source_id": "synth-catalog-research-phase2-v1",
+  "access_basis": "manual_research",
+  "license_status": "research compilation for internal catalog bootstrap; not a ModularGrid dump",
+  "evidence_status": "CATALOG_OBSERVED",
+  "review_state": "accepted",
+  "normalizer_version": "synth-catalog-v1",
+  "notes": "Multi-source rotation research sealed via Abraxas PR #984; HP/power null when unknown.",
+  "content_hashes": {
+    "phase2_major_br_sha256": "2bfd03d2b3e697d35aaf21c60744df66c984f96944124e901a5d85eb5689c332",
+    "brand_index_sha256": "9d7f7e88d62772cf9f8763f1978a2fbfef380b5fd633893a3b211d070785a04f"
+  }
+}

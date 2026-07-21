@@ -38,7 +38,10 @@ def test_map_availability():
 
 
 def test_seed_stats_and_counts():
-    assert DEFAULT_SEED_PATH.is_file()
+    from integrations.synth_catalog_data import resolve_seed_path
+
+    resolved = resolve_seed_path()
+    assert resolved.is_file()
     stats = seed_stats()
     assert stats["fixture_version"] == "1.0"
     assert stats["catalog_module_count"] >= 300
@@ -48,6 +51,11 @@ def test_seed_stats_and_counts():
     assert "Abraxas" in (stats.get("abraxas_pr") or "") or "abraxas" in (
         stats.get("abraxas_pr") or ""
     ).lower()
+    # Packaged under backend/data for Docker backend-only images
+    backend_packaged = (
+        Path(__file__).resolve().parents[1] / "data" / "synth-catalog" / "seed-phase2-v1.json"
+    )
+    assert backend_packaged.is_file()
 
 
 def test_import_catalog_idempotent(db_session: Session):
