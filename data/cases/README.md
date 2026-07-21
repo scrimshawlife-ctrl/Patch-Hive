@@ -104,7 +104,11 @@ GET /api/cases/catalog/formats
 GET /api/cases/catalog/stats
 GET /api/cases/catalog/{slug}
 GET /api/cases/catalog/{slug}/revisions
+POST /api/cases/catalog/{slug}/compatibility
 ```
 
 Filters on list include manufacturer, format_family, capacity range/unit, row count,
 powered, depth, rail headroom, portable/lid/stand, production_status, feature_key, and `q`.
+
+Compatibility returns explicit per-check status: `verified`, `incomplete`, or `conflict`.
+Missing case rails, depths, or module depths are never treated as zero.
