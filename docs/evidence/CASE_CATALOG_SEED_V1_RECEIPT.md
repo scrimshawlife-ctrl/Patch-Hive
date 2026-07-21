@@ -12,7 +12,7 @@ produce a dry-run import receipt bound to the exact input SHA-256.
 |----------|------|---------|
 | Research report | `fixtures/Cases4PatchHive.md` | `e310933e71469f97b13eda3e1132797c8dd298b28cc9a571848d39ff5c7335e3` |
 | Parsed research fixture | `fixtures/cases_research_2026.json` | (see `seed-v1.sources.json`) |
-| Canonical seed | `data/cases/seed-v1.json` | `2de4eab23d4975f07366b524d76babb9ef4a5d4b38222c301857274dd655d11f` |
+| Canonical seed | `data/cases/seed-v1.json` | `74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525` |
 | Source manifest | `data/cases/seed-v1.sources.json` | regenerated with seed |
 | Coverage stats | `data/cases/seed-v1.coverage.json` | regenerated with seed |
 
@@ -25,7 +25,7 @@ Normalizer: `case-catalog-v1` via `scripts/build_case_catalog_seed.py`.
   "dry_run": true,
   "input_path": "../data/cases/seed-v1.json",
   "input_records": 50,
-  "input_sha256": "2de4eab23d4975f07366b524d76babb9ef4a5d4b38222c301857274dd655d11f",
+  "input_sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
   "inserted": 50,
   "rejected": 0,
   "status": "success",

@@ -20,7 +20,6 @@ import hashlib
 import json
 import re
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -35,6 +34,8 @@ NORMALIZER_VERSION = "case-catalog-v1"
 DATASET_VERSION = "case-catalog-seed-v1"
 OBSERVED_AT = "2026-07-21T00:00:00Z"
 RETRIEVED_AT = "2026-07-21T12:00:00Z"
+# Fixed stamp so rebuilds are SHA-stable (do not use wall-clock time).
+GENERATED_AT = "2026-07-21T20:24:00Z"
 RESEARCH_SOURCE_URL = (
     "https://github.com/scrimshawlife-ctrl/Patch-Hive/blob/main/fixtures/Cases4PatchHive.md"
 )
@@ -792,7 +793,7 @@ def build_source_manifest(
         "manifest_version": "1.0",
         "dataset_version": DATASET_VERSION,
         "normalizer_version": NORMALIZER_VERSION,
-        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "generated_at": GENERATED_AT,
         "purpose": (
             "Source and licensing manifest for the first modular case catalog seed. "
             "Research synthesis supports candidate catalog population; it is not "
@@ -977,7 +978,7 @@ def main(argv: list[str] | None = None) -> int:
         "research_fixture": str(args.research_json.relative_to(REPO_ROOT)),
         "research_fixture_sha256": research_json_hash,
         "case_count": len(records),
-        "generated_at": datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z"),
+        "generated_at": GENERATED_AT,
         "cases": records,
     }
 

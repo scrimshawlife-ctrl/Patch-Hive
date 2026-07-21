@@ -7,7 +7,7 @@
   "research_fixture": "fixtures/cases_research_2026.json",
   "research_fixture_sha256": "a7e92e1bdf2a6099a444a5098c4f08b3e89984560747403df5b51e7d9255b808",
   "case_count": 50,
-  "generated_at": "2026-07-21T20:24:02Z",
+  "generated_at": "2026-07-21T20:24:00Z",
   "cases": [
     {
       "manufacturer": "Intellijel",

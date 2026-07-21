@@ -57,6 +57,6 @@
     "Coverage measures normalized seed fields, not manufacturer-verified completeness.",
     "Null remains the honest state for unspecified research cells."
   ],
-  "seed_sha256": "2de4eab23d4975f07366b524d76babb9ef4a5d4b38222c301857274dd655d11f",
+  "seed_sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
   "source_document_sha256": "e310933e71469f97b13eda3e1132797c8dd298b28cc9a571848d39ff5c7335e3"
 }

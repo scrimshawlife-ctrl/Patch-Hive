@@ -2,7 +2,7 @@
   "manifest_version": "1.0",
   "dataset_version": "case-catalog-seed-v1",
   "normalizer_version": "case-catalog-v1",
-  "generated_at": "2026-07-21T20:24:02Z",
+  "generated_at": "2026-07-21T20:24:00Z",
   "purpose": "Source and licensing manifest for the first modular case catalog seed. Research synthesis supports candidate catalog population; it is not manufacturer-verified canonical truth.",
   "inputs": [
     {
@@ -23,7 +23,7 @@
     {
       "path": "data/cases/seed-v1.json",
       "role": "canonical_import_seed",
-      "sha256": "2de4eab23d4975f07366b524d76babb9ef4a5d4b38222c301857274dd655d11f",
+      "sha256": "74eb150b5825f7f403411215d8ce21911473957b1d31cace5f576af8130c8525",
       "access_basis": "manual_research",
       "license_status": "research_synthesis"
     }
