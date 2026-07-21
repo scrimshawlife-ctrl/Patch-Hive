@@ -47,17 +47,17 @@ export default function PatchesPage() {
           <p className="eyebrow">Library</p>
           <h1 id="patches-title">Patches</h1>
           <p className="muted">
-            Generated patches constrained to confirmed inventory. Exports remain the credit boundary.
+            Generated patches constrained to confirmed inventory. Exports remain the credit
+            boundary.
           </p>
         </div>
-        <div className="header-actions">
-          <label className="muted" htmlFor="patch-category">
+        <div className="header-actions toolbar">
+          <label className="inline-field" htmlFor="patch-category">
             Category
             <select
               id="patch-category"
               value={category}
               onChange={(event) => setCategory(event.target.value)}
-              style={{ marginLeft: '0.5rem' }}
             >
               <option value="">All</option>
               <option value="Voice">Voice</option>
@@ -83,12 +83,14 @@ export default function PatchesPage() {
       {state === 'error' ? (
         <div className="panel" role="alert">
           <p className="status status-danger">{error}</p>
-          <button className="button button-primary" type="button" onClick={() => void load()}>
-            Retry
-          </button>
-          <Link className="button button-quiet" to="/racks">
-            Open rigs
-          </Link>
+          <div className="page-hero-actions">
+            <button className="button button-primary" type="button" onClick={() => void load()}>
+              Retry
+            </button>
+            <Link className="button button-quiet" to="/racks">
+              Open rigs
+            </Link>
+          </div>
         </div>
       ) : null}
 
@@ -106,31 +108,33 @@ export default function PatchesPage() {
 
       {state === 'ready' ? (
         <>
-          <p className="muted" role="status">
+          <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
             Showing {patches.length} of {total} patches
           </p>
-          <div style={{ display: 'grid', gap: '1rem' }}>
+          <div className="catalog-grid">
             {patches.map((patch) => (
-              <article key={patch.id} className="panel">
-                <div style={{ display: 'flex', justifyContent: 'space-between', gap: '1rem' }}>
-                  <div>
-                    <h2 style={{ color: 'var(--accent, #00ff88)', fontSize: '1.1rem' }}>
-                      {patch.name_override || patch.suggested_name || patch.name}
-                    </h2>
-                    <p className="muted">
-                      {patch.category}
-                      {patch.difficulty ? ` · ${patch.difficulty}` : ''} ·{' '}
-                      {patch.connections?.length ?? 0} cables · rack #{patch.rack_id}
-                      {patch.run_id != null ? ` · run #${patch.run_id}` : ''}
-                    </p>
-                    {patch.description ? <p>{patch.description}</p> : null}
-                  </div>
-                  <div className="muted" style={{ fontSize: '0.8rem', textAlign: 'right' }}>
-                    <div>seed {patch.generation_seed}</div>
-                    <div>{patch.generation_version}</div>
-                    <Link to={`/rigs/${patch.rack_id}`}>Open rig</Link>
-                  </div>
-                </div>
+              <article key={patch.id} className="catalog-card">
+                <span className="feature-card-icon" aria-hidden="true">
+                  PX
+                </span>
+                <h2>{patch.name_override || patch.suggested_name || patch.name}</h2>
+                <p className="catalog-card-meta">
+                  {patch.category}
+                  {patch.difficulty ? ` · ${patch.difficulty}` : ''} ·{' '}
+                  {patch.connections?.length ?? 0} cables · rack #{patch.rack_id}
+                  {patch.run_id != null ? ` · run #${patch.run_id}` : ''}
+                </p>
+                {patch.description ? (
+                  <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                    {patch.description}
+                  </p>
+                ) : null}
+                <p className="catalog-card-meta">
+                  seed {patch.generation_seed} · {patch.generation_version}
+                </p>
+                <Link className="button button-quiet" to={`/rigs/${patch.rack_id}`}>
+                  Open rig
+                </Link>
               </article>
             ))}
           </div>

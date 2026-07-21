@@ -8,71 +8,104 @@ export default function AdminExports() {
   const [cacheRunId, setCacheRunId] = useState('');
   const [cacheExportType, setCacheExportType] = useState('');
   const [reason, setReason] = useState('');
+  const [message, setMessage] = useState('');
 
   return (
     <AdminGuard>
-      <h2>Exports</h2>
-      <AdminNav />
-      <div style={{ border: '1px solid #333', padding: '1rem', marginBottom: '1rem' }}>
-        <div style={{ marginBottom: '0.5rem' }}>
-          <label>
-            Audit reason:
-            <input
-              value={reason}
-              onChange={(e) => setReason(e.target.value)}
-              style={{ marginLeft: '0.5rem', padding: '0.4rem' }}
-            />
-          </label>
+      <div className="admin-shell">
+        <header className="workspace-header">
+          <div>
+            <p className="eyebrow">Ops</p>
+            <h1>Exports</h1>
+            <p className="muted">Unlock, revoke, and invalidate export caches with audit reasons.</p>
+          </div>
+        </header>
+        <AdminNav />
+        {message ? (
+          <p className="status status-success" role="status">
+            {message}
+          </p>
+        ) : null}
+        <div className="panel">
+          <p className="eyebrow">Access</p>
+          <h2 style={{ marginTop: 0 }}>Unlock / revoke</h2>
+          <div className="toolbar">
+            <label className="field" style={{ flex: '1 1 12rem' }}>
+              Audit reason
+              <input
+                value={reason}
+                onChange={(e) => setReason(e.target.value)}
+                placeholder="Required for mutations"
+              />
+            </label>
+            <label className="field" style={{ flex: '1 1 10rem' }}>
+              Export ID
+              <input
+                value={exportId}
+                onChange={(e) => setExportId(e.target.value)}
+                placeholder="Numeric ID"
+              />
+            </label>
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={async () => {
+                if (!exportId) return;
+                await adminApi.unlockExport(Number(exportId), reason || 'unlock');
+                setMessage(`Unlocked export ${exportId}`);
+              }}
+            >
+              Unlock
+            </button>
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={async () => {
+                if (!exportId) return;
+                await adminApi.revokeExport(Number(exportId), reason || 'revoke');
+                setMessage(`Revoked export ${exportId}`);
+              }}
+            >
+              Revoke
+            </button>
+          </div>
         </div>
-        <input
-          value={exportId}
-          onChange={(e) => setExportId(e.target.value)}
-          placeholder="Export ID"
-          style={{ marginRight: '0.5rem', padding: '0.4rem' }}
-        />
-        <button
-          onClick={async () => {
-            if (!exportId) return;
-            await adminApi.unlockExport(Number(exportId), reason || 'unlock');
-          }}
-        >
-          Unlock
-        </button>
-        <button
-          onClick={async () => {
-            if (!exportId) return;
-            await adminApi.revokeExport(Number(exportId), reason || 'revoke');
-          }}
-          style={{ marginLeft: '0.5rem' }}
-        >
-          Revoke
-        </button>
-      </div>
-      <div style={{ border: '1px solid #333', padding: '1rem' }}>
-        <h3>Cache Invalidate</h3>
-        <input
-          value={cacheRunId}
-          onChange={(e) => setCacheRunId(e.target.value)}
-          placeholder="Run ID"
-          style={{ marginRight: '0.5rem', padding: '0.4rem' }}
-        />
-        <input
-          value={cacheExportType}
-          onChange={(e) => setCacheExportType(e.target.value)}
-          placeholder="Export type"
-          style={{ marginRight: '0.5rem', padding: '0.4rem' }}
-        />
-        <button
-          onClick={async () => {
-            await adminApi.invalidateCache({
-              run_id: cacheRunId ? Number(cacheRunId) : undefined,
-              export_type: cacheExportType || undefined,
-              reason: reason || 'cache invalidate',
-            });
-          }}
-        >
-          Invalidate
-        </button>
+        <div className="panel">
+          <p className="eyebrow">Cache</p>
+          <h2 style={{ marginTop: 0 }}>Invalidate</h2>
+          <div className="toolbar">
+            <label className="field" style={{ flex: '1 1 8rem' }}>
+              Run ID
+              <input
+                value={cacheRunId}
+                onChange={(e) => setCacheRunId(e.target.value)}
+                placeholder="Optional"
+              />
+            </label>
+            <label className="field" style={{ flex: '1 1 10rem' }}>
+              Export type
+              <input
+                value={cacheExportType}
+                onChange={(e) => setCacheExportType(e.target.value)}
+                placeholder="Optional"
+              />
+            </label>
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={async () => {
+                await adminApi.invalidateCache({
+                  run_id: cacheRunId ? Number(cacheRunId) : undefined,
+                  export_type: cacheExportType || undefined,
+                  reason: reason || 'cache invalidate',
+                });
+                setMessage('Cache invalidation requested');
+              }}
+            >
+              Invalidate
+            </button>
+          </div>
+        </div>
       </div>
     </AdminGuard>
   );

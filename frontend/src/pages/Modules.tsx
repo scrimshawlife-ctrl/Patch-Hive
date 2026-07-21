@@ -88,7 +88,7 @@ export default function ModulesPage() {
             inventory — place modules on a rig or review photo evidence.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <div className="header-actions">
           <Link className="button button-primary" to="/racks/new">
             Place on new rig
           </Link>
@@ -122,16 +122,9 @@ export default function ModulesPage() {
 
       {state === 'ready' ? (
         <>
-          <div className="panel" aria-label="Module filters" style={{ marginBottom: '1rem' }}>
-            <div
-              style={{
-                display: 'grid',
-                gap: '0.75rem',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(12rem, 1fr))',
-                alignItems: 'end',
-              }}
-            >
-              <label className="field" htmlFor="module-search">
+          <div className="panel" aria-label="Module filters" style={{ marginBottom: 'var(--space-4)' }}>
+            <div className="toolbar">
+              <label className="field" htmlFor="module-search" style={{ flex: '1 1 12rem' }}>
                 Search
                 <input
                   id="module-search"
@@ -142,7 +135,7 @@ export default function ModulesPage() {
                   autoComplete="off"
                 />
               </label>
-              <label className="field" htmlFor="module-brand">
+              <label className="inline-field" htmlFor="module-brand">
                 Brand
                 <select
                   id="module-brand"
@@ -157,7 +150,7 @@ export default function ModulesPage() {
                   ))}
                 </select>
               </label>
-              <label className="field" htmlFor="module-type">
+              <label className="inline-field" htmlFor="module-type">
                 Type
                 <select
                   id="module-type"
@@ -172,7 +165,7 @@ export default function ModulesPage() {
                   ))}
                 </select>
               </label>
-              <label className="field" htmlFor="module-sort">
+              <label className="inline-field" htmlFor="module-sort">
                 Sort
                 <select
                   id="module-sort"
@@ -185,17 +178,15 @@ export default function ModulesPage() {
                   <option value="hp">HP (width)</option>
                 </select>
               </label>
-            </div>
-            {filtersActive ? (
-              <p style={{ marginTop: '0.75rem', marginBottom: 0 }}>
+              {filtersActive ? (
                 <button className="button button-quiet" type="button" onClick={clearFilters}>
                   Clear filters
                 </button>
-              </p>
-            ) : null}
+              ) : null}
+            </div>
           </div>
 
-          <p className="muted" role="status">
+          <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
             Showing {filtered.length} of {modules.length} modules
             {filtersActive ? ' (filtered)' : ''}
           </p>
@@ -208,49 +199,29 @@ export default function ModulesPage() {
               </button>
             </div>
           ) : (
-            <ul
-              aria-label="Module catalog results"
-              style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '1rem' }}
-            >
+            <ul className="catalog-grid" aria-label="Module catalog results">
               {filtered.map((module) => (
                 <li key={module.id}>
-                  <article className="panel" style={{ padding: '1rem' }}>
-                    <div
-                      style={{
-                        display: 'flex',
-                        justifyContent: 'space-between',
-                        alignItems: 'start',
-                        gap: '1rem',
-                        flexWrap: 'wrap',
-                      }}
-                    >
-                      <div>
-                        <h2
-                          style={{
-                            color: 'var(--accent, #00ff88)',
-                            marginBottom: '0.5rem',
-                            fontSize: '1.1rem',
-                          }}
-                        >
-                          {module.brand} — {module.name}
-                        </h2>
-                        <p className="muted" style={{ fontSize: '0.875rem', marginBottom: '0.5rem' }}>
-                          {module.module_type} · {module.hp}HP
-                        </p>
-                        {module.description ? (
-                          <p style={{ color: '#888', fontSize: '0.875rem' }}>{module.description}</p>
-                        ) : null}
-                      </div>
-                      <div style={{ textAlign: 'right', color: '#666', fontSize: '0.75rem' }}>
-                        <div>
-                          Power: +12V {module.power_12v_ma ?? '—'}mA
-                        </div>
-                        {module.power_neg12v_ma ? (
-                          <div>−12V {module.power_neg12v_ma}mA</div>
-                        ) : null}
-                      </div>
-                    </div>
-                    <div style={{ marginTop: '0.75rem', display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                  <article className="catalog-card" style={{ height: '100%' }}>
+                    <span className="feature-card-icon" aria-hidden="true">
+                      {module.hp}H
+                    </span>
+                    <h2>
+                      {module.brand} — {module.name}
+                    </h2>
+                    <p className="catalog-card-meta">
+                      {module.module_type} · {module.hp}HP
+                    </p>
+                    {module.description ? (
+                      <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                        {module.description}
+                      </p>
+                    ) : null}
+                    <p className="catalog-card-meta">
+                      +12V {module.power_12v_ma ?? '—'}mA
+                      {module.power_neg12v_ma != null ? ` · −12V ${module.power_neg12v_ma}mA` : ''}
+                    </p>
+                    <div className="page-hero-actions">
                       <Link className="button button-secondary" to="/racks/new">
                         Place on rig
                       </Link>

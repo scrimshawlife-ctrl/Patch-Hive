@@ -36,7 +36,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 80, messa
         <polygon
           points="50,10 80,25 80,60 50,75 20,60 20,25"
           fill="none"
-          stroke="#7FF7FF"
+          stroke="#f5a623"
           strokeWidth="2.5"
           filter="url(#spinner-glow)"
           className="spinner-hex"
@@ -46,7 +46,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 80, messa
         <polygon
           points="50,20 70,30 70,55 50,65 30,55 30,30"
           fill="none"
-          stroke="#7FF7FF"
+          stroke="#f5a623"
           strokeWidth="1.5"
           opacity="0.6"
           className="spinner-hex-inner"
@@ -57,7 +57,7 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 80, messa
           cx="50"
           cy="42.5"
           r="8"
-          fill="#7FF7FF"
+          fill="#f5a623"
           opacity="0.4"
           className="spinner-core"
         />
@@ -65,18 +65,18 @@ export const LoadingSpinner: React.FC<LoadingSpinnerProps> = ({ size = 80, messa
           cx="50"
           cy="42.5"
           r="4"
-          fill="#7FF7FF"
+          fill="#f5a623"
           filter="url(#spinner-glow)"
           className="spinner-core-inner"
         />
 
         {/* Orbiting signal dots */}
-        <circle cx="50" cy="10" r="2.5" fill="#7FF7FF" className="spinner-dot dot-1" />
-        <circle cx="80" cy="25" r="2.5" fill="#7FF7FF" className="spinner-dot dot-2" />
-        <circle cx="80" cy="60" r="2.5" fill="#7FF7FF" className="spinner-dot dot-3" />
-        <circle cx="50" cy="75" r="2.5" fill="#7FF7FF" className="spinner-dot dot-4" />
-        <circle cx="20" cy="60" r="2.5" fill="#7FF7FF" className="spinner-dot dot-5" />
-        <circle cx="20" cy="25" r="2.5" fill="#7FF7FF" className="spinner-dot dot-6" />
+        <circle cx="50" cy="10" r="2.5" fill="#f5a623" className="spinner-dot dot-1" />
+        <circle cx="80" cy="25" r="2.5" fill="#f5a623" className="spinner-dot dot-2" />
+        <circle cx="80" cy="60" r="2.5" fill="#f5a623" className="spinner-dot dot-3" />
+        <circle cx="50" cy="75" r="2.5" fill="#f5a623" className="spinner-dot dot-4" />
+        <circle cx="20" cy="60" r="2.5" fill="#f5a623" className="spinner-dot dot-5" />
+        <circle cx="20" cy="25" r="2.5" fill="#f5a623" className="spinner-dot dot-6" />
       </svg>
 
       {message && <p className="loading-message">{message}</p>}

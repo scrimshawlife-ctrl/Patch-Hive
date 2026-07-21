@@ -1,69 +1,98 @@
 /**
- * Home page - Introduction to PatchHive.
+ * Home — PatchHive product landing (Cyber Hive / Zero State).
  */
+import { Link } from 'react-router-dom';
+import { useAuthStore } from '@/lib/store';
+
+const features = [
+  {
+    code: 'LIB',
+    title: 'Module & case library',
+    description:
+      'Browse confirmed module and case specs. Missing technical data stays missing — never invented.',
+  },
+  {
+    code: 'IN',
+    title: 'Manual, photo, or hybrid intake',
+    description:
+      'Build a rig manually or review photo evidence. Provider detections stay untrusted until you confirm them.',
+  },
+  {
+    code: 'GEN',
+    title: 'Deterministic generation',
+    description:
+      'Reproduce patches constrained to your confirmed inventory revision. Absent hardware yields NOT_COMPUTABLE.',
+  },
+  {
+    code: 'PB',
+    title: 'PatchBooks & Style Studio',
+    description:
+      'Export provenance-bound PDF, SVG, JSON, or ZIP. Design Engine recipes restyle presentation only.',
+  },
+] as const;
+
+const laws = [
+  'Vision output is evidence only — never silent inventory truth',
+  'Immutable rig revisions and deterministic generation seeds',
+  'Signal types (audio / CV / gate) describe ports and cables, not DSP',
+  'Credits debit only at the canonical export boundary',
+] as const;
+
 export default function Home() {
-  return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h1 style={{ fontSize: '3rem', color: '#00ff88', marginBottom: '1rem' }}>
-        Welcome to PatchHive
-      </h1>
-      <p style={{ fontSize: '1.25rem', color: '#ccc', marginBottom: '2rem' }}>
-        Confirm a modular rig, generate hardware-constrained patches, and publish
-        one-page Patch Books — without audio simulation or hardware control.
-      </p>
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
 
-      <div style={{ display: 'grid', gap: '2rem', marginTop: '3rem' }}>
-        <Section
-          title="Module & Case Library"
-          description="Browse the confirmed module gallery and cases. Missing technical data stays missing."
-        />
-        <Section
-          title="Manual, Photo, or Hybrid Intake"
-          description="Build a rig manually or review photo evidence. Provider detections stay untrusted until you confirm them."
-        />
-        <Section
-          title="Deterministic Patch Generation"
-          description="Generate reproducible patches constrained to your confirmed inventory revision. Absent hardware yields NOT_COMPUTABLE, not invented gear."
-        />
-        <Section
-          title="Patch Books & Export"
-          description="Compile ordered cable diagrams and export PDF, SVG, JSON, or ZIP with provenance. Symbolic waveform thumbnails are visualization only."
-        />
+  return (
+    <section aria-labelledby="home-title">
+      <header className="page-hero">
+        <p className="eyebrow">PatchHive · Zero State</p>
+        <h1 id="home-title">Confirm the rig. Compile the signal. Export the book.</h1>
+        <p className="page-hero-lede">
+          Modular synthesizer patch documentation without audio simulation, hardware control, or
+          invented inventory. Every export is bound to a run, seed, and content hash.
+        </p>
+        <div className="page-hero-actions">
+          {isAuthenticated() ? (
+            <Link className="button button-primary" to="/racks">
+              Open rigs
+            </Link>
+          ) : (
+            <Link className="button button-primary" to="/login">
+              Sign in
+            </Link>
+          )}
+          <Link className="button button-secondary" to="/modules">
+            Browse modules
+          </Link>
+          <Link className="button button-quiet" to="/racks/new">
+            New rig
+          </Link>
+        </div>
+      </header>
+
+      <div className="feature-grid" style={{ marginBottom: 'var(--space-6)' }}>
+        {features.map((feature) => (
+          <article key={feature.code} className="feature-card">
+            <span className="feature-card-icon" aria-hidden="true">
+              {feature.code}
+            </span>
+            <h2>{feature.title}</h2>
+            <p>{feature.description}</p>
+          </article>
+        ))}
       </div>
 
-      <div
-        style={{
-          marginTop: '3rem',
-          padding: '1.5rem',
-          background: '#1a1a1a',
-          border: '1px solid #333',
-          borderRadius: '8px',
-        }}
-      >
-        <h2 style={{ color: '#00ff88', marginBottom: '1rem' }}>Product boundaries</h2>
-        <ul style={{ color: '#ccc', lineHeight: '1.8' }}>
-          <li>Vision output is evidence only — never silent inventory truth</li>
-          <li>Immutable rig revisions and deterministic generation seeds</li>
-          <li>Signal types such as audio/CV/gate describe ports and cables, not DSP</li>
-          <li>Community social surfaces remain feature-flagged off by default</li>
+      <div className="panel">
+        <p className="eyebrow">Product law</p>
+        <h2 style={{ marginTop: 0 }}>Boundaries that stay hard</h2>
+        <ul className="auth-brand-list" style={{ marginTop: 'var(--space-4)' }}>
+          {laws.map((law) => (
+            <li key={law}>{law}</li>
+          ))}
         </ul>
+        <p className="muted" style={{ marginTop: 'var(--space-5)', marginBottom: 0 }}>
+          Designed and engineered by Zero State · PatchHive product surface
+        </p>
       </div>
-    </div>
-  );
-}
-
-function Section({ title, description }: { title: string; description: string }) {
-  return (
-    <div
-      style={{
-        padding: '1.5rem',
-        background: '#1a1a1a',
-        border: '1px solid #333',
-        borderRadius: '8px',
-      }}
-    >
-      <h3 style={{ color: '#00ff88', marginBottom: '0.5rem' }}>{title}</h3>
-      <p style={{ color: '#ccc', margin: 0 }}>{description}</p>
-    </div>
+    </section>
   );
 }

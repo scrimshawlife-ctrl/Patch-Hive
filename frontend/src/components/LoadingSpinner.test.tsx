@@ -45,7 +45,7 @@ describe('LoadingSpinner', () => {
       const hexFrame = container.querySelector('.spinner-hex');
       expect(hexFrame).toBeInTheDocument();
       expect(hexFrame).toHaveAttribute('fill', 'none');
-      expect(hexFrame).toHaveAttribute('stroke', '#7FF7FF');
+      expect(hexFrame).toHaveAttribute('stroke', '#f5a623');
     });
 
     it('renders inner hexagon', () => {

@@ -111,19 +111,19 @@ export default function RacksPage() {
   };
 
   useEffect(() => {
-    loadRacks();
+    void loadRacks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (selectedRackId !== null) {
-      loadRuns(selectedRackId);
+      void loadRuns(selectedRackId);
     }
   }, [selectedRackId]);
 
   useEffect(() => {
     if (selectedRunId !== null) {
-      loadPatches(selectedRunId);
+      void loadPatches(selectedRunId);
     } else {
       setPatches([]);
     }
@@ -141,28 +141,26 @@ export default function RacksPage() {
   });
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '2rem' }}>
-      <aside style={{ borderRight: '1px solid #222', paddingRight: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h2 style={{ margin: 0 }}>Rigs</h2>
-          <Link to="/racks/new" style={{ color: '#00ff88', textDecoration: 'none' }}>
-            New Rig
+    <div className="split-workspace">
+      <aside className="split-aside" aria-label="Rig list">
+        <div className="split-aside-head">
+          <h2>Rigs</h2>
+          <Link className="button button-primary" to="/racks/new">
+            New
           </Link>
         </div>
-        <p style={{ color: '#777', marginTop: '0.5rem' }}>
-          Rig-centric workspace. Each rig carries multiple runs and patch libraries.
+        <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+          Rig-centric workspace. Each rig carries runs and patch libraries.
         </p>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+        <div className="side-list">
           {listLoading ? (
-            <p className="status" role="status" style={{ color: '#888' }}>
+            <p className="status" role="status">
               Loading rigs…
             </p>
           ) : null}
           {!listLoading && error && racks.length === 0 ? (
-            <div role="alert">
-              <p className="status status-danger" style={{ color: '#ffb3b3' }}>
-                {error}
-              </p>
+            <div className="panel" role="alert">
+              <p className="status status-danger">{error}</p>
               <button className="button button-secondary" type="button" onClick={() => void loadRacks()}>
                 Retry
               </button>
@@ -173,28 +171,21 @@ export default function RacksPage() {
                 <button
                   key={rack.id}
                   type="button"
+                  className={`side-item${rack.id === selectedRackId ? ' is-selected' : ''}`}
+                  aria-current={rack.id === selectedRackId ? 'true' : undefined}
                   onClick={() => setSelectedRackId(rack.id)}
-                  style={{
-                    textAlign: 'left',
-                    background: rack.id === selectedRackId ? '#1f1f1f' : '#111',
-                    border: '1px solid #333',
-                    padding: '0.75rem',
-                    borderRadius: '8px',
-                    color: '#fff',
-                    cursor: 'pointer',
-                  }}
                 >
-                  <div style={{ fontWeight: 600 }}>{rack.name}</div>
-                  <div style={{ fontSize: '0.75rem', color: '#777' }}>
+                  <span className="side-item-title">{rack.name}</span>
+                  <span className="side-item-meta">
                     Suggested: {rack.name_suggested || '—'}
-                  </div>
+                  </span>
                 </button>
               ))
             : null}
           {!listLoading && racks.length === 0 && !error ? (
-            <div style={{ color: '#666', fontSize: '0.9rem' }}>
-              <p>No rigs yet.</p>
-              <Link to="/racks/new" style={{ color: '#00ff88' }}>
+            <div className="panel">
+              <p className="status status-warning">No rigs yet.</p>
+              <Link className="button button-primary" to="/racks/new">
                 Create your first rig
               </Link>
             </div>
@@ -202,31 +193,29 @@ export default function RacksPage() {
         </div>
       </aside>
 
-      <section>
+      <section aria-label="Selected rig workspace">
         {selectedRack ? (
           <>
-            <header style={{ marginBottom: '1.5rem' }}>
-              <h1 style={{ marginBottom: '0.25rem' }}>{selectedRack.name}</h1>
-              <div style={{ color: '#777' }}>{selectedRack.description || 'No rig notes yet.'}</div>
+            <header className="workspace-header">
+              <div>
+                <p className="eyebrow">Rig workspace</p>
+                <h1>{selectedRack.name}</h1>
+                <p className="muted">{selectedRack.description || 'No rig notes yet.'}</p>
+              </div>
             </header>
 
-            <nav style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem' }}>
+            <nav className="tab-list" role="tablist" aria-label="Rig sections">
               {tabs.map((tab) => {
                 const disabled = (tab.key === 'patches' || tab.key === 'exports') && !hasRuns;
                 return (
                   <button
                     key={tab.key}
                     type="button"
+                    role="tab"
+                    className="tab"
+                    aria-selected={activeTab === tab.key}
                     disabled={disabled}
                     onClick={() => setActiveTab(tab.key)}
-                    style={{
-                      padding: '0.5rem 0.9rem',
-                      borderRadius: '6px',
-                      border: '1px solid #333',
-                      background: activeTab === tab.key ? '#222' : '#111',
-                      color: disabled ? '#444' : '#fff',
-                      cursor: disabled ? 'not-allowed' : 'pointer',
-                    }}
                   >
                     {tab.label}
                   </button>
@@ -235,220 +224,201 @@ export default function RacksPage() {
             </nav>
 
             {error ? (
-              <div style={{ background: '#2b0d0d', color: '#ffb3b3', padding: '0.75rem' }}>
-                {error}
+              <div className="panel" role="alert" style={{ marginBottom: 'var(--space-4)' }}>
+                <p className="status status-danger">{error}</p>
               </div>
             ) : null}
 
             {activeTab === 'overview' ? (
-              <div style={{ display: 'grid', gap: '1.5rem' }}>
-                <div style={{ background: '#111', padding: '1.5rem', borderRadius: '12px' }}>
-                  <h3 style={{ marginTop: 0 }}>Rig Summary</h3>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, color: '#ccc' }}>
-                    <li>Modules: {selectedRack.modules.length}</li>
-                    <li>Runs: {runs.length}</li>
-                    <li>Latest run: {runs[0]?.created_at || 'None yet'}</li>
-                  </ul>
+              <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+                <div className="panel">
+                  <p className="eyebrow">Summary</p>
+                  <h2 style={{ marginTop: 0 }}>Rig inventory</h2>
+                  <div className="stat-row" style={{ marginTop: 'var(--space-4)' }}>
+                    <div className="stat-block">
+                      <p className="muted" style={{ margin: 0 }}>
+                        Modules
+                      </p>
+                      <h3>{selectedRack.modules.length}</h3>
+                    </div>
+                    <div className="stat-block">
+                      <p className="muted" style={{ margin: 0 }}>
+                        Runs
+                      </p>
+                      <h3>{runs.length}</h3>
+                    </div>
+                    <div className="stat-block">
+                      <p className="muted" style={{ margin: 0 }}>
+                        Latest run
+                      </p>
+                      <h3 style={{ fontSize: '1rem' }}>{runs[0]?.created_at || 'None yet'}</h3>
+                    </div>
+                  </div>
                 </div>
 
-                <div style={{ display: 'grid', gap: '0.75rem' }}>
-                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                <div className="panel">
+                  <div className="page-hero-actions">
                     <button
                       type="button"
-                      onClick={handleGenerate}
+                      className="button button-primary"
+                      onClick={() => void handleGenerate()}
                       disabled={loading}
-                      style={{
-                        padding: '0.75rem 1.2rem',
-                        borderRadius: '8px',
-                        border: 'none',
-                        background: '#00ff88',
-                        color: '#000',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                      }}
                     >
-                      {loading ? 'Generating…' : 'Generate Patch Library'}
+                      {loading ? 'Generating…' : 'Generate patch library'}
                     </button>
-                    <Link
-                      to="/racks/new"
-                      style={{
-                        padding: '0.75rem 1.2rem',
-                        borderRadius: '8px',
-                        border: '1px solid #333',
-                        color: '#fff',
-                        textDecoration: 'none',
-                      }}
-                    >
-                      Create Rig
+                    <Link className="button button-secondary" to="/racks/new">
+                      Create rig
                     </Link>
-                    <button
-                      type="button"
-                      style={{
-                        padding: '0.75rem 1.2rem',
-                        borderRadius: '8px',
-                        border: '1px solid #333',
-                        background: '#111',
-                        color: '#777',
-                        cursor: 'not-allowed',
-                      }}
-                    >
-                      Upload Rig (soon)
+                    <button type="button" className="button button-quiet" disabled>
+                      Upload rig (soon)
                     </button>
                   </div>
-                  <div style={{ color: '#666' }}>
-                    Generate once. Everything else opens as contextual tabs after the rig exists.
-                  </div>
+                  <p className="muted" style={{ marginBottom: 0, marginTop: 'var(--space-3)' }}>
+                    Generate once. Patches and exports open as tabs after a run exists.
+                  </p>
                 </div>
               </div>
             ) : null}
 
             {activeTab === 'patches' ? (
-              <div style={{ display: 'grid', gap: '1.5rem' }}>
-                <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                  <select
-                    value={filters.category}
-                    onChange={(event) =>
-                      setFilters((prev) => ({ ...prev, category: event.target.value }))
-                    }
-                    style={{ background: '#111', color: '#fff', padding: '0.4rem' }}
-                  >
-                    <option>All</option>
-                    {[...new Set(patches.map((patch) => patch.category))].map((category) => (
-                      <option key={category}>{category}</option>
-                    ))}
-                  </select>
-                  <select
-                    value={filters.difficulty}
-                    onChange={(event) =>
-                      setFilters((prev) => ({ ...prev, difficulty: event.target.value }))
-                    }
-                    style={{ background: '#111', color: '#fff', padding: '0.4rem' }}
-                  >
-                    <option>All</option>
-                    <option>Beginner</option>
-                    <option>Intermediate</option>
-                    <option>Advanced</option>
-                  </select>
-                  <select
-                    value={filters.weirdness}
-                    onChange={(event) =>
-                      setFilters((prev) => ({ ...prev, weirdness: event.target.value }))
-                    }
-                    style={{ background: '#111', color: '#fff', padding: '0.4rem' }}
-                  >
-                    <option>Any</option>
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                  </select>
-                  <select
-                    value={selectedRunId ?? ''}
-                    onChange={(event) => setSelectedRunId(Number(event.target.value))}
-                    disabled={!hasRuns}
-                    style={{ background: '#111', color: '#fff', padding: '0.4rem' }}
-                  >
-                    {runs.map((run) => (
-                      <option key={run.id} value={run.id}>
-                        Run #{run.id} • {run.created_at}
-                      </option>
-                    ))}
-                  </select>
+              <div style={{ display: 'grid', gap: 'var(--space-4)' }}>
+                <div className="panel toolbar" aria-label="Patch filters">
+                  <label className="inline-field">
+                    Category
+                    <select
+                      value={filters.category}
+                      onChange={(event) =>
+                        setFilters((prev) => ({ ...prev, category: event.target.value }))
+                      }
+                    >
+                      <option>All</option>
+                      {[...new Set(patches.map((patch) => patch.category))].map((category) => (
+                        <option key={category}>{category}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label className="inline-field">
+                    Difficulty
+                    <select
+                      value={filters.difficulty}
+                      onChange={(event) =>
+                        setFilters((prev) => ({ ...prev, difficulty: event.target.value }))
+                      }
+                    >
+                      <option>All</option>
+                      <option>Beginner</option>
+                      <option>Intermediate</option>
+                      <option>Advanced</option>
+                    </select>
+                  </label>
+                  <label className="inline-field">
+                    Weirdness
+                    <select
+                      value={filters.weirdness}
+                      onChange={(event) =>
+                        setFilters((prev) => ({ ...prev, weirdness: event.target.value }))
+                      }
+                    >
+                      <option>Any</option>
+                      <option>Low</option>
+                      <option>Medium</option>
+                      <option>High</option>
+                    </select>
+                  </label>
+                  <label className="inline-field">
+                    Run
+                    <select
+                      value={selectedRunId ?? ''}
+                      onChange={(event) => setSelectedRunId(Number(event.target.value))}
+                      disabled={!hasRuns}
+                    >
+                      {runs.map((run) => (
+                        <option key={run.id} value={run.id}>
+                          Run #{run.id} · {run.created_at}
+                        </option>
+                      ))}
+                    </select>
+                  </label>
                 </div>
 
-                <div style={{ display: 'grid', gap: '0.75rem' }}>
+                <div className="catalog-grid">
                   {filteredPatches.map((patch) => (
-                    <div
-                      key={patch.id}
-                      style={{ padding: '1rem', border: '1px solid #222', borderRadius: '10px' }}
-                    >
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                        <div>
-                          <div style={{ fontWeight: 600 }}>{patch.name}</div>
-                          <div style={{ fontSize: '0.8rem', color: '#777' }}>
-                            {patch.suggested_name || 'Suggested name missing'}
-                          </div>
-                        </div>
-                        <div style={{ fontSize: '0.8rem', color: '#777' }}>
-                          {patch.category} • {difficultyFromConnections(patch)} • Weirdness{' '}
-                          {weirdnessFromConnections(patch)}
-                        </div>
-                      </div>
-                      <div style={{ marginTop: '0.75rem', color: '#999', fontSize: '0.9rem' }}>
+                    <article key={patch.id} className="catalog-card">
+                      <h3>{patch.name}</h3>
+                      <p className="catalog-card-meta">
+                        {patch.suggested_name || 'Suggested name missing'}
+                      </p>
+                      <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+                        {patch.category} · {difficultyFromConnections(patch)} · weirdness{' '}
+                        {weirdnessFromConnections(patch)}
+                      </p>
+                      <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                         {patch.description || 'No description yet.'}
-                      </div>
-                    </div>
+                      </p>
+                    </article>
                   ))}
-                  {filteredPatches.length === 0 ? (
-                    <div style={{ color: '#666' }}>No patches yet. Generate a run.</div>
-                  ) : null}
                 </div>
+                {filteredPatches.length === 0 ? (
+                  <div className="panel">
+                    <p className="status status-warning">No patches yet. Generate a run.</p>
+                  </div>
+                ) : null}
               </div>
             ) : null}
 
             {activeTab === 'exports' ? (
-              <div style={{ display: 'grid', gap: '1rem' }}>
-                <div style={{ background: '#111', padding: '1rem', borderRadius: '10px' }}>
-                  <h3 style={{ marginTop: 0 }}>Patch Book Exports</h3>
-                  <p style={{ color: '#777' }}>
-                    Export actions trigger credit checks at download time.
-                  </p>
-                  <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                    <a
-                      href={exportApi.rackPdf(selectedRack.id)}
-                      style={{ color: '#00ff88', textDecoration: 'none' }}
-                    >
-                      Export Patch Book PDF
-                    </a>
-                    <button
-                      type="button"
-                      style={{
-                        border: '1px solid #333',
-                        background: '#111',
-                        color: '#777',
-                        padding: '0.4rem 0.8rem',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      Export Selected Patches
-                    </button>
-                    <button
-                      type="button"
-                      style={{
-                        border: '1px solid #333',
-                        background: '#111',
-                        color: '#777',
-                        padding: '0.4rem 0.8rem',
-                        borderRadius: '6px',
-                      }}
-                    >
-                      Export SVG Zip
-                    </button>
-                  </div>
+              <div className="panel">
+                <p className="eyebrow">PatchBooks</p>
+                <h2 style={{ marginTop: 0 }}>Exports</h2>
+                <p className="muted">
+                  Export actions trigger credit checks at download time. Credits debit only at the
+                  canonical boundary.
+                </p>
+                <div className="page-hero-actions">
+                  <a className="button button-primary" href={exportApi.rackPdf(selectedRack.id)}>
+                    Export Patch Book PDF
+                  </a>
+                  <button type="button" className="button button-quiet" disabled>
+                    Export selected patches
+                  </button>
+                  <button type="button" className="button button-quiet" disabled>
+                    Export SVG zip
+                  </button>
                 </div>
               </div>
             ) : null}
 
             {activeTab === 'modules' ? (
-              <div style={{ display: 'grid', gap: '0.75rem' }}>
+              <div className="catalog-grid">
                 {selectedRack.modules.map((module) => (
-                  <div
-                    key={module.id}
-                    style={{ padding: '0.75rem', border: '1px solid #222', borderRadius: '10px' }}
-                  >
-                    <div style={{ fontWeight: 600 }}>{module.module?.name || 'Unknown module'}</div>
-                    <div style={{ color: '#777', fontSize: '0.85rem' }}>
-                      {module.module?.brand || 'Unknown brand'} • {module.module?.module_type || '—'}
-                    </div>
-                  </div>
+                  <article key={module.id} className="catalog-card">
+                    <h3>{module.module?.name || 'Unknown module'}</h3>
+                    <p className="catalog-card-meta">
+                      {module.module?.brand || 'Unknown brand'} ·{' '}
+                      {module.module?.module_type || '—'}
+                    </p>
+                  </article>
                 ))}
                 {selectedRack.modules.length === 0 ? (
-                  <div style={{ color: '#666' }}>No modules loaded for this rig.</div>
+                  <div className="panel">
+                    <p className="status status-warning">No modules loaded for this rig.</p>
+                    <Link className="button button-secondary" to="/racks/new">
+                      Add modules
+                    </Link>
+                  </div>
                 ) : null}
               </div>
             ) : null}
           </>
         ) : (
-          <div style={{ color: '#666' }}>Select a rig to begin.</div>
+          <div className="panel">
+            <p className="eyebrow">Workspace</p>
+            <h2 style={{ marginTop: 0 }}>Select a rig to begin</h2>
+            <p className="muted">Choose a rig from the list, or create a new one to confirm inventory.</p>
+            <Link className="button button-primary" to="/racks/new">
+              New rig
+            </Link>
+          </div>
         )}
       </section>
     </div>
