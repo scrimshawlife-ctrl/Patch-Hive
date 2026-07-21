@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `678ff66` (includes PR #80 schema roundtrip → canon)  
-**Tracking:** Issue #46 closed · PR #47–#80 on main  
-**PR #66–#80:** **MERGED** (VSI through multi-photo UX, modules polish, import quarantine, first legacy migrations)  
+**main HEAD:** `4e91b63`+ (gallery revisions on canon; full legacy_pipeline test migration in flight)  
+**Tracking:** Issue #46 closed · PR #47–#81+ on main  
+**PR #66–#81:** **MERGED** through gallery revisions; remaining legacy unit tests migrated onto canon  
 **Plan:** [evidence/CONTINUATION_PLAN_POST_75.md](evidence/CONTINUATION_PLAN_POST_75.md)
 
 ## Where we are
@@ -140,6 +140,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 20. ~~Compiler validation edge-case suite expansion~~ **DONE** (signal/direction/feedback/attenuation/empty)
 21. ~~Migrate one `legacy_pipeline` suite onto canon contracts~~ **DONE** (`test_schema_roundtrip` → canon `RigMetricsPacket`)
 22. ~~Gallery append-only revisions on canon~~ **DONE** (`canon.gallery_revisions`; patchhive shim)
+23. ~~All residual `legacy_pipeline` unit tests off patchhive~~ **DONE** (function_registry, query_surface, pipeline, export_pack)
 
 ### P5 — Explicitly deferred
 
