@@ -1,7 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { caseApi, evidenceApi, rackApi, type EvidenceCandidate } from '@/lib/api';
-import type { Case, Rack } from '@/types/api';
+import {
+  caseApi,
+  caseCatalogApi,
+  evidenceApi,
+  rackApi,
+  type EvidenceCandidate,
+} from '@/lib/api';
+import type { Case, CatalogCaseListItem, Rack } from '@/types/api';
 
 type EvidenceState = 'idle' | 'ready' | 'uploading' | 'review' | 'confirmed' | 'error';
 type CandidateStatus = 'inferred' | 'confirmed' | 'rejected' | 'deferred';
@@ -101,6 +107,7 @@ export default function RackBuilderPage() {
   const rackId = routeId && /^\d+$/.test(routeId) ? Number(routeId) : null;
   const liveMode = rackId != null;
   const preselectedCaseId = Number(searchParams.get('case_id') || '') || null;
+  const preselectedCatalogSlug = searchParams.get('catalog_slug') || null;
 
   const [racks, setRacks] = useState<Rack[]>([]);
   const [selectedRackId, setSelectedRackId] = useState<number | null>(rackId);
@@ -120,18 +127,27 @@ export default function RackBuilderPage() {
   const [reconcileNote, setReconcileNote] = useState<string | null>(null);
   const [imageCount, setImageCount] = useState(0);
 
-  /** C0: case-bound create on /racks/new */
-  const [cases, setCases] = useState<Case[]>([]);
+  /** C0: case-bound create on /racks/new — catalog-first with legacy materialize bridge */
+  const [catalogCases, setCatalogCases] = useState<CatalogCaseListItem[]>([]);
+  const [legacyCases, setLegacyCases] = useState<Case[]>([]);
   const [casesLoading, setCasesLoading] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState<number | null>(preselectedCaseId);
+  const [selectedCatalogSlug, setSelectedCatalogSlug] = useState<string | null>(
+    preselectedCatalogSlug,
+  );
   const [rigName, setRigName] = useState('');
   const [creating, setCreating] = useState(false);
   const [caseQuery, setCaseQuery] = useState('');
+  const [compatNote, setCompatNote] = useState<string | null>(null);
 
   const activeRackId = selectedRackId ?? rackId;
-  const selectedCase = useMemo(
-    () => cases.find((c) => c.id === selectedCaseId) ?? null,
-    [cases, selectedCaseId],
+  const selectedLegacyCase = useMemo(
+    () => legacyCases.find((c) => c.id === selectedCaseId) ?? null,
+    [legacyCases, selectedCaseId],
+  );
+  const selectedCatalogCase = useMemo(
+    () => catalogCases.find((c) => c.slug === selectedCatalogSlug) ?? null,
+    [catalogCases, selectedCatalogSlug],
   );
 
   useEffect(() => {
@@ -156,32 +172,81 @@ export default function RackBuilderPage() {
   useEffect(() => {
     if (liveMode) return;
     setCasesLoading(true);
-    caseApi
-      .list({ limit: 200, format_family: 'Eurorack', q: caseQuery.trim() || undefined })
-      .then((res) => {
-        const rows = res.data.cases ?? [];
-        setCases(rows);
+    setCompatNote(null);
+    const q = caseQuery.trim() || undefined;
+    Promise.all([
+      caseCatalogApi
+        .list({ limit: 200, format_family: 'eurorack', q })
+        .then((res) => res.data.cases ?? [])
+        .catch(() => [] as CatalogCaseListItem[]),
+      caseApi
+        .list({ limit: 200, format_family: 'Eurorack', q })
+        .then((res) => res.data.cases ?? [])
+        .catch(() => [] as Case[]),
+    ])
+      .then(([catalogRows, legacyRows]) => {
+        setCatalogCases(catalogRows);
+        setLegacyCases(legacyRows);
         if (selectedCaseId == null && preselectedCaseId != null) {
           setSelectedCaseId(preselectedCaseId);
-        } else if (selectedCaseId == null && rows.length === 1) {
-          setSelectedCaseId(rows[0].id);
+        }
+        if (selectedCatalogSlug == null && preselectedCatalogSlug) {
+          setSelectedCatalogSlug(preselectedCatalogSlug);
+        } else if (selectedCatalogSlug == null && catalogRows.length === 1) {
+          setSelectedCatalogSlug(catalogRows[0].slug);
+        } else if (
+          selectedCaseId == null &&
+          selectedCatalogSlug == null &&
+          legacyRows.length === 1 &&
+          catalogRows.length === 0
+        ) {
+          setSelectedCaseId(legacyRows[0].id);
         }
       })
-      .catch(() => setCases([]))
       .finally(() => setCasesLoading(false));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- case catalog load
   }, [liveMode, caseQuery]);
 
-  const createRigFromCase = async () => {
-    if (selectedCaseId == null) {
-      setError('Select a Eurorack case before creating a rig.');
+  useEffect(() => {
+    if (liveMode || !selectedCatalogSlug) {
+      setCompatNote(null);
       return;
     }
+    caseCatalogApi
+      .compatibility(selectedCatalogSlug, { modules: [], plan_close_lid: false })
+      .then((res) => {
+        const c = res.data;
+        const rails = c.power_headroom
+          .map((r) => `${r.rail} ${r.status}`)
+          .join(' · ');
+        setCompatNote(
+          `Compatibility baseline: ${c.overall_status} · format ${c.format_check.status} · ${rails}`,
+        );
+      })
+      .catch(() => setCompatNote(null));
+  }, [liveMode, selectedCatalogSlug]);
+
+  const createRigFromCase = async () => {
     setCreating(true);
     setError('');
     try {
+      let caseId = selectedCaseId;
+      if (selectedCatalogSlug) {
+        const mat = await caseCatalogApi.materialize(selectedCatalogSlug);
+        caseId = mat.data.case.id;
+        setSelectedCaseId(caseId);
+        setLegacyCases((prev) => {
+          const exists = prev.some((c) => c.id === mat.data.case.id);
+          return exists ? prev : [...prev, mat.data.case];
+        });
+      }
+      if (caseId == null) {
+        setError('Select a Eurorack case (catalog or legacy) before creating a rig.');
+        setCreating(false);
+        return;
+      }
       const res = await rackApi.create({
-        case_id: selectedCaseId,
+        case_id: caseId,
         name: rigName.trim() || undefined,
         modules: [],
       });
@@ -441,22 +506,59 @@ export default function RackBuilderPage() {
               <input
                 type="search"
                 value={caseQuery}
-                placeholder="Brand or model…"
+                placeholder="Manufacturer or model…"
                 onChange={(e) => setCaseQuery(e.target.value)}
               />
             </label>
             <label className="field" style={{ flex: '1 1 14rem' }}>
-              Case
+              Catalog case (preferred)
+              <select
+                value={selectedCatalogSlug ?? ''}
+                onChange={(e) => {
+                  const slug = e.target.value || null;
+                  setSelectedCatalogSlug(slug);
+                  if (slug) setSelectedCaseId(null);
+                }}
+                disabled={casesLoading}
+                aria-required={catalogCases.length > 0}
+              >
+                <option value="">
+                  {casesLoading
+                    ? 'Loading…'
+                    : catalogCases.length
+                      ? 'Select from normalized catalog…'
+                      : 'No catalog cases (use legacy below)'}
+                </option>
+                {catalogCases.map((c) => {
+                  const cap = c.primary_revision?.capacity_value;
+                  const unit = c.primary_revision?.capacity_unit || 'hp';
+                  return (
+                    <option key={c.slug} value={c.slug}>
+                      {c.manufacturer} — {c.model}
+                      {cap != null ? ` (${cap} ${unit})` : ''}
+                    </option>
+                  );
+                })}
+              </select>
+            </label>
+            <label className="field" style={{ flex: '1 1 14rem' }}>
+              Legacy case (fallback)
               <select
                 value={selectedCaseId ?? ''}
-                onChange={(e) =>
-                  setSelectedCaseId(e.target.value ? Number(e.target.value) : null)
-                }
+                onChange={(e) => {
+                  setSelectedCaseId(e.target.value ? Number(e.target.value) : null);
+                  if (e.target.value) setSelectedCatalogSlug(null);
+                }}
                 disabled={casesLoading}
-                aria-required
               >
-                <option value="">{casesLoading ? 'Loading…' : 'Select Eurorack case…'}</option>
-                {cases.map((c) => (
+                <option value="">
+                  {casesLoading
+                    ? 'Loading…'
+                    : catalogCases.length > 0
+                      ? 'Optional legacy override…'
+                      : 'Select legacy Eurorack case…'}
+                </option>
+                {legacyCases.map((c) => (
                   <option key={c.id} value={c.id}>
                     {c.brand} — {c.name} ({c.total_hp}HP · {c.rows} row
                     {c.rows === 1 ? '' : 's'})
@@ -477,38 +579,71 @@ export default function RackBuilderPage() {
               type="button"
               className="button button-primary"
               onClick={() => void createRigFromCase()}
-              disabled={creating || selectedCaseId == null}
+              disabled={creating || (selectedCatalogSlug == null && selectedCaseId == null)}
             >
               {creating ? 'Creating…' : 'Create empty rig'}
             </button>
           </div>
-          {selectedCase ? (
+          {selectedCatalogCase ? (
             <div className="stat-row" style={{ marginTop: 'var(--space-4)' }}>
               <div className="stat-block">
                 <p className="muted" style={{ margin: 0 }}>
                   Layout
                 </p>
                 <h3 style={{ fontSize: '1rem' }}>
-                  {selectedCase.hp_per_row?.join(' + ') || selectedCase.total_hp} HP
+                  {selectedCatalogCase.primary_revision?.capacity_value ?? '—'}{' '}
+                  {selectedCatalogCase.primary_revision?.capacity_unit || 'hp'}
+                  {selectedCatalogCase.primary_revision?.row_count != null
+                    ? ` · ${selectedCatalogCase.primary_revision.row_count} row(s)`
+                    : ''}
                 </h3>
               </div>
               <div className="stat-block">
                 <p className="muted" style={{ margin: 0 }}>
                   Power
                 </p>
-                <h3 style={{ fontSize: '1rem' }}>{casePowerSummary(selectedCase)}</h3>
+                <h3 style={{ fontSize: '1rem' }}>
+                  {selectedCatalogCase.powered === false
+                    ? 'Unpowered'
+                    : selectedCatalogCase.powered === true
+                      ? 'Powered (materialize fills rails when known)'
+                      : 'Power unspecified'}
+                </h3>
               </div>
             </div>
+          ) : null}
+          {selectedLegacyCase && !selectedCatalogCase ? (
+            <div className="stat-row" style={{ marginTop: 'var(--space-4)' }}>
+              <div className="stat-block">
+                <p className="muted" style={{ margin: 0 }}>
+                  Layout
+                </p>
+                <h3 style={{ fontSize: '1rem' }}>
+                  {selectedLegacyCase.hp_per_row?.join(' + ') || selectedLegacyCase.total_hp} HP
+                </h3>
+              </div>
+              <div className="stat-block">
+                <p className="muted" style={{ margin: 0 }}>
+                  Power
+                </p>
+                <h3 style={{ fontSize: '1rem' }}>{casePowerSummary(selectedLegacyCase)}</h3>
+              </div>
+            </div>
+          ) : null}
+          {compatNote ? (
+            <p className="muted" style={{ marginTop: 'var(--space-3)', fontSize: '0.9rem' }}>
+              {compatNote}
+            </p>
           ) : null}
           {error && !liveMode ? (
             <p className="status status-danger" role="alert" style={{ marginTop: 'var(--space-3)' }}>
               {error}
             </p>
           ) : null}
-          {!casesLoading && cases.length === 0 ? (
+          {!casesLoading && catalogCases.length === 0 && legacyCases.length === 0 ? (
             <p className="status status-warning" style={{ marginTop: 'var(--space-3)' }}>
-              No Eurorack cases in catalog. Import with <code>just cases-import</code> or open{' '}
-              <Link to="/cases">Cases</Link>.
+              No Eurorack cases available. Import <code>data/cases/seed-v1.json</code> via the
+              catalog populator, or open <Link to="/cases">Cases</Link>.
             </p>
           ) : null}
 

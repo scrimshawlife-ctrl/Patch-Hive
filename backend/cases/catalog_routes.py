@@ -14,6 +14,8 @@ from sqlalchemy.orm import Session, selectinload
 from cases import catalog_service
 from cases.compatibility import evaluate_catalog_compatibility
 from cases.compatibility_schemas import CompatibilityRequest, CompatibilityResponse
+from cases.materialize import materialize_legacy_case
+from cases.schemas import CaseResponse
 from cases.catalog_schemas import (
     CaseCatalogDetail,
     CaseCatalogListItem,
@@ -245,3 +247,28 @@ def evaluate_case_compatibility(
         return evaluate_catalog_compatibility(db, slug, body)
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@router.post(
+    "/catalog/{slug}/materialize",
+    response_model=dict,
+    summary="Create or refresh a legacy Case row for Rack Builder placement",
+)
+def materialize_catalog_case(
+    slug: str,
+    revision_key: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+):
+    """Bridge catalog → legacy ``cases`` table (racks still use ``case_id``).
+
+    Idempotent for the same manufacturer/model + ``meta.catalog_slug``.
+    """
+    try:
+        legacy, created = materialize_legacy_case(db, slug, revision_key=revision_key)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    return {
+        "created": created,
+        "catalog_slug": slug,
+        "case": CaseResponse.model_validate(legacy),
+    }

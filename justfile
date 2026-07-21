@@ -123,6 +123,20 @@ case-catalog-seed:
 	cd "{{root}}"
 	python3 scripts/build_case_catalog_seed.py
 
+# Import seed-v1 into DATABASE_URL (durable; requires migrations at case catalog head)
+case-catalog-seed-import:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	if [[ -z "${DATABASE_URL:-}" ]]; then
+		echo "Set DATABASE_URL to the target Postgres instance" >&2
+		exit 1
+	fi
+	cd backend
+	../backend/.venv/bin/python -m integrations.case_catalog_populator \
+	  --input ../data/cases/seed-v1.json \
+	  --receipt ../data/cases/receipts/seed-v1.import.json
+
 # Dry-run seed-v1 into an isolated SQLite catalog schema (no durable writes)
 case-catalog-seed-dry-run:
 	#!/usr/bin/env bash

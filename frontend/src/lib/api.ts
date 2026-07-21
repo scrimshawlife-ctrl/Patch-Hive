@@ -5,6 +5,11 @@ import axios from 'axios';
 import type {
   ModuleListResponse,
   CaseListResponse,
+  CatalogCaseListResponse,
+  CatalogFormatListResponse,
+  CatalogStatsResponse,
+  CompatibilityResponse,
+  MaterializeCaseResponse,
   RackListResponse,
   PatchListResponse,
   GeneratePatchesRequest,
@@ -91,6 +96,67 @@ export const caseApi = {
   update: (id: number, data: Partial<Case>) => api.patch<Case>(`/cases/${id}`, data),
 
   delete: (id: number) => api.delete(`/cases/${id}`),
+};
+
+/** Normalized modular case catalog + compatibility + legacy materialize bridge. */
+export type CatalogListParams = {
+  skip?: number;
+  limit?: number;
+  manufacturer?: string;
+  format_family?: string;
+  production_status?: string;
+  powered?: boolean;
+  q?: string;
+  capacity_unit?: string;
+  min_capacity?: number;
+  max_capacity?: number;
+  min_rows?: number;
+  min_depth_mm?: number;
+  min_pos12_ma?: number;
+  portable?: boolean;
+  feature_key?: string;
+};
+
+export const caseCatalogApi = {
+  list: (params?: CatalogListParams) =>
+    api.get<CatalogCaseListResponse>('/cases/catalog', { params }),
+
+  formats: () => api.get<CatalogFormatListResponse>('/cases/catalog/formats'),
+
+  stats: () => api.get<CatalogStatsResponse>('/cases/catalog/stats'),
+
+  get: (slug: string) => api.get(`/cases/catalog/${encodeURIComponent(slug)}`),
+
+  materialize: (slug: string, revision_key?: string) =>
+    api.post<MaterializeCaseResponse>(
+      `/cases/catalog/${encodeURIComponent(slug)}/materialize`,
+      null,
+      { params: revision_key ? { revision_key } : undefined },
+    ),
+
+  compatibility: (
+    slug: string,
+    body: {
+      revision_key?: string;
+      plan_close_lid?: boolean;
+      modules?: {
+        module_id?: number;
+        name?: string;
+        row_index?: number;
+        start_hp?: number;
+        hp?: number;
+        depth_mm?: number;
+        format_family?: string;
+        power_12v_ma?: number;
+        power_neg12v_ma?: number;
+        power_5v_ma?: number;
+      }[];
+    },
+  ) =>
+    api.post<CompatibilityResponse>(
+      `/cases/catalog/${encodeURIComponent(slug)}/compatibility`,
+      body,
+    ),
 };
 
 // Rack API

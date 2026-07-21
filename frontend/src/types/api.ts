@@ -65,6 +65,103 @@ export interface CaseListResponse {
   cases: Case[];
 }
 
+/** Normalized modular case catalog (additive to legacy Case). */
+export interface CatalogRevisionSummary {
+  revision_key: string;
+  revision_label?: string | null;
+  row_count?: number | null;
+  capacity_value?: number | null;
+  capacity_unit?: string | null;
+  depth_min_mm?: number | null;
+  depth_max_mm?: number | null;
+  portable?: boolean | null;
+  removable_lid?: boolean | null;
+  integrated_stand?: boolean | null;
+  confidence: string;
+}
+
+export interface CatalogCaseListItem {
+  slug: string;
+  manufacturer: string;
+  model: string;
+  format_family: string;
+  production_status: string;
+  powered?: boolean | null;
+  official_url?: string | null;
+  image_url?: string | null;
+  primary_revision?: CatalogRevisionSummary | null;
+}
+
+export interface CatalogCaseListResponse {
+  total: number;
+  skip: number;
+  limit: number;
+  cases: CatalogCaseListItem[];
+}
+
+export interface CatalogFormatCount {
+  format_family: string;
+  case_count: number;
+}
+
+export interface CatalogFormatListResponse {
+  total: number;
+  formats: CatalogFormatCount[];
+}
+
+export interface CatalogStatsResponse {
+  case_count: number;
+  revision_count: number;
+  manufacturer_count: number;
+  format_family_counts: Record<string, number>;
+  powered_counts: Record<string, number>;
+  with_power_rails: number;
+  with_depth: number;
+  with_prices: number;
+  with_sources: number;
+  source_packet_count: number;
+  publication_note?: string;
+}
+
+export type CompatibilityStatus = 'verified' | 'incomplete' | 'conflict';
+
+export interface CompatibilityCheck {
+  status: CompatibilityStatus;
+  code: string;
+  message: string;
+  details?: Record<string, unknown>;
+}
+
+export interface CompatibilityResponse {
+  case_slug: string;
+  manufacturer: string;
+  model: string;
+  format_family: string;
+  revision_key: string;
+  overall_status: CompatibilityStatus;
+  format_check: CompatibilityCheck;
+  physical_fit: CompatibilityCheck;
+  power_headroom: {
+    rail: string;
+    case_capacity_ma?: number | null;
+    module_draw_ma: number;
+    headroom_ma?: number | null;
+    status: CompatibilityStatus;
+    message: string;
+  }[];
+  connector_availability: CompatibilityCheck;
+  pos5_compatibility: CompatibilityCheck;
+  lid_close: CompatibilityCheck;
+  warnings: CompatibilityCheck[];
+  notes: string[];
+}
+
+export interface MaterializeCaseResponse {
+  created: boolean;
+  catalog_slug: string;
+  case: Case;
+}
+
 // Rack types
 export interface RackModuleSpec {
   module_id: number;
