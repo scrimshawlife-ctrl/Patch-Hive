@@ -46,6 +46,27 @@ test:
 	cd "{{root}}/frontend"
 	npm test -- --run
 
+# Quarantined historical package corpus (not default CI unit path)
+test-historical:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}/backend"
+	env -u PYTHONPATH python -m pytest patchhive/tests patchhive/runes/tests -q
+
+# Live import density + canon import guard
+telemetry-patchhive:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/ai/patchhive_import_telemetry.sh
+
+# Fail if canon/evidence import historical package
+guard-patchhive-imports:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/ai/check_no_canon_patchhive_imports.sh
+
 coverage:
 	#!/usr/bin/env bash
 	set -euo pipefail

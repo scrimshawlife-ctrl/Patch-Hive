@@ -1,54 +1,111 @@
 # `patchhive` package import telemetry
 
-**Method:** `rg` over `backend/**/*.py` after AI foundation indexes (`just memory`)  
-**Date:** 2026-07-21 · main @ `b117848`  
-**Goal:** Classify imports so agents do not confuse HISTORICAL `backend/patchhive` with CANON_MVP `backend/canon`.
+**Method:** `rg` over repo Python after live `main` checkout  
+**Date:** 2026-07-21 · main baseline `ecdf6b3` (Wave 4 hygiene)  
+**Goal:** Classify surfaces so agents do not confuse HISTORICAL `patchhive` trees with CANON_MVP `backend/canon` / `backend/evidence`.  
+**Regenerate:** `just telemetry-patchhive` or `bash scripts/ai/patchhive_import_telemetry.sh`
 
 ## Classification
 
 | Class | Meaning | Disposition |
 |-------|---------|-------------|
-| **CANON_MVP** | `backend/canon/*` | Primary authority |
-| **CANON_SUPPORTING** | Pipeline still used by tests/export paths under `backend/patchhive` | Keep until dual-write complete |
-| **HISTORICAL_TEST** | Unit tests importing v1 schemas/pipeline | Quarantine discovery optionally |
-| **NO_IMPORT_FROM_CANON** | `backend/canon` must not import `patchhive` package | **PASS** (only string schema versions) |
+| **CANON_MVP** | `backend/canon/*`, `backend/evidence/*` | Primary product authority |
+| **CANON_SUPPORTING** | `backend/patchhive/*` pipeline still exercised by marked unit tests | Keep; **no new features** |
+| **LEGACY_PIPELINE_TEST** | `backend/tests/**` files that `import patchhive` | Marked `legacy_pipeline`; still in default CI |
+| **HISTORICAL_PACKAGE_TEST** | `backend/patchhive/tests/*` | **Quarantined** — not in default `testpaths` |
+| **HISTORICAL_ORPHAN** | repo-root `patchhive/` (sibling of `backend/`) | Not on backend pytest path; do not extend |
+| **NO_IMPORT_FROM_CANON** | `backend/canon` + `backend/evidence` must not import package `patchhive` | Enforced by CI script |
 
-## Evidence
+## Live evidence (OBSERVED)
 
-### `backend/canon` → `patchhive` package
+### Forbidden direction: canon / evidence → package
 
 ```text
-No `from patchhive` / `import patchhive` in backend/canon
-(Only schema_version strings containing "patchhive.")
+rg 'from patchhive|import patchhive' backend/canon backend/evidence  → NONE
+rg 'from patchhive|import patchhive' backend/patches backend/racks backend/main.py backend/core  → NONE
 ```
 
-**Exit criterion met for “no accidental canon→patchhive imports”.**
+**Exit criterion:** no accidental product-path imports of the historical package.  
+**CI:** `bash scripts/ai/check_no_canon_patchhive_imports.sh` (engineering-quality workflow).
 
-### Heaviest importers (file match counts, approximate)
+### Product package tree
 
-| File | Import lines (rg -c) | Class |
-|------|----------------------|-------|
-| `backend/tests/unit/test_query_surface.py` | 9 | HISTORICAL_TEST |
-| `backend/patchhive/pipeline/run.py` | 8 | CANON_SUPPORTING |
-| `backend/patchhive/cli/export_pack.py` | 8 | CANON_SUPPORTING |
-| `backend/patchhive/ops/build_patch_library.py` | 7 | CANON_SUPPORTING |
-| `backend/tests/unit/test_export_pack.py` | 6 | HISTORICAL_TEST |
-| `backend/patchhive/*` internal | many | Self-contained historical subsystem |
+| Tree | ~`.py` files | Role |
+|------|--------------|------|
+| `backend/canon` | product | CANON_MVP |
+| `backend/evidence` | product | CANON_MVP |
+| `backend/patchhive` | ~67 | CANON_SUPPORTING / historical pipeline |
+| repo-root `patchhive/` | ~78 | HISTORICAL_ORPHAN (duplicate-era tree) |
 
-### Packaging
+### `backend/tests` files that import `patchhive` (LEGACY_PIPELINE_TEST)
 
-`backend/pyproject.toml` still lists `patchhive*` packages and `testpaths` includes `patchhive/runes/tests`.
+| File | Import lines (approx) | Notes |
+|------|----------------------|--------|
+| `tests/unit/test_query_surface.py` | 9 | Abraxas query surface |
+| `tests/unit/test_export_pack.py` | 6 | Export pack |
+| `tests/unit/test_pipeline_run.py` | 4 | Pipeline run |
+| `tests/unit/test_function_store_commit.py` | 3 | Function registry |
+| `tests/unit/test_gallery_revisions.py` | — | Gallery append-only |
+| `tests/test_schema_roundtrip.py` | — | Schema roundtrip |
 
-## Recommended next slices (do not big-bang delete)
+These carry `pytest.mark.legacy_pipeline` and remain in **default** `pytest tests` until a dual-write retirement campaign.
 
-1. **Docs-only (this file)** — agents know classification  
-2. **pytest norecursedirs / path markers** — optional exclude pure historical tests from default `pytest tests` if already isolated  
-3. **No new features in `backend/patchhive`** — implement on `canon` / `evidence` / `patches`  
-4. **Later PR:** move remaining pipeline consumers or dual-write then drop package  
+Filter optionally:
 
-## Agent rule
+```bash
+cd backend
+env -u PYTHONPATH python -m pytest tests -m 'not legacy_pipeline' --ignore=tests/acceptance -q
+```
+
+### Heaviest importers inside `backend/patchhive` (internal)
+
+| File | Import lines (approx) |
+|------|----------------------|
+| `pipeline/run.py` | 8 |
+| `cli/export_pack.py` | 8 |
+| `ops/build_patch_library.py` | 7 |
+| `cli/confirm.py` | 6 |
+| `pipeline/run_library.py` | 5 |
+| `export/export_pack.py` | 5 |
+
+### Quarantine map (pytest)
+
+| Path | Default CI? | How |
+|------|-------------|-----|
+| `backend/tests/**` (non-legacy) | **yes** | `testpaths = ["tests", …]` |
+| `backend/tests/**` with `legacy_pipeline` | **yes** (marked) | still collected; filterable |
+| `backend/patchhive/runes/tests` | **yes** (narrow) | listed in `testpaths` |
+| `backend/patchhive/tests/*` | **no** | not in `testpaths`; `norecursedirs` |
+| repo-root `patchhive/**` | **no** | outside backend package |
+
+Run quarantined package tests explicitly:
+
+```bash
+just test-historical
+# or:
+cd backend && env -u PYTHONPATH python -m pytest patchhive/tests patchhive/runes/tests -q
+```
+
+## Packaging (`backend/pyproject.toml`)
+
+- setuptools still packages `patchhive*` submodules (runtime importability for marked tests).
+- `testpaths`: `tests` + `patchhive/runes/tests` only.
+- `norecursedirs` includes `patchhive/tests`.
+- Marker: `legacy_pipeline`.
+
+## Recommended slices (do not big-bang delete)
+
+1. ~~Docs + markers + CI guard (this PR)~~  
+2. Migrate LEGACY_PIPELINE_TEST consumers onto `canon` / `evidence` one suite at a time  
+3. Drop `patchhive` from setuptools packages when no remaining importers  
+4. Delete repo-root `patchhive/` after import graph is empty  
+
+## Agent rules
 
 ```text
 Prefer backend/canon and backend/evidence for new work.
-Treat backend/patchhive as read-mostly historical pipeline unless fixing a red test.
+Treat backend/patchhive as read-mostly historical pipeline unless fixing a red legacy_pipeline test.
+Never import patchhive from canon or evidence.
+Do not implement new product features under backend/patchhive or repo-root patchhive/.
+Schema version strings containing "patchhive." are fine (not package imports).
 ```

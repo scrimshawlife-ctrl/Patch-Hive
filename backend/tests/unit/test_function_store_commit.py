@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import pytest
+
+pytestmark = pytest.mark.legacy_pipeline
+
 from datetime import datetime, timezone
 from pathlib import Path
 

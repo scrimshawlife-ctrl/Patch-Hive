@@ -31,7 +31,7 @@ grep -n "^Symbol" .codebase-memory/symbols/tags | head   # or editor ctags jump
 | Safe for product work | Careful / dual-path |
 |----------------------|---------------------|
 | `backend/canon/` | `backend/racks`, `patches` routers |
-| `backend/evidence/` | top-level `patchhive/` historical |
+| `backend/evidence/` | `backend/patchhive/` + repo-root `patchhive/` (HISTORICAL; see PATCHHIVE_IMPORT_TELEMETRY.md) |
 | `frontend/src/pages` MVP | `frontend/src/legacy` |
 
 ## Validate before claiming done

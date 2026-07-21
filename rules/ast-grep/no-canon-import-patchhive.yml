@@ -1,0 +1,15 @@
+# Domain guard: product CANON_MVP packages must not import historical patchhive.
+# Prefer scripts/ai/check_no_canon_patchhive_imports.sh in CI (path-scoped).
+# Local: ast-grep scan --filter no-canon-import-patchhive
+id: no-canon-import-patchhive
+language: python
+severity: error
+message: "Do not import historical package 'patchhive' from product code. Use canon/evidence; see PATCHHIVE_IMPORT_TELEMETRY.md."
+files:
+  - "backend/canon/**"
+  - "backend/evidence/**"
+rule:
+  any:
+    - pattern: import patchhive
+    - pattern: from patchhive import $$$
+    - pattern: from patchhive.$$$ import $$$
