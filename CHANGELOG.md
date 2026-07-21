@@ -8,6 +8,9 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Production readiness assessment (2026-07-21): gate scorecard, blockers, continuity plan under `docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md`; refreshed SHA-pinned readiness matrix.
+- README hero banner, product stills, Zero State lockup, and linked CI / readiness badges.
+- Roadmap updated for late-alpha Design Engine + VSI delivery and beta/RC path.
 - Zero State × PatchHive design system: brand hierarchy, guidelines, 340 SVG icons, CSS tokens, footer credit, design-system preview, lockups, app icon, Zero State monogram.
 - Cyber Hive visual identity kit: brand assets under `brand/`, design system in `docs/brand/`, SVG icons + tokens.
 - Local Docker staging receipt + domain cutover checklist; `just staging-up` / `staging-down`.

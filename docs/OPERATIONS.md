@@ -8,7 +8,7 @@ PatchHive remains a modular monolith. Apply the single Alembic head before appli
 
 1. Install exactly from `backend/pyproject.toml` / `backend/requirements.txt` and `frontend/package-lock.json`.
 2. Run backend, frontend, property/contract, security, and accessibility automation (or rely on green PR CI).
-3. Run `alembic heads` and require exactly **`20240930_patch_user_overlays`** (revises `20240929_visual_inventory_evidence`) after the revision-picker merge; until then `20240929_visual_inventory_evidence` is valid.
+3. Run `alembic heads` and require a **single head**. As of Design Engine on main, head includes `20260721_user_style_recipes` (revises design-engine export columns → overlays → inventory). Re-check on the release SHA; do not trust this note alone.
 4. Run PostgreSQL integration and migration tests (`alembic upgrade head` against Postgres 15).
 5. Generate and retain Python/npm CycloneDX SBOMs and build provenance (Security workflow artifacts).
 6. Run ledger reconciliation (`reconcile_ledger` or equivalent admin path) and require no anomalies.

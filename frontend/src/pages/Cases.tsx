@@ -40,7 +40,9 @@ export default function CasesPage() {
         <div>
           <p className="eyebrow">Catalog</p>
           <h1 id="cases-title">Cases</h1>
-          <p className="muted">Browse Eurorack cases used as rack containers for confirmed inventories.</p>
+          <p className="muted">
+            Browse Eurorack cases used as rack containers for confirmed inventories.
+          </p>
         </div>
         <button className="button button-secondary" type="button" onClick={() => void load()}>
           Refresh
@@ -71,23 +73,28 @@ export default function CasesPage() {
 
       {state === 'ready' ? (
         <>
-          <p className="muted" role="status">
+          <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
             Showing {cases.length} of {total} cases
           </p>
-          <div className="builder-grid" style={{ display: 'grid', gap: '1rem' }}>
+          <div className="catalog-grid">
             {cases.map((item) => (
-              <article key={item.id} className="panel">
-                <h2 style={{ color: 'var(--accent, #00ff88)', fontSize: '1.1rem' }}>
+              <article key={item.id} className="catalog-card">
+                <span className="feature-card-icon" aria-hidden="true">
+                  HP
+                </span>
+                <h2>
                   {item.brand} — {item.name}
                 </h2>
-                <p className="muted">
+                <p className="catalog-card-meta">
                   {item.total_hp} HP · {item.rows} row{item.rows === 1 ? '' : 's'}
-                  {item.hp_per_row?.length
-                    ? ` · per row: ${item.hp_per_row.join(', ')}`
-                    : ''}
+                  {item.hp_per_row?.length ? ` · per row: ${item.hp_per_row.join(', ')}` : ''}
                 </p>
-                {item.description ? <p>{item.description}</p> : null}
-                <p className="muted" style={{ fontSize: '0.8rem' }}>
+                {item.description ? (
+                  <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                    {item.description}
+                  </p>
+                ) : null}
+                <p className="catalog-card-meta">
                   Source: {item.source}
                   {item.source_reference ? ` · ${item.source_reference}` : ''}
                 </p>

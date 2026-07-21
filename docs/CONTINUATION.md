@@ -1,9 +1,11 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `4e91b63`+ (gallery revisions on canon; full legacy_pipeline test migration in flight)  
-**Tracking:** Issue #46 closed · PR #47–#81+ on main  
-**PR #66–#81:** **MERGED** through gallery revisions; remaining legacy unit tests migrated onto canon  
+**main HEAD:** `de1fbcf` (Login #95; Design Engine #90–#94 on main)  
+**Open:** [#96](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/96) Cyber Hive pages  
+**Tracking:** Issue #46 closed · PR #47–#95 on main  
+**Readiness:** [evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md](evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md)  
+**Roadmap:** [ROADMAP.md](ROADMAP.md)  
 **Plan:** [evidence/CONTINUATION_PLAN_POST_75.md](evidence/CONTINUATION_PLAN_POST_75.md)
 
 ## Where we are

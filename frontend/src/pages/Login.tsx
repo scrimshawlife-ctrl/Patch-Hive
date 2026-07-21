@@ -51,8 +51,8 @@ export default function LoginPage() {
 
   const fillDemo = () => {
     setMode('signin');
-    setUsername('testuser');
-    setPassword('testpass123');
+    setUsername('Admin');
+    setPassword('Admin');
     setError('');
   };
 
@@ -163,7 +163,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  minLength={8}
+                  minLength={mode === 'register' ? 8 : 1}
                   disabled={submitting}
                 />
                 <button
@@ -204,7 +204,7 @@ export default function LoginPage() {
               Local demo credentials for development staging:
             </p>
             <p>
-              <code>testuser</code> / <code>testpass123</code>
+              <code>Admin</code> / <code>Admin</code>
             </p>
             <button type="button" className="button button-secondary" onClick={fillDemo}>
               Fill demo credentials

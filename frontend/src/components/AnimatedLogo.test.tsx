@@ -52,7 +52,7 @@ describe('AnimatedLogo', () => {
       const outerHex = container.querySelector('.hex-outer');
       expect(outerHex).toBeInTheDocument();
       expect(outerHex).toHaveAttribute('fill', 'none');
-      expect(outerHex).toHaveAttribute('stroke', '#7FF7FF');
+      expect(outerHex).toHaveAttribute('stroke', '#f5a623');
     });
 
     it('renders inner hexagon', () => {
@@ -162,20 +162,20 @@ describe('AnimatedLogo', () => {
   });
 
   describe('Visual Elements', () => {
-    it('all pathways have stroke color #7FF7FF', () => {
+    it('all pathways have stroke color #f5a623', () => {
       const { container } = render(<AnimatedLogo />);
       const pathways = container.querySelectorAll('[class*="pathway-"]');
       pathways.forEach((pathway) => {
-        expect(pathway).toHaveAttribute('stroke', '#7FF7FF');
+        expect(pathway).toHaveAttribute('stroke', '#f5a623');
       });
     });
 
-    it('all hexagons use brand color #7FF7FF', () => {
+    it('all hexagons use brand color #f5a623', () => {
       const { container } = render(<AnimatedLogo />);
       const hexOuter = container.querySelector('.hex-outer');
       const hexInner = container.querySelector('.hex-inner');
-      expect(hexOuter).toHaveAttribute('stroke', '#7FF7FF');
-      expect(hexInner).toHaveAttribute('stroke', '#7FF7FF');
+      expect(hexOuter).toHaveAttribute('stroke', '#f5a623');
+      expect(hexInner).toHaveAttribute('stroke', '#f5a623');
     });
 
     it('core circles have correct radii', () => {

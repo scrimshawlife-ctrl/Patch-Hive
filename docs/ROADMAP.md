@@ -12,105 +12,118 @@ Status vocabulary:
 - `DEFERRED` — intentionally outside the current release line.
 - `NOT_COMPUTABLE` — evidence is unavailable or insufficient.
 
+**Live posture:** [CURRENT_STATE.md](../CURRENT_STATE.md)  
+**Production readiness:** [PRODUCTION_READINESS.md](PRODUCTION_READINESS.md) · [evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md](evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md)  
+**Ordered engineering backlog:** [CONTINUATION.md](CONTINUATION.md)
+
 ## Retroactive release map
 
 | Line | Maturity | Scope | Current classification |
 |---|---|---|---|
-| `0.1.x` | historical prototype | early rig, patch, publishing, and experimental surfaces | superseded or compatibility-only |
-| `0.2.x` | canon-aligned MVP | immutable rigs/runs, deterministic compiler, validation, canonical export/credit boundary | implemented in part; not production released |
-| `0.3.x` | Patch Book Generator | exactly one standalone page per patch, page-fit compiler, deterministic book manifests | specification complete; implementation planned |
-| `0.4.x` | release hardening | catalog truth, operational maturity, accessibility and export conformance | planned |
-| `1.0.0` | production-supported release | stable public workflow with supportable operations and no release blockers | not yet eligible |
+| `0.1.x` | historical prototype | early rig, patch, publishing, experimental surfaces | superseded / compatibility-only |
+| `0.2.x` | canon-aligned MVP | immutable rigs/runs, deterministic compiler, validation, canonical export/credit boundary | **COMPLETE on main** (not production released) |
+| `0.3.0-alpha` | Patch Book + VSI + Design Engine | one-page contracts, VSI P0, Style Studio / design packs (flags off) | **ACTIVE / late alpha** (`v0.3.0-alpha.1` lineage) |
+| `0.3.0-beta` | closed staging beta | named staging, Design Engine E2E, a11y protocol, dual-path thinning | **PLANNED** |
+| `0.3.0-rc` | Patch Book release candidate | freeze SHA, full export matrix, concurrency/debit evidence | **PLANNED** |
+| `0.4.x` | production hardening | ops maturity, scanner, SLOs, support, payment readiness (still off) | **PLANNED** |
+| `1.0.0` | production-supported release | stable public workflow + authority decision | **not eligible** |
 
-## `0.2.x` — Canon-aligned MVP stabilization
+## `0.2.x` — Canon-aligned MVP — COMPLETE
 
-**Objective:** establish one truthful runtime and eliminate high-risk dual paths.
+**Objective:** one truthful runtime and fail-closed dual-path monetization.
+
+### Delivered (COMPLETE)
+
+- Canonical `/api/canon/*` credits, exports, download tokens, test-mode Stripe webhook
+- Legacy debit `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` → 410 by default
+- Server-authored run bridge identities (`rig-rev-*` / `gen-run-*`)
+- Legacy social / publishing / leaderboards / referrals default off
+- FE quarantine of unrouted community/publish pages under `frontend/src/legacy/`
+- VSI P0: secure image evidence, mock vision adapter, inventory gate, multi-photo fusion (user confirm only)
+- CI: backend + quality + security workflows
+
+### Residual (not blocking 0.2 classification)
+
+- Inventory HTTP still primarily `/api/racks` (CANON_SUPPORTING; dual-path F2–F5 planned)
+- Named multi-tenant staging host **NOT_PERFORMED**
+- Production deploy and live payments **NOT_GRANTED**
+
+## `0.3.0-alpha` — Patch Books, Design Engine, product shell — ACTIVE
+
+**Objective:** make publication and presentation pipelines real under fail-closed flags.
+
+### COMPLETE on main (PRs #66–#95 lineage)
+
+| Capability | Status |
+|------------|--------|
+| Patch page / book contracts + Design Engine foundation | COMPLETE (#90) |
+| Families, a11y preflight, preview rate limit | COMPLETE (#91) |
+| Deterministic SVG diagrams + influence library | COMPLETE (#92) |
+| Server style recipe library + staging enablement docs | COMPLETE (#93) |
+| Pack artifact download, share toggle, zip export | COMPLETE (#94) |
+| Cyber Hive Login gate | COMPLETE (#95) |
+| Zero State × PatchHive brand / design system | COMPLETE (#88–#89) |
+| Local Docker staging receipts + domain cutover checklist | COMPLETE (#87) |
+| F3 generate dual-write audit | COMPLETE (#86) |
+| Cyber Hive product page visual upgrade | ACTIVE (#96 open) |
+
+### Exit criteria for closing alpha
+
+- [ ] Demo credentials aligned with seed data
+- [ ] Design Engine walkthrough receipt with flags on (test payments only)
+- [ ] Docs / readiness matrix pinned to post-#96 SHA
+- [ ] No P0 integrity regressions on main CI
+
+## `0.3.0-beta` — Closed staging beta — PLANNED
+
+**Objective:** prove the product on a durable non-prod environment.
 
 ### Required work
 
-- complete migration of acceptance tests to canonical export and credit APIs;
-- remove or fail-close legacy debit paths;
-- expose server-authored rig revision and artifact manifest identities;
-- quarantine historical UI and package surfaces;
-- preserve deterministic compile, immutable runs, and append-only ledgers;
-- validate staging PostgreSQL, migration, backup, and restore behavior;
-- Visual System Intelligence P0 contracts: secure image evidence, provider-neutral adapters, confirmation → immutable inventory, confirmed-hardware patch gates (see `docs/VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md`).
+1. Operator host pick (Compose VPS / Render / Fly / Azure) — [STAGING_HOST_PLAN.md](evidence/STAGING_HOST_PLAN.md)
+2. Secrets, CORS, fail-closed payment flags
+3. Design Engine staging enablement — [PATCHBOOK_STAGING_ENABLEMENT.md](design/PATCHBOOK_STAGING_ENABLEMENT.md)
+4. Acceptance suite against staging Postgres
+5. Backup/restore + ledger reconcile drill receipts
+6. Manual accessibility protocol — [ACCESSIBILITY.md](ACCESSIBILITY.md)
+7. Dual-path F2/F4/F5 thinning (no big-bang rack delete)
+8. Playwright against staging or staging-like stack
 
 ### Exit criteria
 
-- one canonical debit path;
-- one authoritative run/export identity path;
-- no enabled legacy social or publishing features;
-- CI, integration, security, and accessibility gates pass;
-- staging release receipt exists.
+- Named staging URL (or private IP) with health + migrate head verified
+- Debit → fulfillment → download pack succeeds under test mode
+- A11y protocol logged; known defects severity-classified
+- Production payments still **disabled**
 
-## `0.3.0-alpha` — Patch page contracts
+## `0.3.0-rc` — Release candidate — PLANNED
 
-**Objective:** make one-page publication constraints executable.
-
-### Deliverables
-
-- versioned `PatchPageSpec`, `PageFitReport`, and `PatchBookManifest` contracts;
-- content budget and typography profile definitions;
-- deterministic route numbering and cable classifications;
-- page-fit error taxonomy;
-- fixtures for simple, dense, feedback, and inaccessible patches.
-
-### Exit criteria
-
-- schema validation and compatibility tests pass;
-- fixed inputs produce byte-equivalent canonical JSON;
-- invalid overflow is rejected rather than clipped.
-
-## `0.3.0-beta` — Rendering and book assembly
-
-**Objective:** produce complete deterministic Patch Books.
-
-### Deliverables
-
-- semantic page assembler;
-- SVG-first technical diagram renderer;
-- diagram-first, instruction-first, and performance-first layouts;
-- PDF, SVG, JSON, and ZIP export assembly;
-- reading order, grayscale, and non-color encoding support;
-- manifest binding and artifact checksums.
-
-### Exit criteria
-
-- every accepted patch compiles to exactly one page;
-- page count equals accepted patch count plus declared front/back matter;
-- golden, property, accessibility, and visual-regression suites pass;
-- repeated builds from the same normalized inputs match declared determinism guarantees.
-
-## `0.3.0-rc` — Patch Book release candidate
-
-**Objective:** freeze the feature set and prove release behavior.
+**Objective:** freeze scope and prove release behavior on one SHA.
 
 ### Required evidence
 
-- clean candidate SHA and release receipt;
-- full supported-format export matrix;
-- large-book and dense-patch performance tests;
-- corrupted artifact, retry, reversal, and idempotency tests;
-- tagged PDF checks where supported;
-- manual print inspection for supported trim profiles;
-- no unresolved P0/P1 defects;
-- documented P2 defects with explicit acceptance.
+- Clean candidate tag + release receipt
+- Full supported-format export matrix
+- Dense-book performance budgets
+- Corrupted artifact, retry, reversal, idempotency tests
+- No unresolved P0/P1 defects
+- SHA-pinned [PRODUCTION_READINESS](PRODUCTION_READINESS.md) checklist filled
 
-## `0.4.x` — Production hardening
+Any release-blocking fix produces a **new** RC tag.
+
+## `0.4.x` — Production hardening — PLANNED
 
 **Objective:** remove operational uncertainty before public production use.
 
 ### Workstreams
 
-- module-gallery provenance and revision operations;
-- admin correction and audit workflows;
-- real upload scanning and provider isolation;
-- SLOs, alerts, dead-letter handling, and reconciliation;
-- backup restoration drills and disaster recovery;
-- rate limiting, abuse controls, privacy retention, and support tooling;
-- production payment readiness without activation by default;
-- customer-facing help, methodology, and failure recovery.
+- Production malware/AV scanner behind `ImageScanner`
+- SLOs, alerts, dead-letter handling, reconciliation jobs
+- Backup restoration drills and disaster recovery
+- Rate limiting, abuse controls, privacy retention, support tooling
+- Payment readiness (webhooks, concurrency) **without** activation by default
+- Customer-facing help, methodology, and failure recovery
+- Threat model sign-off; SBOM retained per release
 
 ## `1.0.0` — Production-supported release
 
@@ -126,24 +139,46 @@ PatchHive reaches `1.0.0` only when:
 - legal, billing, licensing, and support surfaces are approved;
 - an explicit operator decision authorizes production deployment.
 
+Live customer charging requires a **separate** payment-activation decision (`ALLOW_PRODUCTION_PAYMENTS`).
+
 ## Visual System Intelligence (cross-cutting)
 
-Authoritative contracts: `docs/VISUAL_SYSTEM_INTELLIGENCE.md`, ADR-005, delivery plan in
-`docs/VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md`.
+Authoritative contracts: [VISUAL_SYSTEM_INTELLIGENCE.md](VISUAL_SYSTEM_INTELLIGENCE.md), ADR-005, [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md).
 
-| Priority | Capability | Status (evidence) |
-|----------|------------|-------------------|
-| P0 | Secure image re-encode + local quality | IMPLEMENTED (unit tests) |
-| P0 | Provider-neutral vision adapter + mock/fixture | IMPLEMENTED (unit tests) |
-| P0 | Classification candidates cannot self-confirm | IMPLEMENTED (contracts + runes) |
-| P0 | Confirmation → immutable `SystemInventoryRevision` | IMPLEMENTED (in-process; ORM follow-on) |
-| P0 | Confirmed-inventory patch constraint enforcement | IMPLEMENTED (unit tests) |
-| P0 | Full HTTP confirmation + multi-photo UI workflow | PARTIAL (RackBuilder evidence UI; no multi-photo) |
-| P1 | Port/control/cable reconstruction | STUB / mock empty |
-| P1 | Photo-derived Patch Books | SPEC_ONLY |
-| P2 | Live camera guidance, marketplace, community match | DEFERRED |
+| Priority | Capability | Status |
+|----------|------------|--------|
+| P0 | Secure image re-encode + local quality | COMPLETE |
+| P0 | Provider-neutral vision adapter + mock/fixture | COMPLETE |
+| P0 | Classification candidates cannot self-confirm | COMPLETE |
+| P0 | Confirmation → inventory revision + generate gate | COMPLETE |
+| P0 | Multi-photo fusion UI (user confirm only) | COMPLETE |
+| P1 | Port/control/cable reconstruction | STUB |
+| P1 | Photo-derived Patch Books | SPEC / Design Engine presentation only |
+| P1 | Live vision provider + eval accuracy | NOT_COMPUTABLE without dataset |
+| P2 | Live camera guidance, marketplace match | DEFERRED |
 
-**Out of scope forever unless product canon changes:** audio recording, waveform analysis as ground truth, DSP engines, MIDI/CV hardware activation, DAW/plugin hosting.
+**Out of scope forever unless product canon changes:** audio recording as ground truth, DSP engines, MIDI/CV hardware activation, DAW/plugin hosting.
+
+## Dual-path inventory (cross-cutting)
+
+Design: [evidence/DUAL_PATH_RETIREMENT_DESIGN.md](evidence/DUAL_PATH_RETIREMENT_DESIGN.md)
+
+| Slice | Status |
+|-------|--------|
+| F0 design | COMPLETE |
+| F3 generate dual-write audit | COMPLETE |
+| F2 thin `GET /api/canon/rigs` | PLANNED |
+| F4/F5 evidence + FE cutover | PLANNED |
+| Z delete `backend/racks` | DEFERRED (operator-only campaign) |
+
+## Near-term sequence (next 2 weeks)
+
+1. Land Cyber Hive UI pages (#96); pin readiness docs  
+2. Align demo auth with seed  
+3. Design Engine local/staging walkthrough receipt  
+4. Operator staging host pick  
+5. Dual-path F2 **or** export concurrency hardening (one primary track)  
+6. Optional tag `v0.3.1-alpha` / `v0.4.0-beta.1` only after staging receipts  
 
 ## Deferred beyond 1.0
 

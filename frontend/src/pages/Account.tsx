@@ -7,19 +7,6 @@ import { accountApi, authApi, canonApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 import type { CreditsSummary, UserExportRecord, ReferralSummary, User } from '@/types/api';
 
-const sectionStyle: React.CSSProperties = {
-  background: '#111',
-  border: '1px solid #222',
-  borderRadius: '8px',
-  padding: '1.5rem',
-  marginBottom: '1.5rem',
-};
-
-const labelStyle: React.CSSProperties = {
-  color: '#aaa',
-  fontSize: '0.9rem',
-};
-
 export default function AccountPage() {
   const navigate = useNavigate();
   const { isAuthenticated, setAuth } = useAuthStore();
@@ -113,212 +100,218 @@ export default function AccountPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-      <h2 style={{ marginBottom: '0.5rem' }}>Account</h2>
-      <p style={{ color: '#bbb', marginBottom: '2rem' }}>
-        PatchHive is free to explore. You only pay when you export something you want to keep.
-        Credits and export debits use the canonical ledger (<code>/api/canon/*</code>).
-      </p>
+    <section aria-labelledby="account-title">
+      <header className="workspace-header">
+        <div>
+          <p className="eyebrow">Account</p>
+          <h1 id="account-title">Credits & profile</h1>
+          <p className="muted">
+            PatchHive is free to explore. You only pay when you export something you want to keep.
+            Credits and export debits use the canonical ledger (<code>/api/canon/*</code>).
+          </p>
+        </div>
+      </header>
 
-      <section style={sectionStyle}>
-        <h3>Credits</h3>
-        <p style={labelStyle}>Canonical balance</p>
-        <h2 style={{ marginTop: '0.25rem' }}>{credits ? credits.balance : '—'}</h2>
-        <p style={{ ...labelStyle, marginTop: '1rem' }}>Ledger history</p>
-        {credits?.entries.length ? (
-          <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
-            <thead style={{ textAlign: 'left', color: '#888' }}>
-              <tr>
-                <th style={{ padding: '0.5rem' }}>Type</th>
-                <th style={{ padding: '0.5rem' }}>Amount</th>
-                <th style={{ padding: '0.5rem' }}>Date</th>
-                <th style={{ padding: '0.5rem' }}>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {credits.entries.map((entry) => (
-                <tr key={String(entry.id)} style={{ borderTop: '1px solid #222' }}>
-                  <td style={{ padding: '0.5rem' }}>{entry.entry_type}</td>
-                  <td style={{ padding: '0.5rem' }}>{entry.amount}</td>
-                  <td style={{ padding: '0.5rem' }}>{new Date(entry.created_at).toLocaleString()}</td>
-                  <td style={{ padding: '0.5rem', color: '#888' }}>{entry.description || '—'}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p style={{ color: '#777' }}>No canonical credit history yet.</p>
-        )}
-      </section>
+      <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+        <section className="panel" aria-labelledby="credits-heading">
+          <p className="eyebrow">Ledger</p>
+          <h2 id="credits-heading" style={{ marginTop: 0 }}>
+            Credits
+          </h2>
+          <div className="stat-row">
+            <div className="stat-block">
+              <p className="muted" style={{ margin: 0 }}>
+                Canonical balance
+              </p>
+              <h3>{credits ? credits.balance : '—'}</h3>
+            </div>
+          </div>
+          <p className="muted" style={{ marginTop: 'var(--space-4)', marginBottom: 'var(--space-2)' }}>
+            Ledger history
+          </p>
+          {credits?.entries.length ? (
+            <div style={{ overflowX: 'auto' }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                    <th>Note</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {credits.entries.map((entry) => (
+                    <tr key={String(entry.id)}>
+                      <td>{entry.entry_type}</td>
+                      <td>{entry.amount}</td>
+                      <td>{new Date(entry.created_at).toLocaleString()}</td>
+                      <td className="muted">{entry.description || '—'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="muted">No canonical credit history yet.</p>
+          )}
+        </section>
 
-      <section style={sectionStyle}>
-        <h3>Exports</h3>
-        {tokenMessage ? <p style={{ color: '#00ff88' }}>{tokenMessage}</p> : null}
-        {exportRows.length ? (
-          <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
-            <thead style={{ textAlign: 'left', color: '#888' }}>
-              <tr>
-                <th style={{ padding: '0.5rem' }}>Type</th>
-                <th style={{ padding: '0.5rem' }}>Run ID</th>
-                <th style={{ padding: '0.5rem' }}>Status</th>
-                <th style={{ padding: '0.5rem' }}>Date</th>
-                <th style={{ padding: '0.5rem' }}>Download</th>
-              </tr>
-            </thead>
-            <tbody>
-              {exportRows.map((record) => (
-                <tr key={String(record.id)} style={{ borderTop: '1px solid #222' }}>
-                  <td style={{ padding: '0.5rem' }}>{record.label}</td>
-                  <td style={{ padding: '0.5rem', color: '#888' }}>{record.run_id}</td>
-                  <td style={{ padding: '0.5rem' }}>{record.status || '—'}</td>
-                  <td style={{ padding: '0.5rem' }}>{new Date(record.created_at).toLocaleString()}</td>
-                  <td style={{ padding: '0.5rem' }}>
-                    {record.canRequestToken ? (
-                      <button
-                        type="button"
-                        onClick={() => handleDownloadToken(String(record.id))}
-                        disabled={tokenBusy === String(record.id)}
-                        style={{
-                          background: 'transparent',
-                          border: '1px solid #00ff88',
-                          color: '#00ff88',
-                          padding: '0.25rem 0.5rem',
-                          borderRadius: '4px',
-                          cursor: 'pointer',
-                        }}
-                      >
-                        {tokenBusy === String(record.id) ? 'Issuing…' : 'Issue token'}
-                      </button>
-                    ) : (
-                      <span style={{ color: '#666' }}>{record.unlocked ? 'Ready' : 'Locked'}</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        ) : (
-          <p style={{ color: '#777' }}>No canonical exports yet.</p>
-        )}
-      </section>
-
-      <section style={sectionStyle}>
-        <h3>Referrals</h3>
-        {referrals ? (
-          <>
-            <p style={{ color: '#bbb' }}>
-              You’ll receive free credits if your friend makes their first purchase.
+        <section className="panel" aria-labelledby="exports-heading">
+          <p className="eyebrow">Downloads</p>
+          <h2 id="exports-heading" style={{ marginTop: 0 }}>
+            Exports
+          </h2>
+          {tokenMessage ? (
+            <p className="status status-success" role="status">
+              {tokenMessage}
             </p>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+          ) : null}
+          {exportRows.length ? (
+            <div style={{ overflowX: 'auto' }}>
+              <table className="data-table">
+                <thead>
+                  <tr>
+                    <th>Type</th>
+                    <th>Run ID</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                    <th>Download</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {exportRows.map((record) => (
+                    <tr key={String(record.id)}>
+                      <td>{record.label}</td>
+                      <td className="muted">{record.run_id}</td>
+                      <td>{record.status || '—'}</td>
+                      <td>{new Date(record.created_at).toLocaleString()}</td>
+                      <td>
+                        {record.canRequestToken ? (
+                          <button
+                            type="button"
+                            className="button button-secondary"
+                            onClick={() => handleDownloadToken(String(record.id))}
+                            disabled={tokenBusy === String(record.id)}
+                          >
+                            {tokenBusy === String(record.id) ? 'Issuing…' : 'Issue token'}
+                          </button>
+                        ) : (
+                          <span className="muted">{record.unlocked ? 'Ready' : 'Locked'}</span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <p className="muted">No canonical exports yet.</p>
+          )}
+        </section>
+
+        <section className="panel" aria-labelledby="referrals-heading">
+          <p className="eyebrow">Growth</p>
+          <h2 id="referrals-heading" style={{ marginTop: 0 }}>
+            Referrals
+          </h2>
+          {referrals ? (
+            <>
+              <p className="muted">
+                You’ll receive free credits if your friend makes their first purchase.
+              </p>
+              <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+                <label className="field" style={{ flex: 1, minWidth: '12rem' }}>
+                  Referral link
+                  <input type="text" value={referrals.referral_link || ''} readOnly />
+                </label>
+                <button type="button" className="button button-primary" onClick={() => void handleCopy()}>
+                  Invite a friend
+                </button>
+                {copyStatus ? (
+                  <span className="status status-success" role="status">
+                    {copyStatus}
+                  </span>
+                ) : null}
+              </div>
+              <div className="stat-row" style={{ marginTop: 'var(--space-4)' }}>
+                <div className="stat-block">
+                  <p className="muted" style={{ margin: 0 }}>
+                    Pending
+                  </p>
+                  <h3>{referrals.pending_count ?? '—'}</h3>
+                </div>
+                <div className="stat-block">
+                  <p className="muted" style={{ margin: 0 }}>
+                    Earned
+                  </p>
+                  <h3>{referrals.earned_count ?? '—'}</h3>
+                </div>
+              </div>
+            </>
+          ) : (
+            <p className="muted">
+              Referrals are feature-flagged off in the default MVP (
+              <code>ENABLE_LEGACY_REFERRALS=false</code>).
+            </p>
+          )}
+        </section>
+
+        <section className="panel" aria-labelledby="profile-heading">
+          <p className="eyebrow">Identity</p>
+          <h2 id="profile-heading" style={{ marginTop: 0 }}>
+            Profile
+          </h2>
+          <div style={{ display: 'grid', gap: 'var(--space-4)', maxWidth: '28rem' }}>
+            <label className="field">
+              Display name
               <input
                 type="text"
-                value={referrals.referral_link || ''}
-                readOnly
+                value={displayName}
+                onChange={(event) => setDisplayName(event.target.value)}
+              />
+            </label>
+            <label className="field">
+              Avatar URL
+              <input
+                type="url"
+                value={avatarUrl}
+                onChange={(event) => setAvatarUrl(event.target.value)}
+                placeholder="https://"
+              />
+            </label>
+            {avatarUrl ? (
+              <img
+                src={avatarUrl}
+                alt="Avatar preview"
+                width={96}
+                height={96}
                 style={{
-                  flex: 1,
-                  background: '#0c0c0c',
-                  border: '1px solid #333',
-                  color: '#ccc',
-                  padding: '0.5rem',
-                  borderRadius: '4px',
+                  width: '96px',
+                  height: '96px',
+                  borderRadius: '50%',
+                  border: '1px solid var(--border)',
+                  objectFit: 'cover',
                 }}
               />
-              <button
-                onClick={handleCopy}
-                style={{
-                  background: '#00ff88',
-                  color: '#000',
-                  border: 'none',
-                  padding: '0.5rem 1rem',
-                  borderRadius: '4px',
-                  cursor: 'pointer',
-                  fontWeight: 'bold',
-                }}
-              >
-                Invite a friend
-              </button>
-              {copyStatus && <span style={{ color: '#00ff88' }}>{copyStatus}</span>}
-            </div>
-            <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
-              <div>
-                <p style={labelStyle}>Pending</p>
-                <h3>{referrals.pending_count ?? '—'}</h3>
-              </div>
-              <div>
-                <p style={labelStyle}>Earned</p>
-                <h3>{referrals.earned_count ?? '—'}</h3>
-              </div>
-            </div>
-          </>
-        ) : (
-          <p style={{ color: '#777' }}>
-            Referrals are feature-flagged off in the default MVP (`ENABLE_LEGACY_REFERRALS=false`).
-          </p>
-        )}
-      </section>
-
-      <section style={sectionStyle}>
-        <h3>Profile</h3>
-        <div style={{ display: 'grid', gap: '1rem', maxWidth: '400px' }}>
-          <label>
-            <div style={labelStyle}>Display name</div>
-            <input
-              type="text"
-              value={displayName}
-              onChange={(event) => setDisplayName(event.target.value)}
-              style={{
-                width: '100%',
-                background: '#0c0c0c',
-                border: '1px solid #333',
-                color: '#ccc',
-                padding: '0.5rem',
-                borderRadius: '4px',
-              }}
-            />
-          </label>
-          <label>
-            <div style={labelStyle}>Avatar URL</div>
-            <input
-              type="url"
-              value={avatarUrl}
-              onChange={(event) => setAvatarUrl(event.target.value)}
-              placeholder="https://"
-              style={{
-                width: '100%',
-                background: '#0c0c0c',
-                border: '1px solid #333',
-                color: '#ccc',
-                padding: '0.5rem',
-                borderRadius: '4px',
-              }}
-            />
-          </label>
-          {avatarUrl && (
-            <img
-              src={avatarUrl}
-              alt="Avatar preview"
-              style={{ width: '96px', height: '96px', borderRadius: '50%' }}
-            />
-          )}
-          <button
-            onClick={handleSaveProfile}
-            disabled={saving}
-            style={{
-              background: '#333',
-              color: '#fff',
-              border: '1px solid #555',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-            }}
-          >
-            {saving ? 'Saving...' : 'Save profile'}
-          </button>
-        </div>
-        {profile && (
-          <p style={{ color: '#666', marginTop: '0.75rem' }}>Signed in as {profile.username}</p>
-        )}
-      </section>
-    </div>
+            ) : null}
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={() => void handleSaveProfile()}
+              disabled={saving}
+              style={{ justifySelf: 'start' }}
+            >
+              {saving ? 'Saving…' : 'Save profile'}
+            </button>
+          </div>
+          {profile ? (
+            <p className="muted" style={{ marginTop: 'var(--space-4)', marginBottom: 0 }}>
+              Signed in as <strong>{profile.username}</strong>
+            </p>
+          ) : null}
+        </section>
+      </div>
+    </section>
   );
 }

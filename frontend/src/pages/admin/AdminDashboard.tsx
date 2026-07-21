@@ -1,19 +1,82 @@
+import { Link } from 'react-router-dom';
 import { AdminGuard } from './AdminGuard';
 import { AdminNav } from './AdminNav';
+
+const areas = [
+  {
+    code: 'USR',
+    title: 'Users',
+    description: 'Roles, credit grants, and profile maintenance. Mutations are audited.',
+    to: '/admin/users',
+  },
+  {
+    code: 'MOD',
+    title: 'Modules',
+    description: 'Deprecate, tombstone, or merge catalog modules. No hard deletes.',
+    to: '/admin/modules',
+  },
+  {
+    code: 'GAL',
+    title: 'Gallery',
+    description: 'Inspect gallery revisions and inventory evidence state.',
+    to: '/admin/gallery',
+  },
+  {
+    code: 'RUN',
+    title: 'Runs',
+    description: 'Browse generation runs bound to rig revisions and seeds.',
+    to: '/admin/runs',
+  },
+  {
+    code: 'EXP',
+    title: 'Exports',
+    description: 'Canonical export ledger and fulfillment status.',
+    to: '/admin/exports',
+  },
+  {
+    code: 'LDR',
+    title: 'Leaderboards',
+    description: 'Community ranking surfaces when feature flags allow.',
+    to: '/admin/leaderboards',
+  },
+] as const;
 
 export default function AdminDashboard() {
   return (
     <AdminGuard>
-      <div>
-        <h2>Admin Console</h2>
+      <div className="admin-shell">
+        <header className="workspace-header">
+          <div>
+            <p className="eyebrow">Ops</p>
+            <h1>Admin console</h1>
+            <p className="muted">
+              Manage users, catalog, gallery revisions, runs, exports, and leaderboards. All
+              mutations append audit rows; credits only move through the ledger.
+            </p>
+          </div>
+        </header>
         <AdminNav />
-        <div style={{ border: '1px solid #333', padding: '1rem', borderRadius: '6px' }}>
-          <p>Use the console to manage users, modules, gallery revisions, runs, exports, and leaderboards.</p>
-          <ul>
-            <li>All admin mutations are audited.</li>
-            <li>Credits changes are appended to the ledger.</li>
-            <li>Modules are deprecated or tombstoned (no hard deletes).</li>
+        <div className="panel">
+          <p className="eyebrow">Guardrails</p>
+          <ul className="auth-brand-list" style={{ marginTop: 'var(--space-3)' }}>
+            <li>All admin mutations are audited</li>
+            <li>Credit changes append to the canonical ledger</li>
+            <li>Modules are deprecated or tombstoned (no hard deletes)</li>
           </ul>
+        </div>
+        <div className="feature-grid">
+          {areas.map((area) => (
+            <article key={area.code} className="feature-card">
+              <span className="feature-card-icon" aria-hidden="true">
+                {area.code}
+              </span>
+              <h2>{area.title}</h2>
+              <p>{area.description}</p>
+              <Link className="button button-secondary" to={area.to}>
+                Open
+              </Link>
+            </article>
+          ))}
         </div>
       </div>
     </AdminGuard>
