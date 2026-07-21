@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Canon-native replacements for residual legacy unit suites: `function_registry`, `query_surface`, `pipeline`, `export_pack` (no default-test imports of historical `patchhive`).
 - `canon.gallery_revisions` append-only file store; `patchhive.gallery.revisions` is a compatibility shim; gallery revision tests no longer mark `legacy_pipeline`.
 - Migrated schema roundtrip off historical `patchhive` onto `canon.contracts.RigMetricsPacket` (one fewer `legacy_pipeline` importer).
 - Canon compiler edge-case tests: signal mismatch, direction, feedback declare/undeclared, attenuation, normals, empty graph.

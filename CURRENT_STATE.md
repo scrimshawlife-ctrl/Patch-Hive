@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `678ff66` (merge of PR #80; pin may lag until this docs pass merges)
+**HEAD:** pin after full legacy_pipeline unit migration (see latest merge)
 
 ### Recent merges (OBSERVED)
 
@@ -50,9 +50,9 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 
 ## Immediate continuation priorities
 
-1. Migrate remaining `legacy_pipeline` suites (export_pack, pipeline_run, function_store, query_surface)  
-2. Named staging host (ops-gated)  
-3. Optional release tag after hardening window  
+1. Named staging host (ops-gated)  
+2. Optional release tag after hardening window  
+3. Further dual-path rack retirement (design-first; no big-bang)  
 
 ## Authority boundary
 

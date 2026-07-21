@@ -39,23 +39,23 @@ rg 'from patchhive|import patchhive' backend/patches backend/racks backend/main.
 
 ### `backend/tests` files that import `patchhive` (LEGACY_PIPELINE_TEST)
 
-| File | Import lines (approx) | Notes |
-|------|----------------------|--------|
-| `tests/unit/test_query_surface.py` | 9 | Abraxas query surface |
-| `tests/unit/test_export_pack.py` | 6 | Export pack |
-| `tests/unit/test_pipeline_run.py` | 4 | Pipeline run |
-| `tests/unit/test_function_store_commit.py` | 3 | Function registry |
+**NONE** (as of full migration PR). All former residual unit suites now import `canon.*` only:
 
-~~`tests/test_schema_roundtrip.py`~~ **MIGRATED** → `tests/unit/test_canon_contracts.py` (`RigMetricsPacket`).  
-~~`tests/unit/test_gallery_revisions.py`~~ **MIGRATED** → `canon.gallery_revisions` (patchhive re-exports for runes).
+| Former file | Canon home |
+|-------------|------------|
+| `test_schema_roundtrip.py` | `test_canon_contracts` / `RigMetricsPacket` |
+| `test_gallery_revisions.py` | `canon.gallery_revisions` |
+| `test_function_store_commit.py` | `canon.function_registry` |
+| `test_query_surface.py` | `canon.query_surface` |
+| `test_pipeline_run.py` | `canon.pipeline` |
+| `test_export_pack.py` | `canon.export_pack` + `canon.pipeline` |
 
-These remaining files carry `pytest.mark.legacy_pipeline` and stay in **default** `pytest tests` until dual-write retirement.
-
-Filter optionally:
+Historical VL2 pipeline under `backend/patchhive/**` remains for package-internal / rune maps; default unit tests no longer import it.
 
 ```bash
 cd backend
-env -u PYTHONPATH python -m pytest tests -m 'not legacy_pipeline' --ignore=tests/acceptance -q
+env -u PYTHONPATH python -m pytest tests -m legacy_pipeline --ignore=tests/acceptance -q
+# expect: 0 collected / all deselected
 ```
 
 ### Heaviest importers inside `backend/patchhive` (internal)
