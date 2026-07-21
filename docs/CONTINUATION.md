@@ -124,8 +124,8 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 6. Evaluation dataset + metrics harness — **ACTIVE** (`evidence/evaluation.py` + `fixtures/vision_eval/`; production accuracy remains `NOT_COMPUTABLE`)
 7. Consent-gated cloud vision adapter — **ACTIVE** (`evidence/cloud_provider.py`; live calls fail-closed)
 8. ~~Land PR #66~~ **DONE** (`6a85beb`)
-9. ~~Wire RackBuilder file upload/confirm to live rack evidence APIs~~ **ACTIVE** (branch `grok/cases-patches-evidence-ux`)
-10. ~~Cases/Patches list pages beyond stubs~~ **ACTIVE** (same branch; loading/empty/error parity)
+9. ~~Wire RackBuilder file upload/confirm to live rack evidence APIs~~ **DONE** (`evidenceApi` + rack-bound upload/confirm)
+10. ~~Cases/Patches list pages beyond stubs~~ **DONE** (loading/empty/error/retry parity)
 
 ### P5 — Explicitly deferred
 
