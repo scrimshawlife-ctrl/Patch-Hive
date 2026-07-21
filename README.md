@@ -9,6 +9,7 @@ PatchHive is a deterministic Eurorack **rig and patch documentation** workspace.
 | **Canon MVP on main** | **MERGED** via [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) |
 | **P1 credits/exports client** | **MERGED** via [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) — MVP UI uses `/api/canon/*` |
 | **P1 acceptance → canon ledger** | **MERGED** via [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) |
+| **P1 run DTO export bridge** | **MERGED** via [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) |
 | **main HEAD** | `7471a2a09cb7435ebf1ea10fe6280ebc94774500` |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
 | **Alembic head** | `20240928_fix_schema_gaps` |

@@ -3,7 +3,8 @@
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
 **HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
-**Latest product merge:** [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) MERGED (P1 acceptance → canon ledger)
+**Latest product merge:** [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) MERGED (run DTO export bridge)
+**Prior P1 acceptance merge:** [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) MERGED (P1 acceptance → canon ledger)
 **Prior P1 client merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49)  
 **Prior canon MVP merge:** [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) at `a162f85`  
 **Campaign:** [Issue #46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  

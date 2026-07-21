@@ -2,7 +2,7 @@
 
 **Status date:** 2026-07-21  
 **main HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
-**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED  
+**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED · PR #54 MERGED  
 **Open campaign PRs:** none
 
 ## Where we are
@@ -52,7 +52,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 **Completed slices:**
 - **PR #49:** FE debit/list/balance → canon only.
 - **PR #51:** acceptance debit → `/api/canon/exports`; admin grant dual-writes canonical ledger; legacy debit gateable via `ENABLE_LEGACY_PATCHBOOK_DEBIT`.
-- **PR (this):** run list/get DTO exposes server-authored export bridge; RigDetail uses DTO fields only; `runs.bridge` ensures canon FK targets.
+- **PR #54:** run list/get DTO exposes server-authored export bridge; RigDetail uses DTO fields only; `runs.bridge` ensures canon FK targets.
 
 **Progress checklist:**
 - [x] Acceptance debit tests use `POST /api/canon/exports` + canonical ledger
