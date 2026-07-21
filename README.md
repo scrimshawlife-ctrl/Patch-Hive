@@ -9,16 +9,14 @@ PatchHive is a deterministic Eurorack **rig-intelligence and patch-book publishi
 | Item | Value |
 |------|--------|
 | **Canon MVP on main** | **MERGED** via [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) |
-| **P1 credits/exports client** | **MERGED** via [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) — MVP UI uses `/api/canon/*` |
-| **P1 acceptance → canon ledger** | **MERGED** via [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) |
-| **P1 run DTO export bridge** | **MERGED** via [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) |
-| **main HEAD** | `72c9dcc13e4321ca9605b9a2209d7eca398ac965` |
+| **P1 dual-path slices A–E** | **MERGED** (generate bridge, canon runs, content hash, FE quarantine, legacy debit off) |
+| **Visual System Intelligence specs** | On main — [docs/VISUAL_SYSTEM_INTELLIGENCE.md](docs/VISUAL_SYSTEM_INTELLIGENCE.md), ADR-005 |
+| **VSI P0 contracts (campaign)** | Provider-neutral vision adapter, inventory revision, confirmed-hardware patch gates — see draft PR on `grok/patchhive-visual-system-canon-audit` |
+| **main baseline for campaign** | `2b72d5b10fef1ab70c74d3c40379eb1593cf8293` |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
-| **Open draft PR** | [#53](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/53) one-page publishing docs (this lineage) |
 | **Alembic head** | `20240928_fix_schema_gaps` |
-| **CI on HEAD** | Backend Tests · Code Quality · Security — green |
 | **Production deploy** | Not performed — payments remain test-mode only |
-| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) **P1 residual** (inventory dual-path; native canon runs) · [CURRENT_STATE.md](CURRENT_STATE.md) |
+| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) · [docs/evidence/WORK_PACKAGES.md](docs/evidence/WORK_PACKAGES.md) · [CURRENT_STATE.md](CURRENT_STATE.md) |
 
 ## Product contract
 

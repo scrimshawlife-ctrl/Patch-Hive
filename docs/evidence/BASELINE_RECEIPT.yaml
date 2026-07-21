@@ -1,0 +1,28 @@
+repository: https://github.com/scrimshawlife-ctrl/Patch-Hive
+baseline_branch: main
+baseline_sha: 2b72d5b10fef1ab70c74d3c40379eb1593cf8293
+audit_branch: grok/patchhive-visual-system-canon-audit
+working_tree: clean
+python_version: "3.14.6"
+node_version: "v22.23.1"
+npm_version: "10.9.8"
+docker_version: "29.6.2"
+postgres_version: NOT_COMPUTABLE  # host client not installed; CI/service Postgres is authoritative
+os: macos
+timestamp: "2026-07-21T03:35:56Z"
+open_pull_requests: []
+recent_merged_pull_requests:
+  - "65 fix: Playwright mock for /api/canon/runs"
+  - "64 feat: GET /api/canon/runs alias + FE listRuns (B)"
+  - "63 feat: rack content snapshot hash on export bridge (C)"
+  - "62 feat: legacy FE quarantine + debit flag default off (D/E)"
+  - "61 fix: Node 22 for frontend docker compose"
+  - "60 fix: docker CORS + make test for Desktop compose"
+  - "59 feat: ensure export bridge on patch generate (slice A)"
+baseline_tests:
+  command: "cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q"
+  result: "161 passed, 2 xfailed"
+  environment: local venv (/tmp/patchhive-venv), no Docker Compose
+notes:
+  - Visual System Intelligence docs already present on main (2b72d5b lineage); preserved and extended.
+  - No production deploy or payment activation performed.

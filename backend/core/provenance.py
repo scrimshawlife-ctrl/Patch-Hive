@@ -34,9 +34,14 @@ class ProvenanceMetrics:
     patch_count: Optional[int] = None
     connection_count: Optional[int] = None
     memory_mb: Optional[float] = None
+    # Free-form metrics (inventory gates, generation_status, etc.)
+    extra: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {k: v for k, v in asdict(self).items() if v is not None}
+        data = {k: v for k, v in asdict(self).items() if v is not None and k != "extra"}
+        if self.extra:
+            data.update(self.extra)
+        return data
 
 
 @dataclass
@@ -84,12 +89,24 @@ class Provenance:
         self.entity_id = entity_id
 
     def add_metric(self, key: str, value: Any) -> None:
-        """Add a custom metric."""
-        setattr(self.metrics, key, value)
+        """Add a metric. Known fields map directly; others go to metrics.extra."""
+
+        if key in {
+            "duration_ms",
+            "cpu_time_ms",
+            "patch_count",
+            "connection_count",
+            "memory_mb",
+        }:
+            setattr(self.metrics, key, value)
+        else:
+            self.metrics.extra[key] = value
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary."""
         data = asdict(self)
+        # Flatten free-form metrics.extra into metrics for stable consumers.
+        data["metrics"] = self.metrics.to_dict()
         # Filter out None values for cleaner storage
         return {k: v for k, v in data.items() if v is not None}
 

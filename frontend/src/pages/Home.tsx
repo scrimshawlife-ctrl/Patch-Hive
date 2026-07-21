@@ -8,29 +8,26 @@ export default function Home() {
         Welcome to PatchHive
       </h1>
       <p style={{ fontSize: '1.25rem', color: '#ccc', marginBottom: '2rem' }}>
-        Design, catalog, share, and explore Eurorack systems and their possible patches.
+        Confirm a modular rig, generate hardware-constrained patches, and publish
+        one-page Patch Books — without audio simulation or hardware control.
       </p>
 
       <div style={{ display: 'grid', gap: '2rem', marginTop: '3rem' }}>
         <Section
           title="Module & Case Library"
-          description="Browse and manage a comprehensive library of Eurorack modules and cases. Import from ModularGrid or add manually."
+          description="Browse the confirmed module gallery and cases. Missing technical data stays missing."
         />
         <Section
-          title="Rack Builder"
-          description="Design your dream Eurorack system with validation for HP, power draw, and layout constraints."
+          title="Manual, Photo, or Hybrid Intake"
+          description="Build a rig manually or review photo evidence. Provider detections stay untrusted until you confirm them."
         />
         <Section
           title="Deterministic Patch Generation"
-          description="Generate plausible patch configurations using our ABX-Core compliant engine. Each patch is reproducible from its seed."
+          description="Generate reproducible patches constrained to your confirmed inventory revision. Absent hardware yields NOT_COMPUTABLE, not invented gear."
         />
         <Section
-          title="Visualization & Export"
-          description="View rack layouts, patch diagrams, and waveform approximations. Export to PDF for your patch book."
-        />
-        <Section
-          title="Community Sharing"
-          description="Share your racks and patches publicly. Browse the feed, vote, and comment on community creations."
+          title="Patch Books & Export"
+          description="Compile ordered cable diagrams and export PDF, SVG, JSON, or ZIP with provenance. Symbolic waveform thumbnails are visualization only."
         />
       </div>
 
@@ -43,12 +40,12 @@ export default function Home() {
           borderRadius: '8px',
         }}
       >
-        <h2 style={{ color: '#00ff88', marginBottom: '1rem' }}>ABX-Core v1.2 Principles</h2>
+        <h2 style={{ color: '#00ff88', marginBottom: '1rem' }}>Product boundaries</h2>
         <ul style={{ color: '#ccc', lineHeight: '1.8' }}>
-          <li>Modular, deterministic, entropy-minimizing architecture</li>
-          <li>SEED enforcement: Full provenance and data lineage tracking</li>
-          <li>Eurorack mental model: modules, cases, patches, and signals</li>
-          <li>No mock data beyond minimal, clearly-labeled seeds for testing</li>
+          <li>Vision output is evidence only — never silent inventory truth</li>
+          <li>Immutable rig revisions and deterministic generation seeds</li>
+          <li>Signal types such as audio/CV/gate describe ports and cables, not DSP</li>
+          <li>Community social surfaces remain feature-flagged off by default</li>
         </ul>
       </div>
     </div>

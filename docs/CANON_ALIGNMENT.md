@@ -19,11 +19,14 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Canonical workspace UI (`App.tsx` routes) | CANON_MVP | Rigs, modules, cases, patches, account, admin diagnostics |
 | Admin diagnostics/auditing | CANON_SUPPORTING | RBAC retained; canonical audit events append-only |
 | Image/provider detection | CANON_SUPPORTING | Untrusted evidence only; validation, scan adapter, re-encoding, metadata stripping |
+| VSI contracts + inventory gate | CANON_SUPPORTING | `canon/visual_contracts.py`, `canon/inventory.py`, `evidence/vision_provider.py` — in-process P0; ORM follow-on |
 | Integration/catalog adapters | CANON_SUPPORTING | Retained behind bounded adapters |
 | Legacy `/api/racks`, `/api/patches`, `/api/runs` | CANON_SUPPORTING / transitional | Still mounted; **active inventory UI** — see **Inventory dual-path matrix** below |
 | Legacy `POST /api/export/runs/{id}/patchbook` debit | CANON_SUPPORTING / transitional | MVP UI + acceptance use `/api/canon/exports` (PR #49/#51); gate via `ENABLE_LEGACY_PATCHBOOK_DEBIT` |
 | Legacy `/api/export/*` PDF/SVG GET bytes | CANON_SUPPORTING | Artifact delivery; no new MVP debits |
-| Run list DTO bridge fields | CANON_SUPPORTING | Server-authored `legacy-run-*` / `legacy-rack-*` + hash (PR #54); not yet native canon generator IDs |
+| Run list DTO bridge fields | CANON_SUPPORTING | Server-authored native `gen-run-*` / `rig-rev-*` + content hash (PR #66 continuation; legacy helpers deprecated) |
+| System inventory revisions | CANON_SUPPORTING | `system_inventory_revisions` + generate-path persist (WP-06) |
+| Image evidence assets | CANON_SUPPORTING | `image_assets` + multi-image upload API + retention soft-delete |
 | Community feed, comments, votes, following, notifications | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Public publishing/profiles/sharing | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Leaderboards | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
@@ -44,7 +47,7 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 - Canonical revisions, runs, libraries, generated patches, manifests, receipts, ledger entries, and admin audit events reject mutation and deletion at the ORM boundary.
 - User notes, favorite, and tried state live in a mutable overlay.
 - Duplicate mapped table/class names and the Alembic branch conflict were repaired.
-- Alembic single head advanced through `20240927_canon_alignment` → **`20240928_fix_schema_gaps`** (votes/comments/account compatibility tables).
+- Alembic single head advanced through `20240927_canon_alignment` → `20240928_fix_schema_gaps` → **`20240929_visual_inventory_evidence`**.
 - The rune manifest declares the eight required operations, schemas, versions, determinism classes, authority, side effects, failure codes, and test vectors.
 - Provider output cannot self-promote to confirmed truth.
 - Canonical export/credit/webhook HTTP is exposed under `/api/canon/*` with production payment startup policy.

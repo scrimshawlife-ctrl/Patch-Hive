@@ -116,6 +116,7 @@ from runs.routes import router as runs_router  # noqa: E402
 
 from canon.routes import router as canon_router  # noqa: E402
 from community.auth_routes import router as auth_router  # noqa: E402
+from evidence.routes import router as evidence_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
@@ -126,6 +127,7 @@ app.include_router(patches_router, prefix="/api/patches", tags=["patches"])
 app.include_router(runs_router, prefix="/api/runs", tags=["runs"])
 app.include_router(export_router, prefix="/api/export", tags=["export"])
 app.include_router(canon_router, prefix="/api/canon", tags=["canon"])
+app.include_router(evidence_router, prefix="/api", tags=["evidence"])
 app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])

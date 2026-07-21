@@ -23,6 +23,12 @@ Deliver a trustworthy path from user system photographs to a confirmed canonical
 - no duplicate canonical system models
 - all unresolved contradictions recorded as explicit gaps
 
+### Campaign progress (2026-07-21)
+
+- **DONE:** baseline receipt, audio-drift classification, capability matrix, readiness matrix (`docs/evidence/`).
+- **DONE:** contract tests for provider self-confirm rejection, inventory immutability, NOT_COMPUTABLE generation gate.
+- **OPEN:** dual-path inventory HTTP still transitional; ORM persistence for `SystemInventoryRevision` not yet migrated.
+
 ## Workstream 1 — Secure image evidence intake
 
 ### Deliverables
@@ -39,6 +45,11 @@ Deliver a trustworthy path from user system photographs to a confirmed canonical
 - hostile-file tests pass
 - every accepted image has immutable evidence identity
 - rejected images return machine-readable reasons
+
+### Campaign progress
+
+- **DONE:** re-encode, MIME match, scan adapter, EXIF strip, local structural quality gates, mock provider packet.
+- **OPEN:** authenticated multi-image upload API + product retention/consent flags; production AV scanner.
 
 ## Workstream 2 — Device Registry readiness
 

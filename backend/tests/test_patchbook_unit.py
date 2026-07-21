@@ -7,8 +7,15 @@ from sqlalchemy.orm import Session
 from patches.models import Patch
 from racks.models import Rack
 
-from export.patchbook.build import build_patchbook_document_from_payload, build_patchbook_pdf_bytes_from_payload
-from export.patchbook.models import PatchBookExportRequest, PATCHBOOK_TEMPLATE_VERSION, PatchBookTier
+from export.patchbook.build import (
+    build_patchbook_document_from_payload,
+    build_patchbook_pdf_bytes_from_payload,
+)
+from export.patchbook.models import (
+    PatchBookExportRequest,
+    PATCHBOOK_TEMPLATE_VERSION,
+    PatchBookTier,
+)
 from export.patchbook import pdf_meta
 
 
@@ -46,7 +53,9 @@ def test_build_patchbook_pdf_bytes_deterministic(
 ) -> None:
     patch = _create_patch(db_session, sample_rack_basic)
 
-    payload = PatchBookExportRequest(rack_id=sample_rack_basic.id, patch_ids=[patch.id], tier=PatchBookTier.CORE)
+    payload = PatchBookExportRequest(
+        rack_id=sample_rack_basic.id, patch_ids=[patch.id], tier=PatchBookTier.CORE
+    )
     pdf_bytes, content_hash = build_patchbook_pdf_bytes_from_payload(db_session, payload)
     pdf_bytes_repeat, repeat_hash = build_patchbook_pdf_bytes_from_payload(db_session, payload)
 
@@ -64,7 +73,9 @@ def test_patchbook_hash_stable_with_metadata_variation(
     monkeypatch,
 ) -> None:
     patch = _create_patch(db_session, sample_rack_basic)
-    payload = PatchBookExportRequest(rack_id=sample_rack_basic.id, patch_ids=[patch.id], tier=PatchBookTier.CORE)
+    payload = PatchBookExportRequest(
+        rack_id=sample_rack_basic.id, patch_ids=[patch.id], tier=PatchBookTier.CORE
+    )
 
     _, first_hash = build_patchbook_pdf_bytes_from_payload(db_session, payload)
     monkeypatch.setattr(pdf_meta, "apply_deterministic_pdf_metadata", lambda *args, **kwargs: None)

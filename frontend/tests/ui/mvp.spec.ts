@@ -14,8 +14,8 @@ test.describe('PatchHive canonical workspace', () => {
                 rack_id: 1,
                 status: 'succeeded',
                 created_at: '2025-01-01T00:00:00Z',
-                rig_revision_id: 'legacy-rack-1',
-                source_run_id: 'legacy-run-11',
+                rig_revision_id: 'rig-rev-' + 'a'.repeat(32),
+                source_run_id: 'gen-run-11-' + 'a'.repeat(16),
                 artifact_manifest_hash: 'a'.repeat(64),
                 export_bridge_ready: true,
               },
@@ -24,8 +24,8 @@ test.describe('PatchHive canonical workspace', () => {
                 rack_id: 1,
                 status: 'succeeded',
                 created_at: '2025-02-01T00:00:00Z',
-                rig_revision_id: 'legacy-rack-1',
-                source_run_id: 'legacy-run-12',
+                rig_revision_id: 'rig-rev-' + 'b'.repeat(32),
+                source_run_id: 'gen-run-12-' + 'b'.repeat(16),
                 artifact_manifest_hash: 'b'.repeat(64),
                 export_bridge_ready: true,
               },
@@ -71,10 +71,15 @@ test.describe('PatchHive canonical workspace', () => {
       buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
     });
     await page.getByRole('button', { name: 'Detect modules' }).click();
+    await expect(page.getByRole('list', { name: 'Ranked module candidates' })).toBeVisible();
     const createRevision = page.getByRole('button', { name: 'Create immutable rig revision' });
     await expect(createRevision).toBeDisabled();
-    await page.getByRole('button', { name: 'Confirm match' }).click();
+    // Resolve every ranked candidate (confirm + reject) so inventory is ready.
+    await page.getByRole('button', { name: 'Confirm match' }).first().click();
+    await page.getByRole('button', { name: 'Reject' }).last().click();
     await expect(createRevision).toBeEnabled();
+    await createRevision.click();
+    await expect(page.getByText(/Inventory revision ready/i)).toBeVisible();
   });
 
   test('export boundary explains zero-credit state', async ({ page }) => {

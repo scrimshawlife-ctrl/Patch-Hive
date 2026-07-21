@@ -280,9 +280,9 @@ This enables:
 - **Debugging**: Understand why a patch was created
 - **Versioning**: Track engine evolution over time
 
-## Waveform Approximation
+## Waveform Approximation (symbolic visualization only)
 
-After patch generation, waveforms are approximated for visualization:
+After patch generation, **symbolic** waveform thumbnails may be approximated for documentation. This is not audio processing, DSP, or sonic prediction. Language in product surfaces must say "approximation" or "expected structural envelope," never claim an observed sound.
 
 ### Inference from Patch
 
@@ -403,6 +403,6 @@ class PatchEngineConfig:
 - **Constraint solver**: Optimize patch creation with constraints
 
 ### Phase 3
-- **ML-assisted generation**: Learn from community-rated patches
-- **Audio simulation**: Generate actual audio previews
-- **Hardware integration**: Send patches to real modular systems via CV/Gate
+- **ML-assisted generation**: Learn from community-rated patches (optional research track)
+- ~~**Audio simulation**~~: **OUT OF SCOPE** — PatchHive does not synthesize, record, or analyze audio. Waveform SVGs are symbolic approximations only, never sonic ground truth.
+- ~~**Hardware integration**~~: **OUT OF SCOPE** — no MIDI/CV activation or physical equipment control

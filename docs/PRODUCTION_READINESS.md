@@ -19,6 +19,8 @@ Critical security, integrity, payment, data-loss, or accessibility blockers cann
 
 The canon-aligned MVP and one-page Patch Book specifications do not establish production readiness. Production deployment, live payments, and customer charging remain unauthorized until the gates below pass and an explicit release decision is recorded.
 
+**Evidence-bound matrix:** [evidence/PRODUCTION_READINESS_MATRIX.md](evidence/PRODUCTION_READINESS_MATRIX.md) (SHA-pinned; supersedes informal percentage claims).
+
 ## Release maturity ladder
 
 ### Development build

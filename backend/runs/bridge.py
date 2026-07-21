@@ -1,13 +1,14 @@
-"""Legacy Run → canonical export bridge.
+"""Run → canonical export bridge.
 
 MVP UI still lists integer ``runs`` rows. Canonical exports require
 ``generation_runs`` + ``rig_revisions`` FK targets and a 64-char manifest hash.
 
-This module:
-1. Derives stable bridge identifiers from legacy ``run_id`` / ``rack_id``
-2. Snapshots rack module layout into ``RigRevisionRecord.canonical_rig`` + content hash
-3. Ensures matching canon rows exist (idempotent upsert-by-id)
-4. Powers enriched ``RunResponse`` fields so the FE does not invent IDs/hashes
+Native bridge identifiers (post-PR #66 continuation):
+- ``rig-rev-{content_hash[:32]}`` — immutable per rack layout snapshot
+- ``gen-run-{run_id}-{content_hash[:16]}`` — generation run bound to that snapshot
+
+Legacy ``legacy-rack-*`` / ``legacy-run-*`` helpers remain only for migration
+parity tests and are not used by ``ensure_legacy_run_export_bridge``.
 """
 
 from __future__ import annotations
@@ -24,14 +25,30 @@ from racks.models import Rack, RackModule
 from runs.models import Run
 
 RACK_SNAPSHOT_SCHEMA = "patchhive.rack-snapshot.v1"
+BRIDGE_NAMESPACE = "native"
 
 
 def legacy_rig_revision_id(rack_id: int) -> str:
+    """Historical id form (deprecated; not written by ensure_*)."""
     return f"legacy-rack-{int(rack_id)}"
 
 
 def legacy_source_run_id(run_id: int) -> str:
+    """Historical id form (deprecated; not written by ensure_*)."""
     return f"legacy-run-{int(run_id)}"
+
+
+def native_rig_revision_id(content_hash: str) -> str:
+    """Immutable revision id derived from content hash (never mutates in place)."""
+    digest = content_hash.lower()
+    if len(digest) < 32:
+        raise ValueError("content_hash must be a full sha256 hex digest")
+    return f"rig-rev-{digest[:32]}"
+
+
+def native_source_run_id(run_id: int, content_hash: str) -> str:
+    digest = content_hash.lower()
+    return f"gen-run-{int(run_id)}-{digest[:16]}"
 
 
 def _sha256_hex(payload: str) -> str:
@@ -43,7 +60,7 @@ def _stable_hash(label: str) -> str:
 
 
 def build_rack_content_snapshot(db: Session, rack: Rack) -> dict[str, Any]:
-    """Deterministic layout snapshot for RigRevision.canonical_rig (matrix slice C)."""
+    """Deterministic layout snapshot for RigRevision.canonical_rig."""
     rack_id = int(rack.id)  # type: ignore[arg-type]
     case_id = int(rack.case_id)  # type: ignore[arg-type]
     rows = (
@@ -62,7 +79,7 @@ def build_rack_content_snapshot(db: Session, rack: Rack) -> dict[str, Any]:
     ]
     return {
         "schema": RACK_SNAPSHOT_SCHEMA,
-        "bridge": "legacy-rack",
+        "bridge": BRIDGE_NAMESPACE,
         "rack_id": rack_id,
         "case_id": case_id,
         "modules": modules,
@@ -78,19 +95,27 @@ def rack_content_hash(snapshot: dict[str, Any]) -> str:
 def legacy_artifact_manifest_hash(
     run_id: int, rack_id: int, content_hash: str | None = None
 ) -> str:
-    """Export artifact hash. Prefer content-bound form when snapshot hash is known."""
+    """Historical manifest formula (kept for regression comparison)."""
     if content_hash:
-        payload = (
-            f"patchhive:legacy-run:{int(run_id)}:rig:{int(rack_id)}:content:{content_hash}"
-        )
+        payload = f"patchhive:legacy-run:{int(run_id)}:rig:{int(rack_id)}:content:{content_hash}"
     else:
-        # Historical FE parity when no DB snapshot is available yet.
         payload = f"patchhive:legacy-run:{int(run_id)}:rig:{int(rack_id)}"
     return _sha256_hex(payload)
 
 
+def native_artifact_manifest_hash(run_id: int, rack_id: int, content_hash: str) -> str:
+    payload = f"patchhive:gen-run:{int(run_id)}:rig:{int(rack_id)}:content:{content_hash}"
+    return _sha256_hex(payload)
+
+
+# Alias used by older call sites.
+artifact_manifest_hash = native_artifact_manifest_hash
+
+
 @dataclass(frozen=True)
 class LegacyRunExportBridge:
+    """Bridge DTO name retained for API stability; IDs are native namespace."""
+
     run_id: int
     rack_id: int
     rig_revision_id: str
@@ -110,19 +135,34 @@ class LegacyRunExportBridge:
 def bridge_for_run(run: Run, content_hash: str | None = None) -> LegacyRunExportBridge:
     run_id = int(run.id)  # type: ignore[arg-type]
     rack_id = int(run.rack_id)  # type: ignore[arg-type]
+    if not content_hash:
+        # Without a snapshot we cannot form native content-bound IDs.
+        return LegacyRunExportBridge(
+            run_id=run_id,
+            rack_id=rack_id,
+            rig_revision_id=legacy_rig_revision_id(rack_id),
+            source_run_id=legacy_source_run_id(run_id),
+            artifact_manifest_hash=legacy_artifact_manifest_hash(run_id, rack_id),
+            export_bridge_ready=False,
+            content_hash=None,
+        )
     return LegacyRunExportBridge(
         run_id=run_id,
         rack_id=rack_id,
-        rig_revision_id=legacy_rig_revision_id(rack_id),
-        source_run_id=legacy_source_run_id(run_id),
-        artifact_manifest_hash=legacy_artifact_manifest_hash(run_id, rack_id, content_hash),
+        rig_revision_id=native_rig_revision_id(content_hash),
+        source_run_id=native_source_run_id(run_id, content_hash),
+        artifact_manifest_hash=native_artifact_manifest_hash(run_id, rack_id, content_hash),
         export_bridge_ready=False,
         content_hash=content_hash,
     )
 
 
 def ensure_legacy_run_export_bridge(db: Session, run: Run) -> LegacyRunExportBridge:
-    """Idempotently create/update canon hierarchy rows required for /api/canon/exports."""
+    """Idempotently create canon hierarchy rows required for /api/canon/exports.
+
+    Function name retained for call-site stability; identifiers are native.
+    Rig revisions are append-only: layout changes mint a new ``rig-rev-*`` id.
+    """
     rack = db.get(Rack, run.rack_id)
     if rack is None:
         return bridge_for_run(run)
@@ -149,12 +189,7 @@ def ensure_legacy_run_export_bridge(db: Session, run: Run) -> LegacyRunExportBri
             )
         )
         db.flush()
-    else:
-        # Keep stable revision id (legacy-rack-*); refresh content hash when layout changes.
-        if str(existing_rev.canonical_hash) != content_hash:
-            existing_rev.canonical_rig = snapshot
-            existing_rev.canonical_hash = content_hash
-            db.flush()
+    # else: immutable — same content_hash means same revision id; do not mutate
 
     if db.get(GenerationRunRecord, source_run_id) is None:
         db.add(

@@ -1,14 +1,15 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `cf443574baf3849c814b837bc8efa8407092207e`  
-**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED · PR #54 MERGED  
-**Open campaign PRs:** none
+**main baseline:** `2b72d5b10fef1ab70c74d3c40379eb1593cf8293`  
+**Tracking:** Issue #46 closed · PR #47–#65 product/docs path on main  
+**Active campaign branch:** `grok/patchhive-visual-system-canon-audit`
 
 ## Where we are
 
 Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85` via PR #47).  
-**P1 client dual-path reduction for credits/exports** is on `main` (`71a4dfa` via PR #49).
+P1 dual-path slices A–E and Visual System Intelligence **specifications** are on `main`.  
+This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patch gates) without production vision models.
 
 ### Done (OBSERVED)
 
@@ -35,6 +36,13 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 - [ ] Deletion of historical top-level/`backend/patchhive` package and unrouted page modules
 - [ ] Cases/Patches list pages beyond stubs
 - [ ] Hardware, DSP, MIDI/CV, or ModularGrid live provider implementation
+- [x] Provider-neutral vision adapter + mock/fixture (VSI campaign WP-02)
+- [x] SystemInventoryRevision + confirmed-inventory patch gate (WP-03)
+- [x] Wire inventory gate into generate path (WP-05 / C2 — rack placements as manual USER_CONFIRMED)
+- [x] Persist inventory revisions via Alembic (WP-06 — `20240929_visual_inventory_evidence`)
+- [x] Native canon bridge IDs (`rig-rev-*` / `gen-run-*`; legacy helpers deprecated)
+- [x] Multi-image evidence upload + retention soft-delete
+- [ ] Live vision provider behind adapter (ops secret + evaluation dataset)
 
 ## Recommended work order
 
@@ -103,6 +111,19 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 3. Stronger empty/loading/error parity on Modules list.
 4. Expand golden fixtures / property tests for compiler edge cases.
 5. Real image scanner implementation behind `ImageScanner` (ops secret + service).
+
+### P4b — Visual System Intelligence (ACTIVE residual)
+
+See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md), [evidence/WORK_PACKAGES.md](evidence/WORK_PACKAGES.md), and [evidence/CONTINUATION_EXECUTION_2026-07-21.md](evidence/CONTINUATION_EXECUTION_2026-07-21.md).
+
+1. ~~**WP-05:** inventory gate on generate~~ **DONE**
+2. ~~**WP-06:** Alembic inventory + image assets~~ **DONE** (`20240929_visual_inventory_evidence`)
+3. ~~Native bridge IDs~~ **DONE** (`rig-rev-*` / `gen-run-*`)
+4. ~~Multi-image upload + retention~~ **DONE** (`POST/GET/DELETE /api/racks/{id}/evidence/images`)
+5. ~~Ranked candidate confirmation API + multi-candidate RackBuilder~~ **DONE** (GET candidates / POST confirmations + UX)
+6. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`)
+7. Live cloud vision adapter behind consent (next)
+8. **Land PR #66** — CI green @ `feec4c9`+; human merge when ready
 
 ### P5 — Explicitly deferred
 

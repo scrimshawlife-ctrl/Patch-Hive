@@ -13,11 +13,28 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 - Versioning and release-candidate policy.
 - Evidence-based production-readiness framework.
 - Versioned product roadmap.
+- Visual System Intelligence P0 contracts: provider-neutral `VisionEvidenceProvider`, `SystemInventoryRevision`, `SystemCapabilityGraph`, confirmed-inventory patch constraint gate.
+- Local image quality assessment after secure re-encode.
+- Audit receipts under `docs/evidence/` (baseline, audio-drift classification, capability matrix, readiness matrix, work packages).
 
 ### Changed
 
 - Root README rebuilt as the canonical repository entrypoint.
 - Canon and operations documentation aligned to page-fit, deterministic export, and manifest requirements.
+- `docs/PATCH_ENGINE.md`: audio simulation and hardware CV/MIDI activation marked **OUT OF SCOPE** (symbolic waveform SVGs retained as non-audio visualization).
+- Visual System Intelligence documents preserved and cross-linked to implementation paths.
+
+### Tests
+
+- Unit coverage for vision provider determinism, candidate self-confirm rejection, inventory immutability, and `NOT_COMPUTABLE` generation without confirmed modules.
+- Inventory gate tests for rack-backed generation and generate-bridge API fields.
+- Inventory persistence, multi-image evidence upload, retention expiry, native bridge IDs.
+- Ranked candidate list + confirmation batch API; multi-candidate RackBuilder review UX.
+- Acceptance (testcontainers): 11 passed on campaign branch.
+
+### Database
+
+- Alembic `20240929_visual_inventory_evidence`: `system_inventory_revisions`, `image_assets`, `classification_evidence_records`.
 
 ## 0.3.0 — Planned line
 
