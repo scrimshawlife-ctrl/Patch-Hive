@@ -27,6 +27,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 ### Tests
 
 - Unit coverage for vision provider determinism, candidate self-confirm rejection, inventory immutability, and `NOT_COMPUTABLE` generation without confirmed modules.
+- Inventory gate tests for rack-backed generation and generate-bridge API fields.
 
 ## 0.3.0 — Planned line
 

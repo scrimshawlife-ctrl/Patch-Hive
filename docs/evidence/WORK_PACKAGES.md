@@ -116,16 +116,27 @@ estimated_complexity: S
 status: DONE
 ```
 
-## WP-05 — Wire inventory gate into generate API (next)
+## WP-05 — Wire inventory gate into generate API
 
 ```yaml
 work_package: WP-05
-objective: Call enforce_confirmed_inventory_constraints from generate path
+objective: Bind confirmed rack inventory to generate_patches_with_ir + API response
 files:
-  - backend/patches/routes.py or canon compiler entry
-  - tests/api/*
+  - backend/patches/inventory_gate.py
+  - backend/patches/engine.py
+  - backend/patches/routes.py
+  - backend/patches/schemas.py
+  - backend/core/provenance.py
+  - backend/tests/unit/test_inventory_gate.py
+  - backend/tests/api/test_generate_bridge.py
 dependencies: WP-03
-status: PLANNED
+implementation_steps:
+  - Treat placed rack modules as manual USER_CONFIRMED inventory
+  - NOT_COMPUTABLE when rack has no modules
+  - Filter patches whose cables leave confirmed catalog module set
+  - Surface inventory_revision_id / gate code / generation_status on generate response
+  - Persist free-form provenance metrics via metrics.extra
+status: DONE (this continuation execution)
 estimated_complexity: M
 ```
 

@@ -38,7 +38,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 - [ ] Hardware, DSP, MIDI/CV, or ModularGrid live provider implementation
 - [x] Provider-neutral vision adapter + mock/fixture (VSI campaign WP-02)
 - [x] SystemInventoryRevision + confirmed-inventory patch gate (WP-03)
-- [ ] Wire inventory gate into generate API (WP-05)
+- [x] Wire inventory gate into generate path (WP-05 / C2 — rack placements as manual USER_CONFIRMED)
 - [ ] Persist inventory revisions via Alembic (WP-06)
 - [ ] Live vision provider behind adapter (ops secret + evaluation dataset)
 
@@ -112,14 +112,15 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 
 ### P4b — Visual System Intelligence (ACTIVE residual)
 
-See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md) and [evidence/WORK_PACKAGES.md](evidence/WORK_PACKAGES.md).
+See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md), [evidence/WORK_PACKAGES.md](evidence/WORK_PACKAGES.md), and [evidence/CONTINUATION_EXECUTION_2026-07-21.md](evidence/CONTINUATION_EXECUTION_2026-07-21.md).
 
-1. **WP-05:** Call `enforce_confirmed_inventory_constraints` from patch generate path; fail closed with `NOT_COMPUTABLE`.
+1. ~~**WP-05:** inventory gate on generate~~ **DONE** on campaign branch (`patches/inventory_gate.py` + `generate_patches_with_ir`)
 2. **WP-06:** Alembic persistence for inventory revisions + evidence assets.
 3. Authenticated multi-image upload with retention/consent.
 4. Ranked candidate confirmation API + RackBuilder multi-candidate UX.
 5. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`).
 6. P1: multi-photo, ports/controls/cables, photo-derived Patch Books.
+7. Land draft PR #66 after CI green (Black + backend tests).
 
 ### P5 — Explicitly deferred
 
