@@ -1,0 +1,6 @@
+id: no-prod-payments-true-literal
+language: python
+message: "ALLOW_PRODUCTION_PAYMENTS / allow_production_payments must default false."
+severity: error
+rule:
+  pattern: "allow_production_payments: bool = True"

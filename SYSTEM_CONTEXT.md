@@ -21,3 +21,9 @@ CMD_BE="cd backend && pytest tests --ignore=tests/acceptance -q" | CMD_FE="cd fr
 ALEMBIC=20240929_visual_inventory_evidence | IDS=rig-rev-{hash},gen-run-{id}-{hash} | AUDIO_WORD=port_metadata_only
 
 RULES=fail_closed;NOT_COMPUTABLE>invent;no_prod_deploy_without_authority;dual_path_slice_not_bigbang;CI_authoritative_if_no_docker
+
+# Post #69/#70 main (refresh CURRENT_STATE for exact SHA)
+ABILITIES=just_memory|SYSTEM_CONTEXT|rg_fd_ctags|evidenceApi|cases_patches_lists|ast_grep_rules
+NEXT=patchhive_import_quarantine;rig_revision_picker;multi_photo_recon;staging_ops
+HISTORICAL_PKG=backend/patchhive (no new features; see PATCHHIVE_IMPORT_TELEMETRY.md)
+

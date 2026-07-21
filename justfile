@@ -97,3 +97,4 @@ scan:
 	cd "{{root}}"
 	if command -v gitleaks >/dev/null; then gitleaks detect --source . --no-git -v || true; fi
 	if command -v codespell >/dev/null; then codespell backend frontend docs README.md --skip="*.json,*.lock,node_modules,.git" || true; fi
+	if command -v ast-grep >/dev/null; then ast-grep scan || true; fi

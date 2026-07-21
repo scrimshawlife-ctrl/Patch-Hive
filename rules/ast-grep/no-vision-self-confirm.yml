@@ -1,0 +1,6 @@
+id: no-vision-self-confirm-string
+language: python
+message: "Do not set USER_CONFIRMED on provider detection paths without ConfirmationDecision."
+severity: warning
+rule:
+  pattern: classification_status = ResolutionStatus.USER_CONFIRMED
