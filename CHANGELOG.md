@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Module gallery search, brand/type filters, sort, and place-on-rig entry links; Racks list loading/empty/retry parity.
 - `GET /api/racks/{id}/evidence/inventory` latest sealed inventory receipt; RigDetail overview surfaces it.
 - Fusion panel applied-status feedback; Playwright covers multi-photo fusion confirm + RigDetail receipt.
 - Continuation plan post-#75 (`docs/evidence/CONTINUATION_PLAN_POST_75.md`).

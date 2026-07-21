@@ -34,6 +34,7 @@ export default function RacksPage() {
   const [patches, setPatches] = useState<Patch[]>([]);
   const [activeTab, setActiveTab] = useState<TabKey>('overview');
   const [loading, setLoading] = useState(false);
+  const [listLoading, setListLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState({
     category: 'All',
@@ -50,6 +51,7 @@ export default function RacksPage() {
 
   const loadRacks = async () => {
     setError(null);
+    setListLoading(true);
     try {
       const response = await rackApi.list({ limit: 50 });
       setRacks(response.data.racks);
@@ -57,7 +59,10 @@ export default function RacksPage() {
         setSelectedRackId(response.data.racks[0].id);
       }
     } catch {
+      setRacks([]);
       setError('Unable to load rigs. Please try again.');
+    } finally {
+      setListLoading(false);
     }
   };
 
@@ -148,29 +153,51 @@ export default function RacksPage() {
           Rig-centric workspace. Each rig carries multiple runs and patch libraries.
         </p>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-          {racks.map((rack) => (
-            <button
-              key={rack.id}
-              type="button"
-              onClick={() => setSelectedRackId(rack.id)}
-              style={{
-                textAlign: 'left',
-                background: rack.id === selectedRackId ? '#1f1f1f' : '#111',
-                border: '1px solid #333',
-                padding: '0.75rem',
-                borderRadius: '8px',
-                color: '#fff',
-                cursor: 'pointer',
-              }}
-            >
-              <div style={{ fontWeight: 600 }}>{rack.name}</div>
-              <div style={{ fontSize: '0.75rem', color: '#777' }}>
-                Suggested: {rack.name_suggested || '—'}
-              </div>
-            </button>
-          ))}
-          {racks.length === 0 ? (
-            <div style={{ color: '#666', fontSize: '0.9rem' }}>No rigs yet.</div>
+          {listLoading ? (
+            <p className="status" role="status" style={{ color: '#888' }}>
+              Loading rigs…
+            </p>
+          ) : null}
+          {!listLoading && error && racks.length === 0 ? (
+            <div role="alert">
+              <p className="status status-danger" style={{ color: '#ffb3b3' }}>
+                {error}
+              </p>
+              <button className="button button-secondary" type="button" onClick={() => void loadRacks()}>
+                Retry
+              </button>
+            </div>
+          ) : null}
+          {!listLoading
+            ? racks.map((rack) => (
+                <button
+                  key={rack.id}
+                  type="button"
+                  onClick={() => setSelectedRackId(rack.id)}
+                  style={{
+                    textAlign: 'left',
+                    background: rack.id === selectedRackId ? '#1f1f1f' : '#111',
+                    border: '1px solid #333',
+                    padding: '0.75rem',
+                    borderRadius: '8px',
+                    color: '#fff',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <div style={{ fontWeight: 600 }}>{rack.name}</div>
+                  <div style={{ fontSize: '0.75rem', color: '#777' }}>
+                    Suggested: {rack.name_suggested || '—'}
+                  </div>
+                </button>
+              ))
+            : null}
+          {!listLoading && racks.length === 0 && !error ? (
+            <div style={{ color: '#666', fontSize: '0.9rem' }}>
+              <p>No rigs yet.</p>
+              <Link to="/racks/new" style={{ color: '#00ff88' }}>
+                Create your first rig
+              </Link>
+            </div>
           ) : null}
         </div>
       </aside>
