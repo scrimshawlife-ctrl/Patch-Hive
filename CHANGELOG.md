@@ -8,6 +8,8 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Cases and Patches list pages with loading / empty / error / retry parity.
+- `evidenceApi` client; RackBuilder live upload → candidates → confirmation when a rack is selected.
 - Vision evaluation harness + synthetic `fixtures/vision_eval` dataset (production accuracy remains `NOT_COMPUTABLE`).
 - Consent-gated `CloudVisionProvider` and `select_vision_provider` (live calls fail-closed; CI uses mock).
 - Canonical one-page Patch Book publishing invariant.
