@@ -91,6 +91,31 @@ staging-ps:
 	cd "{{root}}"
 	docker compose -f docker-compose.staging.yml --env-file .env.staging.local ps
 
+# Parse Cases4PatchHive research markdown → fixtures/cases_research_2026.json
+cases-parse:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	python3 scripts/parse_cases_research.py
+
+# Validate research cases against CaseCreate (no DB)
+cases-dry-run:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	backend/.venv/bin/python scripts/import_cases_research.py --dry-run
+
+# Upsert research cases into DATABASE_URL (optional --replace-source)
+cases-import *args:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	if [[ -z "${DATABASE_URL:-}" ]]; then
+		echo "Set DATABASE_URL to the target Postgres instance" >&2
+		exit 1
+	fi
+	backend/.venv/bin/python scripts/import_cases_research.py {{args}}
+
 coverage:
 	#!/usr/bin/env bash
 	set -euo pipefail

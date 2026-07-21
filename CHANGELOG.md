@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Case catalog research ingest: 50 cases from `fixtures/Cases4PatchHive.md` → `fixtures/cases_research_2026.json` (Case schema); `scripts/parse_cases_research.py` + `scripts/import_cases_research.py`; fail-closed null rails; non-Eurorack `meta.capacity_unit`.
 - Production readiness assessment (2026-07-21): gate scorecard, blockers, continuity plan under `docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md`; refreshed SHA-pinned readiness matrix.
 - README hero banner, product stills, Zero State lockup, and linked CI / readiness badges.
 - Roadmap updated for late-alpha Design Engine + VSI delivery and beta/RC path.
