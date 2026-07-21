@@ -122,6 +122,31 @@ def test_seed_rebuild_script_exists():
     assert script.is_file()
 
 
+def test_phase3_seed_import(db_session: Session):
+    from pathlib import Path
+    from integrations.synth_catalog_importer import import_catalog
+
+    seed = Path(__file__).resolve().parents[2] / "data" / "synth-catalog" / "seed-phase3-v1.json"
+    if not seed.is_file():
+        seed = (
+            Path(__file__).resolve().parents[1]
+            / "data"
+            / "synth-catalog"
+            / "seed-phase3-v1.json"
+        )
+    assert seed.is_file()
+    result = import_catalog(db_session, seed, dry_run=False)
+    assert result["status"] == "success"
+    assert result["imported"] >= 5
+    # arbhar may also exist from phase2 full-spec path later; phase3 adds Instruo keys
+    instruo = (
+        db_session.query(ModuleCatalog)
+        .filter(ModuleCatalog.brand == "Instruo")
+        .count()
+    )
+    assert instruo >= 5
+
+
 def test_enrich_catalog_hp_from_curated(db_session: Session):
     from integrations.synth_catalog_importer import enrich_catalog_hp_from_known_specs
 

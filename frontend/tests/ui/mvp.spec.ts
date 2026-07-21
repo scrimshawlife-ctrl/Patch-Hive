@@ -249,56 +249,95 @@ test.describe('PatchHive canonical workspace', () => {
   });
 
   test('module gallery supports search filter and placement entry', async ({ page }) => {
-    await page.route('**/api/modules**', async (route) => {
+    const allModules = [
+      {
+        id: 1,
+        slug: 'mockaudio-oscillator-a',
+        brand: 'MockAudio',
+        name: 'Oscillator A',
+        hp: 12,
+        category: 'VCO',
+        is_available: 'available',
+      },
+      {
+        id: 2,
+        slug: 'otherbrand-filter-z',
+        brand: 'OtherBrand',
+        name: 'Filter Z',
+        hp: 8,
+        category: 'VCF',
+        is_available: 'available',
+      },
+    ];
+
+    await page.route('**/api/modules/catalog/stats**', async (route) => {
+      await route.fulfill({
+        json: {
+          total_modules: 2,
+          total_brands: 2,
+          total_categories: 2,
+          hp_stats: {
+            average: 10,
+            min: 8,
+            max: 12,
+            known: 2,
+            unknown: 0,
+            coverage_pct: 100,
+          },
+          availability: { available: 2, discontinued: 0 },
+        },
+      });
+    });
+    await page.route('**/api/modules/catalog/brands**', async (route) => {
       await route.fulfill({
         json: {
           total: 2,
-          modules: [
-            {
-              id: 1,
-              brand: 'MockAudio',
-              name: 'Oscillator A',
-              hp: 12,
-              module_type: 'oscillator',
-              power_12v_ma: 40,
-              power_neg12v_ma: 10,
-              io_ports: [],
-              tags: [],
-              description: 'Demo VCO',
-              source: 'seed',
-              imported_at: '2026-01-01T00:00:00Z',
-              created_at: '2026-01-01T00:00:00Z',
-              updated_at: '2026-01-01T00:00:00Z',
-            },
-            {
-              id: 2,
-              brand: 'OtherBrand',
-              name: 'Filter Z',
-              hp: 8,
-              module_type: 'filter',
-              power_12v_ma: 30,
-              io_ports: [],
-              tags: [],
-              description: 'Demo VCF',
-              source: 'seed',
-              imported_at: '2026-01-01T00:00:00Z',
-              created_at: '2026-01-01T00:00:00Z',
-              updated_at: '2026-01-01T00:00:00Z',
-            },
+          brands: [
+            { name: 'MockAudio', module_count: 1 },
+            { name: 'OtherBrand', module_count: 1 },
           ],
+        },
+      });
+    });
+    await page.route('**/api/modules/catalog/categories**', async (route) => {
+      await route.fulfill({
+        json: {
+          total: 2,
+          categories: [
+            { name: 'VCO', module_count: 1 },
+            { name: 'VCF', module_count: 1 },
+          ],
+        },
+      });
+    });
+    await page.route('**/api/modules/catalog**', async (route) => {
+      const url = new URL(route.request().url());
+      const search = (url.searchParams.get('search') || '').toLowerCase();
+      const modules = search
+        ? allModules.filter(
+            (m) =>
+              m.brand.toLowerCase().includes(search) || m.name.toLowerCase().includes(search),
+          )
+        : allModules;
+      await route.fulfill({
+        json: {
+          total: modules.length,
+          skip: 0,
+          limit: 48,
+          modules,
         },
       });
     });
     await page.goto('/modules');
     await expect(page.getByLabel('Module filters')).toBeVisible();
     await expect(page.getByLabel('Module catalog results')).toBeVisible();
-    await expect(page.getByText('Showing 2 of 2 modules')).toBeVisible();
+    await expect(page.getByText(/Showing 2 of 2 catalog modules/)).toBeVisible();
     await page.getByLabel('Search').fill('Filter');
-    await expect(page.getByText('Showing 1 of 2 modules (filtered)')).toBeVisible();
+    await expect(page.getByText(/Showing 1 of 1 catalog modules \(filtered\)/)).toBeVisible();
     await expect(page.getByText('OtherBrand — Filter Z')).toBeVisible();
     await expect(page.getByText('Oscillator A')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Place on new rig' })).toBeVisible();
-    await expect(page.getByRole('link', { name: 'Place on rig' }).first()).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Prepare for rig' }).first()).toBeVisible();
   });
 
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
