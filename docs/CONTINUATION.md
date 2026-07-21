@@ -89,11 +89,11 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
    - Moved to `frontend/src/legacy/pages/`; clients in `frontend/src/legacy/apiClients.ts`.  
    - See `frontend/src/legacy/README.md`.  
    - **Exit:** `rg` for those page names only under `legacy/`; App routes unchanged.
-2. **Import telemetry for `patchhive` package**  
-   - Many `backend/tests/unit/*` and `backend/patchhive/*` still `from patchhive...`.  
-   - Classify: CANON_SUPPORTING pipeline vs HISTORICAL duplicate.  
-   - Quarantine pytest discovery for pure historical corpus; keep fail-closed vision adapters.  
-   - **Exit:** documented import graph + no accidental new top-level `patchhive` imports from `backend/canon`.
+2. ~~**Import telemetry for `patchhive` package**~~ **DONE** (Wave 4)  
+   - Telemetry: [engineering/PATCHHIVE_IMPORT_TELEMETRY.md](engineering/PATCHHIVE_IMPORT_TELEMETRY.md)  
+   - Marker `legacy_pipeline` on residual unit importers; `patchhive/tests` quarantined  
+   - CI guard: `scripts/ai/check_no_canon_patchhive_imports.sh`  
+   - **Exit met:** documented graph + no canon/evidence → package imports
 
 3. Worktree hygiene: ignore accidental Finder duplicates (`frontend/src/lib/hash 2.ts` etc.) — do not commit.
 
@@ -135,7 +135,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 16. ~~Playwright multi-photo + fusion panel~~ **DONE** (this PR / Wave 1)
 17. ~~RigDetail inventory-revision receipt surface~~ **DONE** (`GET .../evidence/inventory` + overview panel)
 18. ~~Modules catalog polish~~ **DONE** (search/filter/sort + place-on-rig entry; Racks list loading/empty/retry)
-19. `patchhive` import telemetry quarantine (Wave 4)
+19. ~~`patchhive` import telemetry quarantine~~ **DONE** (Wave 4 — telemetry, markers, CI guard)
 
 ### P5 — Explicitly deferred
 

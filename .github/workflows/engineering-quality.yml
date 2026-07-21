@@ -62,8 +62,13 @@ jobs:
           test -f SYSTEM_CONTEXT.md
           test -f docs/engineering/repository_map.md
           test -f docs/engineering/AI_AGENT_GUIDE.md
+          test -f docs/engineering/PATCHHIVE_IMPORT_TELEMETRY.md
           test -f scripts/ai/rebuild_indexes.sh
+          test -f scripts/ai/check_no_canon_patchhive_imports.sh
           test -f justfile
+
+      - name: Guard — no canon/evidence → patchhive package imports
+        run: bash scripts/ai/check_no_canon_patchhive_imports.sh
 
       - name: Rebuild indexes (smoke)
         run: |

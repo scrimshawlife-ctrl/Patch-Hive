@@ -1,5 +1,9 @@
 from __future__ import annotations
 
+import pytest
+
+pytestmark = pytest.mark.legacy_pipeline
+
 from pathlib import Path
 
 from patchhive.abraxas.query_surface import (

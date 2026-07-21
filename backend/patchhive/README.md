@@ -1,4 +1,10 @@
-# PatchHive RigSpec Pipeline
+# PatchHive RigSpec Pipeline (HISTORICAL / CANON_SUPPORTING)
+
+> **Status:** Read-mostly historical package under `backend/patchhive`.  
+> **Do not** add new product features here — implement on `backend/canon`, `backend/evidence`, or dual-path routers.  
+> **Import policy:** `backend/canon` and `backend/evidence` must never import this package (CI-enforced).  
+> **Telemetry:** [docs/engineering/PATCHHIVE_IMPORT_TELEMETRY.md](../../docs/engineering/PATCHHIVE_IMPORT_TELEMETRY.md)  
+> **Package-internal tests** (`patchhive/tests`) are quarantined from default pytest; use `just test-historical`.
 
 This module implements PatchHive’s deterministic RigSpec ingestion, normalization, metric mapping, and patch generation pipeline with VL2-format modeling.
 

@@ -12,7 +12,7 @@
 | [AI_AGENT_GUIDE.md](AI_AGENT_GUIDE.md) | How coding agents should work |
 | [codebase-memory.md](codebase-memory.md) | Local index layout |
 | [MCP_INTEGRATION.md](MCP_INTEGRATION.md) | MCP server template notes |
-| [PATCHHIVE_IMPORT_TELEMETRY.md](PATCHHIVE_IMPORT_TELEMETRY.md) | Historical `patchhive` package import map |
+| [PATCHHIVE_IMPORT_TELEMETRY.md](PATCHHIVE_IMPORT_TELEMETRY.md) | Historical `patchhive` import map, quarantine, CI guard |
 
 Root AI retrieval:
 
