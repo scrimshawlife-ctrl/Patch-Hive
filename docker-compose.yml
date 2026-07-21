@@ -43,6 +43,8 @@ services:
         condition: service_healthy
     volumes:
       - ./backend:/app
+      # Monorepo tests that assert frontend copy/types (see tests/monorepo_paths.py).
+      - ./frontend:/frontend:ro
       - backend_cache:/root/.cache
     command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
     healthcheck:

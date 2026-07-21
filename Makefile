@@ -76,20 +76,23 @@ shell-db: ## Access database shell
 	docker compose exec db psql -U patchhive -d patchhive
 
 # Testing
+# Requires: Docker Desktop running + `make dev` (or `docker compose up -d`) so services exist.
+# Backend image is runtime-only; install dev extras once per container lifecycle for pytest.
 test: ## Run all tests
 	@echo "$(BLUE)Running backend tests...$(NC)"
-	docker compose exec backend pytest
+	docker compose exec backend sh -c "pip install -q -e '.[dev]' && python -m pytest -q --ignore=tests/acceptance"
 	@echo "$(BLUE)Running frontend tests...$(NC)"
-	docker compose exec frontend-dev npm test
+	docker compose exec frontend-dev sh -c "npm test -- --run"
+	@echo "$(YELLOW)Note: acceptance uses testcontainers — run 'make test-acceptance' on the host with Docker Desktop running.$(NC)"
 
-test-backend: ## Run backend tests
-	docker compose exec backend pytest
+test-backend: ## Run backend unit/api tests in compose (excludes acceptance/testcontainers)
+	docker compose exec backend sh -c "pip install -q -e '.[dev]' && python -m pytest -q --ignore=tests/acceptance"
 
 test-backend-cov: ## Run backend tests with coverage
-	docker compose exec backend pytest --cov
+	docker compose exec backend sh -c "pip install -q -e '.[dev]' && python -m pytest --cov -q --ignore=tests/acceptance"
 
 test-frontend: ## Run frontend tests
-	docker compose exec frontend-dev npm test
+	docker compose exec frontend-dev sh -c "npm test -- --run"
 
 test-acceptance: ## Run acceptance tests (backend + UI)
 	@echo "$(BLUE)Running backend acceptance tests...$(NC)"
