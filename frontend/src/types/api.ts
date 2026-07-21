@@ -39,6 +39,62 @@ export interface ModuleListResponse {
   modules: Module[];
 }
 
+/** Lightweight module_catalog browse row (research + curated discovery). */
+export interface CatalogModule {
+  id: number;
+  modulargrid_id?: number | null;
+  slug: string;
+  brand: string;
+  name: string;
+  hp?: number | null;
+  category?: string | null;
+  image_url?: string | null;
+  modulargrid_url?: string | null;
+  manufacturer_url?: string | null;
+  is_available?: string | null;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface CatalogModuleListResponse {
+  total: number;
+  skip: number;
+  limit: number;
+  modules: CatalogModule[];
+}
+
+export interface CatalogModuleStats {
+  total_modules: number;
+  total_brands: number;
+  total_categories: number;
+  hp_stats: {
+    average: number;
+    min: number | null;
+    max: number | null;
+    known: number;
+    unknown: number;
+    coverage_pct: number;
+  };
+  availability: {
+    available: number;
+    discontinued: number;
+  };
+}
+
+export interface CatalogMaterializeResponse {
+  status: 'exists' | 'created';
+  catalog_slug: string;
+  module_id: number;
+  module: {
+    id: number;
+    brand: string;
+    name: string;
+    hp: number;
+    module_type: string;
+    source: string;
+  };
+}
+
 // Case types
 export interface Case {
   id: number;

@@ -46,6 +46,20 @@ def _seed_sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _load_catalog_rows(path: Path) -> List[Dict[str, Any]]:
+    """Load catalog_modules from a seed path (phase2 default or explicit phase3)."""
+    if not path.is_file():
+        raise FileNotFoundError(f"Seed not found: {path}")
+    # Use get_catalog_modules when path is the default seed; else raw JSON.
+    try:
+        if path.resolve() == resolve_seed_path().resolve():
+            return get_catalog_modules(str(path))
+    except FileNotFoundError:
+        pass
+    data = json.loads(path.read_text(encoding="utf-8"))
+    return list(data.get("catalog_modules") or [])
+
+
 def import_catalog(
     db: Session,
     seed_path: Optional[Path] = None,
@@ -53,8 +67,8 @@ def import_catalog(
     dry_run: bool = False,
 ) -> Dict[str, Any]:
     """Admit research catalog rows into module_catalog (skip existing slugs)."""
-    path = resolve_seed_path(seed_path)
-    rows = get_catalog_modules(str(path))
+    path = Path(seed_path).expanduser().resolve() if seed_path else resolve_seed_path()
+    rows = _load_catalog_rows(path)
     prov = Provenance.create(entity_type="synth_catalog_import", pipeline="import")
 
     imported = 0

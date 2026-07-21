@@ -123,6 +123,13 @@ case-catalog-seed:
 	cd "{{root}}"
 	python3 scripts/build_case_catalog_seed.py
 
+# Build Phase 3 mid-tier condensed seed
+synth-catalog-phase3-seed *args:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	python3 scripts/build_phase3_catalog_seed.py {{args}}
+
 # Rebuild synth catalog seed from Abraxas research packet (optional --source-dir)
 synth-catalog-seed *args:
 	#!/usr/bin/env bash

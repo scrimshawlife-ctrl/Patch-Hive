@@ -1,0 +1,27 @@
+{
+  "status": "success",
+  "tier": "module_catalog",
+  "dry_run": false,
+  "imported": 9,
+  "skipped": 0,
+  "errors": [],
+  "input_records": 9,
+  "seed_path": "data/synth-catalog/seed-phase3-v1.json",
+  "seed_sha256": "0c73b8949649a46d5b5fd8c7c8d94dd4b51a09a9d05f8f4c2b0d3094e0894323",
+  "provenance": {
+    "run_id": "44d8423b-fd31-47e4-aaa1-7e028e247ed4",
+    "entity_type": "synth_catalog_import",
+    "abx_core_version": "1.3",
+    "engine_version": "1.3.0",
+    "started_at": "2026-07-21T23:40:32.324749+00:00",
+    "completed_at": "2026-07-21T23:40:32.432936+00:00",
+    "host": "staging-local",
+    "environment": "development",
+    "pipeline": "import",
+    "metrics": {
+      "imported_count": 9,
+      "skipped_count": 0,
+      "error_count": 0
+    }
+  }
+}

@@ -1,0 +1,132 @@
+{
+  "fixture_version": "1.0",
+  "name": "Synth Catalog Research — Phase 3 mid-tier condensed seed",
+  "generated_at": "2026-07-21T00:00:00Z",
+  "source_note": "Condensed mid-tier brand key-modules from research Phase 3. HP null unless description explicitly states width. Never invent.",
+  "abraxas_skill": "skills/modular-synth-catalog-research",
+  "research_phase": "phase3",
+  "content_hashes": {
+    "phase3_mid_tier_sha256": "1559916369e4522c782861698793e021bd2f2ceb001577892d296b4dc3b52663"
+  },
+  "catalog_module_count": 9,
+  "catalog_modules": [
+    {
+      "brand": "Instruo",
+      "name": "arbhar",
+      "hp": null,
+      "category": "SAMP",
+      "category_raw": "Granular processor",
+      "is_available": "available",
+      "description": "Granular processor",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "cèis[2]",
+      "hp": null,
+      "category": "ENV",
+      "category_raw": "Envelope generator",
+      "is_available": "available",
+      "description": "Envelope generator",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "dhà",
+      "hp": null,
+      "category": "MIX",
+      "category_raw": "Stereo mixer",
+      "is_available": "available",
+      "description": "Stereo mixer",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "dàil",
+      "hp": null,
+      "category": "FX",
+      "category_raw": "Delay/looping",
+      "is_available": "available",
+      "description": "Delay/looping",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glōc",
+      "hp": null,
+      "category": "VCF",
+      "category_raw": "New utility/filter",
+      "is_available": "available",
+      "description": "New utility/filter",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Lúbadh",
+      "hp": null,
+      "category": "FX",
+      "category_raw": "Tape looper/sampler",
+      "is_available": "available",
+      "description": "Tape looper/sampler",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "hp": null,
+      "category": "VCO",
+      "category_raw": "Semi-modular desktop/synth voice",
+      "is_available": "available",
+      "description": "Semi-modular desktop/synth voice",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "íre",
+      "hp": null,
+      "category": "UTIL",
+      "category_raw": "Newest release (details pending full scrape)",
+      "is_available": "available",
+      "description": "Newest release (details pending full scrape)",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    },
+    {
+      "brand": "Instruo",
+      "name": "øchd",
+      "hp": null,
+      "category": "LFO",
+      "category_raw": "8-channel LFO with expander",
+      "is_available": "available",
+      "description": "8-channel LFO with expander",
+      "source": "SynthCatalogResearch",
+      "source_reference": "data/synth-catalog/seed-phase3-v1.json",
+      "provenance": "OBSERVED",
+      "research_phase": "phase3"
+    }
+  ],
+  "full_spec_modules": []
+}

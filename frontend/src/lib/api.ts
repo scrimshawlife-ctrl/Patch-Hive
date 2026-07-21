@@ -3,6 +3,9 @@
  */
 import axios from 'axios';
 import type {
+  CatalogMaterializeResponse,
+  CatalogModuleListResponse,
+  CatalogModuleStats,
   ModuleListResponse,
   CaseListResponse,
   CatalogCaseListResponse,
@@ -64,6 +67,37 @@ export const moduleApi = {
     hp_max?: number;
     tag?: string;
   }) => api.get<ModuleListResponse>('/modules/', { params }),
+
+  /** Lightweight research/curated catalog browse (module_catalog table). */
+  catalog: (params?: {
+    skip?: number;
+    limit?: number;
+    search?: string;
+    brand?: string;
+    category?: string;
+    hp_min?: number;
+    hp_max?: number;
+    hp_known?: boolean;
+    is_available?: string;
+    sort_by?: string;
+    sort_order?: string;
+  }) => api.get<CatalogModuleListResponse>('/modules/catalog', { params }),
+
+  catalogStats: () => api.get<CatalogModuleStats>('/modules/catalog/stats'),
+
+  catalogBrands: () =>
+    api.get<{ total: number; brands: { name: string; module_count: number }[] }>(
+      '/modules/catalog/brands',
+    ),
+
+  catalogCategories: () =>
+    api.get<{ total: number; categories: { name: string; module_count: number }[] }>(
+      '/modules/catalog/categories',
+    ),
+
+  /** Materialize catalog row → full modules record (requires known HP). */
+  materializeCatalog: (slug: string) =>
+    api.post<CatalogMaterializeResponse>(`/modules/catalog/${encodeURIComponent(slug)}/materialize`),
 
   get: (id: number) => api.get<Module>(`/modules/${id}`),
 

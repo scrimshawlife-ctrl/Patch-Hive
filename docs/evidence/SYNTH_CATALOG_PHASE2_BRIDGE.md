@@ -52,10 +52,11 @@ Dry-run + SQLite admit receipts:
 
 1. ~~Staging admit against live Postgres~~ → see `SYNTH_CATALOG_STAGING_IMPORT.md`
 2. ~~HP enrich from curated ModularGrid / modules table~~ → `--enrich-hp` / `POST /api/synth-catalog/enrich/hp`
-3. Catalog API `source` filter once `module_catalog` gains a source column (optional migration)
-4. Broader HP/power enrichment from manufacturer-confirmed research (Phase 2 was sparse)
-5. Phase 3 mid-tier seed when research packet advances
-6. Rebuild staging backend container so `/api/synth-catalog/*` is live on :8000
+3. ~~Rebuild staging backend + package seed for Docker~~ → #115
+4. ~~Phase 3 partial seed + FE catalog browse + materialize~~ → seed-phase3-v1 + Modules gallery
+5. Catalog API `source` column once needed for mixed-source filtering
+6. Broader HP/power enrichment from manufacturer-confirmed research (Phase 2/3 still sparse)
+7. Expand Phase 3 mid-tier as Hermes research completes more brands
 
 ## Operator commands
 

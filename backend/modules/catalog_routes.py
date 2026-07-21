@@ -5,14 +5,15 @@ Fast, lightweight catalog of all available modules.
 Full specs fetched on-demand when user adds to rack.
 """
 
-from typing import List, Optional
+from typing import Any, Dict, Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import and_, or_
 from sqlalchemy.orm import Session
 
 from core.database import get_db
 from modules.catalog import ModuleCatalog
+from modules.models import Module
 
 router = APIRouter()
 
@@ -27,6 +28,9 @@ def browse_module_catalog(
     # Size filters
     hp_min: Optional[int] = Query(None, description="Minimum HP width"),
     hp_max: Optional[int] = Query(None, description="Maximum HP width"),
+    hp_known: Optional[bool] = Query(
+        None, description="If true, only rows with HP; if false, only null HP"
+    ),
     # Status
     is_available: Optional[str] = Query(None, description="available, discontinued, upcoming"),
     # Pagination
@@ -46,6 +50,7 @@ def browse_module_catalog(
         - /catalog?search=maths
         - /catalog?brand=Mutable+Instruments&category=VCO
         - /catalog?hp_min=8&hp_max=16
+        - /catalog?hp_known=true
         - /catalog?sort_by=hp&sort_order=asc
     """
     query = db.query(ModuleCatalog)
@@ -70,6 +75,11 @@ def browse_module_catalog(
 
     if hp_max is not None:
         filters.append(ModuleCatalog.hp <= hp_max)
+
+    if hp_known is True:
+        filters.append(ModuleCatalog.hp.isnot(None))
+    elif hp_known is False:
+        filters.append(ModuleCatalog.hp.is_(None))
 
     if is_available:
         filters.append(ModuleCatalog.is_available == is_available)
@@ -131,39 +141,135 @@ def list_catalog_categories(db: Session = Depends(get_db)):
 
 @router.get("/catalog/stats")
 def get_catalog_stats(db: Session = Depends(get_db)):
-    """Get catalog statistics."""
+    """Get catalog statistics including HP coverage for research seeds."""
     from sqlalchemy import func
 
-    total_modules = db.query(func.count(ModuleCatalog.id)).scalar()
-    total_brands = db.query(func.count(func.distinct(ModuleCatalog.brand))).scalar()
-    total_categories = db.query(func.count(func.distinct(ModuleCatalog.category))).scalar()
+    total_modules = db.query(func.count(ModuleCatalog.id)).scalar() or 0
+    total_brands = db.query(func.count(func.distinct(ModuleCatalog.brand))).scalar() or 0
+    total_categories = db.query(func.count(func.distinct(ModuleCatalog.category))).scalar() or 0
 
-    # HP distribution
+    # HP distribution (among known only)
     avg_hp = db.query(func.avg(ModuleCatalog.hp)).scalar()
     min_hp = db.query(func.min(ModuleCatalog.hp)).scalar()
     max_hp = db.query(func.max(ModuleCatalog.hp)).scalar()
+    hp_known = (
+        db.query(func.count(ModuleCatalog.id)).filter(ModuleCatalog.hp.isnot(None)).scalar() or 0
+    )
+    hp_unknown = total_modules - hp_known
 
     # Availability
     available_count = (
         db.query(func.count(ModuleCatalog.id))
         .filter(ModuleCatalog.is_available == "available")
         .scalar()
+        or 0
     )
 
+    coverage = round(100.0 * hp_known / total_modules, 1) if total_modules else 0.0
+
     return {
-        "total_modules": total_modules or 0,
-        "total_brands": total_brands or 0,
-        "total_categories": total_categories or 0,
+        "total_modules": total_modules,
+        "total_brands": total_brands,
+        "total_categories": total_categories,
         "hp_stats": {
             "average": round(float(avg_hp or 0), 1),
-            "min": min_hp or 0,
-            "max": max_hp or 0,
+            "min": min_hp,
+            "max": max_hp,
+            "known": hp_known,
+            "unknown": hp_unknown,
+            "coverage_pct": coverage,
         },
         "availability": {
-            "available": available_count or 0,
-            "discontinued": total_modules - (available_count or 0) if total_modules else 0,
+            "available": available_count,
+            "discontinued": max(total_modules - available_count, 0),
         },
     }
+
+
+def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
+    """
+    Ensure a full ``modules`` row exists for a catalog slug.
+
+    Requires catalog HP (fail-closed). Does not invent power/depth/I/O.
+    Idempotent: returns existing Module when brand+name already present.
+    """
+    entry = db.query(ModuleCatalog).filter(ModuleCatalog.slug == slug).first()
+    if not entry:
+        raise HTTPException(status_code=404, detail=f"Module '{slug}' not found in catalog")
+
+    existing = (
+        db.query(Module)
+        .filter(Module.brand == entry.brand, Module.name == entry.name)
+        .order_by(Module.id.asc())
+        .first()
+    )
+    if existing:
+        return {
+            "status": "exists",
+            "catalog_slug": slug,
+            "module_id": existing.id,
+            "module": {
+                "id": existing.id,
+                "brand": existing.brand,
+                "name": existing.name,
+                "hp": existing.hp,
+                "module_type": existing.module_type,
+                "source": existing.source,
+            },
+        }
+
+    if entry.hp is None:
+        raise HTTPException(
+            status_code=422,
+            detail=(
+                f"Catalog entry '{slug}' has unknown HP. "
+                "Cannot materialize a placeable module without manufacturer-confirmed width."
+            ),
+        )
+
+    module = Module(
+        brand=entry.brand,
+        name=entry.name,
+        hp=int(entry.hp),
+        module_type=entry.category or "UTIL",
+        power_12v_ma=None,
+        power_neg12v_ma=None,
+        power_5v_ma=None,
+        depth_mm=None,
+        io_ports=[],
+        tags=[],
+        description=None,
+        manufacturer_url=entry.manufacturer_url,
+        source="ModuleCatalog",
+        source_reference=f"module_catalog:{slug}",
+    )
+    db.add(module)
+    db.commit()
+    db.refresh(module)
+
+    return {
+        "status": "created",
+        "catalog_slug": slug,
+        "module_id": module.id,
+        "module": {
+            "id": module.id,
+            "brand": module.brand,
+            "name": module.name,
+            "hp": module.hp,
+            "module_type": module.module_type,
+            "source": module.source,
+        },
+    }
+
+
+@router.post("/catalog/{slug}/materialize")
+def materialize_module_from_catalog(slug: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
+    """
+    Materialize a lightweight catalog row into a full ``modules`` record for rack placement.
+
+    Fails with 422 when HP is unknown (never invents width).
+    """
+    return materialize_catalog_entry(db, slug)
 
 
 @router.get("/catalog/{slug}")
@@ -176,8 +282,6 @@ def get_catalog_module(slug: str, db: Session = Depends(get_db)):
     module = db.query(ModuleCatalog).filter(ModuleCatalog.slug == slug).first()
 
     if not module:
-        from fastapi import HTTPException
-
         raise HTTPException(status_code=404, detail=f"Module '{slug}' not found in catalog")
 
     return module.to_dict()

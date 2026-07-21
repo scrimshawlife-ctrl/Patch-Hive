@@ -1,0 +1,74 @@
+"""Module catalog browse filters, stats coverage, and materialize."""
+
+from __future__ import annotations
+
+from sqlalchemy.orm import Session
+
+from modules.catalog import ModuleCatalog
+from modules.catalog_routes import materialize_catalog_entry
+from modules.models import Module
+from fastapi import HTTPException
+import pytest
+
+
+def _entry(
+    db: Session,
+    *,
+    brand: str,
+    name: str,
+    hp: int | None,
+    category: str = "UTIL",
+) -> ModuleCatalog:
+    row = ModuleCatalog(
+        slug=ModuleCatalog.create_slug(brand, name),
+        brand=brand,
+        name=name,
+        hp=hp,
+        category=category,
+        is_available="available",
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return row
+
+
+def test_materialize_requires_hp(db_session: Session):
+    row = _entry(db_session, brand="Acid Rain Technology", name="Maestro", hp=None)
+    with pytest.raises(HTTPException) as exc:
+        materialize_catalog_entry(db_session, row.slug)
+    assert exc.value.status_code == 422
+
+
+def test_materialize_creates_and_is_idempotent(db_session: Session):
+    row = _entry(
+        db_session, brand="Make Noise", name="DPO", hp=30, category="VCO"
+    )
+    first = materialize_catalog_entry(db_session, row.slug)
+    assert first["status"] == "created"
+    assert first["module"]["hp"] == 30
+    assert first["module"]["source"] == "ModuleCatalog"
+
+    second = materialize_catalog_entry(db_session, row.slug)
+    assert second["status"] == "exists"
+    assert second["module_id"] == first["module_id"]
+
+    count = (
+        db_session.query(Module)
+        .filter(Module.brand == "Make Noise", Module.name == "DPO")
+        .count()
+    )
+    assert count == 1
+
+
+def test_catalog_stats_hp_coverage(db_session: Session, client=None):
+    # Prefer direct ORM stats path used by route
+    from modules.catalog_routes import get_catalog_stats
+
+    _entry(db_session, brand="A", name="One", hp=8)
+    _entry(db_session, brand="B", name="Two", hp=None)
+    stats = get_catalog_stats(db_session)
+    assert stats["total_modules"] == 2
+    assert stats["hp_stats"]["known"] == 1
+    assert stats["hp_stats"]["unknown"] == 1
+    assert stats["hp_stats"]["coverage_pct"] == 50.0
