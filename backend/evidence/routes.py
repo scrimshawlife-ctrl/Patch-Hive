@@ -19,8 +19,8 @@ from evidence.images import (
     assess_local_image_quality,
     prepare_image_evidence,
 )
+from evidence.cloud_provider import select_vision_provider
 from evidence.vision_provider import (
-    MockDeterministicVisionProvider,
     VisionProviderContext,
     collect_evidence_packet,
 )
@@ -120,7 +120,13 @@ async def upload_rack_evidence_images(
     uploaded: list[ImageAssetResponse] = []
     rejected: list[dict[str, str]] = []
     scanner = SignatureImageScanner()
-    provider = MockDeterministicVisionProvider()
+    # Default mock; cloud only if explicitly preferred via env + consent (still fail-closed live).
+    prefer_cloud = os.getenv("VISION_PREFER_CLOUD", "").lower() in {"1", "true", "yes"}
+    provider = select_vision_provider(
+        consent_provider_processing=consent_provider_processing,
+        prefer_cloud=prefer_cloud,
+        allow_live_calls=False,
+    )
     now = datetime.now(timezone.utc)
     expires = now + timedelta(days=retention_days)
     user_id = int(rack.user_id)  # type: ignore[arg-type]

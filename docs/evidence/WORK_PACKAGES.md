@@ -167,3 +167,26 @@ files:
   - frontend Playwright mocks
 status: DONE
 ```
+
+## WP-08 — Evaluation harness
+
+```yaml
+work_package: WP-08
+objective: Fixture dataset + precision/recall harness; mark production metrics NOT_COMPUTABLE
+files:
+  - backend/evidence/evaluation.py
+  - fixtures/vision_eval/**
+  - backend/tests/unit/test_vision_evaluation.py
+status: DONE (post-#66)
+```
+
+## WP-09 — Consent-gated cloud vision adapter
+
+```yaml
+work_package: WP-09
+objective: CloudVisionProvider fail-closed without consent/credentials/live flag
+files:
+  - backend/evidence/cloud_provider.py
+  - evidence routes provider selection
+status: DONE (post-#66; no live vendor HTTP)
+```

@@ -1,0 +1,17 @@
+{
+  "dataset_version": "vision-eval.v1",
+  "license": "synthetic-internal-fixtures-only",
+  "description": "Synthetic vision evaluation samples. Not representative of production accuracy.",
+  "samples": [
+    {
+      "sample_id": "synth_basic_voice",
+      "image": "image.bin",
+      "labels": "labels.json"
+    },
+    {
+      "sample_id": "synth_empty_reject",
+      "image": "image.bin",
+      "labels": "labels.json"
+    }
+  ]
+}

@@ -8,6 +8,8 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Vision evaluation harness + synthetic `fixtures/vision_eval` dataset (production accuracy remains `NOT_COMPUTABLE`).
+- Consent-gated `CloudVisionProvider` and `select_vision_provider` (live calls fail-closed; CI uses mock).
 - Canonical one-page Patch Book publishing invariant.
 - Comprehensive Patch Book Generator specification.
 - Versioning and release-candidate policy.
