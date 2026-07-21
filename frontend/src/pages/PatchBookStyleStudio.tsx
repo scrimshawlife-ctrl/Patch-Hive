@@ -6,11 +6,16 @@ import { useCallback, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { canonApi } from '@/lib/api';
 import {
+  ALL_INFLUENCE_IDS,
   ARTISTIC_MODES,
   DEFAULT_STYLE_WEIGHTS,
   defaultRequestStyleRecipe,
+  deleteRecipeFromLibrary,
+  loadRecipeLibrary,
+  saveRecipeToLibrary,
   type PatchBookMode,
   type RequestStyleRecipe,
+  type SavedStyleRecipe,
   type StyleWeights,
   type TemplateFamilyId,
 } from '@/types/patchbookDesign';
@@ -59,21 +64,6 @@ const FAMILY_ALGORITHM: Record<TemplateFamilyId, string> = {
   impossible_instrument: 'open_form_generative',
 };
 
-const CORE_INFLUENCES = [
-  'engineering',
-  'swiss',
-  'scientific',
-  'cyber_hive',
-  'museum',
-  'editorial',
-  'minimal',
-  'symbolic',
-  'abstract',
-  'surreal',
-  'modular_synth',
-  'open_form_zero_state',
-] as const;
-
 type BridgeFields = {
   source_run_id: string;
   source_rig_revision_id: string;
@@ -111,6 +101,8 @@ export default function PatchBookStyleStudioPage() {
       steps: Array<{ phase: string; instruction: string }>;
     }>;
   } | null>(null);
+  const [library, setLibrary] = useState<SavedStyleRecipe[]>(() => loadRecipeLibrary());
+  const [recipeName, setRecipeName] = useState('');
 
   const artistic = ARTISTIC_MODES.includes(recipe.mode);
 
@@ -340,11 +332,11 @@ export default function PatchBookStyleStudioPage() {
       <div className="panel" style={{ marginTop: '1rem' }}>
         <h2>Influence mixer</h2>
         <p className="muted">
-          Blend style vectors (0–100). Engine normalizes competing groups; conflicts appear in
+          All 32 style vectors (0–100). Engine normalizes competing groups; conflicts appear in
           preview resolution events.
         </p>
         <div className="weight-sliders influence-grid">
-          {CORE_INFLUENCES.map((key) => {
+          {ALL_INFLUENCE_IDS.map((key) => {
             const value = recipe.influences[key] ?? 0;
             return (
               <label key={key} className="field weight-row">
@@ -390,6 +382,73 @@ export default function PatchBookStyleStudioPage() {
         >
           Reset influences
         </button>
+      </div>
+
+      <div className="panel" style={{ marginTop: '1rem' }}>
+        <h2>Local recipe library</h2>
+        <p className="muted">
+          Saved in this browser only (until server recipe library ships). Share by exporting JSON
+          notes or re-applying a saved recipe.
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+          <input
+            type="text"
+            placeholder="Recipe name"
+            value={recipeName}
+            maxLength={80}
+            onChange={(e) => setRecipeName(e.target.value)}
+            style={{ minWidth: '12rem' }}
+          />
+          <button
+            className="button button-secondary"
+            type="button"
+            onClick={() => {
+              const next = saveRecipeToLibrary(recipeName, buildRequestBody());
+              setLibrary(next);
+              setRecipeName('');
+              setStatus(`Saved recipe locally (${next[0]?.name})`);
+            }}
+          >
+            Save recipe
+          </button>
+        </div>
+        {library.length === 0 ? (
+          <p className="muted" style={{ marginTop: '0.75rem' }}>
+            No saved recipes yet.
+          </p>
+        ) : (
+          <ul style={{ marginTop: '0.75rem', paddingLeft: '1.1rem' }}>
+            {library.map((entry) => (
+              <li key={entry.id} style={{ marginBottom: '0.4rem' }}>
+                <strong>{entry.name}</strong>{' '}
+                <span className="muted">
+                  · {entry.recipe.mode} / {entry.recipe.template_family} · seed{' '}
+                  {entry.recipe.seed}
+                </span>{' '}
+                <button
+                  className="button button-quiet"
+                  type="button"
+                  onClick={() => {
+                    setRecipe(entry.recipe);
+                    setStatus(`Loaded “${entry.name}”`);
+                  }}
+                >
+                  Load
+                </button>{' '}
+                <button
+                  className="button button-quiet"
+                  type="button"
+                  onClick={() => {
+                    setLibrary(deleteRecipeFromLibrary(entry.id));
+                    setStatus(`Deleted “${entry.name}”`);
+                  }}
+                >
+                  Delete
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="panel" style={{ marginTop: '1rem' }}>

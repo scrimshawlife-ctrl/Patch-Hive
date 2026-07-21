@@ -17,6 +17,7 @@ from export.patchbook.design.brand_policy import (
     scan_forbidden_strings,
 )
 from export.patchbook.design.content_spine import LoadedLibrary
+from export.patchbook.design.diagram_svg import render_patch_diagram_svg
 from export.patchbook.design.families.registry import (
     PATENT_FUTURE_DISCLAIMER,
     FamilySpec,
@@ -67,6 +68,8 @@ def compose_design_export_pack(
     (root / "style").mkdir(exist_ok=True)
     (root / "source").mkdir(exist_ok=True)
     (root / "pages" / "json").mkdir(parents=True, exist_ok=True)
+    (root / "pages" / "layout_ir").mkdir(parents=True, exist_ok=True)
+    (root / "diagrams" / "svg").mkdir(parents=True, exist_ok=True)
     (root / "manifest").mkdir(exist_ok=True)
     (root / "technical").mkdir(exist_ok=True)
 
@@ -114,7 +117,16 @@ def compose_design_export_pack(
     # Cover
     layout_irs.append(_front_matter_page(0, "cover", recipe, family))
     page_index = 1
+    diagram_paths: list[str] = []
     for item in library.items:
+        # Deterministic technical SVG per patch (color + dash + number)
+        svg = render_patch_diagram_svg(
+            item.compilation, layout_algorithm_id=family.layout_algorithm_id
+        )
+        svg_rel = f"diagrams/svg/{item.compilation.patch_graph.artifact_id}.svg"
+        (root / svg_rel).write_text(svg, encoding="utf-8")
+        diagram_paths.append(svg_rel)
+
         if plate_primary:
             # Artistic/publication primary: non-executable plate (appendix holds execution)
             plate_ir = _plate_page(page_index, item.compilation, recipe, family)
@@ -193,6 +205,13 @@ def compose_design_export_pack(
 
     # Colophon
     layout_irs.append(_front_matter_page(page_index, "colophon", recipe, family))
+
+    # Persist layout IR pages for golden / adapter reuse
+    for ir in layout_irs:
+        (root / "pages" / "layout_ir" / f"{ir.page_index:04d}-{ir.page_id}.json").write_text(
+            canonical_json(ir.model_dump(mode="json")),
+            encoding="utf-8",
+        )
 
     # Brand text scan
     brand_scan = scan_forbidden_strings(
@@ -274,6 +293,8 @@ def compose_design_export_pack(
             "library_index": "source/library_index.json",
             "resolved_recipe": "style/resolved_recipe.json",
             "family": "style/family.json",
+            "diagrams": diagram_paths,
+            "layout_ir_dir": "pages/layout_ir",
         },
     }
     body_hash = canonical_sha256({k: v for k, v in manifest.items() if k != "pack_manifest_hash"})
