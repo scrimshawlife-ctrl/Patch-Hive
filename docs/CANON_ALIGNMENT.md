@@ -90,7 +90,7 @@ Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not 
 |---|---|---|---|---|
 | Module gallery list/detail | `GET /api/modules` | Keep as catalog MVP (`CANON_MVP`) | **Retain** | None (stable) |
 | Cases list UI | stub page; API `GET /api/cases` exists | Keep catalog | **Retain API**; wire UI (P4) | P4 Cases page |
-| Rigs list / create / edit | `GET/POST/PATCH /api/racks` | Adapter over immutable **Rig + RigRevision** | **CANON_SUPPORTING** keep routers | Optional: document rack_id ≡ rig_id |
+| Rigs list / create / edit | `GET/POST/PATCH /api/racks` | Adapter over immutable **Rig + RigRevision** | **CANON_SUPPORTING** keep routers | **F1:** `rack_id ≡ rig_id` for MVP (document only) |
 | Rack builder | `/api/racks` + modules | Same | **Retain** | Photo evidence already separate |
 | Run list / detail | `GET /api/runs?rack_id=` | Enriched DTO already; future `/api/canon/runs` | **Retain** + bridge fields | Native canon run write on generate |
 | Run patches | `GET /api/runs/{id}/patches` | Canon library membership | **Retain** until generate emits `generated_patches` | Generator dual-write |
@@ -122,3 +122,7 @@ Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not 
 | **E** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` default after caller audit | **DONE** (default false; opt-in only) |
 
 **Matrix status:** **DESIGN COMPLETE** (this section). Implementation starts at slice **A** on a feature branch — not in docs-only #53 unless bundled.
+
+### Residual dual-path slices (post A–E)
+
+See [evidence/DUAL_PATH_RETIREMENT_DESIGN.md](evidence/DUAL_PATH_RETIREMENT_DESIGN.md) for ordered **F0–F7 / Z** inventory retirement (design-first; no big-bang delete of racks routers).

@@ -8,6 +8,8 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Staging host plan + `docker-compose.staging.yml`; dual-path retirement design F0 (`DUAL_PATH_RETIREMENT_DESIGN.md`).
+- Release notes draft for `v0.3.0-alpha.1` (alpha hardening; not production).
 - Canon-native replacements for residual legacy unit suites: `function_registry`, `query_surface`, `pipeline`, `export_pack` (no default-test imports of historical `patchhive`).
 - `canon.gallery_revisions` append-only file store; `patchhive.gallery.revisions` is a compatibility shim; gallery revision tests no longer mark `legacy_pipeline`.
 - Migrated schema roundtrip off historical `patchhive` onto `canon.contracts.RigMetricsPacket` (one fewer `legacy_pipeline` importer).

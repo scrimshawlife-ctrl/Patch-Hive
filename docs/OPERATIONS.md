@@ -46,6 +46,33 @@ make test
 
 Environment template: repository root `.env.example`. Never commit real secrets.
 
+## Staging (named host)
+
+**Plan:** [evidence/STAGING_HOST_PLAN.md](evidence/STAGING_HOST_PLAN.md)  
+**Local Compose receipt:** [evidence/STAGING_COMPOSE_RECEIPT.md](evidence/STAGING_COMPOSE_RECEIPT.md)
+
+### Staging-like Compose (image-built backend, no --reload)
+
+```bash
+export STAGING_SECRET_KEY="$(openssl rand -base64 32)"
+export STAGING_DB_PASSWORD="$(openssl rand -base64 18)"
+docker compose -f docker-compose.staging.yml up -d --build
+curl -sf http://localhost:8000/health
+docker compose -f docker-compose.staging.yml exec -T backend alembic current
+# expect: 20240930_patch_user_overlays (head)
+```
+
+Staging **must** keep `ALLOW_PRODUCTION_PAYMENTS=false` and `STRIPE_TEST_MODE=true`.  
+A public hostname requires an explicit operator host pick (Compose VPS / Render / Fly / Azure) — agents must not invent cloud accounts.
+
+### Staging vs production
+
+| | Staging | Production |
+|--|---------|------------|
+| Payments | test only | separate reviewed enablement |
+| Deploy authority | operator host pick | release gates + operator |
+| Vision | mock/fixture | ops secret + eval dataset |
+
 ## Failure recovery
 
 - A terminal export failure creates one immutable reversal keyed to the export and changes the mutable export state to refunded.
