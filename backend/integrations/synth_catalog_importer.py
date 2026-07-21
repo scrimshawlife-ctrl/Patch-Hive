@@ -1,0 +1,278 @@
+"""
+Synth Catalog Research importer for PatchHive.
+
+Two-tier admit:
+1. module_catalog — lightweight browse rows from Phase 2 research seed
+2. modules — full-spec curated entries only (hp required; power null when unknown)
+
+Idempotent by slug (catalog) and (brand, name, source) for full modules.
+ABX-Core v1.3 provenance on every run.
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+from sqlalchemy.orm import Session
+
+from cases.models import Case  # noqa: F401 — SQLAlchemy mapper registration
+from community.models import Comment, User, Vote  # noqa: F401
+from core.database import SessionLocal
+from core.provenance import Provenance
+from integrations.synth_catalog_data import (
+    DEFAULT_SEED_PATH,
+    SOURCE_NAME,
+    SOURCE_REFERENCE_DEFAULT,
+    get_brand_index,
+    get_catalog_modules,
+    get_full_spec_modules,
+    get_major_brands,
+    load_seed,
+    seed_stats,
+)
+from modules.catalog import ModuleCatalog
+from modules.models import Module  # noqa: F401
+from patches.models import Patch  # noqa: F401
+from racks.models import Rack, RackModule  # noqa: F401
+
+
+def _seed_sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def import_catalog(
+    db: Session,
+    seed_path: Optional[Path] = None,
+    *,
+    dry_run: bool = False,
+) -> Dict[str, Any]:
+    """Admit research catalog rows into module_catalog (skip existing slugs)."""
+    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
+    rows = get_catalog_modules(str(path.resolve()))
+    prov = Provenance.create(entity_type="synth_catalog_import", pipeline="import")
+
+    imported = 0
+    skipped = 0
+    errors: List[str] = []
+
+    for row in rows:
+        brand = (row.get("brand") or "").strip()
+        name = (row.get("name") or "").strip()
+        if not brand or not name:
+            errors.append(f"missing brand/name: {row!r}")
+            continue
+        slug = ModuleCatalog.create_slug(brand, name)
+        existing = db.query(ModuleCatalog).filter(ModuleCatalog.slug == slug).first()
+        if existing:
+            skipped += 1
+            continue
+        if dry_run:
+            imported += 1
+            continue
+        entry = ModuleCatalog(
+            slug=slug,
+            brand=brand,
+            name=name,
+            hp=row.get("hp"),
+            category=row.get("category") or "UTIL",
+            manufacturer_url=row.get("manufacturer_url"),
+            modulargrid_url=row.get("modulargrid_url"),
+            image_url=row.get("image_url"),
+            is_available=row.get("is_available") or "available",
+        )
+        db.add(entry)
+        imported += 1
+
+    if not dry_run:
+        db.commit()
+
+    prov.mark_completed()
+    prov.add_metric("imported_count", imported)
+    prov.add_metric("skipped_count", skipped)
+    prov.add_metric("error_count", len(errors))
+
+    return {
+        "status": "success",
+        "tier": "module_catalog",
+        "dry_run": dry_run,
+        "imported": imported,
+        "skipped": skipped,
+        "errors": errors[:20],
+        "input_records": len(rows),
+        "seed_path": str(path),
+        "seed_sha256": _seed_sha256(path) if path.is_file() else None,
+        "provenance": prov.to_dict(),
+    }
+
+
+def import_full_spec_modules(
+    db: Session,
+    seed_path: Optional[Path] = None,
+    *,
+    clear_existing: bool = False,
+    dry_run: bool = False,
+) -> Dict[str, Any]:
+    """Admit curated full-spec modules into modules table."""
+    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
+    modules = get_full_spec_modules(str(path.resolve()) if path.is_file() else None)
+    prov = Provenance.create(entity_type="synth_catalog_module_import", pipeline="import")
+
+    if clear_existing and not dry_run:
+        deleted = db.query(Module).filter(Module.source == SOURCE_NAME).delete()
+        db.commit()
+        print(f"Deleted {deleted} existing {SOURCE_NAME} modules")
+
+    existing = {
+        (m.brand, m.name)
+        for m in db.query(Module).filter(Module.source == SOURCE_NAME).all()
+    }
+    # also skip if same brand+name already present from any source (avoid dual identity)
+    all_existing = {(m.brand, m.name) for m in db.query(Module).all()}
+
+    imported = 0
+    skipped = 0
+
+    for data in modules:
+        brand = data["brand"].strip()
+        name = data["name"].strip()
+        key = (brand, name)
+        if key in existing or key in all_existing:
+            skipped += 1
+            continue
+        if data.get("hp") is None:
+            skipped += 1
+            continue
+        if dry_run:
+            imported += 1
+            continue
+        module = Module(
+            brand=brand,
+            name=name,
+            hp=int(data["hp"]),
+            module_type=data.get("module_type") or "UTIL",
+            power_12v_ma=data.get("power_12v_ma"),
+            power_neg12v_ma=data.get("power_neg12v_ma"),
+            power_5v_ma=data.get("power_5v_ma"),
+            depth_mm=data.get("depth_mm"),
+            io_ports=data.get("io_ports") or [],
+            tags=data.get("tags") or [],
+            description=data.get("description"),
+            manufacturer_url=data.get("manufacturer_url"),
+            source=data.get("source") or SOURCE_NAME,
+            source_reference=data.get("source_reference") or SOURCE_REFERENCE_DEFAULT,
+        )
+        db.add(module)
+        imported += 1
+        all_existing.add(key)
+
+    if not dry_run:
+        db.commit()
+
+    prov.mark_completed()
+    prov.add_metric("imported_count", imported)
+    prov.add_metric("skipped_count", skipped)
+
+    return {
+        "status": "success",
+        "tier": "modules",
+        "dry_run": dry_run,
+        "imported": imported,
+        "skipped": skipped,
+        "input_records": len(modules),
+        "seed_path": str(path),
+        "seed_sha256": _seed_sha256(path) if path.is_file() else None,
+        "provenance": prov.to_dict(),
+    }
+
+
+def import_all(
+    db: Session,
+    seed_path: Optional[Path] = None,
+    *,
+    clear_existing_full: bool = False,
+    dry_run: bool = False,
+) -> Dict[str, Any]:
+    """Import catalog + full-spec tiers."""
+    path = Path(seed_path) if seed_path else DEFAULT_SEED_PATH
+    prov = Provenance.create(entity_type="synth_catalog_full_import", pipeline="import")
+
+    catalog_result = import_catalog(db, path, dry_run=dry_run)
+    full_result = import_full_spec_modules(
+        db, path, clear_existing=clear_existing_full, dry_run=dry_run
+    )
+
+    prov.mark_completed()
+    prov.add_metric("catalog_imported", catalog_result["imported"])
+    prov.add_metric("full_spec_imported", full_result["imported"])
+
+    return {
+        "status": "success",
+        "dry_run": dry_run,
+        "catalog": catalog_result,
+        "full_spec": full_result,
+        "stats": seed_stats(str(path.resolve()) if path.is_file() else None),
+        "provenance": prov.to_dict(),
+    }
+
+
+def manufacturers_payload() -> Dict[str, Any]:
+    return {
+        "source": SOURCE_NAME,
+        "major_brands": get_major_brands(),
+        "major_count": len(get_major_brands()),
+        "brand_index_count": len(get_brand_index()),
+        "brands_sample": get_brand_index()[:50],
+    }
+
+
+def main(argv: Optional[List[str]] = None) -> int:
+    parser = argparse.ArgumentParser(description="Import Synth Catalog Research into PatchHive")
+    parser.add_argument(
+        "--seed",
+        type=Path,
+        default=DEFAULT_SEED_PATH,
+        help="Path to seed-phase2-v1.json",
+    )
+    parser.add_argument("--catalog-only", action="store_true")
+    parser.add_argument("--full-spec-only", action="store_true")
+    parser.add_argument(
+        "--clear-full",
+        action="store_true",
+        help="Delete existing SynthCatalogResearch modules before full-spec import",
+    )
+    parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--receipt",
+        type=Path,
+        default=None,
+        help="Write JSON receipt to this path",
+    )
+    args = parser.parse_args(argv)
+
+    db = SessionLocal()
+    try:
+        if args.catalog_only:
+            result = import_catalog(db, args.seed, dry_run=args.dry_run)
+        elif args.full_spec_only:
+            result = import_full_spec_modules(
+                db, args.seed, clear_existing=args.clear_full, dry_run=args.dry_run
+            )
+        else:
+            result = import_all(
+                db, args.seed, clear_existing_full=args.clear_full, dry_run=args.dry_run
+            )
+        print(json.dumps(result, indent=2, default=str))
+        if args.receipt:
+            args.receipt.parent.mkdir(parents=True, exist_ok=True)
+            args.receipt.write_text(json.dumps(result, indent=2, default=str) + "\n")
+        return 0
+    finally:
+        db.close()
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

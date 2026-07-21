@@ -44,6 +44,28 @@ curl -X POST http://localhost:8000/api/modulargrid/import/cases
 
 # Get manufacturer list
 curl http://localhost:8000/api/modulargrid/manufacturers
+
+# Synth Catalog Research (two-tier)
+curl http://localhost:8000/api/synth-catalog/stats
+curl -X POST 'http://localhost:8000/api/synth-catalog/import/all?dry_run=true'
+curl -X POST http://localhost:8000/api/synth-catalog/import/catalog
+```
+
+### CLI — Synth Catalog Research
+
+```bash
+# Stats + dry-run receipt
+python -m integrations.synth_catalog_importer --dry-run \
+  --receipt ../data/synth-catalog/receipts/seed-phase2-v1.dry-run.json
+
+# Admit catalog + full-spec
+python -m integrations.synth_catalog_importer
+
+# Catalog only (module_catalog)
+python -m integrations.catalog_populator --synth-research
+
+# Rebuild seed from Abraxas skill references (optional)
+python3 scripts/build_synth_catalog_seed.py
 ```
 
 ## File Structure
@@ -55,7 +77,10 @@ integrations/
 ├── bootstrap.py               # First-run wizard (interactive)
 ├── modulargrid_data.py        # Curated module/case data (~900 lines)
 ├── modulargrid_importer.py    # Import logic with provenance
-└── router.py                  # FastAPI endpoints
+├── synth_catalog_data.py      # Synth Catalog Research seed loader
+├── synth_catalog_importer.py  # Two-tier catalog + full-spec importer
+├── catalog_populator.py       # Lightweight module_catalog populate
+└── router.py                  # FastAPI endpoints (ModularGrid + synth-catalog)
 ```
 
 ## Data Sources
@@ -63,14 +88,16 @@ integrations/
 See `DATA_SOURCES.md` for complete provenance documentation.
 
 **Current Data**:
-- 32 real Eurorack modules
+- 32 real Eurorack modules (ModularGrid curated full specs)
 - 7 professional cases
-- 25 manufacturer brands
+- 25 manufacturer brands (curated list)
+- Synth Catalog Research seed: ~700 brands + ~300+ Phase 2 catalog rows + 3 full-spec modules
 
 **Sources**:
 - Official manufacturer specifications
 - ModularGrid community data (as reference)
 - Hand-curated for accuracy
+- Abraxas `modular-synth-catalog-research` skill packet (PR #984) → `data/synth-catalog/`
 
 ## Features
 

@@ -8,6 +8,19 @@ This directory holds canonical fixture data used by acceptance tests and demos.
 |------|------|
 | `modules_demo_seed.json` | 12 demo modules with HP, rails, and optional depth for catalog fit demos |
 
+Research catalog expansion (not under `fixtures/`, under `data/synth-catalog/`):
+
+| File | Role |
+|------|------|
+| `data/synth-catalog/seed-phase2-v1.json` | Phase 2 Synth Catalog Research → `module_catalog` + curated full-spec modules |
+
+```bash
+just synth-catalog-import -- --dry-run
+just synth-catalog-import
+```
+
+See [data/synth-catalog/README.md](../data/synth-catalog/README.md).
+
 ```bash
 export DATABASE_URL=postgresql://...
 just modules-demo-import

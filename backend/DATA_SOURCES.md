@@ -1,6 +1,6 @@
 # PatchHive Data Sources Documentation
 
-**Last Updated**: 2025-12-05
+**Last Updated**: 2026-07-21
 **ABX-Core Version**: 1.3
 **Database Schema Version**: 1.0
 
@@ -97,6 +97,49 @@ This document provides complete provenance tracking for all data in the PatchHiv
 24. Random*Source (UK)
 25. Buchla USA (USA)
 
+### 4. Synth Catalog Research (Phase 2 seed)
+
+**Source Type**: Sealed multi-source research packet (Abraxas skill `modular-synth-catalog-research`)  
+**Provenance**: `source="SynthCatalogResearch"`, `source_reference="data/synth-catalog/seed-phase2-v1.json"`  
+**Method**: Phase 1 brand index (~700+) + Phase 2 major-brand module tables, normalized into PatchHive catalog rows  
+**Date Sealed**: 2026-07-21 (Abraxas PR #984)  
+**Importer**: `integrations/synth_catalog_importer.py`  
+**Seed**: `data/synth-catalog/seed-phase2-v1.json`  
+**Policy packet**: `data/synth-catalog/seed-phase2-v1.sources.json`
+
+#### What is admitted where
+
+| Tier | Target table | Content |
+|------|--------------|---------|
+| Lightweight catalog | `module_catalog` | Phase 2 brand/name/category/availability; HP only when research recorded it (null otherwise) |
+| Full specs | `modules` | Curated full-spec subset (power/I/O only when known; never invented) |
+
+#### Field-Level Provenance
+
+| Field | Source | Trust Level | Notes |
+|-------|--------|-------------|-------|
+| `brand` / `name` | Research Phase 2 tables | OBSERVED | Deduped by slug |
+| `hp` | Research table when numeric | OBSERVED or null | Null when research used `—` / blank |
+| `category` | Mapped from free-text research categories | Inferred | Taxonomy via `map_category()` |
+| `is_available` | Research status column | OBSERVED | discontinued / available / upcoming |
+| `power_*` / `io_ports` | Curated full-spec only | Direct when present | Null never filled with guesses |
+| Brand index | Phase 1 ModularGrid manufacturer list reference | OBSERVED | Browse/filter support, not bulk scrape of modules |
+
+#### Data Quality Notes
+
+- **Not a ModularGrid dump**: Research used multi-source rotation (official, retailer, community) to avoid ToS bulk scrape
+- **Sparse HP**: Most Phase 2 rows lack HP; catalog admits them for discovery; full rack placement still needs HP later
+- **Idempotent**: Catalog skips existing slugs; full modules skip existing `(brand, name)` from any source
+- **Rebuild**: `python3 scripts/build_synth_catalog_seed.py` (optional `--source-dir` to Abraxas skill references)
+
+#### API
+
+- `GET /api/synth-catalog/stats`
+- `GET /api/synth-catalog/manufacturers`
+- `POST /api/synth-catalog/import/catalog?dry_run=`
+- `POST /api/synth-catalog/import/modules?dry_run=&clear_existing=`
+- `POST /api/synth-catalog/import/all?dry_run=&clear_existing=`
+
 ## Data Collection Methodology
 
 ### Principles
@@ -125,7 +168,7 @@ This document provides complete provenance tracking for all data in the PatchHiv
 
 ### Current Limitations
 
-1. **Coverage**: 32 modules (representative sample, not comprehensive)
+1. **Coverage**: 32 curated full-spec modules + Synth Catalog Research catalog expansion (~300+ browse rows; HP often null)
 2. **I/O Details**: Simplified port representation; full signal flow not captured
 3. **Firmware Versions**: Digital modules may have firmware variations not tracked
 4. **Discontinued Modules**: Historical data may be incomplete

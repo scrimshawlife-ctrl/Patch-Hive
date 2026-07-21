@@ -150,12 +150,23 @@ def import_from_modulargrid_csv(db: Session, csv_path: str) -> Dict[str, Any]:
         }
 
 
+def populate_catalog_from_synth_research(db: Session) -> Dict[str, Any]:
+    """
+    Admit Phase 2 Synth Catalog Research rows into module_catalog.
+
+    Skips slugs that already exist (idempotent with curated ModularGrid seed).
+    """
+    from integrations.synth_catalog_importer import import_catalog
+
+    return import_catalog(db, dry_run=False)
+
+
 def populate_catalog_auto(db: Session) -> Dict[str, Any]:
     """
     Auto-populate catalog intelligently.
 
     1. Check if catalog is empty
-    2. If empty, populate from curated modules
+    2. If empty, populate from curated modules then synth research seed
     3. Return stats
     """
     current_count = db.query(ModuleCatalog).count()
@@ -169,9 +180,16 @@ def populate_catalog_auto(db: Session) -> Dict[str, Any]:
 
     # Populate from curated modules
     print("Populating catalog from curated modules...")
-    result = populate_catalog_from_curated_modules(db)
+    curated = populate_catalog_from_curated_modules(db)
+    print("Expanding catalog from Synth Catalog Research seed...")
+    research = populate_catalog_from_synth_research(db)
 
-    return result
+    return {
+        "status": "success",
+        "curated": curated,
+        "synth_research": research,
+        "total": db.query(ModuleCatalog).count(),
+    }
 
 
 def main():
@@ -186,6 +204,11 @@ def main():
 
     parser = argparse.ArgumentParser(description="Populate module catalog")
     parser.add_argument("--csv", help="Path to ModularGrid CSV export")
+    parser.add_argument(
+        "--synth-research",
+        action="store_true",
+        help="Import data/synth-catalog seed into module_catalog (idempotent)",
+    )
     parser.add_argument("--force", action="store_true", help="Force re-populate")
 
     args = parser.parse_args()
@@ -195,6 +218,9 @@ def main():
         if args.csv:
             print(f"Importing from CSV: {args.csv}")
             result = import_from_modulargrid_csv(db, args.csv)
+        elif args.synth_research:
+            print("Importing Synth Catalog Research into module_catalog...")
+            result = populate_catalog_from_synth_research(db)
         else:
             print("Auto-populating catalog...")
             result = populate_catalog_auto(db)
