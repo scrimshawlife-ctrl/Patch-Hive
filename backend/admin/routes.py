@@ -2,8 +2,9 @@
 FastAPI routes for admin console operations.
 """
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from typing import Optional
+from hashlib import sha256
 
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import func
@@ -33,6 +34,7 @@ from admin.schemas import (
     AdminUserResponse,
 )
 from admin.utils import log_admin_action
+from canon.models import CanonicalCreditLedgerEntryRecord
 from community.models import User
 from core import get_db
 from gallery.models import GalleryRevision
@@ -152,6 +154,11 @@ def grant_user_credits(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_admin_mutate),
 ):
+    """Grant credits to both the legacy and canonical ledgers.
+
+    Dual-write keeps historical admin/referral paths working while MVP
+    debit/balance surfaces read the canonical ledger only.
+    """
     user = db.query(User).filter(User.id == user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -162,17 +169,39 @@ def grant_user_credits(
         notes=payload.reason,
     )
     db.add(entry)
+
+    # Stable, unique canonical grant id (append-only; retries must use a new reason/amount pair).
+    grant_key = f"admin-grant:{user.id}:{payload.credits}:{payload.reason}:{current_user.id}"
+    grant_id = f"grant-{sha256(grant_key.encode('utf-8')).hexdigest()[:24]}"
+    idempotency_key = f"admin-grant:{grant_id}"
+    existing_canon = db.get(CanonicalCreditLedgerEntryRecord, grant_id)
+    if existing_canon is None:
+        db.add(
+            CanonicalCreditLedgerEntryRecord(
+                id=grant_id,
+                user_id=user.id,
+                delta=int(payload.credits),
+                entry_type="grant",
+                idempotency_key=idempotency_key,
+                export_id=None,
+                created_at=datetime.now(timezone.utc),
+            )
+        )
+
     log_admin_action(
         db,
         actor=current_user,
         action_type="credits.grant",
         target_type="user",
         target_id=str(user_id),
-        delta_json={"credits_delta": payload.credits},
+        delta_json={
+            "credits_delta": payload.credits,
+            "canonical_ledger_entry_id": grant_id,
+        },
         reason=payload.reason,
     )
     db.commit()
-    return {"status": "granted"}
+    return {"status": "granted", "canonical_ledger_entry_id": grant_id}
 
 
 @router.post("/modules", status_code=201)

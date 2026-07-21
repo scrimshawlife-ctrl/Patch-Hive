@@ -104,7 +104,22 @@ def export_patchbook_pdf(
     db: Session = Depends(get_db),
     current_user: User = Depends(require_auth),
 ):
-    """Export a patch book PDF for a run (credit gated)."""
+    """Export a patch book PDF for a run (legacy credit-gated path).
+
+    **Deprecated for MVP debit.** Prefer ``POST /api/canon/exports`` which
+    debits the canonical ledger. This route remains transitional for PDF
+    artifact generation and older clients. Set
+    ``ENABLE_LEGACY_PATCHBOOK_DEBIT=false`` to reject new debits (410).
+    """
+    if not settings.enable_legacy_patchbook_debit:
+        raise HTTPException(
+            status_code=410,
+            detail=(
+                "LEGACY_PATCHBOOK_DEBIT_DISABLED — use POST /api/canon/exports "
+                "for credit-gated exports"
+            ),
+        )
+
     run = db.query(Run).filter(Run.id == run_id).first()
     if not run:
         raise HTTPException(status_code=404, detail="Run not found")
@@ -124,6 +139,8 @@ def export_patchbook_pdf(
             "content_hash": cached.manifest_hash,
             "template_version": PATCHBOOK_TEMPLATE_VERSION,
             "cached": True,
+            "deprecated": True,
+            "prefer": "POST /api/canon/exports",
         }
 
     balance = get_credits_balance(db, current_user.id)
@@ -181,6 +198,7 @@ def export_patchbook_pdf(
             "content_hash": content_hash,
             "template_version": PATCHBOOK_TEMPLATE_VERSION,
             "file_hash": digest,
+            "deprecated_path": True,
         },
     )
     db.add(export)
@@ -191,7 +209,7 @@ def export_patchbook_pdf(
         user_id=current_user.id,
         change_type="Spend",
         credits_delta=-settings.patchbook_export_cost,
-        notes="Patch book export",
+        notes="Patch book export (legacy path)",
         export_id=export.id,
     )
     db.add(ledger)
@@ -204,6 +222,8 @@ def export_patchbook_pdf(
         "content_hash": content_hash,
         "template_version": PATCHBOOK_TEMPLATE_VERSION,
         "cached": False,
+        "deprecated": True,
+        "prefer": "POST /api/canon/exports",
     }
 
 

@@ -46,6 +46,7 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
     import main
     import monetization.routes
     import patches.routes
+    import canon.routes
 
     importlib.reload(core.config)
     importlib.reload(core.database)
@@ -54,6 +55,7 @@ def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> 
     export.routes.settings = core.config.settings
     patches.routes.settings = core.config.settings
     monetization.routes.settings = core.config.settings
+    canon.routes.settings = core.config.settings
     importlib.reload(main)
 
     alembic_cfg = Config(str(Path(__file__).resolve().parents[1] / ".." / "alembic.ini"))

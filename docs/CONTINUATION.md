@@ -49,20 +49,22 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 
 ### P1 — Dual-path reduction (ACTIVE residual)
 
-**Completed slice (PR #49):** FE debit/list/balance → canon only.
+**Completed slices:**
+- **PR #49:** FE debit/list/balance → canon only.
+- **PR (this):** acceptance debit → `/api/canon/exports`; admin grant dual-writes canonical ledger; legacy debit gateable via `ENABLE_LEGACY_PATCHBOOK_DEBIT`.
+
+**Progress checklist:**
+- [x] Acceptance debit tests use `POST /api/canon/exports` + canonical ledger
+- [x] Admin credit grant dual-writes `canonical_credit_ledger`
+- [x] Legacy PatchBook debit: `deprecated` JSON markers + `ENABLE_LEGACY_PATCHBOOK_DEBIT` (default true; false → 410)
+- [ ] Default `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` once remaining non-MVP callers cleared
+- [ ] Full retirement of legacy rack/patch list dual path (still needed for inventory UI)
+- [ ] Run DTOs carrying real `rig_revision_id` / manifest hash (bridge uses `legacy-rack-{id}` + hashed run)
 
 **Next slices (ordered):**
 
-1. **Acceptance → canon credits path**  
-   - Port `backend/tests/acceptance/test_exports_and_credits.py` (and any golden debit assertions) from `POST /api/export/runs/{id}/patchbook` to `POST /api/canon/exports` with valid hashes/ids.  
-   - Keep unit tests for PatchBook PDF builder (`test_patchbook_*`) — those are generation, not ledger.  
-   - **Exit:** acceptance green on CI Postgres without requiring legacy debit POST for MVP ledger semantics.
-
-2. **Deprecate / feature-gate legacy debit POST**  
-   - After acceptance ports: mark `export_patchbook_pdf` debit path deprecated; optionally reject new UI clients with warning header; do **not** dual-debit.  
-   - Document residual in FEATURE_FLAGS DEPRECATIONS.  
-   - **Exit:** no production code path debits outside canon ledger for MVP export purchase.
-
+1. ~~**Acceptance → canon credits path**~~ **DONE** (this PR)  
+2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (gate + docs; default still true for transitional callers)  
 3. **Run / revision bridge honesty**  
    - Extend run list DTO with `rig_revision_id` (or explicit null + bridge flag) and canonical `artifact_manifest_hash` when available.  
    - Replace FE `source_rig_revision_id: legacy-rack-{n}` and client-side `legacyRunManifestHash` once backend supplies truth.  
@@ -73,12 +75,6 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
    - Map each to future `/api/canon/rigs|revisions|runs` (or keep racks as CANON_SUPPORTING with adapters).  
    - Do **not** big-bang delete racks routers.  
    - **Exit:** written inventory matrix in CANON_ALIGNMENT + one vertical slice (e.g. run list via canon) green.
-
-5. Residual inventory still needed:  
-   - [ ] Full retirement of legacy rack/patch list dual path  
-   - [ ] Remove legacy PatchBook POST once acceptance no longer depends on it  
-   - [ ] Run DTOs carrying real `rig_revision_id` / manifest hash  
-
 ### P2 — Package and dead-UI hygiene
 
 1. **Unrouted frontend pages (OBSERVED not in `App.tsx`):**  

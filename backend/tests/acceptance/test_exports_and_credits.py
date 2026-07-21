@@ -1,15 +1,93 @@
-from pathlib import Path
+"""Acceptance: credits + exports via the canonical ledger boundary.
+
+MVP debit path is POST /api/canon/exports. Admin grants dual-write the
+canonical ledger so grant → export works end-to-end without the legacy
+POST /api/export/runs/{id}/patchbook debit route.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
 
 from sqlalchemy.orm import Session
 
-from monetization.models import CreditsLedger, Export
+from canon.exports import compensate_failed_export, credit_balance
+from canon.models import (
+    CanonicalCreditLedgerEntryRecord,
+    CanonicalExportRecord,
+    GenerationRunRecord,
+    PatchLibraryRecord,
+    RigRevisionRecord,
+)
+from core import settings
 
 
 def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
+def _attach_canon_export_sources(db_session: Session, *, user_id: int, rig_id: int) -> dict[str, str]:
+    """Create minimal canon hierarchy for export FK targets (bridge ids)."""
+    revision_id = f"legacy-rack-{rig_id}"
+    run_id = f"canon-run-from-rack-{rig_id}"
+    library_id = f"library-from-rack-{rig_id}"
+    manifest_hash = "c" * 64
+
+    if db_session.get(RigRevisionRecord, revision_id) is None:
+        db_session.add(
+            RigRevisionRecord(
+                id=revision_id,
+                rig_id=rig_id,
+                schema_version="patchhive.canon.v1",
+                canonical_rig={"modules": [], "bridge": "legacy-rack"},
+                canonical_hash="a" * 64,
+            )
+        )
+    if db_session.get(GenerationRunRecord, run_id) is None:
+        db_session.add(
+            GenerationRunRecord(
+                id=run_id,
+                user_id=user_id,
+                rig_revision_id=revision_id,
+                schema_version="patchhive.canon.v1",
+                generator_version="1.0.0",
+                generation_seed=7,
+                normalized_input_hash="b" * 64,
+            )
+        )
+    if db_session.get(PatchLibraryRecord, library_id) is None:
+        db_session.add(
+            PatchLibraryRecord(
+                id=library_id,
+                run_id=run_id,
+                artifact_manifest_hash=manifest_hash,
+                canonical_hash="d" * 64,
+            )
+        )
+    db_session.commit()
+    return {
+        "source_run_id": run_id,
+        "source_rig_revision_id": revision_id,
+        "artifact_manifest_hash": manifest_hash,
+    }
+
+
+def _canon_export_body(sources: dict[str, str], idempotency_key: str) -> dict:
+    return {
+        "source_run_id": sources["source_run_id"],
+        "source_rig_revision_id": sources["source_rig_revision_id"],
+        "artifact_manifest_hash": sources["artifact_manifest_hash"],
+        "formats": ["pdf", "json"],
+        "license": "personal",
+        "idempotency_key": idempotency_key,
+    }
+
+
 def test_export_blocked_without_credits(api_client, db_session: Session, golden_demo_seed):
+    sources = _attach_canon_export_sources(
+        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
+    )
+
     login_resp = api_client.post(
         "/api/community/auth/login",
         json={"username": golden_demo_seed.username, "password": golden_demo_seed.password},
@@ -18,17 +96,24 @@ def test_export_blocked_without_credits(api_client, db_session: Session, golden_
     token = login_resp.json()["access_token"]
 
     resp = api_client.post(
-        f"/api/export/runs/{golden_demo_seed.run_id}/patchbook",
+        "/api/canon/exports",
         headers=_auth_headers(token),
+        json=_canon_export_body(sources, "acceptance-no-credits-1"),
     )
-    assert resp.status_code in {402, 403}
+    assert resp.status_code == 402
+    assert resp.json()["detail"] == "INSUFFICIENT_CREDITS"
 
+    assert credit_balance(db_session, golden_demo_seed.user_id) == 0
     ledger_entries = (
-        db_session.query(CreditsLedger)
-        .filter(CreditsLedger.user_id == golden_demo_seed.user_id)
+        db_session.query(CanonicalCreditLedgerEntryRecord)
+        .filter(CanonicalCreditLedgerEntryRecord.user_id == golden_demo_seed.user_id)
         .all()
     )
-    exports = db_session.query(Export).filter(Export.run_id == golden_demo_seed.run_id).all()
+    exports = (
+        db_session.query(CanonicalExportRecord)
+        .filter(CanonicalExportRecord.user_id == golden_demo_seed.user_id)
+        .all()
+    )
     assert not ledger_entries
     assert not exports
 
@@ -36,6 +121,10 @@ def test_export_blocked_without_credits(api_client, db_session: Session, golden_
 def test_admin_grant_then_export_succeeds(
     api_client, db_session: Session, golden_demo_seed, admin_user
 ):
+    sources = _attach_canon_export_sources(
+        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
+    )
+
     admin_login = api_client.post(
         "/api/community/auth/login",
         json={"username": admin_user.username, "password": "admin-pass"},
@@ -49,13 +138,19 @@ def test_admin_grant_then_export_succeeds(
         headers=_auth_headers(admin_token),
     )
     grant.raise_for_status()
+    assert grant.json()["status"] == "granted"
+    assert grant.json().get("canonical_ledger_entry_id")
 
-    ledger_entries = (
-        db_session.query(CreditsLedger)
-        .filter(CreditsLedger.user_id == golden_demo_seed.user_id)
+    grant_rows = (
+        db_session.query(CanonicalCreditLedgerEntryRecord)
+        .filter(
+            CanonicalCreditLedgerEntryRecord.user_id == golden_demo_seed.user_id,
+            CanonicalCreditLedgerEntryRecord.entry_type == "grant",
+        )
         .all()
     )
-    assert any(entry.change_type == "Grant" for entry in ledger_entries)
+    assert grant_rows
+    assert credit_balance(db_session, golden_demo_seed.user_id) == 10
 
     login_resp = api_client.post(
         "/api/community/auth/login",
@@ -64,39 +159,62 @@ def test_admin_grant_then_export_succeeds(
     login_resp.raise_for_status()
     token = login_resp.json()["access_token"]
 
+    balance_resp = api_client.get("/api/canon/credits/balance", headers=_auth_headers(token))
+    balance_resp.raise_for_status()
+    assert balance_resp.json()["balance"] == 10
+
     export_resp = api_client.post(
-        f"/api/export/runs/{golden_demo_seed.run_id}/patchbook",
+        "/api/canon/exports",
         headers=_auth_headers(token),
+        json=_canon_export_body(sources, "acceptance-export-1"),
     )
     export_resp.raise_for_status()
+    assert export_resp.status_code == 201
     data = export_resp.json()
     assert data["export_id"]
-    assert data["artifact_path"]
-    assert Path(data["artifact_path"]).exists()
+    assert data["status"] == "queued"
+    assert data["credit_cost"] == settings.patchbook_export_cost
+    assert data["source_run_id"] == sources["source_run_id"]
+    assert data["source_rig_revision_id"] == sources["source_rig_revision_id"]
 
-    ledger_entries = (
-        db_session.query(CreditsLedger)
-        .filter(CreditsLedger.user_id == golden_demo_seed.user_id)
+    expected_balance = 10 - settings.patchbook_export_cost
+    assert credit_balance(db_session, golden_demo_seed.user_id) == expected_balance
+
+    debit_rows = (
+        db_session.query(CanonicalCreditLedgerEntryRecord)
+        .filter(
+            CanonicalCreditLedgerEntryRecord.user_id == golden_demo_seed.user_id,
+            CanonicalCreditLedgerEntryRecord.entry_type == "debit",
+        )
         .all()
     )
-    assert any(entry.change_type == "Spend" for entry in ledger_entries)
+    assert debit_rows
+    assert any(row.export_id == data["export_id"] for row in debit_rows)
 
-    export_record = db_session.query(Export).filter(Export.id == data["export_id"]).first()
-    assert export_record
-    assert export_record.run_id == golden_demo_seed.run_id
+    export_record = db_session.get(CanonicalExportRecord, data["export_id"])
+    assert export_record is not None
+    assert export_record.user_id == golden_demo_seed.user_id
 
+    # Idempotent retry: same key, no second debit.
     cached_resp = api_client.post(
-        f"/api/export/runs/{golden_demo_seed.run_id}/patchbook",
+        "/api/canon/exports",
         headers=_auth_headers(token),
+        json=_canon_export_body(sources, "acceptance-export-1"),
     )
     cached_resp.raise_for_status()
     cached_data = cached_resp.json()
-    assert cached_data["cached"] is True
+    assert cached_data["export_id"] == data["export_id"]
+    assert credit_balance(db_session, golden_demo_seed.user_id) == expected_balance
 
 
-def test_failed_export_does_not_consume_credits(
+def test_failed_export_compensates_without_net_spend(
     api_client, db_session: Session, golden_demo_seed, admin_user
 ):
+    """Terminal failure after debit is reversed via one immutable compensation entry."""
+    sources = _attach_canon_export_sources(
+        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
+    )
+
     admin_login = api_client.post(
         "/api/community/auth/login",
         json={"username": admin_user.username, "password": "admin-pass"},
@@ -106,9 +224,9 @@ def test_failed_export_does_not_consume_credits(
 
     api_client.post(
         f"/api/admin/users/{golden_demo_seed.user_id}/credits/grant",
-        json={"credits": 5, "reason": "acceptance"},
+        json={"credits": 5, "reason": "acceptance-fail-path"},
         headers=_auth_headers(admin_token),
-    )
+    ).raise_for_status()
 
     login_resp = api_client.post(
         "/api/community/auth/login",
@@ -117,21 +235,35 @@ def test_failed_export_does_not_consume_credits(
     login_resp.raise_for_status()
     token = login_resp.json()["access_token"]
 
-    resp = api_client.post(
-        f"/api/export/runs/{golden_demo_seed.run_id}/patchbook?force_fail=true",
+    export_resp = api_client.post(
+        "/api/canon/exports",
         headers=_auth_headers(token),
+        json=_canon_export_body(sources, "acceptance-export-fail-1"),
     )
-    assert resp.status_code == 500
+    export_resp.raise_for_status()
+    export_id = export_resp.json()["export_id"]
+    assert credit_balance(db_session, golden_demo_seed.user_id) == 5 - settings.patchbook_export_cost
 
-    spends = (
-        db_session.query(CreditsLedger)
+    export_row = db_session.get(CanonicalExportRecord, export_id)
+    assert export_row is not None
+    compensate_failed_export(
+        db_session,
+        export_row,
+        occurred_at=datetime.now(timezone.utc),
+    )
+    db_session.commit()
+    db_session.refresh(export_row)
+
+    assert str(export_row.status) == "refunded"
+    assert credit_balance(db_session, golden_demo_seed.user_id) == 5
+
+    reversals = (
+        db_session.query(CanonicalCreditLedgerEntryRecord)
         .filter(
-            CreditsLedger.user_id == golden_demo_seed.user_id,
-            CreditsLedger.change_type == "Spend",
+            CanonicalCreditLedgerEntryRecord.user_id == golden_demo_seed.user_id,
+            CanonicalCreditLedgerEntryRecord.entry_type == "reversal",
         )
         .all()
     )
-    assert not spends
-
-    exports = db_session.query(Export).filter(Export.run_id == golden_demo_seed.run_id).all()
-    assert not exports
+    assert len(reversals) == 1
+    assert reversals[0].export_id == export_id

@@ -8,6 +8,7 @@ All flags are environment variables parsed case-insensitively by backend setting
 | `ENABLE_LEGACY_PUBLISHING` | `false` | Compatibility public publication endpoints |
 | `ENABLE_LEGACY_LEADERBOARDS` | `false` | Compatibility leaderboard endpoints |
 | `ENABLE_LEGACY_REFERRALS` | `false` | Gates `/api/me/referrals`, community referral summary, referral signup capture, and monetization purchase-for-referral recording |
+| `ENABLE_LEGACY_PATCHBOOK_DEBIT` | `true` | When `false`, `POST /api/export/runs/{id}/patchbook` returns **410** (use `/api/canon/exports`) |
 | `STRIPE_TEST_MODE` | `true` | Reject livemode webhook events in the canonical Stripe adapter and `/api/canon/webhooks/stripe` |
 | `ALLOW_PRODUCTION_PAYMENTS` | `false` | Kill switch. When false, production webhook intake returns 403. Startup fails closed if production sets this false while `STRIPE_TEST_MODE=false`, or sets this true without reviewed secrets. |
 | `STRIPE_WEBHOOK_SECRET` | empty | Stripe signing secret for `/api/canon/webhooks/stripe` |
@@ -35,7 +36,7 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | Rig workspace credits + patch-book debit | `canonApi` → `/api/canon/credits/balance`, `POST /api/canon/exports` | `exportApi.patchbookExport` deprecated; **not used by active UI** |
 | Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `GET /api/canon/exports` | `/api/me/credits`, `/api/me/exports` still on server |
 | PDF/SVG file bytes | still `/api/export/...` GETs | Artifact delivery only — **no new debits** |
-| Acceptance debit tests | **should move to** `POST /api/canon/exports` | still call `POST /api/export/runs/{id}/patchbook` (P1 residual) |
+| Acceptance debit tests | **`POST /api/canon/exports`** | Legacy path only if `ENABLE_LEGACY_PATCHBOOK_DEBIT=true` |
 | RigDetail export ids | server `rig_revision_id` + manifest (target) | bridge: `legacy-rack-{id}` + client `legacyRunManifestHash` |
 
 ### DEPRECATIONS
@@ -43,9 +44,10 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | Endpoint / client | Status | Notes |
 |---|---|---|
 | `exportApi.patchbookExport` | Deprecated | Dual-path debit risk; use `canonApi.createExport` |
-| `POST /api/export/runs/{id}/patchbook` | Transitional | Debits legacy ledger path; keep until acceptance ported |
+| `POST /api/export/runs/{id}/patchbook` | Transitional / gateable | Debits **legacy** ledger; `deprecated: true` in JSON; set `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` → 410 |
 | `POST /api/export/patchbook` | Document-only builder API | No MVP UI caller for debit flow |
-| `publishingApi` / `communityApi` / `leaderboardsApi` FE clients | Dead for MVP nav | Only referenced by unrouted pages — P2 cleanup |
+| Admin `POST /api/admin/users/{id}/credits/grant` | Dual-write | Writes legacy `CreditsLedger` **and** `canonical_credit_ledger` grant row |
+| Acceptance debit tests | **Canon** | `POST /api/canon/exports` + canon ledger asserts (P1 residual port) |
 
 Legacy `/api/export` PatchBook **POST** routes remain during transition but must not be used by the active UI. Production payments stay disabled unless a separate reviewed change sets `ALLOW_PRODUCTION_PAYMENTS=true` with real secrets.
 
