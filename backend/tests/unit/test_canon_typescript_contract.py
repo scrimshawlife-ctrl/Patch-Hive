@@ -1,5 +1,3 @@
-from pathlib import Path
-
 from canon import contracts
 from tests.monorepo_paths import frontend_src
 
