@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
+**HEAD:** `296fc3bc2548628be504a16d6ca3134fb6fa8a55`  
 **Latest product merge:** [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) MERGED (run DTO export bridge)
 **Prior P1 acceptance merge:** [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) MERGED (P1 acceptance → canon ledger)
 **Prior P1 client merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49)  
@@ -25,7 +25,7 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Legacy social/publish/leaderboards/referrals | Feature-flagged **off** by default; not in primary nav |
 | Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` (`.env.example`) |
 | Alembic head | **`20240928_fix_schema_gaps`** (single head; revises `20240927_canon_alignment`) |
-| CI on main @ `7471a2a` | Backend Tests (3.11/3.12), Code Quality, Security — green on PR #51 |
+| CI on main @ `296fc3b` | Backend Tests / Quality / Security green through PR #54 |
 | Production deploy | **Not performed** (`NOT_COMPUTABLE` without ops access) |
 
 ## Stack (active)
@@ -83,7 +83,7 @@ See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
 2. ~~P1 client: MVP credits/exports → `/api/canon/*`~~ **DONE** (PR #49 @ `71a4dfa`)
 3. ~~P1 acceptance + admin grant dual-write + legacy debit gate~~ **DONE** (PR #51 @ `7471a2a`)
-4. ~~P1 run DTO export bridge honesty~~ **IN PR** (`feat/p1-run-dto-export-bridge`)
+4. ~~P1 run DTO export bridge honesty~~ **DONE** (PR #54 @ `1579dcd`)
 5. **P1 residual:** inventory dual-path plan; native canon run generation (drop `legacy-*` namespace)
 6. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
 7. **P3:** non-prod Postgres staging + acceptance against real DB
