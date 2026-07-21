@@ -109,7 +109,7 @@ export default function CasesPage() {
     return Array.from(set).sort();
   }, [cases]);
 
-  const useOnNewRig = async (item: CatalogCaseListItem) => {
+  const materializeAndOpenRig = async (item: CatalogCaseListItem) => {
     if (!canPlace(item)) return;
     setMaterializing(item.slug);
     setActionError('');
@@ -276,7 +276,7 @@ export default function CasesPage() {
                         className="button button-primary"
                         type="button"
                         disabled={busy}
-                        onClick={() => void useOnNewRig(item)}
+                        onClick={() => void materializeAndOpenRig(item)}
                       >
                         {busy ? 'Preparing…' : 'Use on new rig'}
                       </button>
