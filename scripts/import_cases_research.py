@@ -91,6 +91,17 @@ def main(argv: list[str] | None = None) -> int:
             inserted = updated = 0
             for item in validated:
                 data = item.model_dump()
+                meta = data.get("meta") if isinstance(data.get("meta"), dict) else {}
+                if not data.get("format_family"):
+                    data["format_family"] = meta.get("format_family") or "Eurorack"
+                if not data.get("capacity_unit"):
+                    data["capacity_unit"] = meta.get("capacity_unit") or "hp"
+                if data.get("powered") is None:
+                    if "powered" in meta:
+                        data["powered"] = bool(meta.get("powered"))
+                    else:
+                        name_l = (data.get("name") or "").lower()
+                        data["powered"] = "no power" not in name_l and "unpowered" not in name_l
                 key = (data["brand"], data["name"])
                 params = {
                     **data,
@@ -104,11 +115,13 @@ def main(argv: list[str] | None = None) -> int:
                             """
                             INSERT INTO cases (
                               brand, name, total_hp, "rows", hp_per_row,
+                              format_family, capacity_unit, powered,
                               power_12v_ma, power_neg12v_ma, power_5v_ma,
                               description, manufacturer_url, meta,
                               source, source_reference, created_at, updated_at
                             ) VALUES (
                               :brand, :name, :total_hp, :rows, CAST(:hp_per_row AS json),
+                              :format_family, :capacity_unit, :powered,
                               :power_12v_ma, :power_neg12v_ma, :power_5v_ma,
                               :description, :manufacturer_url, CAST(:meta AS json),
                               :source, :source_reference, :now, :now
@@ -127,6 +140,9 @@ def main(argv: list[str] | None = None) -> int:
                               total_hp = :total_hp,
                               "rows" = :rows,
                               hp_per_row = CAST(:hp_per_row AS json),
+                              format_family = :format_family,
+                              capacity_unit = :capacity_unit,
+                              powered = :powered,
                               power_12v_ma = :power_12v_ma,
                               power_neg12v_ma = :power_neg12v_ma,
                               power_5v_ma = :power_5v_ma,

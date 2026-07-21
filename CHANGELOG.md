@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Cases C1–C3: `format_family` / `capacity_unit` / `powered` columns + migration; list filters on columns; power validation (POWER_UNSPECIFIED advisory, hard fail when rails known or unpowered+draw); non-Eurorack placement blocked; staging bootstrap doc; rack `validation_warnings` on create/update.
 - Cases C0 product loop: list filters (`format_family`, `powered`, `q`, `min_hp`); Cases page filters + “Use on new rig”; RackBuilder Step 0 Eurorack case picker + create empty rig; rack validation errors JSON-serializable.
 - Case catalog research ingest: 50 cases from `fixtures/Cases4PatchHive.md` → `fixtures/cases_research_2026.json` (Case schema); `scripts/parse_cases_research.py` + `scripts/import_cases_research.py`; fail-closed null rails; non-Eurorack `meta.capacity_unit`.
 - Production readiness assessment (2026-07-21): gate scorecard, blockers, continuity plan under `docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md`; refreshed SHA-pinned readiness matrix.

@@ -14,6 +14,9 @@
         62,
         62
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1200,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 500,
@@ -50,6 +53,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1500,
       "power_neg12v_ma": 1500,
       "power_5v_ma": 500,
@@ -87,6 +93,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 6000,
       "power_neg12v_ma": 5000,
       "power_5v_ma": 2000,
@@ -122,6 +131,9 @@
       "hp_per_row": [
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 1000,
@@ -156,6 +168,9 @@
       "hp_per_row": [
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": false,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -192,6 +207,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 4000,
       "power_neg12v_ma": 2400,
       "power_5v_ma": 1000,
@@ -228,6 +246,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 3000,
       "power_neg12v_ma": 1100,
       "power_5v_ma": 300,
@@ -263,6 +284,9 @@
       "hp_per_row": [
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -298,6 +322,9 @@
       "hp_per_row": [
         48
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -329,6 +356,9 @@
       "hp_per_row": [
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -361,6 +391,9 @@
         84,
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -393,6 +426,9 @@
         84,
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -426,6 +462,9 @@
         84,
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -457,6 +496,9 @@
       "hp_per_row": [
         168
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -491,6 +533,9 @@
         168,
         168
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -522,6 +567,9 @@
       "hp_per_row": [
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 2000,
       "power_neg12v_ma": 1200,
       "power_5v_ma": 4000,
@@ -554,6 +602,9 @@
       "hp_per_row": [
         20
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -589,6 +640,9 @@
       "hp_per_row": [
         32
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -624,6 +678,9 @@
       "hp_per_row": [
         34
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -656,6 +713,9 @@
       "hp_per_row": [
         40
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -691,6 +751,9 @@
       "hp_per_row": [
         48
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -726,6 +789,9 @@
       "hp_per_row": [
         64
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -761,6 +827,9 @@
       "hp_per_row": [
         52
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1000,
       "power_neg12v_ma": 1000,
       "power_5v_ma": null,
@@ -795,6 +864,9 @@
       "hp_per_row": [
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1000,
       "power_neg12v_ma": 1000,
       "power_5v_ma": null,
@@ -830,6 +902,9 @@
         52,
         52
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1000,
       "power_neg12v_ma": 1000,
       "power_5v_ma": null,
@@ -865,6 +940,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -897,6 +975,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -931,6 +1012,9 @@
       "hp_per_row": [
         88
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1600,
       "power_neg12v_ma": 800,
       "power_5v_ma": 500,
@@ -967,6 +1051,9 @@
         88,
         88
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 1600,
       "power_neg12v_ma": 800,
       "power_5v_ma": 500,
@@ -1004,6 +1091,9 @@
         104,
         104
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 5000,
       "power_neg12v_ma": 5000,
       "power_5v_ma": 2000,
@@ -1035,6 +1125,9 @@
       "hp_per_row": [
         270
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": 5000,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1067,6 +1160,9 @@
       "hp_per_row": [
         420
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1100,6 +1196,9 @@
         48,
         48
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1131,6 +1230,9 @@
       "hp_per_row": [
         90
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1162,6 +1264,9 @@
       "hp_per_row": [
         84
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1195,6 +1300,9 @@
         140,
         140
       ],
+      "format_family": "Eurorack",
+      "capacity_unit": "hp",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1229,6 +1337,9 @@
       "hp_per_row": [
         4
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1263,6 +1374,9 @@
       "hp_per_row": [
         6
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1297,6 +1411,9 @@
       "hp_per_row": [
         10
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1331,6 +1448,9 @@
       "hp_per_row": [
         12
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1365,6 +1485,9 @@
       "hp_per_row": [
         18
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1399,6 +1522,9 @@
       "hp_per_row": [
         24
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1433,6 +1559,9 @@
       "hp_per_row": [
         10
       ],
+      "format_family": "Buchla",
+      "capacity_unit": "buchla_panels",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1464,6 +1593,9 @@
       "hp_per_row": [
         1
       ],
+      "format_family": "Serge 4U",
+      "capacity_unit": "serge_panels",
+      "powered": false,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1498,6 +1630,9 @@
       "hp_per_row": [
         1
       ],
+      "format_family": "Serge 4U",
+      "capacity_unit": "serge_panels",
+      "powered": true,
       "power_12v_ma": 1000,
       "power_neg12v_ma": 1000,
       "power_5v_ma": null,
@@ -1532,6 +1667,9 @@
       "hp_per_row": [
         6
       ],
+      "format_family": "Serge 4U",
+      "capacity_unit": "serge_4x4_modules",
+      "powered": false,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1567,6 +1705,9 @@
         11,
         11
       ],
+      "format_family": "5U MU",
+      "capacity_unit": "mu_spaces",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1602,6 +1743,9 @@
         22,
         22
       ],
+      "format_family": "5U MU",
+      "capacity_unit": "mu_spaces",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1636,6 +1780,9 @@
       "hp_per_row": [
         22
       ],
+      "format_family": "5U MU",
+      "capacity_unit": "mu_spaces",
+      "powered": true,
       "power_12v_ma": null,
       "power_neg12v_ma": null,
       "power_5v_ma": null,
@@ -1671,6 +1818,9 @@
         10,
         10
       ],
+      "format_family": "Frac",
+      "capacity_unit": "frac_widths",
+      "powered": true,
       "power_12v_ma": 800,
       "power_neg12v_ma": 800,
       "power_5v_ma": null,
