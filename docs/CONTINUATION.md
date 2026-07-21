@@ -70,11 +70,10 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default still true for transitional callers)  
 3. ~~**Run / revision bridge honesty**~~ **DONE** (PR #54 — server DTO + ensure canon rows; namespace still legacy-* until native generator)  
 
-4. **Inventory dual-path plan (design-first, then thin PR)**  
-   - Active UI still calls `/api/racks`, `/api/runs`, `/api/patches` for inventory + generate (`Racks.tsx`, `RigDetail.tsx`, `RackBuilder`).  
-   - Map each to future `/api/canon/rigs|revisions|runs` (or keep racks as CANON_SUPPORTING with adapters).  
+4. ~~**Inventory dual-path plan (design-first, then thin PR)**~~ **DESIGN DONE** — matrix in [CANON_ALIGNMENT.md](CANON_ALIGNMENT.md#inventory-dual-path-matrix-design-first)  
+   - Implementation slices **A–E** listed there (generate bridge dual-write → optional canon runs alias → content-hash revision → P2 dead UI → default debit flag false).  
    - Do **not** big-bang delete racks routers.  
-   - **Exit:** written inventory matrix in CANON_ALIGNMENT + one vertical slice (e.g. run list via canon) green.
+   - **Exit (design):** matrix merged. **Exit (code):** slice A green on CI.
 ### P2 — Package and dead-UI hygiene
 
 1. **Unrouted frontend pages (OBSERVED not in `App.tsx`):**  
