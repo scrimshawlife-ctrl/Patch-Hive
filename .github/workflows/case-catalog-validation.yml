@@ -36,6 +36,15 @@ jobs:
         run: python -m pip install --upgrade pip && python -m pip install -e '.[dev]'
       - name: Run focused importer tests
         run: pytest -q tests/test_case_catalog_populator.py
+      - name: Initialize isolated case schema
+        run: |
+          python - <<'PY'
+          from cases import CaseSourcePolicyPacket  # noqa: F401
+          from cases.models import CaseCatalog  # noqa: F401
+          from core.database import Base, engine
+
+          Base.metadata.create_all(bind=engine)
+          PY
       - name: Validate seed example dry run
         run: python -m integrations.case_catalog_populator --input ../data/cases/schema.example.json --dry-run --receipt ../out/case_catalog/example-dry-run-receipt.json
       - name: Upload focused validation receipt
