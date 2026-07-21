@@ -54,7 +54,7 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Rig workspace debit | `canonApi.createExport` | `exportApi.patchbookExport` deprecated; not used by active UI |
 | PDF/SVG bytes | `/api/export/...` GETs | Artifact delivery only — no new debits from MVP UI |
 | Rig/run inventory | `/api/racks`, `/api/runs`, `/api/patches` | Active UI still uses these (Racks, RigDetail run list, generate) |
-| Export bridge IDs | `source_run_id` stringified run id | `source_rig_revision_id: legacy-rack-{id}` + hashed run manifest |
+| Export bridge IDs | **Server** `GET /api/runs` → `source_run_id`, `rig_revision_id`, `artifact_manifest_hash` | Namespace still `legacy-run-*` / `legacy-rack-*` until native canon generator |
 
 ## Validation snapshot
 
@@ -82,7 +82,8 @@ See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
 2. ~~P1 client: MVP credits/exports → `/api/canon/*`~~ **DONE** (PR #49 @ `71a4dfa`)
 3. ~~P1 acceptance + admin grant dual-write + legacy debit gate~~ **DONE** (PR #51 @ `7471a2a`)
-4. **P1 residual:** real `rig_revision_id` / manifest on run DTOs; inventory dual-path plan
-5. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
-6. **P3:** non-prod Postgres staging + acceptance against real DB
-7. **P4:** Cases/Patches list depth (currently stubs); revision picker UX
+4. ~~P1 run DTO export bridge honesty~~ **IN PR** (`feat/p1-run-dto-export-bridge`)
+5. **P1 residual:** inventory dual-path plan; native canon run generation (drop `legacy-*` namespace)
+6. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
+7. **P3:** non-prod Postgres staging + acceptance against real DB
+8. **P4:** Cases/Patches list depth (currently stubs); revision picker UX

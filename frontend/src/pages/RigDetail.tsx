@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { canonApi, runApi } from '@/lib/api';
-import { legacyRunManifestHash } from '@/lib/hash';
 import type { Run } from '@/types/api';
 
 type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
@@ -27,6 +26,10 @@ export default function RigDetailPage() {
   const tabs = useMemo<WorkspaceTab[]>(
     () => (hasRuns ? ['overview', 'patches', 'exports', 'gallery'] : ['overview', 'gallery']),
     [hasRuns],
+  );
+  const activeRun = useMemo(
+    () => runs.find((run) => run.id === activeRunId) ?? null,
+    [runs, activeRunId],
   );
 
   useEffect(() => {
@@ -55,17 +58,19 @@ export default function RigDetailPage() {
   useEffect(refreshCredits, []);
 
   const handleExport = async () => {
-    if (!activeRunId || !rigIdNum) return;
+    if (!activeRun) return;
+    if (!activeRun.export_bridge_ready) {
+      setExportStatus('Export bridge not ready for this run; reload the workspace and retry.');
+      return;
+    }
     setExportStatus('');
     setExporting(true);
     try {
-      const artifact_manifest_hash = await legacyRunManifestHash(activeRunId, rigIdNum);
-      const idempotency_key = `patchbook-run-${activeRunId}-${crypto.randomUUID()}`;
+      const idempotency_key = `patchbook-run-${activeRun.id}-${crypto.randomUUID()}`;
       const created = await canonApi.createExport({
-        source_run_id: String(activeRunId),
-        // Bridge until legacy Run carries rig_revision_id on the list DTO.
-        source_rig_revision_id: `legacy-rack-${rigIdNum}`,
-        artifact_manifest_hash,
+        source_run_id: activeRun.source_run_id,
+        source_rig_revision_id: activeRun.rig_revision_id,
+        artifact_manifest_hash: activeRun.artifact_manifest_hash,
         formats: ['pdf', 'json'],
         license: 'personal',
         idempotency_key,

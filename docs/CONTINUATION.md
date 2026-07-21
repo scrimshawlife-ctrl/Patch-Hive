@@ -52,23 +52,23 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 **Completed slices:**
 - **PR #49:** FE debit/list/balance → canon only.
 - **PR #51:** acceptance debit → `/api/canon/exports`; admin grant dual-writes canonical ledger; legacy debit gateable via `ENABLE_LEGACY_PATCHBOOK_DEBIT`.
+- **PR (this):** run list/get DTO exposes server-authored export bridge; RigDetail uses DTO fields only; `runs.bridge` ensures canon FK targets.
 
 **Progress checklist:**
 - [x] Acceptance debit tests use `POST /api/canon/exports` + canonical ledger
 - [x] Admin credit grant dual-writes `canonical_credit_ledger`
 - [x] Legacy PatchBook debit: `deprecated` JSON markers + `ENABLE_LEGACY_PATCHBOOK_DEBIT` (default true; false → 410)
+- [x] Run DTOs carry `rig_revision_id`, `source_run_id`, `artifact_manifest_hash`, `export_bridge_ready` (server-authored via `runs.bridge`)
+- [x] RigDetail export uses server bridge fields (no client `legacyRunManifestHash` invent)
 - [ ] Default `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` once remaining non-MVP callers cleared
 - [ ] Full retirement of legacy rack/patch list dual path (still needed for inventory UI)
-- [ ] Run DTOs carrying real `rig_revision_id` / manifest hash (bridge uses `legacy-rack-{id}` + hashed run)
+- [ ] Promote bridge IDs to real immutable revisions (not `legacy-rack-*` / `legacy-run-*` namespace) when generator writes canon runs natively
 
 **Next slices (ordered):**
 
 1. ~~**Acceptance → canon credits path**~~ **DONE** (PR #51)  
 2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default still true for transitional callers)  
-3. **Run / revision bridge honesty**  
-   - Extend run list DTO with `rig_revision_id` (or explicit null + bridge flag) and canonical `artifact_manifest_hash` when available.  
-   - Replace FE `source_rig_revision_id: legacy-rack-{n}` and client-side `legacyRunManifestHash` once backend supplies truth.  
-   - **Exit:** RigDetail export payload uses server-authored revision id + manifest; bridge helpers deleted or test-only.
+3. ~~**Run / revision bridge honesty**~~ **DONE** (this PR — server DTO + ensure canon rows; namespace still `legacy-*` until native generator)  
 
 4. **Inventory dual-path plan (design-first, then thin PR)**  
    - Active UI still calls `/api/racks`, `/api/runs`, `/api/patches` for inventory + generate (`Racks.tsx`, `RigDetail.tsx`, `RackBuilder`).  

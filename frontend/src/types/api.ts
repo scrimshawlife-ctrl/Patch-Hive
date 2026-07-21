@@ -152,6 +152,11 @@ export interface Run {
   rack_id: number;
   status: string;
   created_at: string;
+  /** Server-authored canon export bridge (do not invent client-side). */
+  rig_revision_id: string;
+  source_run_id: string;
+  artifact_manifest_hash: string;
+  export_bridge_ready: boolean;
 }
 
 export interface RunListResponse {
