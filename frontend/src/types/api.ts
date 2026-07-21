@@ -175,6 +175,13 @@ export interface GeneratePatchesResponse {
   generated_count: number;
   patches: Patch[];
   run_id?: number;
+  export_bridge_ready?: boolean;
+  source_run_id?: string | null;
+  rig_revision_id?: string | null;
+  artifact_manifest_hash?: string | null;
+  inventory_revision_id?: string | null;
+  inventory_gate_code?: string | null;
+  generation_status?: string | null;
 }
 
 export interface RunPatchesResponse {

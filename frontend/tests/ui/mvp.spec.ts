@@ -327,4 +327,120 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText(/ready for generation/i)).toBeVisible();
     await expect(page.getByText(/2 confirmed module/i)).toBeVisible();
   });
+
+  test('inventory ready enables generate loop and surfaces generation receipt', async ({ page }) => {
+    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+      await route.fulfill({
+        json: {
+          total: 1,
+          latest: {
+            inventory_revision_id: 'inv-rev-e2e-ready',
+            system_id: 'rack-1',
+            rack_id: 1,
+            confirmed_count: 3,
+            unresolved_count: 0,
+            ready_for_generation: true,
+            canonical_hash: 'd'.repeat(64),
+            created_by: 'e2e',
+            created_at: '2026-07-21T00:00:00Z',
+          },
+          revisions: [],
+        },
+      });
+    });
+    await page.route('**/api/patches/generate/1**', async (route) => {
+      if (route.request().method() !== 'POST') {
+        await route.fallback();
+        return;
+      }
+      await route.fulfill({
+        json: {
+          generated_count: 2,
+          patches: [
+            {
+              id: 501,
+              name: 'Stable Current',
+              category: 'voice',
+              connections: [],
+            },
+            {
+              id: 502,
+              name: 'Soft Gate',
+              category: 'rhythm',
+              connections: [],
+            },
+          ],
+          run_id: 42,
+          export_bridge_ready: true,
+          source_run_id: 'gen-run-42-' + 'a'.repeat(16),
+          rig_revision_id: 'rig-rev-' + 'c'.repeat(32),
+          artifact_manifest_hash: 'e'.repeat(64),
+          inventory_revision_id: 'inv-rev-e2e-ready',
+          inventory_gate_code: 'OK',
+          generation_status: 'OK',
+        },
+      });
+    });
+    // After generate, reloads runs — include the new run
+    await page.route('**/api/canon/runs**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('/rigs/')) {
+        return route.fallback();
+      }
+      await route.fulfill({
+        json: {
+          total: 1,
+          runs: [
+            {
+              id: 42,
+              rack_id: 1,
+              status: 'succeeded',
+              created_at: '2026-07-21T12:00:00Z',
+              rig_revision_id: 'rig-rev-' + 'c'.repeat(32),
+              source_run_id: 'gen-run-42-' + 'a'.repeat(16),
+              artifact_manifest_hash: 'e'.repeat(64),
+              export_bridge_ready: true,
+            },
+          ],
+        },
+      });
+    });
+    await page.route('**/api/runs/42/patches**', async (route) => {
+      await route.fulfill({
+        json: {
+          run_id: 42,
+          total: 2,
+          patches: [
+            { id: 501, name: 'Stable Current', category: 'voice', connections: [] },
+            { id: 502, name: 'Soft Gate', category: 'rhythm', connections: [] },
+          ],
+        },
+      });
+    });
+
+    await page.goto('/rigs/1');
+    await expect(page.getByLabel('Inventory to generation loop')).toBeVisible();
+    await expect(page.getByLabel('Generate patches from inventory')).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Generate patches' })).toBeEnabled();
+    await page.getByRole('button', { name: 'Generate patches' }).click();
+    const receipt = page.getByLabel('Generation receipt');
+    await expect(receipt).toBeVisible();
+    await expect(receipt.getByText(/Generated 2 patches/i)).toBeVisible();
+    await expect(receipt.getByText(/run 42/i)).toBeVisible();
+    // Switches to patches tab after success
+    await expect(page.getByRole('tab', { name: 'Patches' })).toHaveAttribute('aria-selected', 'true');
+  });
+
+  test('generate loop without ready inventory uses soft CTA label', async ({ page }) => {
+    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+      await route.fulfill({
+        json: { total: 0, latest: null, revisions: [] },
+      });
+    });
+    await page.goto('/rigs/1');
+    await expect(
+      page.getByRole('button', { name: 'Generate patches (may be blocked)' }),
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: /Confirm inventory/i })).toBeVisible();
+  });
 });

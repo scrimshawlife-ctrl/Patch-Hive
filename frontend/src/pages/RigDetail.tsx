@@ -1,6 +1,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { canonApi, evidenceApi, legacyPatchRef, runApi, type InventoryRevisionSummary } from '@/lib/api';
+import {
+  canonApi,
+  evidenceApi,
+  legacyPatchRef,
+  patchApi,
+  runApi,
+  type InventoryRevisionSummary,
+} from '@/lib/api';
 import type { Patch, Run } from '@/types/api';
 
 type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
@@ -46,8 +53,13 @@ export default function RigDetailPage() {
   const [patchesLoading, setPatchesLoading] = useState(false);
   const [latestInventory, setLatestInventory] = useState<InventoryRevisionSummary | null>(null);
   const [inventoryError, setInventoryError] = useState('');
+  const [generating, setGenerating] = useState(false);
+  const [generateStatus, setGenerateStatus] = useState('');
+  const [lastGenerateRunId, setLastGenerateRunId] = useState<number | null>(null);
 
   const hasRuns = runs.length > 0;
+  const inventoryReady = Boolean(latestInventory?.ready_for_generation);
+  const inventorySealed = Boolean(latestInventory?.inventory_revision_id);
   const tabs = useMemo<WorkspaceTab[]>(
     () => (hasRuns ? ['overview', 'patches', 'exports', 'gallery'] : ['overview', 'gallery']),
     [hasRuns],
@@ -196,6 +208,75 @@ export default function RigDetailPage() {
     }
   };
 
+  const reloadRunsAndSelect = async (preferRunId?: number | null) => {
+    if (!rigIdNum) return;
+    try {
+      const response = await canonApi.listRuns(rigIdNum);
+      const ordered = [...response.data.runs].sort(
+        (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+      );
+      setRuns(ordered);
+      const pick =
+        (preferRunId != null ? ordered.find((r) => r.id === preferRunId) : null) ?? ordered[0] ?? null;
+      if (pick) {
+        setActiveRevisionId(pick.rig_revision_id);
+        setActiveRunId(pick.id);
+      }
+    } catch {
+      /* keep existing runs */
+    }
+  };
+
+  const handleGenerate = async () => {
+    if (!rigIdNum) return;
+    setGenerateStatus('');
+    setGenerating(true);
+    try {
+      const result = await patchApi.generate(rigIdNum, {});
+      const body = result.data;
+      const status = body.generation_status ?? 'OK';
+      const count = body.generated_count ?? body.patches?.length ?? 0;
+      if (status === 'NOT_COMPUTABLE' || count === 0) {
+        setGenerateStatus(
+          `Generation ${status}: no patches produced` +
+            (body.inventory_gate_code ? ` (${body.inventory_gate_code})` : '') +
+            '. Confirm inventory modules, then retry.',
+        );
+      } else {
+        setGenerateStatus(
+          `Generated ${count} patch${count === 1 ? '' : 'es'}` +
+            (body.run_id != null ? ` · run ${body.run_id}` : '') +
+            (body.inventory_revision_id
+              ? ` · inventory ${body.inventory_revision_id}`
+              : '') +
+            (body.rig_revision_id ? ` · ${body.rig_revision_id.slice(0, 16)}…` : '') +
+            '.',
+        );
+        setLastGenerateRunId(body.run_id ?? null);
+        await reloadRunsAndSelect(body.run_id ?? null);
+        setActiveTab('patches');
+      }
+      // Refresh inventory receipt after generate (gate may seal a placement-based revision).
+      try {
+        const inv = await evidenceApi.listInventory(rigIdNum);
+        setLatestInventory(inv.data.latest ?? null);
+        setInventoryError('');
+      } catch {
+        /* keep prior inventory */
+      }
+    } catch (error: unknown) {
+      const apiError = error as { response?: { data?: { detail?: string }; status?: number } };
+      const detail = apiError.response?.data?.detail;
+      setGenerateStatus(
+        typeof detail === 'string'
+          ? detail
+          : 'Generation failed. Confirm inventory and retry.',
+      );
+    } finally {
+      setGenerating(false);
+    }
+  };
+
   const handleExport = async () => {
     if (!activeRun) return;
     if (!activeRun.export_bridge_ready) {
@@ -303,6 +384,25 @@ export default function RigDetailPage() {
         </div>
       ) : null}
 
+      {generateStatus ? (
+        <div
+          className="panel"
+          role="status"
+          aria-label="Generation receipt"
+          style={{ marginBottom: '1rem' }}
+        >
+          <p
+            className={`status ${
+              generateStatus.includes('NOT_COMPUTABLE') || generateStatus.includes('failed')
+                ? 'status-warning'
+                : 'status-success'
+            }`}
+          >
+            {generateStatus}
+          </p>
+        </div>
+      ) : null}
+
       {!loading && activeTab === 'overview' ? (
         <div className="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
           <h2>{hasRuns ? 'Rig ready' : 'Build the source of truth'}</h2>
@@ -322,6 +422,26 @@ export default function RigDetailPage() {
               ) : null}
             </p>
           ) : null}
+
+          <ol
+            className="panel"
+            style={{ marginTop: '1rem', marginBottom: '1rem', paddingLeft: '1.25rem' }}
+            aria-label="Inventory to generation loop"
+          >
+            <li style={{ marginBottom: '0.5rem' }}>
+              <strong>1 · Confirm inventory</strong>
+              <span className="muted"> — photo evidence or manual placements (never auto-confirm)</span>
+            </li>
+            <li style={{ marginBottom: '0.5rem' }}>
+              <strong>2 · Generate patches</strong>
+              <span className="muted"> — constrained to confirmed modules; empty inventory → NOT_COMPUTABLE</span>
+            </li>
+            <li>
+              <strong>3 · Review &amp; export</strong>
+              <span className="muted"> — patches tab; exports debit only via /api/canon</span>
+            </li>
+          </ol>
+
           <div
             className="panel"
             style={{ marginTop: '1rem', marginBottom: '1rem' }}
@@ -335,11 +455,12 @@ export default function RigDetailPage() {
             ) : null}
             {latestInventory ? (
               <>
-                <p className="status status-success" role="status">
+                <p
+                  className={`status status-${inventoryReady ? 'success' : 'warning'}`}
+                  role="status"
+                >
                   Inventory revision: <code>{latestInventory.inventory_revision_id}</code>
-                  {latestInventory.ready_for_generation
-                    ? ' · ready for generation'
-                    : ' · not ready for generation'}
+                  {inventoryReady ? ' · ready for generation' : ' · not ready for generation'}
                 </p>
                 <p className="muted">
                   {latestInventory.confirmed_count} confirmed module
@@ -358,15 +479,61 @@ export default function RigDetailPage() {
               </p>
             ) : null}
           </div>
-          {!hasRuns ? (
-            <Link className="button button-primary" to={`/racks/${rigId}/edit`}>
-              Photo evidence / inventory
-            </Link>
-          ) : (
-            <Link className="button button-secondary" to={`/racks/${rigId}/edit`}>
-              Update inventory evidence
-            </Link>
-          )}
+
+          <div
+            className="panel"
+            style={{ marginBottom: '1rem' }}
+            aria-label="Generate patches from inventory"
+          >
+            <h3>Generate patches</h3>
+            <p className="muted">
+              {inventoryReady
+                ? 'Sealed inventory is ready. Generation uses confirmed modules only.'
+                : inventorySealed
+                  ? 'Inventory is sealed but not ready for generation — resolve candidates or place modules, then retry.'
+                  : 'No sealed inventory yet. You can still open evidence confirmation; generation fails closed if no confirmed modules exist on the rig.'}
+            </p>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
+              <button
+                className="button button-primary"
+                type="button"
+                onClick={() => void handleGenerate()}
+                disabled={!rigIdNum || generating}
+                aria-describedby="generate-help"
+              >
+                {generating
+                  ? 'Generating…'
+                  : inventoryReady
+                    ? 'Generate patches'
+                    : 'Generate patches (may be blocked)'}
+              </button>
+              <Link
+                className={inventoryReady ? 'button button-secondary' : 'button button-primary'}
+                to={`/racks/${rigId}/edit`}
+              >
+                {inventorySealed ? 'Update inventory evidence' : 'Confirm inventory (photo / manual)'}
+              </Link>
+              {hasRuns ? (
+                <button
+                  className="button button-quiet"
+                  type="button"
+                  onClick={() => setActiveTab('patches')}
+                >
+                  View patch library
+                </button>
+              ) : null}
+            </div>
+            <p id="generate-help" className="muted" style={{ marginTop: '0.5rem' }}>
+              {inventoryReady
+                ? 'Primary path: inventory ready → generate → review patches → export when credits allow.'
+                : 'Complete inventory confirmation for a clear green path. Generation never invents modules.'}
+            </p>
+            {lastGenerateRunId != null ? (
+              <p className="muted" style={{ marginTop: '0.5rem' }}>
+                Latest generation run: <code>{lastGenerateRunId}</code> · open Patches tab to review.
+              </p>
+            ) : null}
+          </div>
         </div>
       ) : null}
 
