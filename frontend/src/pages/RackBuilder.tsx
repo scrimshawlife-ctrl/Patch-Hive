@@ -13,13 +13,14 @@ interface ReviewCandidate {
   moduleRevisionId: string;
 }
 
+/** Demo ranked set (multi-candidate API covers multi-photo server path). */
 const DEMO_CANDIDATES: ReviewCandidate[] = [
   {
     id: 'cand-mod-a',
     label: 'Oscillator A',
     manufacturer: 'MockAudio',
     confidence: 0.81,
-    alternatives: ['cand-mod-a-alt'],
+    alternatives: ['cand-mod-a-alt · higher-gain rev'],
     status: 'inferred',
     moduleRevisionId: 'catalog-module-osc-a',
   },
@@ -218,7 +219,7 @@ export default function RackBuilderPage() {
             disabled={!allResolved || confirmedCount < 1 || evidenceState === 'confirmed'}
             onClick={createInventoryRevision}
           >
-            Create immutable inventory revision
+            Create immutable rig revision
           </button>
 
           {inventoryRevisionId ? (

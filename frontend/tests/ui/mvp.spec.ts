@@ -71,10 +71,15 @@ test.describe('PatchHive canonical workspace', () => {
       buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
     });
     await page.getByRole('button', { name: 'Detect modules' }).click();
+    await expect(page.getByRole('list', { name: 'Ranked module candidates' })).toBeVisible();
     const createRevision = page.getByRole('button', { name: 'Create immutable rig revision' });
     await expect(createRevision).toBeDisabled();
-    await page.getByRole('button', { name: 'Confirm match' }).click();
+    // Resolve every ranked candidate (confirm + reject) so inventory is ready.
+    await page.getByRole('button', { name: 'Confirm match' }).first().click();
+    await page.getByRole('button', { name: 'Reject' }).last().click();
     await expect(createRevision).toBeEnabled();
+    await createRevision.click();
+    await expect(page.getByText(/Inventory revision ready/i)).toBeVisible();
   });
 
   test('export boundary explains zero-credit state', async ({ page }) => {

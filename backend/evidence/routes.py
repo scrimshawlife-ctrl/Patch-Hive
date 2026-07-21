@@ -400,7 +400,6 @@ def confirm_rack_evidence_candidates(
         inventory_ready_for_generation,
     )
     from canon.inventory_persist import persist_system_inventory_revision
-    from canon.models import ClassificationEvidenceRecord
     from canon.visual_contracts import (
         ClassificationCandidate,
         ConfirmationDecision,
