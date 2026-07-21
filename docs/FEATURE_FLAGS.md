@@ -39,6 +39,7 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | `GET/PATCH/DELETE` | `/api/canon/style-recipes/{id}` | Owner recipe CRUD |
 | `POST` | `/api/canon/exports/{id}/download-token` | Issue short-lived principal-scoped token |
 | `POST` | `/api/canon/exports/{id}/download` | Verify token scope for a completed/queued export |
+| `GET` | `/api/canon/exports/{id}/artifacts/{name}` | Stream `pdf` / `zip` / `companion` / `manifest` (token query + auth) |
 | `POST` | `/api/canon/webhooks/stripe` | Replay-safe Stripe-style webhook intake |
 
 See also: `docs/design/PATCHBOOK_STAGING_ENABLEMENT.md`

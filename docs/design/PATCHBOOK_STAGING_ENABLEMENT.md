@@ -50,10 +50,13 @@ alembic upgrade head
 | Method | Path | Notes |
 |--------|------|-------|
 | `GET` | `/api/canon/style-recipes` | Owner library |
-| `POST` | `/api/canon/style-recipes` | Create (max 40) |
+| `POST` | `/api/canon/style-recipes` | Create (max 40); optional `is_shared` |
 | `GET/PATCH/DELETE` | `/api/canon/style-recipes/{id}` | Owner CRUD |
+| `GET` | `/api/canon/style-recipes/shared/{id}` | Any authenticated user if `is_shared` |
 | `POST` | `/api/canon/exports/preview` | Free; accepts `style_recipe` **or** `style_recipe_id` |
 | `POST` | `/api/canon/exports` | Debit; same recipe fields; seals snapshot |
+| `POST` | `/api/canon/exports/{id}/download-token` | Short-lived token (requires `succeeded` when fulfillment on) |
+| `GET` | `/api/canon/exports/{id}/artifacts/{pdf\|zip\|companion\|manifest}?token=` | Stream pack files |
 
 Do not send both `style_recipe` and `style_recipe_id` (400 `STYLE_RECIPE_SOURCE_CONFLICT`).
 
