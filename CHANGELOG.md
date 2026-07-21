@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- F3 generate dual-write audit: native `rig-rev-*`/`gen-run-*` only, inventory row persistence, empty-rack NOT_COMPUTABLE still dual-writes; forbid legacy-* bridge ids on ready bridges.
 - RigDetail inventory → generate → patches loop: step list, readiness-aware generate CTA, generation receipt, Playwright coverage.
 - Staging host plan + `docker-compose.staging.yml`; dual-path retirement design F0 (`DUAL_PATH_RETIREMENT_DESIGN.md`).
 - Release notes draft for `v0.3.0-alpha.1` (alpha hardening; not production).
