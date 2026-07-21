@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { exportApi, monetizationApi, runApi } from '@/lib/api';
+import { canonApi, runApi } from '@/lib/api';
+import { legacyRunManifestHash } from '@/lib/hash';
 import type { Run } from '@/types/api';
 
 type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
@@ -21,6 +22,7 @@ export default function RigDetailPage() {
   const [credits, setCredits] = useState(0);
   const [exportStatus, setExportStatus] = useState('');
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
   const hasRuns = runs.length > 0;
   const tabs = useMemo<WorkspaceTab[]>(
     () => (hasRuns ? ['overview', 'patches', 'exports', 'gallery'] : ['overview', 'gallery']),
@@ -44,21 +46,44 @@ export default function RigDetailPage() {
   }, [rigIdNum]);
 
   const refreshCredits = () => {
-    monetizationApi.balance().then((response) => setCredits(response.data.balance)).catch(() => setCredits(0));
+    canonApi
+      .getBalance()
+      .then((response) => setCredits(response.data.balance))
+      .catch(() => setCredits(0));
   };
 
   useEffect(refreshCredits, []);
 
   const handleExport = async () => {
-    if (!activeRunId) return;
+    if (!activeRunId || !rigIdNum) return;
     setExportStatus('');
+    setExporting(true);
     try {
-      await exportApi.patchbookExport(activeRunId);
-      setExportStatus('Export queued. Your immutable source run is preserved.');
+      const artifact_manifest_hash = await legacyRunManifestHash(activeRunId, rigIdNum);
+      const idempotency_key = `patchbook-run-${activeRunId}-${crypto.randomUUID()}`;
+      const created = await canonApi.createExport({
+        source_run_id: String(activeRunId),
+        // Bridge until legacy Run carries rig_revision_id on the list DTO.
+        source_rig_revision_id: `legacy-rack-${rigIdNum}`,
+        artifact_manifest_hash,
+        formats: ['pdf', 'json'],
+        license: 'personal',
+        idempotency_key,
+      });
+      setExportStatus(
+        `Canonical export ${created.data.export_id} ${created.data.status}. Credits debited on the /api/canon ledger only.`,
+      );
       refreshCredits();
     } catch (error: unknown) {
-      const apiError = error as { response?: { data?: { detail?: string } } };
-      setExportStatus(apiError.response?.data?.detail || 'Export failed; no successful debit recorded.');
+      const apiError = error as { response?: { data?: { detail?: string }; status?: number } };
+      const detail = apiError.response?.data?.detail;
+      if (apiError.response?.status === 402) {
+        setExportStatus('INSUFFICIENT_CREDITS — no debit recorded on the canonical ledger.');
+      } else {
+        setExportStatus(detail || 'Export failed; no successful canonical debit recorded.');
+      }
+    } finally {
+      setExporting(false);
     }
   };
 
@@ -105,7 +130,11 @@ export default function RigDetailPage() {
         ))}
       </div>
 
-      {loading ? <div className="panel" role="status">Loading rig history…</div> : null}
+      {loading ? (
+        <div className="panel" role="status">
+          Loading rig history…
+        </div>
+      ) : null}
 
       {!loading && activeTab === 'overview' ? (
         <div className="panel" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
@@ -115,7 +144,11 @@ export default function RigDetailPage() {
               ? `${runs.length} immutable generation ${runs.length === 1 ? 'run' : 'runs'} available.`
               : 'Add modules manually or review photo evidence before generating.'}
           </p>
-          {!hasRuns ? <button className="button button-primary" type="button">Generate patch library</button> : null}
+          {!hasRuns ? (
+            <button className="button button-primary" type="button">
+              Generate patch library
+            </button>
+          ) : null}
         </div>
       ) : null}
 
@@ -129,14 +162,28 @@ export default function RigDetailPage() {
 
       {!loading && activeTab === 'exports' && hasRuns ? (
         <div className="panel" id="panel-exports" role="tabpanel" aria-labelledby="tab-exports">
-          <p className="eyebrow">Monetization boundary</p>
+          <p className="eyebrow">Canonical monetization boundary</p>
           <h2>Exports</h2>
-          <p>Available credits: <strong>{credits}</strong></p>
-          <button className="button button-primary" type="button" onClick={handleExport} disabled={credits <= 0}>
-            Export PDF patch book
+          <p>
+            Available credits: <strong>{credits}</strong>
+          </p>
+          <p className="muted">Debits post only via <code>/api/canon/exports</code>.</p>
+          <button
+            className="button button-primary"
+            type="button"
+            onClick={handleExport}
+            disabled={credits <= 0 || exporting || !activeRunId}
+          >
+            {exporting ? 'Requesting…' : 'Export PDF patch book'}
           </button>
-          {credits <= 0 ? <p className="status status-warning">Credits are required only for exports.</p> : null}
-          {exportStatus ? <p role="status" className="status">{exportStatus}</p> : null}
+          {credits <= 0 ? (
+            <p className="status status-warning">Credits are required only for exports.</p>
+          ) : null}
+          {exportStatus ? (
+            <p role="status" className="status">
+              {exportStatus}
+            </p>
+          ) : null}
         </div>
       ) : null}
 
@@ -144,7 +191,9 @@ export default function RigDetailPage() {
         <div className="panel" id="panel-gallery" role="tabpanel" aria-labelledby="tab-gallery">
           <p className="eyebrow">Evidence and revisions</p>
           <h2>Module gallery</h2>
-          <p className="muted">Confirmed gallery evidence is separated from inferred, disputed, and missing specifications.</p>
+          <p className="muted">
+            Confirmed gallery evidence is separated from inferred, disputed, and missing specifications.
+          </p>
         </div>
       ) : null}
     </section>

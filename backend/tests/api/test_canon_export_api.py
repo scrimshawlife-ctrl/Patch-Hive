@@ -126,6 +126,16 @@ def test_canonical_export_and_download_token_flow(client: TestClient, db_session
     assert verify.json()["export_id"] == export_id
     assert verify.json()["user_id"] == str(user.id)
 
+    listed = client.get("/api/canon/exports", headers=_auth_headers(user))
+    assert listed.status_code == 200, listed.text
+    assert any(item["export_id"] == export_id for item in listed.json())
+
+    summary = client.get("/api/canon/credits/summary", headers=_auth_headers(user))
+    assert summary.status_code == 200, summary.text
+    body_summary = summary.json()
+    assert body_summary["balance"] == 10 - settings.patchbook_export_cost
+    assert any(entry["entry_type"] == "debit" for entry in body_summary["entries"])
+
 
 def test_canonical_export_insufficient_credits(client: TestClient, db_session: Session) -> None:
     user, _patch = _persist_hierarchy(db_session)

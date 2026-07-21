@@ -194,7 +194,7 @@ export interface User {
 }
 
 export interface CreditLedgerEntry {
-  id: number;
+  id: number | string;
   entry_type: string;
   amount: number;
   description?: string;
@@ -206,14 +206,28 @@ export interface CreditsSummary {
   entries: CreditLedgerEntry[];
 }
 
+/** Canonical export record from `/api/canon/exports`. */
+export interface CanonicalExportRecord {
+  export_id: string;
+  status: string;
+  credit_cost: number;
+  ledger_entry_id: string | null;
+  source_run_id: string;
+  source_rig_revision_id: string;
+  idempotency_key: string;
+  created_at: string;
+}
+
 export interface UserExportRecord {
-  id: number;
+  id: number | string;
   export_type: string;
-  entity_id: number;
+  entity_id: number | string;
   run_id: string;
   unlocked: boolean;
   license_type?: string;
   created_at: string;
+  status?: string;
+  source?: 'canon' | 'legacy';
 }
 
 export interface ReferralRecord {

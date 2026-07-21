@@ -20,12 +20,22 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | Method | Path | Notes |
 |---|---|---|
 | `GET` | `/api/canon/credits/balance` | Canonical ledger balance for the authenticated user |
+| `GET` | `/api/canon/credits/summary` | Balance + recent ledger rows (account dashboard) |
+| `GET` | `/api/canon/exports` | Owner-scoped canonical export history |
 | `POST` | `/api/canon/exports` | Atomic debit + export record (`request_export`) with idempotency key |
 | `GET` | `/api/canon/exports/{id}` | Owner-scoped export status |
 | `POST` | `/api/canon/exports/{id}/download-token` | Issue short-lived principal-scoped token |
 | `POST` | `/api/canon/exports/{id}/download` | Verify token scope for a completed/queued export |
 | `POST` | `/api/canon/webhooks/stripe` | Replay-safe Stripe-style webhook intake |
 
-Legacy `/api/export` PatchBook routes remain available during transition. Production payments stay disabled unless a separate reviewed change sets `ALLOW_PRODUCTION_PAYMENTS=true` with real secrets.
+### Client preference (P1)
+
+| Client surface | Preferred path | Residual legacy |
+|---|---|---|
+| Rig workspace credits + patch-book debit | `canonApi` → `/api/canon/credits/balance`, `POST /api/canon/exports` | `exportApi.patchbookExport` deprecated |
+| Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `GET /api/canon/exports` | `/api/me/credits`, `/api/me/exports` |
+| PDF/SVG file bytes | still `/api/export/...` GETs | Artifact delivery only — **no new debits** |
+
+Legacy `/api/export` PatchBook **POST** routes remain during transition but must not be used by the active UI. Production payments stay disabled unless a separate reviewed change sets `ALLOW_PRODUCTION_PAYMENTS=true` with real secrets.
 
 Historical flags may be enabled only in isolated compatibility tests or explicitly reviewed non-production environments. The frontend does not expose corresponding navigation.
