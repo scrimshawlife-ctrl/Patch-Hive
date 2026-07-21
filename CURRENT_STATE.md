@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `7bfbd79` (post-#71); feature branch may advance for revision picker  
+**HEAD:** `6b7bc2dcccb1f14bbe12c5531de1796184e8d904`  
 
 ### Recent merges (OBSERVED)
 
@@ -12,6 +12,8 @@
 | [#67](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/67) | Vision eval harness + consent-gated cloud adapter |
 | [#70](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/70) | AI-native engineering foundation (just, indexes, SYSTEM_CONTEXT) |
 | [#69](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/69) | Cases/Patches lists + RackBuilder live evidence UX |
+| [#71](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/71) | Post-foundation reaudit + telemetry + ast-grep |
+| [#72](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/72) | Rig revision picker, overlays, multi-photo reconcile API |
 
 **Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
 
@@ -31,7 +33,7 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 | RackBuilder evidence | Live `evidenceApi` when rack selected; demo fallback |
 | AI engineering | `justfile`, `.codebase-memory` rebuild, engineering CI |
 | Bridge IDs | Native `rig-rev-*` / `gen-run-*` |
-| Alembic head | **`20240930_patch_user_overlays`** (revises 20240929) on revision-picker branch; main may still be 20240929 until merge |
+| Alembic head | **`20240930_patch_user_overlays`** |
 | Payments | Test-mode only; production payments disabled |
 | Production deploy | **Not performed** |
 
