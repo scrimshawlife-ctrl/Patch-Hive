@@ -4,7 +4,12 @@ test.describe('PatchHive canonical workspace', () => {
   test.beforeEach(async ({ page }) => {
     // Slice B: run list is served from /api/canon/runs?rig_id=
     await page.route('**/api/canon/runs**', async (route) => {
-      const rigId = new URL(route.request().url()).searchParams.get('rig_id');
+      const url = route.request().url();
+      // Do not intercept revision/export subpaths that also contain "runs" substrings incorrectly.
+      if (url.includes('/rigs/')) {
+        return route.fallback();
+      }
+      const rigId = new URL(url).searchParams.get('rig_id');
       const runs =
         rigId === '99999'
           ? []
@@ -32,6 +37,38 @@ test.describe('PatchHive canonical workspace', () => {
             ];
       await route.fulfill({ json: { total: runs.length, runs } });
     });
+    // Revision picker (groups runs by bridge rig_revision_id)
+    await page.route('**/api/canon/rigs/*/revisions**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('/rigs/99999/')) {
+        await route.fulfill({ json: { total: 0, revisions: [] } });
+        return;
+      }
+      await route.fulfill({
+        json: {
+          total: 2,
+          revisions: [
+            {
+              rig_revision_id: 'rig-rev-' + 'b'.repeat(32),
+              run_count: 1,
+              latest_run_id: 12,
+              latest_run_at: '2025-02-01T00:00:00Z',
+              export_bridge_ready: true,
+            },
+            {
+              rig_revision_id: 'rig-rev-' + 'a'.repeat(32),
+              run_count: 1,
+              latest_run_id: 11,
+              latest_run_at: '2025-01-01T00:00:00Z',
+              export_bridge_ready: true,
+            },
+          ],
+        },
+      });
+    });
+    await page.route('**/api/runs/*/patches**', (route) =>
+      route.fulfill({ json: { total: 0, patches: [] } }),
+    );
     // P1: credits read the canonical ledger, not legacy monetization.
     await page.route('**/api/canon/credits/balance', (route) =>
       route.fulfill({ json: { balance: 0 } }),
@@ -51,7 +88,8 @@ test.describe('PatchHive canonical workspace', () => {
     await page.goto('/rigs/1');
     await expect(page.getByRole('tab', { name: 'Patches' })).toBeVisible();
     await expect(page.getByRole('tab', { name: 'Exports' })).toBeVisible();
-    await expect(page.getByLabel('Source run')).toHaveValue('12');
+    await expect(page.getByLabel('Source run (within revision)')).toHaveValue('12');
+    await expect(page.getByLabel('Rig revision')).toBeVisible();
   });
 
   test('keeps historical social features out of active navigation', async ({ page }) => {

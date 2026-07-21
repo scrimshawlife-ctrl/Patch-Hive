@@ -64,23 +64,47 @@ export default function RigDetailPage() {
   useEffect(() => {
     if (!rigIdNum) return;
     setLoading(true);
-    Promise.all([canonApi.listRuns(rigIdNum), canonApi.listRevisions(rigIdNum)])
-      .then(([runsResponse, revResponse]) => {
-        const ordered = [...runsResponse.data.runs].sort(
-          (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
-        );
-        setRuns(ordered);
-        const revs = revResponse.data.revisions ?? [];
-        setRevisions(revs);
+    // Load runs and revisions independently so a missing revisions route
+    // cannot blank the whole workspace (tabs depend on hasRuns).
+    const runsPromise = canonApi.listRuns(rigIdNum).then((response) => {
+      const ordered = [...response.data.runs].sort(
+        (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
+      );
+      setRuns(ordered);
+      return ordered;
+    });
+    const revsPromise = canonApi.listRevisions(rigIdNum).then((response) => {
+      const revs = response.data.revisions ?? [];
+      setRevisions(revs);
+      return revs;
+    });
+    Promise.allSettled([runsPromise, revsPromise])
+      .then((results) => {
+        const ordered = results[0].status === 'fulfilled' ? results[0].value : [];
+        const revs = results[1].status === 'fulfilled' ? results[1].value : [];
+        if (results[0].status !== 'fulfilled') setRuns([]);
+        if (results[1].status !== 'fulfilled') {
+          // Derive revision options from run bridge fields when API absent.
+          const derived: RigRevision[] = [];
+          const seen = new Set<string>();
+          for (const run of ordered) {
+            if (seen.has(run.rig_revision_id)) continue;
+            seen.add(run.rig_revision_id);
+            derived.push({
+              rig_revision_id: run.rig_revision_id,
+              run_count: ordered.filter((r) => r.rig_revision_id === run.rig_revision_id).length,
+              latest_run_id: run.id,
+              latest_run_at: run.created_at,
+              export_bridge_ready: run.export_bridge_ready,
+            });
+          }
+          setRevisions(derived);
+        }
         const firstRev = revs[0]?.rig_revision_id ?? ordered[0]?.rig_revision_id ?? null;
         setActiveRevisionId(firstRev);
         const firstRun =
           ordered.find((r) => r.rig_revision_id === firstRev)?.id ?? ordered[0]?.id ?? null;
         setActiveRunId(firstRun);
-      })
-      .catch(() => {
-        setRuns([]);
-        setRevisions([]);
       })
       .finally(() => setLoading(false));
   }, [rigIdNum]);
