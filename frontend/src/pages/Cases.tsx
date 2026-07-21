@@ -1,76 +1,100 @@
 /**
- * Cases catalog — filters, format honesty, link into new rig (C0).
+ * Cases catalog — normalized case_catalog browse + materialize into Rack Builder.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { caseApi } from '@/lib/api';
-import type { Case } from '@/types/api';
+import { Link, useNavigate } from 'react-router-dom';
+import { caseCatalogApi } from '@/lib/api';
+import type { CatalogCaseListItem, CatalogStatsResponse } from '@/types/api';
 
 type LoadState = 'loading' | 'ready' | 'empty' | 'error';
 
-function formatFamily(item: Case): string {
-  if (item.format_family) return item.format_family;
-  const meta = item.meta ?? {};
-  const family = typeof meta.format_family === 'string' ? meta.format_family : '';
-  return family || 'Eurorack';
+const FORMAT_OPTIONS: { value: string; label: string }[] = [
+  { value: '', label: 'All formats' },
+  { value: 'eurorack', label: 'Eurorack' },
+  { value: 'intellijel_1u', label: 'Intellijel 1U' },
+  { value: 'buchla_200', label: 'Buchla 200' },
+  { value: 'serge_4u', label: 'Serge 4U' },
+  { value: 'mu_5u', label: 'MU / 5U' },
+  { value: 'frac', label: 'Frac' },
+  { value: 'other', label: 'Other' },
+];
+
+function capacityLabel(item: CatalogCaseListItem): string {
+  const rev = item.primary_revision;
+  if (!rev) return 'Capacity unspecified';
+  const unit = (rev.capacity_unit || 'units').replace(/_/g, ' ');
+  const value = rev.capacity_value != null ? rev.capacity_value : '—';
+  const rows = rev.row_count != null ? ` · ${rev.row_count} row${rev.row_count === 1 ? '' : 's'}` : '';
+  return `${value} ${unit}${rows}`;
 }
 
-function capacityLabel(item: Case): string {
-  const unit =
-    item.capacity_unit ||
-    (typeof item.meta?.capacity_unit === 'string' ? item.meta.capacity_unit : 'hp');
-  if (unit === 'hp' || !unit) {
-    return `${item.total_hp} HP · ${item.rows} row${item.rows === 1 ? '' : 's'}${
-      item.hp_per_row?.length ? ` · ${item.hp_per_row.join(' + ')}` : ''
-    }`;
+function depthLabel(item: CatalogCaseListItem): string {
+  const rev = item.primary_revision;
+  if (!rev) return 'Depth unspecified';
+  if (rev.depth_min_mm != null && rev.depth_max_mm != null) {
+    if (rev.depth_min_mm === rev.depth_max_mm) return `Depth ${rev.depth_min_mm} mm`;
+    return `Depth ${rev.depth_min_mm}–${rev.depth_max_mm} mm`;
   }
-  return `${item.total_hp} ${unit.replace(/_/g, ' ')} · ${item.rows} row${
-    item.rows === 1 ? '' : 's'
-  }`;
+  if (rev.depth_min_mm != null) return `Depth ≥ ${rev.depth_min_mm} mm`;
+  if (rev.depth_max_mm != null) return `Depth ≤ ${rev.depth_max_mm} mm`;
+  return 'Depth unspecified';
 }
 
-function powerLabel(item: Case): string {
-  const parts: string[] = [];
-  if (item.power_12v_ma != null) parts.push(`+12 ${item.power_12v_ma}mA`);
-  if (item.power_neg12v_ma != null) parts.push(`−12 ${item.power_neg12v_ma}mA`);
-  if (item.power_5v_ma != null) parts.push(`+5 ${item.power_5v_ma}mA`);
-  if (parts.length) return parts.join(' · ');
-  if (item.powered === false || item.meta?.powered === false) {
-    return 'Unpowered (no rails published)';
-  }
-  return 'Power unspecified (not checked at placement)';
+function powerLabel(item: CatalogCaseListItem): string {
+  if (item.powered === false) return 'Unpowered';
+  if (item.powered === true) return 'Powered (rails on revision / materialize)';
+  return 'Power unspecified';
+}
+
+function canPlace(item: CatalogCaseListItem): boolean {
+  return item.format_family === 'eurorack' || item.format_family === 'intellijel_1u';
+}
+
+function formatDisplay(family: string): string {
+  return FORMAT_OPTIONS.find((o) => o.value === family)?.label || family;
 }
 
 export default function CasesPage() {
-  const [cases, setCases] = useState<Case[]>([]);
+  const navigate = useNavigate();
+  const [cases, setCases] = useState<CatalogCaseListItem[]>([]);
   const [total, setTotal] = useState(0);
+  const [stats, setStats] = useState<CatalogStatsResponse | null>(null);
   const [state, setState] = useState<LoadState>('loading');
   const [error, setError] = useState('');
   const [q, setQ] = useState('');
-  const [formatFamilyFilter, setFormatFamilyFilter] = useState('Eurorack');
+  const [formatFamilyFilter, setFormatFamilyFilter] = useState('eurorack');
   const [poweredFilter, setPoweredFilter] = useState<'all' | 'yes' | 'no'>('all');
-  const [minHp, setMinHp] = useState('');
+  const [minCapacity, setMinCapacity] = useState('');
+  const [materializing, setMaterializing] = useState<string | null>(null);
+  const [actionError, setActionError] = useState('');
 
   const load = async () => {
     setState('loading');
     setError('');
     try {
-      const response = await caseApi.list({
-        limit: 200,
-        q: q.trim() || undefined,
-        format_family: formatFamilyFilter || undefined,
-        powered:
-          poweredFilter === 'all' ? undefined : poweredFilter === 'yes' ? true : false,
-        min_hp: minHp ? Number(minHp) : undefined,
-      });
-      const rows = response.data.cases ?? [];
+      const [listRes, statsRes] = await Promise.all([
+        caseCatalogApi.list({
+          limit: 200,
+          q: q.trim() || undefined,
+          format_family: formatFamilyFilter || undefined,
+          powered:
+            poweredFilter === 'all' ? undefined : poweredFilter === 'yes' ? true : false,
+          min_capacity: minCapacity ? Number(minCapacity) : undefined,
+        }),
+        caseCatalogApi.stats().catch(() => null),
+      ]);
+      const rows = listRes.data.cases ?? [];
       setCases(rows);
-      setTotal(response.data.total ?? rows.length);
+      setTotal(listRes.data.total ?? rows.length);
+      setStats(statsRes?.data ?? null);
       setState(rows.length === 0 ? 'empty' : 'ready');
     } catch {
       setCases([]);
       setTotal(0);
-      setError('Unable to load cases. Check that the API is reachable and try again.');
+      setStats(null);
+      setError(
+        'Unable to load the normalized case catalog. Import seed-v1 or check that the API is reachable.',
+      );
       setState('error');
     }
   };
@@ -80,10 +104,27 @@ export default function CasesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps -- reload on filter change
   }, [formatFamilyFilter, poweredFilter]);
 
-  const brands = useMemo(() => {
-    const set = new Set(cases.map((c) => c.brand));
+  const manufacturers = useMemo(() => {
+    const set = new Set(cases.map((c) => c.manufacturer));
     return Array.from(set).sort();
   }, [cases]);
+
+  const materializeAndOpenRig = async (item: CatalogCaseListItem) => {
+    if (!canPlace(item)) return;
+    setMaterializing(item.slug);
+    setActionError('');
+    try {
+      const res = await caseCatalogApi.materialize(item.slug);
+      const caseId = res.data.case.id;
+      navigate(`/racks/new?case_id=${caseId}&catalog_slug=${encodeURIComponent(item.slug)}`);
+    } catch {
+      setActionError(
+        `Could not materialize “${item.manufacturer} ${item.model}” for Rack Builder. Try again.`,
+      );
+    } finally {
+      setMaterializing(null);
+    }
+  };
 
   return (
     <section aria-labelledby="cases-title">
@@ -92,8 +133,9 @@ export default function CasesPage() {
           <p className="eyebrow">Catalog</p>
           <h1 id="cases-title">Cases</h1>
           <p className="muted">
-            Case envelopes for rig placement. Missing power or depth stays missing — never invented.
-            Eurorack is the default placement format.
+            Normalized modular case catalog (research seed + manufacturer expansions). Missing
+            power or depth stays missing — never invented. Eurorack (and Intellijel 1U rows)
+            can materialize into a placement case for new rigs.
           </p>
         </div>
         <div className="header-actions">
@@ -106,13 +148,21 @@ export default function CasesPage() {
         </div>
       </header>
 
+      {stats ? (
+        <p className="muted" style={{ marginBottom: 'var(--space-4)' }} role="status">
+          Catalog: {stats.case_count} cases · {stats.manufacturer_count} manufacturers ·{' '}
+          {stats.with_power_rails} with rail data · {stats.with_depth} with depth ·{' '}
+          {stats.source_packet_count} source packets
+        </p>
+      ) : null}
+
       <div className="panel toolbar" style={{ marginBottom: 'var(--space-4)' }} aria-label="Case filters">
         <label className="field" style={{ flex: '1 1 12rem' }}>
           Search
           <input
             type="search"
             value={q}
-            placeholder="Brand or model…"
+            placeholder="Manufacturer, model, or slug…"
             onChange={(e) => setQ(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === 'Enter') void load();
@@ -125,12 +175,11 @@ export default function CasesPage() {
             value={formatFamilyFilter}
             onChange={(e) => setFormatFamilyFilter(e.target.value)}
           >
-            <option value="">All formats</option>
-            <option value="Eurorack">Eurorack</option>
-            <option value="Buchla">Buchla</option>
-            <option value="5U MU">5U MU</option>
-            <option value="Serge 4U">Serge 4U</option>
-            <option value="Frac">Frac</option>
+            {FORMAT_OPTIONS.map((opt) => (
+              <option key={opt.label} value={opt.value}>
+                {opt.label}
+              </option>
+            ))}
           </select>
         </label>
         <label className="inline-field">
@@ -145,12 +194,12 @@ export default function CasesPage() {
           </select>
         </label>
         <label className="inline-field">
-          Min HP / capacity
+          Min capacity
           <input
             type="number"
             min={0}
-            value={minHp}
-            onChange={(e) => setMinHp(e.target.value)}
+            value={minCapacity}
+            onChange={(e) => setMinCapacity(e.target.value)}
             style={{ width: '6rem' }}
           />
         </label>
@@ -159,15 +208,25 @@ export default function CasesPage() {
         </button>
       </div>
 
+      {actionError ? (
+        <p className="status status-danger" role="alert">
+          {actionError}
+        </p>
+      ) : null}
+
       {state === 'loading' ? (
         <p className="status" role="status">
-          Loading cases…
+          Loading catalog…
         </p>
       ) : null}
 
       {state === 'error' ? (
         <div className="panel" role="alert">
           <p className="status status-danger">{error}</p>
+          <p className="muted">
+            Dry-run seed lives in <code>data/cases/seed-v1.json</code>. Load with the catalog
+            populator against your API database when ready.
+          </p>
           <button className="button button-primary" type="button" onClick={() => void load()}>
             Retry
           </button>
@@ -176,9 +235,9 @@ export default function CasesPage() {
 
       {state === 'empty' ? (
         <div className="panel">
-          <p className="status status-warning">No cases match these filters.</p>
+          <p className="status status-warning">No catalog cases match these filters.</p>
           <p className="muted">
-            Import research catalog with <code>just cases-import</code> or clear filters.
+            Import <code>data/cases/seed-v1.json</code> (not dry-run) or clear filters.
           </p>
         </div>
       ) : null}
@@ -186,37 +245,43 @@ export default function CasesPage() {
       {state === 'ready' ? (
         <>
           <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
-            Showing {cases.length} of {total} cases
-            {brands.length ? ` · ${brands.length} brands in view` : ''}
+            Showing {cases.length} of {total} catalog cases
+            {manufacturers.length ? ` · ${manufacturers.length} manufacturers in view` : ''}
           </p>
           <div className="catalog-grid">
             {cases.map((item) => {
-              const family = formatFamily(item);
-              const canPlace = family.toLowerCase() === 'eurorack';
+              const placeable = canPlace(item);
+              const busy = materializing === item.slug;
               return (
-                <article key={item.id} className="catalog-card">
+                <article key={item.slug} className="catalog-card">
                   <span className="feature-card-icon" aria-hidden="true">
-                    {family.slice(0, 2).toUpperCase()}
+                    {formatDisplay(item.format_family).slice(0, 2).toUpperCase()}
                   </span>
                   <h2>
-                    {item.brand} — {item.name}
+                    {item.manufacturer} — {item.model}
                   </h2>
                   <p className="catalog-card-meta">{capacityLabel(item)}</p>
+                  <p className="catalog-card-meta">{depthLabel(item)}</p>
                   <p className="catalog-card-meta">{powerLabel(item)}</p>
                   <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-                    {family}
-                    {item.description ? ` · ${item.description}` : ''}
+                    {formatDisplay(item.format_family)}
+                    {item.primary_revision?.confidence
+                      ? ` · confidence ${item.primary_revision.confidence}`
+                      : ''}
+                    {item.production_status ? ` · ${item.production_status}` : ''}
                   </p>
                   <div className="page-hero-actions">
-                    {canPlace ? (
-                      <Link
+                    {placeable ? (
+                      <button
                         className="button button-primary"
-                        to={`/racks/new?case_id=${item.id}`}
+                        type="button"
+                        disabled={busy}
+                        onClick={() => void materializeAndOpenRig(item)}
                       >
-                        Use on new rig
-                      </Link>
+                        {busy ? 'Preparing…' : 'Use on new rig'}
+                      </button>
                     ) : (
-                      <span className="status status-warning">Catalog only (non-Eurorack)</span>
+                      <span className="status status-warning">Catalog only (non-Eurorack placement)</span>
                     )}
                     <Link className="button button-quiet" to="/racks">
                       Open rigs
