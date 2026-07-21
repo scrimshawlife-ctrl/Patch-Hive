@@ -17,6 +17,8 @@ export interface Module {
   power_12v_ma?: number;
   power_neg12v_ma?: number;
   power_5v_ma?: number;
+  /** Optional depth for case fit; null/omitted = unspecified. */
+  depth_mm?: number | null;
   io_ports: IOPort[];
   tags: string[];
   description?: string;
@@ -179,6 +181,10 @@ export interface RackModule extends RackModuleSpec {
     name: string;
     hp: number;
     module_type: string;
+    power_12v_ma?: number | null;
+    power_neg12v_ma?: number | null;
+    power_5v_ma?: number | null;
+    depth_mm?: number | null;
   };
 }
 

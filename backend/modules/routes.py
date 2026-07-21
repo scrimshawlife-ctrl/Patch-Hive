@@ -23,6 +23,7 @@ def create_module(module: ModuleCreate, db: Session = Depends(get_db)):
         brand=module.brand,
         name=module.name,
         hp=module.hp,
+        depth_mm=module.depth_mm,
         module_type=module.module_type,
         power_12v_ma=module.power_12v_ma,
         power_neg12v_ma=module.power_neg12v_ma,

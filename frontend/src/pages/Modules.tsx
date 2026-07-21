@@ -211,6 +211,9 @@ export default function ModulesPage() {
                     </h2>
                     <p className="catalog-card-meta">
                       {module.module_type} · {module.hp}HP
+                      {module.depth_mm != null
+                        ? ` · depth ${module.depth_mm}mm`
+                        : ' · depth unspecified'}
                     </p>
                     {module.description ? (
                       <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>

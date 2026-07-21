@@ -839,7 +839,8 @@ export default function RackBuilderPage() {
                 {galleryModules.map((m) => (
                   <option key={m.id} value={m.id}>
                     {m.brand} — {m.name} ({m.hp}HP
-                    {m.power_12v_ma != null ? ` · +12 ${m.power_12v_ma}mA` : ''})
+                    {m.power_12v_ma != null ? ` · +12 ${m.power_12v_ma}mA` : ''}
+                    {m.depth_mm != null ? ` · ${m.depth_mm}mm` : ''})
                   </option>
                 ))}
               </select>
