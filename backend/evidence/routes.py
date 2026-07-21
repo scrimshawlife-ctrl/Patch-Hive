@@ -467,7 +467,9 @@ def list_rack_inventory_revisions(
             if inventory is not None
             else len(row.unresolved_candidate_ids or [])
         )
-        ready = inventory_ready_for_generation(inventory) if inventory is not None else confirmed > 0
+        ready = (
+            inventory_ready_for_generation(inventory) if inventory is not None else confirmed > 0
+        )
         summaries.append(
             InventoryRevisionSummary(
                 inventory_revision_id=row.id,
