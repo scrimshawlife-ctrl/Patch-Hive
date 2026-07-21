@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `6b7bc2dcccb1f14bbe12c5531de1796184e8d904`  
+**HEAD:** `da790b0` (merge of PR #75; pin may lag until this docs pass merges)
 
 ### Recent merges (OBSERVED)
 
@@ -14,12 +14,14 @@
 | [#69](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/69) | Cases/Patches lists + RackBuilder live evidence UX |
 | [#71](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/71) | Post-foundation reaudit + telemetry + ast-grep |
 | [#72](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/72) | Rig revision picker, overlays, multi-photo reconcile API |
+| [#74](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/74) | Multi-photo evidence UI + fusion review panel |
+| [#75](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/75) | Fusion confirm/reject/defer + staging Compose receipt |
 
 **Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
 
 This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY_STATUS.md`).  
 For inventory classification see [docs/CANON_ALIGNMENT.md](docs/CANON_ALIGNMENT.md).  
-For ordered next work see [docs/CONTINUATION.md](docs/CONTINUATION.md).  
+For ordered next work see [docs/CONTINUATION.md](docs/CONTINUATION.md) and [docs/evidence/CONTINUATION_PLAN_POST_75.md](docs/evidence/CONTINUATION_PLAN_POST_75.md).  
 For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md](AI_CONTEXT.md).
 
 ## OBSERVED product posture
@@ -28,12 +30,13 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 |------|--------|
 | Product identity | Deterministic Eurorack **rig + patch documentation** — not audio DSP / hardware control |
 | Canonical domain | `backend/canon/` |
-| Visual intelligence | P0 on main + eval harness + fail-closed cloud shell |
+| Visual intelligence | P0 on main + multi-photo fuse API/UI + fusion confirm UX (user-initiated only) |
 | FE catalog depth | Cases/Patches/Modules list parity (loading/empty/error/retry) |
-| RackBuilder evidence | Live `evidenceApi` when rack selected; demo fallback |
+| RackBuilder evidence | Multi-file upload; live `evidenceApi`; fusion panel confirm/reject/defer |
 | AI engineering | `justfile`, `.codebase-memory` rebuild, engineering CI |
 | Bridge IDs | Native `rig-rev-*` / `gen-run-*` |
 | Alembic head | **`20240930_patch_user_overlays`** |
+| Local Compose | db+backend healthy (see `docs/evidence/STAGING_COMPOSE_RECEIPT.md`) |
 | Payments | Test-mode only; production payments disabled |
 | Production deploy | **Not performed** |
 
@@ -41,18 +44,20 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 
 | Gate | Result | Class |
 |------|--------|-------|
-| PR #70 CI (backend/frontend/audit/engineering) | success | OBSERVED |
-| PR #69 CI (after remerge) | success | OBSERVED |
+| PR #74 / #75 CI | success | OBSERVED |
 | Vision production accuracy | no representative dataset | `NOT_COMPUTABLE` |
-| Full Compose staging | optional | `NOT_COMPUTABLE` without ops host |
+| Named multi-tenant staging host | not provisioned | `NOT_PERFORMED` |
+| Local Compose drill | pass | OBSERVED |
 
 ## Immediate continuation priorities
 
-1. `patchhive` package import telemetry + quarantine plan (P2) — see engineering doc  
-2. Dual-path residual: keep racks UI; no big-bang delete  
-3. Rig revision picker UX / annotation overlays (P4)  
-4. Optional: ast-grep domain guard rules in CI  
-5. Staging Compose drill when operator provides host  
+See [docs/evidence/CONTINUATION_PLAN_POST_75.md](docs/evidence/CONTINUATION_PLAN_POST_75.md):
+
+1. Docs pin (this file) + capability matrix refresh  
+2. Playwright multi-photo + fusion confirm  
+3. RigDetail inventory-revision receipt surface  
+4. Modules catalog polish  
+5. `patchhive` import telemetry quarantine  
 
 ## Authority boundary
 

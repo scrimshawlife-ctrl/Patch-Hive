@@ -11,7 +11,11 @@ from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
-from canon.models import ClassificationEvidenceRecord, ImageAssetRecord
+from canon.models import (
+    ClassificationEvidenceRecord,
+    ImageAssetRecord,
+    SystemInventoryRevisionRecord,
+)
 from core import get_db, settings
 from evidence.images import (
     SignatureImageScanner,
@@ -412,6 +416,78 @@ def reconcile_rack_evidence(rack_id: int, db: Session = Depends(get_db)) -> Reco
     items = _load_candidates_for_rack(db, rack_id)
     report = reconcile_candidate_observations(items)
     return ReconciliationResponse(**report.to_dict())
+
+
+class InventoryRevisionSummary(BaseModel):
+    inventory_revision_id: str
+    system_id: str
+    rack_id: int | None
+    confirmed_count: int
+    unresolved_count: int
+    ready_for_generation: bool
+    canonical_hash: str | None = None
+    created_by: str | None = None
+    created_at: datetime | None = None
+
+
+class InventoryRevisionListResponse(BaseModel):
+    total: int
+    latest: InventoryRevisionSummary | None = None
+    revisions: list[InventoryRevisionSummary]
+
+
+@router.get(
+    "/racks/{rack_id}/evidence/inventory",
+    response_model=InventoryRevisionListResponse,
+)
+def list_rack_inventory_revisions(
+    rack_id: int, db: Session = Depends(get_db)
+) -> InventoryRevisionListResponse:
+    """List sealed inventory revisions for a rack (newest first). Read-only."""
+    from canon.inventory import inventory_ready_for_generation
+    from canon.inventory_persist import load_system_inventory_revision
+
+    rack = db.get(Rack, rack_id)
+    if rack is None:
+        raise HTTPException(status_code=404, detail="Rack not found")
+
+    rows = (
+        db.query(SystemInventoryRevisionRecord)
+        .filter(SystemInventoryRevisionRecord.rack_id == rack_id)
+        .order_by(SystemInventoryRevisionRecord.created_at.desc())
+        .limit(20)
+        .all()
+    )
+    summaries: list[InventoryRevisionSummary] = []
+    for row in rows:
+        inventory = load_system_inventory_revision(db, row.id)
+        confirmed = len(inventory.items) if inventory is not None else len(row.items or [])
+        unresolved = (
+            len(inventory.unresolved_candidate_ids)
+            if inventory is not None
+            else len(row.unresolved_candidate_ids or [])
+        )
+        ready = (
+            inventory_ready_for_generation(inventory) if inventory is not None else confirmed > 0
+        )
+        summaries.append(
+            InventoryRevisionSummary(
+                inventory_revision_id=row.id,
+                system_id=row.system_id,
+                rack_id=row.rack_id,
+                confirmed_count=confirmed,
+                unresolved_count=unresolved,
+                ready_for_generation=ready,
+                canonical_hash=row.canonical_hash,
+                created_by=row.created_by,
+                created_at=row.created_at,
+            )
+        )
+    return InventoryRevisionListResponse(
+        total=len(summaries),
+        latest=summaries[0] if summaries else None,
+        revisions=summaries,
+    )
 
 
 @router.post(

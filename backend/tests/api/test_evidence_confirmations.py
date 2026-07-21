@@ -91,4 +91,12 @@ def test_list_and_confirm_candidates(
     assert bad.status_code == 400
     assert "MODULE_REVISION_REQUIRED" in bad.text
 
+    inv_list = client.get(f"/api/racks/{sample_rack_basic.id}/evidence/inventory")
+    assert inv_list.status_code == 200, inv_list.text
+    inv_body = inv_list.json()
+    assert inv_body["total"] >= 1
+    assert inv_body["latest"]["inventory_revision_id"] == result["inventory_revision_id"]
+    assert inv_body["latest"]["ready_for_generation"] is True
+    assert inv_body["latest"]["confirmed_count"] == 1
+
     app.dependency_overrides.clear()

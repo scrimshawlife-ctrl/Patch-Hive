@@ -157,6 +157,24 @@ export interface ConfirmationBatchResponse {
   ready_for_generation: boolean;
 }
 
+export interface InventoryRevisionSummary {
+  inventory_revision_id: string;
+  system_id: string;
+  rack_id?: number | null;
+  confirmed_count: number;
+  unresolved_count: number;
+  ready_for_generation: boolean;
+  canonical_hash?: string | null;
+  created_by?: string | null;
+  created_at?: string | null;
+}
+
+export interface InventoryRevisionListResponse {
+  total: number;
+  latest: InventoryRevisionSummary | null;
+  revisions: InventoryRevisionSummary[];
+}
+
 export const evidenceApi = {
   uploadImages: (
     rackId: number,
@@ -222,6 +240,9 @@ export const evidenceApi = {
       }>;
     },
   ) => api.post<ConfirmationBatchResponse>(`/racks/${rackId}/evidence/confirmations`, body),
+
+  listInventory: (rackId: number) =>
+    api.get<InventoryRevisionListResponse>(`/racks/${rackId}/evidence/inventory`),
 };
 
 // Run API — list prefers canon alias; patches still legacy until dual-written.
