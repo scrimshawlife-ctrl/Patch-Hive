@@ -1,0 +1,165 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://patchhive.dev/schemas/case_catalog_import.v1.schema.json",
+  "title": "PatchHive normalized modular case import",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cases"],
+  "properties": {
+    "schema_version": {"const": "patchhive.case-catalog-import.v1"},
+    "generated_at": {"type": ["string", "null"], "format": "date-time"},
+    "cases": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/case"}
+    }
+  },
+  "$defs": {
+    "nullableString": {"type": ["string", "null"]},
+    "nullableNonNegativeInteger": {"type": ["integer", "null"], "minimum": 0},
+    "nullablePositiveNumber": {"type": ["number", "null"], "exclusiveMinimum": 0},
+    "formatFamily": {
+      "enum": ["eurorack", "buchla_200", "serge_4u", "mu_5u", "frac", "other"]
+    },
+    "capacityUnit": {
+      "enum": ["hp", "mu_space", "buchla_panel", "serge_panel", "frac_width", "custom"]
+    },
+    "verificationStatus": {
+      "enum": ["verified", "incomplete", "conflict"]
+    },
+    "case": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manufacturer", "model", "format_family", "production_status", "revisions"],
+      "properties": {
+        "slug": {"$ref": "#/$defs/nullableString"},
+        "manufacturer": {"type": "string", "minLength": 1, "maxLength": 120},
+        "model": {"type": "string", "minLength": 1, "maxLength": 200},
+        "format_family": {"$ref": "#/$defs/formatFamily"},
+        "production_status": {"enum": ["available", "discontinued", "upcoming", "unknown"]},
+        "official_url": {"type": ["string", "null"], "format": "uri"},
+        "image_url": {"type": ["string", "null"], "format": "uri"},
+        "legacy_case_id": {"type": ["integer", "null"], "minimum": 1},
+        "revisions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/revision"}
+        }
+      }
+    },
+    "revision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["revision_key", "capacity_unit", "verification_status", "rows", "sources"],
+      "properties": {
+        "revision_key": {"type": "string", "minLength": 1, "maxLength": 120},
+        "revision_label": {"$ref": "#/$defs/nullableString"},
+        "capacity_value": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "capacity_unit": {"$ref": "#/$defs/capacityUnit"},
+        "row_count": {"type": ["integer", "null"], "minimum": 1},
+        "depth_min_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "depth_max_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "depth_notes": {"$ref": "#/$defs/nullableString"},
+        "width_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "height_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "depth_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "weight_kg": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "materials": {"type": ["array", "null"], "items": {"type": "string"}},
+        "mounting_type": {"$ref": "#/$defs/nullableString"},
+        "portable": {"type": ["boolean", "null"]},
+        "lid_type": {"enum": ["none", "removable", "hinged", "unknown", null]},
+        "closes_patched": {"type": ["boolean", "null"]},
+        "stand_modes": {"type": ["array", "null"], "items": {"type": "string"}},
+        "verification_status": {"$ref": "#/$defs/verificationStatus"},
+        "published_spec": {"type": ["object", "null"]},
+        "rows": {"type": "array", "items": {"$ref": "#/$defs/row"}},
+        "power": {"oneOf": [{"$ref": "#/$defs/power"}, {"type": "null"}]},
+        "features": {"type": "array", "items": {"$ref": "#/$defs/feature"}},
+        "prices": {"type": "array", "items": {"$ref": "#/$defs/price"}},
+        "sources": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/source"}}
+      }
+    },
+    "row": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["row_index", "row_format", "capacity_unit"],
+      "properties": {
+        "row_index": {"type": "integer", "minimum": 0},
+        "row_format": {"enum": ["eurorack_3u", "intellijel_1u", "pulplogic_1u", "buchla_200", "serge_4u", "mu_5u", "frac", "other"]},
+        "capacity_value": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "capacity_unit": {"$ref": "#/$defs/capacityUnit"},
+        "usable_depth_mm": {"$ref": "#/$defs/nullablePositiveNumber"},
+        "depth_notes": {"$ref": "#/$defs/nullableString"}
+      }
+    },
+    "power": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["powered"],
+      "properties": {
+        "powered": {"type": ["boolean", "null"]},
+        "supply_type": {"$ref": "#/$defs/nullableString"},
+        "input_spec": {"$ref": "#/$defs/nullableString"},
+        "busboard_type": {"$ref": "#/$defs/nullableString"},
+        "connector_count": {"$ref": "#/$defs/nullableNonNegativeInteger"},
+        "power_12v_ma": {"$ref": "#/$defs/nullableNonNegativeInteger"},
+        "power_neg12v_ma": {"$ref": "#/$defs/nullableNonNegativeInteger"},
+        "power_5v_ma": {"$ref": "#/$defs/nullableNonNegativeInteger"},
+        "other_rails": {"type": ["object", "null"]},
+        "distribution_zones": {"type": ["array", "null"], "items": {"type": "object"}},
+        "protections": {"type": ["array", "null"], "items": {"type": "string"}},
+        "power_notes": {"$ref": "#/$defs/nullableString"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"powered": {"const": false}}, "required": ["powered"]},
+          "then": {
+            "properties": {
+              "power_12v_ma": {"type": "null"},
+              "power_neg12v_ma": {"type": "null"},
+              "power_5v_ma": {"type": "null"}
+            }
+          }
+        }
+      ]
+    },
+    "feature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["feature_key", "present"],
+      "properties": {
+        "feature_key": {"type": "string", "minLength": 1, "maxLength": 80},
+        "present": {"type": ["boolean", "null"]},
+        "detail": {"type": ["object", "string", "null"]}
+      }
+    },
+    "price": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source", "currency", "amount", "price_kind", "captured_at"],
+      "properties": {
+        "source": {"type": "string", "minLength": 1},
+        "region": {"$ref": "#/$defs/nullableString"},
+        "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+        "amount": {"type": "number", "minimum": 0},
+        "price_kind": {"enum": ["msrp", "street", "used"]},
+        "stock_status": {"enum": ["in_stock", "out_of_stock", "preorder", "unknown", null]},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "source_url": {"type": ["string", "null"], "format": "uri"}
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_type", "reference", "captured_at", "confidence", "field_paths"],
+      "properties": {
+        "source_type": {"enum": ["official_manual", "official_product", "retailer", "community", "internal_import"]},
+        "reference": {"type": "string", "minLength": 1},
+        "captured_at": {"type": "string", "format": "date-time"},
+        "confidence": {"enum": ["high", "medium", "low"]},
+        "field_paths": {"type": "array", "items": {"type": "string"}},
+        "content_sha256": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "discrepancy_note": {"$ref": "#/$defs/nullableString"}
+      }
+    }
+  }
+}
