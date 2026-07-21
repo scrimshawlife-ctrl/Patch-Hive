@@ -1,0 +1,1700 @@
+{
+  "fixture_version": "1.0",
+  "name": "Modular cases research ingest \u2014 Cases4PatchHive",
+  "source_document": "/Users/appliedalchemylabs/Patch-Hive/fixtures/Cases4PatchHive.md",
+  "source_note": "Parsed from research master table. Eurorack HP is primary; non-Eurorack formats store capacity in total_hp/hp_per_row with meta.capacity_unit. Unspecified rails remain null.",
+  "case_count": 50,
+  "cases": [
+    {
+      "brand": "Intellijel",
+      "name": "4U Palette 62HP",
+      "total_hp": 124,
+      "rows": 2,
+      "hp_per_row": [
+        62,
+        62
+      ],
+      "power_12v_ma": 1200,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 500,
+      "description": "Desktop skiff \u00b7 62HP 3U + 62HP 1U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack + Intellijel 1U",
+        "size_raw": "62HP 3U + 62HP 1U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "62HP 3U + 62HP 1U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 124,
+        "mounting": "Desktop skiff",
+        "power_raw": "40W PSU; +12 1.2A, -12 1.2A, +5 0.5A; powers ~12 modules; 2.1\u00d75.5mm barrel AC/DC brick; integrated case bus; threaded M3 strips",
+        "build_raw": "unspecified; aluminum; silver or stealth; $299 official / street unspecified; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 299
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "4U Palette 104HP",
+      "total_hp": 208,
+      "rows": 2,
+      "hp_per_row": [
+        104,
+        104
+      ],
+      "power_12v_ma": 1500,
+      "power_neg12v_ma": 1500,
+      "power_5v_ma": 500,
+      "description": "Desktop skiff \u00b7 104HP 3U + 104HP 1U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack + Intellijel 1U",
+        "size_raw": "104HP 3U + 104HP 1U; depth 45.5mm, 37.4mm at edge; usable 45.5mm max; dims unspecified",
+        "size_summary": "104HP 3U + 104HP 1U",
+        "depth_raw": "45.5mm, 37.4mm at edge",
+        "usable_depth_raw": "45.5mm max",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 208,
+        "mounting": "Desktop skiff",
+        "power_raw": "60W PSU; +12 1.5A, -12 1.5A, +5 0.5A; up to 24 modules; 2.1\u00d75.5mm barrel AC/DC brick; integrated case bus; threaded M3 strips",
+        "build_raw": "unspecified; aluminum; silver or stealth; $399 official / street unspecified; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 399
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "7U Performance Case Gen-2 104HP",
+      "total_hp": 312,
+      "rows": 3,
+      "hp_per_row": [
+        104,
+        104,
+        104
+      ],
+      "power_12v_ma": 6000,
+      "power_neg12v_ma": 5000,
+      "power_5v_ma": 2000,
+      "description": "Portable case with lid \u00b7 2\u00d7104HP 3U + 104HP 1U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack + Intellijel 1U",
+        "size_raw": "2\u00d7104HP 3U + 104HP 1U; depth 73mm, 50\u201362mm above PSU, 43\u201362mm above audio/MIDI boards; usable 43mm minimum stated zone; dims 556.5\u00d7352.9\u00d7146.4mm w/lid, 556.5\u00d7352.4\u00d779.6mm w/o lid",
+        "size_summary": "2\u00d7104HP 3U + 104HP 1U",
+        "depth_raw": "73mm, 50\u201362mm above PSU, 43\u201362mm above audio/MIDI boards",
+        "usable_depth_raw": "43mm minimum stated zone",
+        "outer_dims_raw": "556.5\u00d7352.9\u00d7146.4mm w/lid, 556.5\u00d7352.4\u00d779.6mm w/o lid",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 312,
+        "mounting": "Portable case with lid",
+        "power_raw": "TPS135W MAX; +12 6A, -12 5A, +5 2A; 34 headers; 2.5\u00d75.5mm barrel via 90W brick; integrated TPS135W MAX bus",
+        "build_raw": "4.74kg w/lid; solid aluminum frame; $749 official / street unspecified; 2026",
+        "release_year": 2026,
+        "pricing": {
+          "official_usd": 749
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "2 Zone Skiff",
+      "total_hp": 104,
+      "rows": 1,
+      "hp_per_row": [
+        104
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 1000,
+      "description": "Powered skiff \u00b7 104HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "104HP 3U; depth 2\" over bus board, 2.5\" otherwise; usable 2\" over bus board; dims 21.5\u00d75.14\u00d72.75in",
+        "size_summary": "104HP 3U",
+        "depth_raw": "2\" over bus board, 2.5\" otherwise",
+        "usable_depth_raw": "2\" over bus board",
+        "outer_dims_raw": "21.5\u00d75.14\u00d72.75in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 104,
+        "mounting": "Powered skiff",
+        "power_raw": "+12 2A, -12 1.2A, +5 1A; 16 shrouded headers; universal AC adapter; 2-Zone Bus Board",
+        "build_raw": "4.55lb; black powder-coated aluminum; $349 official / street $349; unspecified",
+        "pricing": {
+          "official_usd": 349
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Skiff No Power",
+      "total_hp": 104,
+      "rows": 1,
+      "hp_per_row": [
+        104
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Unpowered skiff \u00b7 104HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "104HP 3U; depth 2.56in internal; usable 2.56in; dims 21.5\u00d75.14\u00d72.75in",
+        "size_summary": "104HP 3U",
+        "depth_raw": "2.56in internal",
+        "usable_depth_raw": "2.56in",
+        "outer_dims_raw": "21.5\u00d75.14\u00d72.75in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 104,
+        "mounting": "Unpowered skiff",
+        "power_raw": "None; none",
+        "build_raw": "4.25lb; black powder-coated aluminum; $99 official / street unspecified; unspecified",
+        "pricing": {
+          "official_usd": 99
+        },
+        "powered": false
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "7U 4 Zone CV Bus Case",
+      "total_hp": 312,
+      "rows": 3,
+      "hp_per_row": [
+        104,
+        104,
+        104
+      ],
+      "power_12v_ma": 4000,
+      "power_neg12v_ma": 2400,
+      "power_5v_ma": 1000,
+      "description": "Portable case with removable lid \u00b7 2\u00d7104HP 3U + 104HP utility row",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "2\u00d7104HP 3U + 104HP utility row; depth 2.5in; usable unspecified; dims 22.25\u00d714\u00d77.25in",
+        "size_summary": "2\u00d7104HP 3U + 104HP utility row",
+        "depth_raw": "2.5in",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "22.25\u00d714\u00d77.25in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 312,
+        "mounting": "Portable case with removable lid",
+        "power_raw": "4-Zone board; overall +12 4A, -12 2.4A, +5 1A; each zone +12 1A, -12 0.6A; locking 4-pin DIN PSU input; 4 Zone Power Bus + CV Bus",
+        "build_raw": "12.75lb; powder-coated metal, matte black; $799 official / street $799; 2023",
+        "release_year": 2023,
+        "pricing": {
+          "official_usd": 799
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Tiptop Audio",
+      "name": "Mantis",
+      "total_hp": 208,
+      "rows": 2,
+      "hp_per_row": [
+        104,
+        104
+      ],
+      "power_12v_ma": 3000,
+      "power_neg12v_ma": 1100,
+      "power_5v_ma": 300,
+      "description": "Desktop / portable with folding stand \u00b7 2\u00d7104HP",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "2\u00d7104HP; depth 50mm / 61mm max by zone; usable 50mm minimum zone; dims 540\u00d7314\u00d773/107mm depending position",
+        "size_summary": "2\u00d7104HP",
+        "depth_raw": "50mm / 61mm max by zone",
+        "usable_depth_raw": "50mm minimum zone",
+        "outer_dims_raw": "540\u00d7314\u00d773/107mm depending position",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 208,
+        "mounting": "Desktop / portable with folding stand",
+        "power_raw": "Zeus DC4000; +12 3A split across 3 zones, -12 1.1A, +5 0.3A; 36 keyed connectors; 13VDC input; Zeus Powered Mantis series",
+        "build_raw": "3kg; injection-molded chassis with Z-Rails; multiple leg colors / wood edition; $335 street; $399 special edition wood; 2016",
+        "release_year": 2016,
+        "pricing": {
+          "street_usd": 335
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Tiptop Audio",
+      "name": "Happy Ending Kit",
+      "total_hp": 84,
+      "rows": 1,
+      "hp_per_row": [
+        84
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Rack ears / rackmount kit \u00b7 84HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 3U; depth 4in; usable 4in; dims 18.9\u00d75.19\u00d74in",
+        "size_summary": "84HP 3U",
+        "depth_raw": "4in",
+        "usable_depth_raw": "4in",
+        "outer_dims_raw": "18.9\u00d75.19\u00d74in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 84,
+        "mounting": "Rack ears / rackmount kit",
+        "power_raw": "microZEUS 4HP PSU with flying bus boards; 1000mA Ault adapter included; flying bus board ribbons",
+        "build_raw": "1.76lb; rails + ears, black or silver; $129 street; unspecified",
+        "pricing": {
+          "street_usd": 129
+        },
+        "powered": true,
+        "kind": "kit"
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100LC1",
+      "total_hp": 48,
+      "rows": 1,
+      "hp_per_row": [
+        48
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Desktop/raw wood \u00b7 48HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "48HP 3U; depth 80mm; usable 80mm; dims unspecified",
+        "size_summary": "48HP 3U",
+        "depth_raw": "80mm",
+        "usable_depth_raw": "80mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 48,
+        "mounting": "Desktop/raw wood",
+        "power_raw": "PSU3/PSU3A or PSU2 depending build; common ratings +12 2A, -12 1.2A, +5 4A (PSU3) or +12 1.2A, -12 1.2A, +5 4A (PSU2); Doepfer bus board",
+        "build_raw": "unspecified; raw wood cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100LC3",
+      "total_hp": 84,
+      "rows": 1,
+      "hp_per_row": [
+        84
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Desktop/raw wood \u00b7 84HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 3U; depth 110mm; usable 110mm; dims 17.51\u00d75.90\u00d76.29in",
+        "size_summary": "84HP 3U",
+        "depth_raw": "110mm",
+        "usable_depth_raw": "110mm",
+        "outer_dims_raw": "17.51\u00d75.90\u00d76.29in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 84,
+        "mounting": "Desktop/raw wood",
+        "power_raw": "PSU3/PSU3A or PSU2; see manufacturer PSU ratings; Doepfer bus board",
+        "build_raw": "5.51lb; raw wood cabinet; street $250; MSRP unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100LC6",
+      "total_hp": 168,
+      "rows": 2,
+      "hp_per_row": [
+        84,
+        84
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Desktop/raw wood \u00b7 84HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 6U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "84HP 6U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 168,
+        "mounting": "Desktop/raw wood",
+        "power_raw": "PSU3 or PSU2 depending version; common ratings +12 2A, -12 1.2A, +5 4A (PSU3); Doepfer bus board",
+        "build_raw": "unspecified; raw wood cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100P6",
+      "total_hp": 168,
+      "rows": 2,
+      "hp_per_row": [
+        84,
+        84
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Portable suitcase \u00b7 84HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 6U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "84HP 6U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 168,
+        "mounting": "Portable suitcase",
+        "power_raw": "PSU3; +12 2A, -12 1.2A, +5 4A; Doepfer bus board",
+        "build_raw": "unspecified; flight-case style portable cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100P9",
+      "total_hp": 252,
+      "rows": 3,
+      "hp_per_row": [
+        84,
+        84,
+        84
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Portable suitcase \u00b7 84HP 9U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 9U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "84HP 9U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 252,
+        "mounting": "Portable suitcase",
+        "power_raw": "PSU3; +12 2A, -12 1.2A, +5 4A; Doepfer bus board",
+        "build_raw": "unspecified; flight-case style portable cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "Monster Base",
+      "total_hp": 168,
+      "rows": 1,
+      "hp_per_row": [
+        168
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Angled base case \u00b7 168HP base format",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "168HP base format; depth 120mm top / 160mm bottom; usable 120mm minimum; dims unspecified",
+        "size_summary": "168HP base format",
+        "depth_raw": "120mm top / 160mm bottom",
+        "usable_depth_raw": "120mm minimum",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "layout_explicit": false,
+        "capacity": 168,
+        "mounting": "Angled base case",
+        "power_raw": "PSU3 with 3 bus boards; +12 2A, -12 1.2A, +5 4A; Doepfer bus boards",
+        "build_raw": "unspecified; wood cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "Monster Case",
+      "total_hp": 504,
+      "rows": 3,
+      "hp_per_row": [
+        168,
+        168,
+        168
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "Large studio cabinet \u00b7 3\u00d7168HP",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "3\u00d7168HP; depth 70mm upper row / 100mm lower rows; usable 70mm minimum; dims unspecified",
+        "size_summary": "3\u00d7168HP",
+        "depth_raw": "70mm upper row / 100mm lower rows",
+        "usable_depth_raw": "70mm minimum",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 504,
+        "mounting": "Large studio cabinet",
+        "power_raw": "PSU3 with 3 bus boards; +12 2A, -12 1.2A, +5 4A; Doepfer bus boards",
+        "build_raw": "unspecified; wood cabinet; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-100DIY1 Kit",
+      "total_hp": 84,
+      "rows": 1,
+      "hp_per_row": [
+        84
+      ],
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "description": "DIY rack/case power kit \u00b7 84HP-ready DIY power kit",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP-ready DIY power kit; depth n/a; usable n/a; dims n/a",
+        "size_summary": "84HP-ready DIY power kit",
+        "depth_raw": "n/a",
+        "usable_depth_raw": "n/a",
+        "outer_dims_raw": "n/a",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "kind": "diy_power_kit",
+        "capacity": 84,
+        "mounting": "DIY rack/case power kit",
+        "power_raw": "PSU3; +12 2A, -12 1.2A, +5 4A; 3 bus boards; DIY mains wiring; 3 A-100 bus boards",
+        "build_raw": "n/a; DIY PSU + busboard kit; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod20 Powered",
+      "total_hp": 20,
+      "rows": 1,
+      "hp_per_row": [
+        20
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 20HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "20HP 3U; depth 33mm; usable 33mm; dims unspecified",
+        "size_summary": "20HP 3U",
+        "depth_raw": "33mm",
+        "usable_depth_raw": "33mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 20,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 2 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; $99 official; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 99
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod32 Powered",
+      "total_hp": 32,
+      "rows": 1,
+      "hp_per_row": [
+        32
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 32HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "32HP 3U; depth 33mm; usable 33mm; dims 167.1\u00d7159.5\u00d736mm",
+        "size_summary": "32HP 3U",
+        "depth_raw": "33mm",
+        "usable_depth_raw": "33mm",
+        "outer_dims_raw": "167.1\u00d7159.5\u00d736mm",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 32,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 2 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; $119 official; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 119
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod34X Powered",
+      "total_hp": 34,
+      "rows": 1,
+      "hp_per_row": [
+        34
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 34HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "34HP 3U; depth 51mm; usable 51mm; dims unspecified",
+        "size_summary": "34HP 3U",
+        "depth_raw": "51mm",
+        "usable_depth_raw": "51mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 34,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 4 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; price unspecified; 2020",
+        "release_year": 2020,
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod40X Powered",
+      "total_hp": 40,
+      "rows": 1,
+      "hp_per_row": [
+        40
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 40HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "40HP 3U; depth 51mm; usable 51mm; dims unspecified",
+        "size_summary": "40HP 3U",
+        "depth_raw": "51mm",
+        "usable_depth_raw": "51mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 40,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 4 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; $145 official; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 145
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod48X Powered",
+      "total_hp": 48,
+      "rows": 1,
+      "hp_per_row": [
+        48
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 48HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "48HP 3U; depth 51mm; usable 51mm; dims unspecified",
+        "size_summary": "48HP 3U",
+        "depth_raw": "51mm",
+        "usable_depth_raw": "51mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 48,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 4 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; $155 official; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 155
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "4ms",
+      "name": "Pod64X Powered",
+      "total_hp": 64,
+      "rows": 1,
+      "hp_per_row": [
+        64
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Powered desktop pod \u00b7 64HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "64HP 3U; depth 55mm; usable 55mm; dims unspecified",
+        "size_summary": "64HP 3U",
+        "depth_raw": "55mm",
+        "usable_depth_raw": "55mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 64,
+        "mounting": "Powered desktop pod",
+        "power_raw": "Integrated Pod power; requires external 15\u201324VDC center-positive 2.1mm barrel brick; rail current unspecified; 8 headers; integrated powered bus; keyed Eurorack headers",
+        "build_raw": "unspecified; 100% anodized aluminum; $195 official; 2020",
+        "release_year": 2020,
+        "pricing": {
+          "official_usd": 195
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "ALM Busy Circuits",
+      "name": "52HP 3U Case",
+      "total_hp": 52,
+      "rows": 1,
+      "hp_per_row": [
+        52
+      ],
+      "power_12v_ma": 1000,
+      "power_neg12v_ma": 1000,
+      "power_5v_ma": null,
+      "description": "Powered desktop skiff \u00b7 52HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "52HP 3U; depth 42mm; usable 42mm; dims 277\u00d7132\u00d766mm",
+        "size_summary": "52HP 3U",
+        "depth_raw": "42mm",
+        "usable_depth_raw": "42mm",
+        "outer_dims_raw": "277\u00d7132\u00d766mm",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 52,
+        "mounting": "Powered desktop skiff",
+        "power_raw": "Shielded DC/DC converter; no +5V rail; overload/short-circuit protection; center-positive 2.1mm barrel brick; +12 1A, -12 1A; 9 connectors; fixed solid bus board",
+        "build_raw": "0.7kg; lightweight anodized aluminum; \u00a3220 official; unspecified",
+        "pricing": {
+          "official_gbp": 220
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "ALM Busy Circuits",
+      "name": "84HP 3U Case",
+      "total_hp": 84,
+      "rows": 1,
+      "hp_per_row": [
+        84
+      ],
+      "power_12v_ma": 1000,
+      "power_neg12v_ma": 1000,
+      "power_5v_ma": null,
+      "description": "Powered desktop skiff \u00b7 84HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 3U; depth 42mm; usable 42mm; dims 440\u00d7132\u00d766mm",
+        "size_summary": "84HP 3U",
+        "depth_raw": "42mm",
+        "usable_depth_raw": "42mm",
+        "outer_dims_raw": "440\u00d7132\u00d766mm",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 84,
+        "mounting": "Powered desktop skiff",
+        "power_raw": "Shielded DC/DC converter; no +5V rail; overload/short-circuit protection; center-positive 2.1mm barrel brick; +12 1A, -12 1A; 16 connectors; fixed solid bus board",
+        "build_raw": "0.9kg; lightweight anodized aluminum; \u00a3250 official; unspecified",
+        "pricing": {
+          "official_gbp": 250
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "ALM Busy Circuits",
+      "name": "52HP 6U Case",
+      "total_hp": 104,
+      "rows": 2,
+      "hp_per_row": [
+        52,
+        52
+      ],
+      "power_12v_ma": 1000,
+      "power_neg12v_ma": 1000,
+      "power_5v_ma": null,
+      "description": "Powered desktop \u00b7 52HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "52HP 6U; depth 42mm lower / 54mm upper; usable 42mm minimum; dims 277\u00d7264\u00d766mm",
+        "size_summary": "52HP 6U",
+        "depth_raw": "42mm lower / 54mm upper",
+        "usable_depth_raw": "42mm minimum",
+        "outer_dims_raw": "277\u00d7264\u00d766mm",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 104,
+        "mounting": "Powered desktop",
+        "power_raw": "Shielded DC/DC converter; no +5V rail; overload/short-circuit protection; center-positive 2.1mm barrel brick; +12 1A, -12 1A; 9 on busboard + 6 flying; fixed bus board + flying bus",
+        "build_raw": "1.4kg; lightweight anodized aluminum; \u00a3340 official; unspecified",
+        "pricing": {
+          "official_gbp": 340
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "2\u00d7104HP Carbon Fiber Travel Case 2",
+      "total_hp": 208,
+      "rows": 2,
+      "hp_per_row": [
+        104,
+        104
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Portable travel case with lid \u00b7 104HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "104HP 6U; depth unspecified; usable unspecified; dims 22.44\u00d711.02\u00d75.51in",
+        "size_summary": "104HP 6U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "22.44\u00d711.02\u00d75.51in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 208,
+        "mounting": "Portable travel case with lid",
+        "power_raw": "Integrated powered travel case; rail currents unspecified; integrated powered rails",
+        "build_raw": "3.1kg / 7.05lb empty; carbon fiber; industrial orangeskin texture paint; price unspecified officially / street listed by retailer; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "2\u00d7104HP Aluminum Travel Case with Lid",
+      "total_hp": 208,
+      "rows": 2,
+      "hp_per_row": [
+        104,
+        104
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Portable travel case with lid \u00b7 104HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "104HP 6U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "104HP 6U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 208,
+        "mounting": "Portable travel case with lid",
+        "power_raw": "Integrated powered travel case; rail currents unspecified; integrated powered rails",
+        "build_raw": "unspecified; all aluminum; \u20ac550 official; unspecified",
+        "pricing": {
+          "official_eur": 550
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Arturia",
+      "name": "RackBrute 3U",
+      "total_hp": 88,
+      "rows": 1,
+      "hp_per_row": [
+        88
+      ],
+      "power_12v_ma": 1600,
+      "power_neg12v_ma": 800,
+      "power_5v_ma": 500,
+      "description": "Boat / linkable / folding \u00b7 88HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "88HP 3U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "88HP 3U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 88,
+        "mounting": "Boat / linkable / folding",
+        "power_raw": "15V 3000mA external PSU; RackBrute electrical spec +12 1600mA, -12 800mA, +5 500mA; 20 sockets; Doepfer-compatible bus board",
+        "build_raw": "unspecified; metal frame, noir finish; \u20ac259 official / street varies; 2018",
+        "release_year": 2018,
+        "pricing": {
+          "official_eur": 259
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Arturia",
+      "name": "RackBrute 6U",
+      "total_hp": 176,
+      "rows": 2,
+      "hp_per_row": [
+        88,
+        88
+      ],
+      "power_12v_ma": 1600,
+      "power_neg12v_ma": 800,
+      "power_5v_ma": 500,
+      "description": "Boat / linkable / folding \u00b7 176HP 6U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "176HP 6U; depth 56mm upper / 75mm lower; usable 56mm minimum; dims 19\u00d713.2\u00d73.3in",
+        "size_summary": "176HP 6U",
+        "depth_raw": "56mm upper / 75mm lower",
+        "usable_depth_raw": "56mm minimum",
+        "outer_dims_raw": "19\u00d713.2\u00d73.3in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "layout_note": "6U total_hp split evenly across 2 rows",
+        "capacity": 176,
+        "mounting": "Boat / linkable / folding",
+        "power_raw": "15V 3000mA external PSU; RackBrute electrical spec +12 1600mA, -12 800mA, +5 500mA; 20+12 sockets; Doepfer-compatible bus board",
+        "build_raw": "8.3lb; metal frame, noir finish; \u20ac359 official / street $359; 2018",
+        "release_year": 2018,
+        "pricing": {
+          "official_eur": 359
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Pittsburgh Modular",
+      "name": "Structure EP-208",
+      "total_hp": 208,
+      "rows": 2,
+      "hp_per_row": [
+        104,
+        104
+      ],
+      "power_12v_ma": 5000,
+      "power_neg12v_ma": 5000,
+      "power_5v_ma": 2000,
+      "description": "Road/flight case with detachable lid \u00b7 208HP (2\u00d7104HP)",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "208HP (2\u00d7104HP); depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "208HP (2\u00d7104HP)",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 208,
+        "mounting": "Road/flight case with detachable lid",
+        "power_raw": "+12 5A, -12 5A, +5 2A; integrated heavy-duty power",
+        "build_raw": "unspecified; road case construction; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Pittsburgh Modular",
+      "name": "Structure 270",
+      "total_hp": 270,
+      "rows": 1,
+      "hp_per_row": [
+        270
+      ],
+      "power_12v_ma": 5000,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Desktop/studio angled \u00b7 270HP",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "270HP; depth 3 3/8in minimum / 6in max; usable 3 3/8in; dims 19\u00d718\u00d73.5\u20139in",
+        "size_summary": "270HP",
+        "depth_raw": "3 3/8in minimum / 6in max",
+        "usable_depth_raw": "3 3/8in",
+        "outer_dims_raw": "19\u00d718\u00d73.5\u20139in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "layout_explicit": false,
+        "capacity": 270,
+        "mounting": "Desktop/studio angled",
+        "power_raw": "+12 5A; other rails unspecified; integrated power",
+        "build_raw": "14lb; wood/metal structure; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Pittsburgh Modular",
+      "name": "Structure Core 420",
+      "total_hp": 420,
+      "rows": 1,
+      "hp_per_row": [
+        420
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Studio case \u00b7 420HP",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "420HP; depth 35\u201374mm; usable 35mm; dims 29\u00d716.5\u00d73.5in",
+        "size_summary": "420HP",
+        "depth_raw": "35\u201374mm",
+        "usable_depth_raw": "35mm",
+        "outer_dims_raw": "29\u00d716.5\u00d73.5in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "layout_explicit": false,
+        "capacity": 420,
+        "mounting": "Studio case",
+        "power_raw": "power unspecified on captured snippet; integrated power",
+        "build_raw": "15lb 4oz; wood/metal structure; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Pittsburgh Modular",
+      "name": "Lifeforms Research Console",
+      "total_hp": 96,
+      "rows": 2,
+      "hp_per_row": [
+        48,
+        48
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Desktop console \u00b7 96HP (2\u00d748HP)",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "96HP (2\u00d748HP); depth 65mm top / 49mm bottom; usable 49mm; dims 10.9\u00d79.5\u00d7unspecifiedin",
+        "size_summary": "96HP (2\u00d748HP)",
+        "depth_raw": "65mm top / 49mm bottom",
+        "usable_depth_raw": "49mm",
+        "outer_dims_raw": "10.9\u00d79.5\u00d7unspecifiedin",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 96,
+        "mounting": "Desktop console",
+        "power_raw": "power unspecified on captured snippet; integrated power",
+        "build_raw": "5.3lb / 2.5kg; steel construction; price unspecified; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Pittsburgh Modular",
+      "name": "Cell[90] DC",
+      "total_hp": 90,
+      "rows": 1,
+      "hp_per_row": [
+        90
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Desktop skiff \u00b7 90HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "90HP 3U; depth 52mm, 36mm above PSU; usable 36mm; dims unspecified",
+        "size_summary": "90HP 3U",
+        "depth_raw": "52mm, 36mm above PSU",
+        "usable_depth_raw": "36mm",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 90,
+        "mounting": "Desktop skiff",
+        "power_raw": "15VDC 2.6A adapter; +5V rail included; Eurorack-bus compatible; exact rail currents unspecified; single-row bus (DC case family)",
+        "build_raw": "unspecified; 16-gauge steel with hardwood sides; $349 suggested retail; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Cre8audio",
+      "name": "NiftyCASE",
+      "total_hp": 84,
+      "rows": 1,
+      "hp_per_row": [
+        84
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Desktop portable \u00b7 84HP 3U",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "84HP 3U; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "84HP 3U",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 84,
+        "mounting": "Desktop portable",
+        "power_raw": "Built-in powered case; 9 power outlets on cable per user/manual discussion; exact rail currents unspecified; USB + 5-pin MIDI to CV/Gate/Clock/Mod; integrated cable harness",
+        "build_raw": "3.96lb; metal chassis with real wood endcaps; street $199.99; official price unspecified on current capture; 2020",
+        "release_year": 2020,
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Behringer",
+      "name": "Eurorack Go",
+      "total_hp": 280,
+      "rows": 2,
+      "hp_per_row": [
+        140,
+        140
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Portable desktop with adjustable legs \u00b7 280HP (2\u00d7140HP)",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Eurorack",
+        "size_raw": "280HP (2\u00d7140HP); depth 44\u201352mm reported; usable 44mm rear section, ~52mm at deeper area; dims 28.5\u00d712.2\u00d74.4in",
+        "size_summary": "280HP (2\u00d7140HP)",
+        "depth_raw": "44\u201352mm reported",
+        "usable_depth_raw": "44mm rear section, ~52mm at deeper area",
+        "outer_dims_raw": "28.5\u00d712.2\u00d74.4in",
+        "format_family": "Eurorack",
+        "capacity_unit": "hp",
+        "capacity": 280,
+        "mounting": "Portable desktop with adjustable legs",
+        "power_raw": "Low-noise PSU; 32 keyed power connectors; rail-current figures not exposed in captured official snippet; integrated keyed bus",
+        "build_raw": "8.6lb; utility case with adjustable aluminum legs; $219 street; unspecified",
+        "pricing": {
+          "street_usd": 219
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-4 Powered Boat",
+      "total_hp": 4,
+      "rows": 1,
+      "hp_per_row": [
+        4
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Boat \u00b7 4 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "4 Buchla panels; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "4 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "buchla_panels",
+        "capacity": 4,
+        "format_family": "Buchla",
+        "mounting": "Boat",
+        "power_raw": "Powered boat with internal power distribution; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; aluminum boat; $649 official; unspecified",
+        "pricing": {
+          "official_usd": 649
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-6 Powered Boat",
+      "total_hp": 6,
+      "rows": 1,
+      "hp_per_row": [
+        6
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Boat \u00b7 6 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "6 Buchla panels; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "6 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "buchla_panels",
+        "capacity": 6,
+        "format_family": "Buchla",
+        "mounting": "Boat",
+        "power_raw": "Powered boat with internal power distribution; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; aluminum boat; $699 official; unspecified",
+        "pricing": {
+          "official_usd": 699
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-10 Powered Cabinet",
+      "total_hp": 10,
+      "rows": 1,
+      "hp_per_row": [
+        10
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Portable folding cabinet \u00b7 10 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "10 Buchla panels; depth unspecified; usable unspecified; dims 24\u00d714\u00d710in folded",
+        "size_summary": "10 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "24\u00d714\u00d710in folded",
+        "capacity_unit": "buchla_panels",
+        "capacity": 10,
+        "format_family": "Buchla",
+        "mounting": "Portable folding cabinet",
+        "power_raw": "Powered cabinet; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; cabinet, folding design; $1,299 official; unspecified",
+        "pricing": {
+          "official_usd": 1299
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-12 Powered Cabinet",
+      "total_hp": 12,
+      "rows": 1,
+      "hp_per_row": [
+        12
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Cabinet \u00b7 12 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "12 Buchla panels; depth unspecified; usable unspecified; dims 18.5in wide; carrying case 22\u00d717\u00d711in",
+        "size_summary": "12 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "18.5in wide",
+        "capacity_unit": "buchla_panels",
+        "capacity": 12,
+        "format_family": "Buchla",
+        "mounting": "Cabinet",
+        "power_raw": "Powered cabinet; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; three-boat cabinet; $1,599 official; unspecified",
+        "pricing": {
+          "official_usd": 1599
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-18 Powered Cabinet",
+      "total_hp": 18,
+      "rows": 1,
+      "hp_per_row": [
+        18
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Cabinet \u00b7 18 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "18 Buchla panels; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "18 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "buchla_panels",
+        "capacity": 18,
+        "format_family": "Buchla",
+        "mounting": "Cabinet",
+        "power_raw": "Powered cabinet; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; three six-panel aluminum boats with hardwood trim; $2,149 official; unspecified",
+        "pricing": {
+          "official_usd": 2149
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "201e-24 Powered Cabinet",
+      "total_hp": 24,
+      "rows": 1,
+      "hp_per_row": [
+        24
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Cabinet \u00b7 24 Buchla panels",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e/200h",
+        "size_raw": "24 Buchla panels; depth unspecified; usable unspecified; dims 31\u00d724\u00d713in",
+        "size_summary": "24 Buchla panels",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "31\u00d724\u00d713in",
+        "capacity_unit": "buchla_panels",
+        "capacity": 24,
+        "format_family": "Buchla",
+        "mounting": "Cabinet",
+        "power_raw": "Powered cabinet; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; four six-panel boats / cabinet; $2,649 official; unspecified",
+        "pricing": {
+          "official_usd": 2649
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Buchla",
+      "name": "Skylab",
+      "total_hp": 10,
+      "rows": 1,
+      "hp_per_row": [
+        10
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Folding portable cabinet \u00b7 10 modules / portable system case",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Buchla 200e",
+        "size_raw": "10 modules / portable system case; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "10 modules / portable system case",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "buchla_panels",
+        "capacity": 10,
+        "format_family": "Buchla",
+        "mounting": "Folding portable cabinet",
+        "power_raw": "Portable powered system; current unspecified; integrated Buchla power distribution",
+        "build_raw": "unspecified; portable system enclosure; bundle/system pricing varies; unspecified",
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Random*Source",
+      "name": "RS4 Boat Shallow",
+      "total_hp": 1,
+      "rows": 1,
+      "hp_per_row": [
+        1
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Boat / rack-ear ready \u00b7 1 full panel or 4\u00d74 modules",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Serge 4U",
+        "size_raw": "1 full panel or 4\u00d74 modules; depth 66mm; usable 64mm; dims unspecified",
+        "size_summary": "1 full panel or 4\u00d74 modules",
+        "depth_raw": "66mm",
+        "usable_depth_raw": "64mm",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "serge_panels",
+        "capacity": 1,
+        "format_family": "Serge 4U",
+        "mounting": "Boat / rack-ear ready",
+        "power_raw": "None; passive boat with cutout for Serge/XLR power; PSD-compatible passive distribution option",
+        "build_raw": "unspecified; specially treated aluminum, stainless-like look; \u20ac200 boat / \u20ac240 with rack ears; unspecified",
+        "pricing": {
+          "official_eur": 200
+        },
+        "powered": false
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Random*Source",
+      "name": "RS4P Powered Shallow Boat",
+      "total_hp": 1,
+      "rows": 1,
+      "hp_per_row": [
+        1
+      ],
+      "power_12v_ma": 1000,
+      "power_neg12v_ma": 1000,
+      "power_5v_ma": null,
+      "description": "Powered boat \u00b7 1 full panel or 1\u20132 boats powered",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Serge 4U",
+        "size_raw": "1 full panel or 1\u20132 boats powered; depth 66mm; usable 64mm less PSU intrusion; dims unspecified",
+        "size_summary": "1 full panel or 1\u20132 boats powered",
+        "depth_raw": "66mm",
+        "usable_depth_raw": "64mm less PSU intrusion",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "serge_panels",
+        "capacity": 1,
+        "format_family": "Serge 4U",
+        "mounting": "Powered boat",
+        "power_raw": "Internal mobile PSU; 1000mA per rail; external laptop-style converter; internal PSU + distribution",
+        "build_raw": "unspecified; aluminum boat with internal PSU; \u20ac500 official; unspecified",
+        "pricing": {
+          "official_eur": 500
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Random*Source",
+      "name": "RS6 Boat XL Shallow",
+      "total_hp": 6,
+      "rows": 1,
+      "hp_per_row": [
+        6
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "XL boat \u00b7 1.5\u00d7 width",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Serge 4U",
+        "size_raw": "1.5\u00d7 width; 6 Random*Source 4\u00d74 modules; depth 66mm; usable 64mm; dims unspecified",
+        "size_summary": "1.5\u00d7 width",
+        "depth_raw": "66mm",
+        "usable_depth_raw": "64mm",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "serge_4x4_modules",
+        "capacity": 6,
+        "format_family": "Serge 4U",
+        "mounting": "XL boat",
+        "power_raw": "None; passive boat; PSD-compatible passive distribution option",
+        "build_raw": "unspecified; specially treated aluminum; \u20ac248 official; unspecified",
+        "pricing": {
+          "official_eur": 248
+        },
+        "powered": false
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Synthesizers.com",
+      "name": "QCP22 Portable Cabinet",
+      "total_hp": 22,
+      "rows": 2,
+      "hp_per_row": [
+        11,
+        11
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Portable cabinet \u00b7 22 MU (2\u00d711)",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "5U MU",
+        "size_raw": "22 MU (2\u00d711); depth ample for QPS1; usable ample for QPS1; dims unspecified",
+        "size_summary": "22 MU (2\u00d711)",
+        "depth_raw": "ample for QPS1",
+        "usable_depth_raw": "ample for QPS1",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "mu_spaces",
+        "capacity": 22,
+        "format_family": "5U MU",
+        "mounting": "Portable cabinet",
+        "power_raw": "Supports QPS1 and QDH harness; dotcom rails +15V/-15V/+5V; QDH harness supported",
+        "build_raw": "unspecified; portable cabinet; $410 official; unspecified",
+        "pricing": {
+          "official_usd": 410
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Synthesizers.com",
+      "name": "QCS44 Studio Cabinet",
+      "total_hp": 44,
+      "rows": 2,
+      "hp_per_row": [
+        22,
+        22
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Studio cabinet \u00b7 44 MU front (2\u00d722) + 4 rear spaces",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "5U MU",
+        "size_raw": "44 MU front (2\u00d722) + 4 rear spaces; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "44 MU front (2\u00d722) + 4 rear spaces",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "mu_spaces",
+        "capacity": 44,
+        "format_family": "5U MU",
+        "mounting": "Studio cabinet",
+        "power_raw": "Supports dotcom power ecosystem; +15V/-15V/+5V standard; QDH/QPS compatible",
+        "build_raw": "unspecified; walnut studio cabinet; $1,295 official; unspecified",
+        "pricing": {
+          "official_usd": 1295
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Synthesizers.com",
+      "name": "QCF22 Folding Cabinet",
+      "total_hp": 22,
+      "rows": 1,
+      "hp_per_row": [
+        22
+      ],
+      "power_12v_ma": null,
+      "power_neg12v_ma": null,
+      "power_5v_ma": null,
+      "description": "Folding patch-and-go cabinet \u00b7 22 MU folding cabinet",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "5U MU",
+        "size_raw": "22 MU folding cabinet; depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "22 MU folding cabinet",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "mu_spaces",
+        "capacity": 22,
+        "format_family": "5U MU",
+        "mounting": "Folding patch-and-go cabinet",
+        "power_raw": "Supports dotcom power ecosystem; +15V/-15V/+5V standard; QDH/QPS compatible",
+        "build_raw": "unspecified; folding cabinet; $848 official; unspecified",
+        "pricing": {
+          "official_usd": 848
+        },
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    },
+    {
+      "brand": "Blacet Research",
+      "name": "Rak-3 Powered Case",
+      "total_hp": 20,
+      "rows": 2,
+      "hp_per_row": [
+        10,
+        10
+      ],
+      "power_12v_ma": 800,
+      "power_neg12v_ma": 800,
+      "power_5v_ma": null,
+      "description": "Powered rack case \u00b7 20 Frac widths in 6U (2 rows)",
+      "manufacturer_url": null,
+      "meta": {
+        "format_raw": "Frac",
+        "size_raw": "20 Frac widths in 6U (2 rows); depth unspecified; usable unspecified; dims unspecified",
+        "size_summary": "20 Frac widths in 6U (2 rows)",
+        "depth_raw": "unspecified",
+        "usable_depth_raw": "unspecified",
+        "outer_dims_raw": "unspecified",
+        "capacity_unit": "frac_widths",
+        "capacity": 20,
+        "format_family": "Frac",
+        "rail_voltage_nominal": "\u00b115V",
+        "mounting": "Powered rack case",
+        "power_raw": "+/-15V @ 800mA; Frac distribution buss",
+        "build_raw": "unspecified; metal rack enclosure; $289 full kit / lower kit prices available; 2024 refresh",
+        "release_year": 2024,
+        "powered": true
+      },
+      "source": "ResearchCSV",
+      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+    }
+  ]
+}
