@@ -67,6 +67,30 @@ guard-patchhive-imports:
 	cd "{{root}}"
 	bash scripts/ai/check_no_canon_patchhive_imports.sh
 
+# Local Docker staging (requires .env.staging.local — see docs/evidence/STAGING_LOCAL_DOCKER_RECEIPT.md)
+staging-up:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	if [[ ! -f .env.staging.local ]]; then
+		echo "Create .env.staging.local first (see docs/evidence/STAGING_LOCAL_DOCKER_RECEIPT.md)" >&2
+		exit 1
+	fi
+	docker compose -f docker-compose.staging.yml --env-file .env.staging.local up -d --build
+	echo "Health: http://localhost:8000/health  App: http://localhost:5173"
+
+staging-down:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	docker compose -f docker-compose.staging.yml --env-file .env.staging.local down
+
+staging-ps:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	docker compose -f docker-compose.staging.yml --env-file .env.staging.local ps
+
 coverage:
 	#!/usr/bin/env bash
 	set -euo pipefail

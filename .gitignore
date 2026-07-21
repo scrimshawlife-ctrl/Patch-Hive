@@ -102,3 +102,6 @@ security-artifacts/
 *.tags
 tags
 TAGS
+
+# Local staging secrets
+.env.staging.local

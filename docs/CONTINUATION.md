@@ -100,7 +100,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 ### P3 — Staging operations
 
 1. ~~Staging host plan + Compose staging profile~~ **DONE** (design + `docker-compose.staging.yml`; named host still operator pick)
-2. Stand up **named** non-prod host (blocked on operator A/B/C/D pick — [STAGING_HOST_PLAN.md](evidence/STAGING_HOST_PLAN.md)).
+2. ~~Local Docker staging stack~~ **DONE** ([STAGING_LOCAL_DOCKER_RECEIPT.md](evidence/STAGING_LOCAL_DOCKER_RECEIPT.md)); named public domain still optional ([DOMAIN_CUTOVER_CHECKLIST.md](evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
 3. Run acceptance suite against staging Postgres.
 4. Backup/restore drill; ledger `reconcile` job if present.
 5. Manual accessibility protocol on staging (see ACCESSIBILITY.md).
