@@ -320,6 +320,7 @@ export const canonApi = {
     credit_cost?: number | null;
     idempotency_key: string;
     style_recipe?: Record<string, unknown> | null;
+    style_recipe_id?: string | null;
   }) => api.post<CanonicalExportRecord>('/canon/exports', body),
 
   /** Free Design Engine preview — no debit (KD-15). */
@@ -328,6 +329,7 @@ export const canonApi = {
     source_rig_revision_id: string;
     artifact_manifest_hash: string;
     style_recipe?: Record<string, unknown> | null;
+    style_recipe_id?: string | null;
     max_pages?: number;
   }) =>
     api.post<{
@@ -351,6 +353,37 @@ export const canonApi = {
       }>;
       composition_preview_hash?: string | null;
     }>('/canon/exports/preview', body),
+
+  listStyleRecipes: () =>
+    api.get<
+      Array<{
+        id: string;
+        name: string;
+        notes: string | null;
+        style_recipe: Record<string, unknown>;
+        recipe_hash: string;
+        created_at: string;
+        updated_at: string;
+      }>
+    >('/canon/style-recipes'),
+
+  createStyleRecipe: (body: {
+    name: string;
+    style_recipe: Record<string, unknown>;
+    notes?: string | null;
+  }) =>
+    api.post<{
+      id: string;
+      name: string;
+      notes: string | null;
+      style_recipe: Record<string, unknown>;
+      recipe_hash: string;
+      created_at: string;
+      updated_at: string;
+    }>('/canon/style-recipes', body),
+
+  deleteStyleRecipe: (recipeId: string) =>
+    api.delete(`/canon/style-recipes/${encodeURIComponent(recipeId)}`),
 
   createDownloadToken: (exportId: string, ttl_seconds = 300) =>
     api.post<{ export_id: string; token: string; ttl_seconds: number }>(

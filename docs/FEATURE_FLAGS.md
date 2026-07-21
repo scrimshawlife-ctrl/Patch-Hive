@@ -32,11 +32,16 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | `GET` | `/api/canon/credits/balance` | Canonical ledger balance for the authenticated user |
 | `GET` | `/api/canon/credits/summary` | Balance + recent ledger rows (account dashboard) |
 | `GET` | `/api/canon/exports` | Owner-scoped canonical export history |
-| `POST` | `/api/canon/exports` | Atomic debit + export record (`request_export`) with idempotency key |
+| `POST` | `/api/canon/exports` | Atomic debit + export record (`request_export`) with idempotency key; optional `style_recipe` **or** `style_recipe_id` |
 | `GET` | `/api/canon/exports/{id}` | Owner-scoped export status |
+| `POST` | `/api/canon/exports/preview` | Free Design Engine preview (no debit); rate-limited |
+| `GET/POST` | `/api/canon/style-recipes` | Owner style recipe library |
+| `GET/PATCH/DELETE` | `/api/canon/style-recipes/{id}` | Owner recipe CRUD |
 | `POST` | `/api/canon/exports/{id}/download-token` | Issue short-lived principal-scoped token |
 | `POST` | `/api/canon/exports/{id}/download` | Verify token scope for a completed/queued export |
 | `POST` | `/api/canon/webhooks/stripe` | Replay-safe Stripe-style webhook intake |
+
+See also: `docs/design/PATCHBOOK_STAGING_ENABLEMENT.md`
 
 ### Client preference (P1 — PR #49 done for MVP UI)
 

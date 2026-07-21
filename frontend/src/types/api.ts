@@ -232,6 +232,7 @@ export interface CanonicalExportRecord {
   style_recipe_hash?: string | null;
   error_code?: string | null;
   pack_manifest_hash?: string | null;
+  style_recipe_id?: string | null;
 }
 
 export interface UserExportRecord {
