@@ -248,6 +248,59 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText('Status: confirmed').first()).toBeVisible();
   });
 
+  test('module gallery supports search filter and placement entry', async ({ page }) => {
+    await page.route('**/api/modules**', async (route) => {
+      await route.fulfill({
+        json: {
+          total: 2,
+          modules: [
+            {
+              id: 1,
+              brand: 'MockAudio',
+              name: 'Oscillator A',
+              hp: 12,
+              module_type: 'oscillator',
+              power_12v_ma: 40,
+              power_neg12v_ma: 10,
+              io_ports: [],
+              tags: [],
+              description: 'Demo VCO',
+              source: 'seed',
+              imported_at: '2026-01-01T00:00:00Z',
+              created_at: '2026-01-01T00:00:00Z',
+              updated_at: '2026-01-01T00:00:00Z',
+            },
+            {
+              id: 2,
+              brand: 'OtherBrand',
+              name: 'Filter Z',
+              hp: 8,
+              module_type: 'filter',
+              power_12v_ma: 30,
+              io_ports: [],
+              tags: [],
+              description: 'Demo VCF',
+              source: 'seed',
+              imported_at: '2026-01-01T00:00:00Z',
+              created_at: '2026-01-01T00:00:00Z',
+              updated_at: '2026-01-01T00:00:00Z',
+            },
+          ],
+        },
+      });
+    });
+    await page.goto('/modules');
+    await expect(page.getByLabel('Module filters')).toBeVisible();
+    await expect(page.getByLabel('Module catalog results')).toBeVisible();
+    await expect(page.getByText('Showing 2 of 2 modules')).toBeVisible();
+    await page.getByLabel('Search').fill('Filter');
+    await expect(page.getByText('Showing 1 of 2 modules (filtered)')).toBeVisible();
+    await expect(page.getByText('OtherBrand — Filter Z')).toBeVisible();
+    await expect(page.getByText('Oscillator A')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Place on new rig' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Place on rig' }).first()).toBeVisible();
+  });
+
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
     await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
       await route.fulfill({

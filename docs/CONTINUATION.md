@@ -134,7 +134,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 15. ~~Fusion panel confirm/reject/defer + confirm-all non-conflict~~ **DONE** (PR #75)
 16. ~~Playwright multi-photo + fusion panel~~ **DONE** (this PR / Wave 1)
 17. ~~RigDetail inventory-revision receipt surface~~ **DONE** (`GET .../evidence/inventory` + overview panel)
-18. Modules catalog polish (Wave 2)
+18. ~~Modules catalog polish~~ **DONE** (search/filter/sort + place-on-rig entry; Racks list loading/empty/retry)
 19. `patchhive` import telemetry quarantine (Wave 4)
 
 ### P5 — Explicitly deferred
