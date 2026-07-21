@@ -1,11 +1,16 @@
-"""Matrix slice A: generate ensures export bridge without relying on run list GET."""
+"""F3 / slice A: generate dual-writes native bridge + inventory (no legacy-* invent)."""
 
 from __future__ import annotations
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
-from canon.models import GenerationRunRecord, PatchLibraryRecord, RigRevisionRecord
+from canon.models import (
+    GenerationRunRecord,
+    PatchLibraryRecord,
+    RigRevisionRecord,
+    SystemInventoryRevisionRecord,
+)
 from main import app
 from racks.models import Rack
 from runs.bridge import native_source_run_id, rack_content_hash, build_rack_content_snapshot
@@ -24,6 +29,14 @@ def _client(db_session: Session) -> TestClient:
     return TestClient(app)
 
 
+def _assert_no_legacy_ids(body: dict) -> None:
+    for key in ("source_run_id", "rig_revision_id"):
+        value = body.get(key) or ""
+        assert not str(value).startswith("legacy-"), f"{key} must not be legacy-* ({value})"
+    assert str(body.get("source_run_id", "")).startswith("gen-run-")
+    assert str(body.get("rig_revision_id", "")).startswith("rig-rev-")
+
+
 def test_generate_patches_ensures_export_bridge(
     db_session: Session, sample_rack_basic: Rack
 ) -> None:
@@ -33,15 +46,16 @@ def test_generate_patches_ensures_export_bridge(
     body = resp.json()
     assert body["run_id"] is not None
     assert body["export_bridge_ready"] is True
+    _assert_no_legacy_ids(body)
     snap = build_rack_content_snapshot(db_session, sample_rack_basic)
     content = rack_content_hash(snap)
     assert body["source_run_id"] == native_source_run_id(int(body["run_id"]), content)
-    assert body["source_run_id"].startswith("gen-run-")
-    assert body["rig_revision_id"].startswith("rig-rev-")
     assert body["artifact_manifest_hash"] and len(body["artifact_manifest_hash"]) == 64
     assert body.get("inventory_revision_id")
+    assert str(body["inventory_revision_id"]).startswith("inv-rev-")
     assert body.get("inventory_gate_code") in {"OK", "FILTERED"}
     assert body.get("generation_status") in {"OK", "FILTERED"}
+    assert body["generated_count"] >= 1
 
     assert db_session.get(RigRevisionRecord, body["rig_revision_id"]) is not None
     rev = db_session.get(RigRevisionRecord, body["rig_revision_id"])
@@ -52,6 +66,9 @@ def test_generate_patches_ensures_export_bridge(
     assert len(str(rev.canonical_hash)) == 64
     assert db_session.get(GenerationRunRecord, body["source_run_id"]) is not None
     assert db_session.get(PatchLibraryRecord, f"library-{body['source_run_id']}") is not None
+    inv = db_session.get(SystemInventoryRevisionRecord, body["inventory_revision_id"])
+    assert inv is not None
+    assert inv.rack_id == sample_rack_basic.id
 
     # List runs still ready without additional invent
     listed = client.get(f"/api/runs?rack_id={sample_rack_basic.id}")
@@ -59,5 +76,42 @@ def test_generate_patches_ensures_export_bridge(
     run_row = next(r for r in listed.json()["runs"] if r["id"] == body["run_id"])
     assert run_row["export_bridge_ready"] is True
     assert run_row["source_run_id"] == body["source_run_id"]
+    _assert_no_legacy_ids(run_row)
 
+    app.dependency_overrides.clear()
+
+
+def test_generate_empty_rack_not_computable_still_dual_writes(
+    db_session: Session, sample_rack_empty: Rack
+) -> None:
+    """Empty inventory fails closed for patches but still mints native bridge + inventory row."""
+    client = _client(db_session)
+    resp = client.post(f"/api/patches/generate/{sample_rack_empty.id}", json={})
+    assert resp.status_code == 200, resp.text
+    body = resp.json()
+    assert body["generated_count"] == 0
+    assert body.get("generation_status") == "NOT_COMPUTABLE"
+    assert body.get("inventory_gate_code") == "NOT_COMPUTABLE"
+    assert body.get("inventory_revision_id")
+    assert body["export_bridge_ready"] is True
+    _assert_no_legacy_ids(body)
+    assert db_session.get(RigRevisionRecord, body["rig_revision_id"]) is not None
+    assert db_session.get(GenerationRunRecord, body["source_run_id"]) is not None
+    assert db_session.get(SystemInventoryRevisionRecord, body["inventory_revision_id"]) is not None
+    app.dependency_overrides.clear()
+
+
+def test_generate_twice_does_not_invent_new_rig_rev_for_same_layout(
+    db_session: Session, sample_rack_basic: Rack
+) -> None:
+    """Same layout snapshot → same rig-rev-* id across runs (append-only revisions)."""
+    client = _client(db_session)
+    first = client.post(f"/api/patches/generate/{sample_rack_basic.id}", json={}).json()
+    second = client.post(f"/api/patches/generate/{sample_rack_basic.id}", json={}).json()
+    assert first["rig_revision_id"] == second["rig_revision_id"]
+    assert first["source_run_id"] != second["source_run_id"]  # distinct gen-run per integer run
+    _assert_no_legacy_ids(first)
+    _assert_no_legacy_ids(second)
+    # Inventory id stable for same placement set
+    assert first["inventory_revision_id"] == second["inventory_revision_id"]
     app.dependency_overrides.clear()

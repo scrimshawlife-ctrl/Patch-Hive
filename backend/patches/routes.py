@@ -158,6 +158,14 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
     # Matrix slice A: ensure canon FK targets + export bridge as soon as the run exists
     # (do not rely solely on GET /api/runs side-effect).
     bridge = ensure_legacy_run_export_bridge(db, run)
+    # F3 dual-write audit: generate must never mint legacy-* bridge ids when rack exists.
+    if bridge.export_bridge_ready and (
+        bridge.rig_revision_id.startswith("legacy-") or bridge.source_run_id.startswith("legacy-")
+    ):
+        raise HTTPException(
+            status_code=500,
+            detail="EXPORT_BRIDGE_LEGACY_ID_FORBIDDEN",
+        )
     db.commit()
     generation_ir, patch_graphs, provenance = generate_patches_with_ir(
         db, rack, seed=request.seed, config=config
