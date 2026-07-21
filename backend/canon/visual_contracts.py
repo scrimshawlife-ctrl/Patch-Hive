@@ -163,9 +163,7 @@ class ConnectionCandidate(CanonicalContract):
         if self.occlusion_count > 0 and self.status is ResolutionStatus.OBSERVED:
             raise ValueError("obscured cable endpoints cannot be marked OBSERVED")
         if self.status is ResolutionStatus.USER_CONFIRMED:
-            raise ValueError(
-                "connection candidates cannot self-confirm; use ConfirmationDecision"
-            )
+            raise ValueError("connection candidates cannot self-confirm; use ConfirmationDecision")
         return self
 
 

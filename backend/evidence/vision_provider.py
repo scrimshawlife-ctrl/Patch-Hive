@@ -257,8 +257,7 @@ class RecordedFixtureVisionProvider:
 
     def detect_devices(self, ctx: VisionProviderContext) -> Sequence[ClassificationCandidate]:
         candidates = tuple(
-            ClassificationCandidate.model_validate(item)
-            for item in self._packet.get("devices", [])
+            ClassificationCandidate.model_validate(item) for item in self._packet.get("devices", [])
         )
         assert_candidates_are_untrusted(candidates)
         return candidates
@@ -287,8 +286,7 @@ class RecordedFixtureVisionProvider:
         self, ctx: VisionProviderContext, device_candidates: Sequence[ClassificationCandidate]
     ) -> Sequence[ConnectionCandidate]:
         return tuple(
-            ConnectionCandidate.model_validate(item)
-            for item in self._packet.get("connections", [])
+            ConnectionCandidate.model_validate(item) for item in self._packet.get("connections", [])
         )
 
 
