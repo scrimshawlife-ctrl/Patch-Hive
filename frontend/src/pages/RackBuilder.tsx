@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { evidenceApi, rackApi, type EvidenceCandidate } from '@/lib/api';
-import type { Rack } from '@/types/api';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { caseApi, evidenceApi, rackApi, type EvidenceCandidate } from '@/lib/api';
+import type { Case, Rack } from '@/types/api';
 
 type EvidenceState = 'idle' | 'ready' | 'uploading' | 'review' | 'confirmed' | 'error';
 type CandidateStatus = 'inferred' | 'confirmed' | 'rejected' | 'deferred';
@@ -68,10 +68,39 @@ function mapApiCandidates(rows: EvidenceCandidate[]): ReviewCandidate[] {
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_BYTES = 12 * 1024 * 1024;
 
+function casePowerSummary(c: Case): string {
+  const parts: string[] = [];
+  if (c.power_12v_ma != null) parts.push(`+12 ${c.power_12v_ma}mA`);
+  if (c.power_neg12v_ma != null) parts.push(`−12 ${c.power_neg12v_ma}mA`);
+  if (c.power_5v_ma != null) parts.push(`+5 ${c.power_5v_ma}mA`);
+  if (parts.length) return parts.join(' · ');
+  if (c.meta?.powered === false) return 'Unpowered';
+  return 'Power unspecified (placement will not enforce rails)';
+}
+
+function formatValidationError(err: unknown): string {
+  const apiError = err as {
+    response?: { data?: { detail?: string | { message?: string; errors?: { field?: string; message?: string }[] } } };
+  };
+  const detail = apiError.response?.data?.detail;
+  if (typeof detail === 'string') return detail;
+  if (detail && typeof detail === 'object') {
+    const errs = detail.errors;
+    if (Array.isArray(errs) && errs.length) {
+      return errs.map((e) => e.message || e.field || 'Validation error').join(' · ');
+    }
+    if (detail.message) return detail.message;
+  }
+  return 'Could not create rig. Check case selection and try again.';
+}
+
 export default function RackBuilderPage() {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { id: routeId } = useParams<{ id: string }>();
   const rackId = routeId && /^\d+$/.test(routeId) ? Number(routeId) : null;
   const liveMode = rackId != null;
+  const preselectedCaseId = Number(searchParams.get('case_id') || '') || null;
 
   const [racks, setRacks] = useState<Rack[]>([]);
   const [selectedRackId, setSelectedRackId] = useState<number | null>(rackId);
@@ -91,7 +120,19 @@ export default function RackBuilderPage() {
   const [reconcileNote, setReconcileNote] = useState<string | null>(null);
   const [imageCount, setImageCount] = useState(0);
 
+  /** C0: case-bound create on /racks/new */
+  const [cases, setCases] = useState<Case[]>([]);
+  const [casesLoading, setCasesLoading] = useState(false);
+  const [selectedCaseId, setSelectedCaseId] = useState<number | null>(preselectedCaseId);
+  const [rigName, setRigName] = useState('');
+  const [creating, setCreating] = useState(false);
+  const [caseQuery, setCaseQuery] = useState('');
+
   const activeRackId = selectedRackId ?? rackId;
+  const selectedCase = useMemo(
+    () => cases.find((c) => c.id === selectedCaseId) ?? null,
+    [cases, selectedCaseId],
+  );
 
   useEffect(() => {
     if (rackId != null) {
@@ -111,6 +152,47 @@ export default function RackBuilderPage() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps -- initial rack list only
   }, [rackId]);
+
+  useEffect(() => {
+    if (liveMode) return;
+    setCasesLoading(true);
+    caseApi
+      .list({ limit: 200, format_family: 'Eurorack', q: caseQuery.trim() || undefined })
+      .then((res) => {
+        const rows = res.data.cases ?? [];
+        setCases(rows);
+        if (selectedCaseId == null && preselectedCaseId != null) {
+          setSelectedCaseId(preselectedCaseId);
+        } else if (selectedCaseId == null && rows.length === 1) {
+          setSelectedCaseId(rows[0].id);
+        }
+      })
+      .catch(() => setCases([]))
+      .finally(() => setCasesLoading(false));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- case catalog load
+  }, [liveMode, caseQuery]);
+
+  const createRigFromCase = async () => {
+    if (selectedCaseId == null) {
+      setError('Select a Eurorack case before creating a rig.');
+      return;
+    }
+    setCreating(true);
+    setError('');
+    try {
+      const res = await rackApi.create({
+        case_id: selectedCaseId,
+        name: rigName.trim() || undefined,
+        modules: [],
+      });
+      const id = res.data.id;
+      navigate(`/racks/${id}/edit`);
+    } catch (err) {
+      setError(formatValidationError(err));
+    } finally {
+      setCreating(false);
+    }
+  };
 
   const ranked = useMemo(
     () => [...candidates].sort((a, b) => b.confidence - a.confidence),
@@ -337,20 +419,107 @@ export default function RackBuilderPage() {
           <p className="eyebrow">Create rig</p>
           <h1 id="builder-title">Establish your module inventory</h1>
           <p className="muted">
-            Choose modules manually or use one or more photos as reviewable evidence. Multi-photo fusion
-            never auto-confirms inventory.
+            Bind a Eurorack case, then place modules manually or review photo evidence. Multi-photo
+            fusion never auto-confirms inventory. Missing case power stays unchecked.
           </p>
         </div>
       </header>
 
       {!liveMode ? (
-        <div className="panel" style={{ marginBottom: '1rem' }}>
+        <div className="panel" style={{ marginBottom: 'var(--space-4)' }} aria-labelledby="case-step-title">
+          <p className="eyebrow">Step 0 · required</p>
+          <h2 id="case-step-title" style={{ marginTop: 0 }}>
+            Choose a case envelope
+          </h2>
+          <p className="muted">
+            Only Eurorack cases are selectable for placement. Other formats remain catalog-only on{' '}
+            <Link to="/cases">Cases</Link>.
+          </p>
+          <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+            <label className="field" style={{ flex: '1 1 12rem' }}>
+              Search cases
+              <input
+                type="search"
+                value={caseQuery}
+                placeholder="Brand or model…"
+                onChange={(e) => setCaseQuery(e.target.value)}
+              />
+            </label>
+            <label className="field" style={{ flex: '1 1 14rem' }}>
+              Case
+              <select
+                value={selectedCaseId ?? ''}
+                onChange={(e) =>
+                  setSelectedCaseId(e.target.value ? Number(e.target.value) : null)
+                }
+                disabled={casesLoading}
+                aria-required
+              >
+                <option value="">{casesLoading ? 'Loading…' : 'Select Eurorack case…'}</option>
+                {cases.map((c) => (
+                  <option key={c.id} value={c.id}>
+                    {c.brand} — {c.name} ({c.total_hp}HP · {c.rows} row
+                    {c.rows === 1 ? '' : 's'})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="field" style={{ flex: '1 1 10rem' }}>
+              Rig name (optional)
+              <input
+                type="text"
+                value={rigName}
+                onChange={(e) => setRigName(e.target.value)}
+                placeholder="Auto-named if empty"
+              />
+            </label>
+            <button
+              type="button"
+              className="button button-primary"
+              onClick={() => void createRigFromCase()}
+              disabled={creating || selectedCaseId == null}
+            >
+              {creating ? 'Creating…' : 'Create empty rig'}
+            </button>
+          </div>
+          {selectedCase ? (
+            <div className="stat-row" style={{ marginTop: 'var(--space-4)' }}>
+              <div className="stat-block">
+                <p className="muted" style={{ margin: 0 }}>
+                  Layout
+                </p>
+                <h3 style={{ fontSize: '1rem' }}>
+                  {selectedCase.hp_per_row?.join(' + ') || selectedCase.total_hp} HP
+                </h3>
+              </div>
+              <div className="stat-block">
+                <p className="muted" style={{ margin: 0 }}>
+                  Power
+                </p>
+                <h3 style={{ fontSize: '1rem' }}>{casePowerSummary(selectedCase)}</h3>
+              </div>
+            </div>
+          ) : null}
+          {error && !liveMode ? (
+            <p className="status status-danger" role="alert" style={{ marginTop: 'var(--space-3)' }}>
+              {error}
+            </p>
+          ) : null}
+          {!casesLoading && cases.length === 0 ? (
+            <p className="status status-warning" style={{ marginTop: 'var(--space-3)' }}>
+              No Eurorack cases in catalog. Import with <code>just cases-import</code> or open{' '}
+              <Link to="/cases">Cases</Link>.
+            </p>
+          ) : null}
+
+          <hr style={{ border: 0, borderTop: '1px solid var(--border)', margin: 'var(--space-5) 0' }} />
+
           <p className="muted">
             Photo evidence binds to an existing rig. Select a rig for live multi-photo upload, or continue
-            with local demo detection.
+            with local demo detection after create.
           </p>
           {racks.length > 0 ? (
-            <label htmlFor="evidence-rack">
+            <label className="field" htmlFor="evidence-rack" style={{ maxWidth: '24rem' }}>
               Target rig for evidence
               <select
                 id="evidence-rack"
@@ -358,20 +527,18 @@ export default function RackBuilderPage() {
                 onChange={(event) =>
                   setSelectedRackId(event.target.value ? Number(event.target.value) : null)
                 }
-                style={{ marginLeft: '0.5rem' }}
               >
                 <option value="">Demo only (no API)</option>
                 {racks.map((rack) => (
                   <option key={rack.id} value={rack.id}>
                     #{rack.id} · {rack.name}
+                    {rack.case_id != null ? ` · case #${rack.case_id}` : ''}
                   </option>
                 ))}
               </select>
             </label>
           ) : (
-            <p className="muted">
-              No rigs loaded. <Link to="/racks">Create a rig</Link> first for live evidence APIs.
-            </p>
+            <p className="muted">Create a case-bound rig above to enable live evidence APIs.</p>
           )}
         </div>
       ) : (

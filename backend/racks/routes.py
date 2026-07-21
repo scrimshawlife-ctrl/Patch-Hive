@@ -28,7 +28,11 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
     is_valid, errors = validate_rack_configuration(db, rack.case_id, rack.modules)
     if not is_valid:
         raise HTTPException(
-            status_code=400, detail={"message": "Rack validation failed", "errors": errors}
+            status_code=400,
+            detail={
+                "message": "Rack validation failed",
+                "errors": [e.model_dump() for e in errors],
+            },
         )
 
     modules = []
@@ -129,7 +133,11 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
         is_valid, errors = validate_rack_configuration(db, db_rack.case_id, rack_update.modules)
         if not is_valid:
             raise HTTPException(
-                status_code=400, detail={"message": "Rack validation failed", "errors": errors}
+                status_code=400,
+                detail={
+                    "message": "Rack validation failed",
+                    "errors": [e.model_dump() for e in errors],
+                },
             )
 
         # Delete existing modules

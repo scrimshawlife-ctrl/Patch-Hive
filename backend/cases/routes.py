@@ -58,19 +58,62 @@ def list_cases(
     limit: int = Query(100, ge=1, le=1000),
     brand: Optional[str] = None,
     min_hp: Optional[int] = None,
+    max_hp: Optional[int] = None,
+    q: Optional[str] = Query(None, description="Search brand or name"),
+    format_family: Optional[str] = Query(
+        None,
+        description="Filter by meta.format_family (e.g. Eurorack). Applied after SQL filters.",
+    ),
+    powered: Optional[bool] = Query(
+        None,
+        description="Filter by meta.powered when present; null-power treated as powered for true.",
+    ),
+    min_rows: Optional[int] = Query(None, ge=1),
     db: Session = Depends(get_db),
 ):
-    """List cases with optional filters."""
+    """List cases with optional filters (SQL + lightweight meta post-filter)."""
     query = db.query(Case)
 
-    # Apply filters
     if brand:
         query = query.filter(Case.brand.ilike(f"%{brand}%"))
     if min_hp is not None:
         query = query.filter(Case.total_hp >= min_hp)
+    if max_hp is not None:
+        query = query.filter(Case.total_hp <= max_hp)
+    if min_rows is not None:
+        query = query.filter(Case.rows >= min_rows)
+    if q:
+        like = f"%{q}%"
+        query = query.filter((Case.brand.ilike(like)) | (Case.name.ilike(like)))
 
-    total = query.count()
-    cases = query.offset(skip).limit(limit).all()
+    # Cap pre-meta scan so format/powered filters stay bounded.
+    candidates = query.order_by(Case.brand.asc(), Case.name.asc()).limit(2000).all()
+
+    def _format_ok(case: Case) -> bool:
+        if not format_family:
+            return True
+        meta = case.meta if isinstance(case.meta, dict) else {}
+        family = (meta.get("format_family") or "").strip()
+        # Legacy seed cases without meta default to Eurorack layout fields.
+        if not family and format_family.lower() == "eurorack":
+            return True
+        return family.lower() == format_family.lower()
+
+    def _powered_ok(case: Case) -> bool:
+        if powered is None:
+            return True
+        want = bool(powered)
+        meta = case.meta if isinstance(case.meta, dict) else {}
+        if "powered" in meta:
+            return bool(meta.get("powered")) is want
+        # Without meta.powered: "No Power" / unpowered in name → unpowered; else powered.
+        name_l = (case.name or "").lower()
+        is_powered = "no power" not in name_l and "unpowered" not in name_l
+        return is_powered is want
+
+    filtered = [c for c in candidates if _format_ok(c) and _powered_ok(c)]
+    total = len(filtered)
+    cases = filtered[skip : skip + limit]
 
     return CaseListResponse(total=total, cases=cases)
 
