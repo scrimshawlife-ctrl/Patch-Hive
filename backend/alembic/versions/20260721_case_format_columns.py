@@ -13,7 +13,7 @@ import sqlalchemy as sa
 from alembic import op
 
 revision = "20260721_case_format_columns"
-down_revision = "20260721_user_style_recipes"
+down_revision = "20260721_case_source_policy"
 branch_labels = None
 depends_on = None
 
