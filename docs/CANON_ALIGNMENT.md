@@ -2,10 +2,10 @@
 
 Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification, product/design specification, repository behavior, and historical claims.
 
-**Campaign:** Issue #46 closed · PR #47 merged · PR #49 merged (P1 client)  
-**Last inventory refresh:** 2026-07-21 · main HEAD `71a4dfa`  
+**Campaign:** Issue #46 closed · PR #47–#54 product path merged · PR #53 one-page publishing docs  
+**Last inventory refresh:** 2026-07-21 · main baseline `72c9dcc` (+ this branch)  
 **Continuation plan:** [CONTINUATION.md](CONTINUATION.md)
-
+**Tracking:** open residual issue linked from CONTINUATION (P1 inventory / P2 hygiene)
 ## Classification
 
 | Surface | Classification | Active MVP disposition |
@@ -20,9 +20,10 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Admin diagnostics/auditing | CANON_SUPPORTING | RBAC retained; canonical audit events append-only |
 | Image/provider detection | CANON_SUPPORTING | Untrusted evidence only; validation, scan adapter, re-encoding, metadata stripping |
 | Integration/catalog adapters | CANON_SUPPORTING | Retained behind bounded adapters |
-| Legacy `/api/racks`, `/api/patches`, `/api/runs` | CANON_SUPPORTING / transitional | Still mounted; **active inventory UI** — reduce per CONTINUATION P1 residual |
-| Legacy `POST /api/export/runs/{id}/patchbook` debit | CANON_SUPPORTING / transitional | Acceptance still depends; MVP UI debits via `/api/canon/exports` only (PR #49) |
+| Legacy `/api/racks`, `/api/patches`, `/api/runs` | CANON_SUPPORTING / transitional | Still mounted; **active inventory UI** — see **Inventory dual-path matrix** below |
+| Legacy `POST /api/export/runs/{id}/patchbook` debit | CANON_SUPPORTING / transitional | MVP UI + acceptance use `/api/canon/exports` (PR #49/#51); gate via `ENABLE_LEGACY_PATCHBOOK_DEBIT` |
 | Legacy `/api/export/*` PDF/SVG GET bytes | CANON_SUPPORTING | Artifact delivery; no new MVP debits |
+| Run list DTO bridge fields | CANON_SUPPORTING | Server-authored `legacy-run-*` / `legacy-rack-*` + hash (PR #54); not yet native canon generator IDs |
 | Community feed, comments, votes, following, notifications | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Public publishing/profiles/sharing | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Leaderboards | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
@@ -71,6 +72,50 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | 7 | Security, accessibility, operations | Complete (workflows + docs) |
 | 8 | Full validation and documentation alignment | Complete — merged main via PR #47 |
 | P1 client | Credits/exports FE → `/api/canon/*` | Complete — merged main via PR #49 |
-| P1 residual | Acceptance debit, run DTO bridge, inventory dual-path | **Open** — see CONTINUATION |
+| P1 residual | Acceptance debit, run DTO bridge, inventory dual-path | Acceptance + run DTO **done** (#51/#54); inventory matrix below; dual-path code open |
+| P1 docs | One-page publishing + release governance | PR #53 (this lineage) |
 
 Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not as a re-open of Phase 0–8 unless critical regression appears.
+
+## Inventory dual-path matrix (design-first)
+
+**Purpose:** map active MVP client calls to preferred HTTP surfaces without a big-bang delete of racks/patches routers.  
+**Rule:** one vertical slice at a time; keep dual mount until replacement green on CI Postgres.  
+**Authority:** product inventory only — no production deploy implied.
+
+| Client surface (OBSERVED) | Current HTTP | Preferred long-term | Near-term disposition | Next engineering slice |
+|---|---|---|---|---|
+| Module gallery list/detail | `GET /api/modules` | Keep as catalog MVP (`CANON_MVP`) | **Retain** | None (stable) |
+| Cases list UI | stub page; API `GET /api/cases` exists | Keep catalog | **Retain API**; wire UI (P4) | P4 Cases page |
+| Rigs list / create / edit | `GET/POST/PATCH /api/racks` | Adapter over immutable **Rig + RigRevision** | **CANON_SUPPORTING** keep routers | Optional: document rack_id ≡ rig_id |
+| Rack builder | `/api/racks` + modules | Same | **Retain** | Photo evidence already separate |
+| Run list / detail | `GET /api/runs?rack_id=` | Enriched DTO already; future `/api/canon/runs` | **Retain** + bridge fields | Native canon run write on generate |
+| Run patches | `GET /api/runs/{id}/patches` | Canon library membership | **Retain** until generate emits `generated_patches` | Generator dual-write |
+| Patch generate | `POST /api/patches/generate/{rack_id}` | Canon compiler + `create_run_with_library` | **Retain** entry; dual-write bridge | **Slice A:** generate ensures bridge + optional GenerationRun |
+| Patch list page | stub; `GET /api/patches` | Canon libraries / generated patches | **Retain API**; wire UI (P4) | P4 |
+| RigDetail export debit | `POST /api/canon/exports` via run DTO fields | Already preferred | **Done** (#49/#54) | Promote off `legacy-*` IDs |
+| Account credits/exports | `/api/canon/*` | Already preferred | **Done** | — |
+| PDF/SVG bytes | `GET /api/export/...` | Canon download tokens + artifact store | **Retain GETs** (no debit) | Optional token gate later |
+| Legacy patchbook debit POST | `POST /api/export/runs/{id}/patchbook` | Disabled when flag false | **Transitional** | Flip default false after caller audit |
+| Auth login/register/me | `/api/community/auth/*`, users | Keep | **Retain** | — |
+| Admin diagnostics | `/api/admin/*` | Keep | **Retain** | — |
+| Social/publish/leaderboards FE pages | unrouted files + flagged APIs | Off | **P2 archive/delete** | Quarantine PR |
+| `publishingApi` / `communityApi` FE | only dead pages | Drop with P2 | **P2** | — |
+
+### Explicit non-goals (this matrix)
+
+- Do **not** rename HTTP `/racks` → `/rigs` in one PR without FE+acceptance+docs.  
+- Do **not** delete `backend/racks` or `backend/patches` while Racks/RigDetail depend on them.  
+- Do **not** require Next.js or GraphQL.
+
+### Recommended vertical slices (order)
+
+| ID | Slice | Exit criteria |
+|----|--------|----------------|
+| **A** | On `POST /api/patches/generate/{rack_id}`, after legacy `Run` create, call `ensure_legacy_run_export_bridge` (or stronger dual-write) | New runs immediately `export_bridge_ready` without relying only on list GET side-effect |
+| **B** | Optional thin `GET /api/canon/runs?rig_id=` alias returning same bridge DTO | FE can migrate one call site; legacy list remains |
+| **C** | Generator writes real `RigRevisionRecord` content hash from rack snapshot (still may keep `legacy-rack-*` id until revision chain exists) | Manifest/hash reflects rack content, not only run id |
+| **D** | P2 move unrouted FE pages to `frontend/src/legacy/` | No import from `App.tsx`; dead client APIs unused |
+| **E** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` default after ripgrep shows no non-test callers | 410 on legacy debit in default env |
+
+**Matrix status:** **DESIGN COMPLETE** (this section). Implementation starts at slice **A** on a feature branch — not in docs-only #53 unless bundled.

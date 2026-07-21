@@ -144,11 +144,123 @@ All symbolic, ritual, or forecasting use of modular systems inside AAL MUST pass
 
 ---
 
+# PATCHHIVE ONE-PAGE PATCH BOOK PUBLISHING CANON (v1.0)
+
+## Status
+
+**ADOPTED — CANONICAL**
+
+This entry governs every PatchHive artifact represented as a published patch page or Patch Book.
+
+## I. Core Publishing Law
+
+Every published patch MUST occupy exactly one standalone page.
+
+A published patch:
+
+- may not continue onto another page
+- may not share a page with another patch
+- may not depend on a facing page
+- may not require a QR target for essential execution information
+- must remain complete at the intended print or display size
+
+Front matter and back matter are not patch pages and are exempt from the one-patch rule.
+
+## II. Required Standalone Semantics
+
+Every patch page MUST contain or directly encode:
+
+- patch identity and version
+- category, difficulty, and estimated build time
+- purpose, expected result, and listening cue
+- required modules
+- ordered connections
+- essential starting settings
+- a technical signal-flow diagram
+- performance controls
+- bounded troubleshooting and warnings
+- page, patch, source run, and generator identity
+
+Optional media, extended lessons, audio, video, and community material may supplement but never replace required page content.
+
+## III. Fit Authority
+
+The page-fit validator is authoritative over publication eligibility.
+
+The generator MAY:
+
+- select an approved semantic layout
+- compress optional prose without changing meaning
+- simplify decorative content
+- decompose an over-complex concept into separately executable patches
+- reject a patch from an output profile
+
+The generator MUST NOT:
+
+- reduce typography below the output profile minimum
+- clip or hide required content
+- omit connections, modes, or warnings to force fit
+- invent technical values
+- allow content to cross the page boundary
+
+## IV. Canonical Layout Classes
+
+Only versioned, tested layout classes may publish canonical pages. The initial classes are:
+
+- diagram-first
+- instruction-first
+- performance-first
+
+Theme variation may alter tokens and ornament but may not create hidden semantic layouts.
+
+## V. Diagram Canon
+
+The technical diagram is SVG-first and deterministic.
+
+Every cable route MUST remain interpretable without color through route numbers, labels, patterns, direction markers, or a combination of these. Diagram and ordered connection list MUST encode the same PatchGraph.
+
+Photorealistic module imagery is secondary and cannot replace the technical route diagram.
+
+## VI. Accessibility Canon
+
+Published pages MUST remain usable in grayscale and MUST preserve logical reading order, sufficient contrast, minimum typography, textual graph alternatives, and non-color signal classification.
+
+An accessibility failure is a production compilation failure, not an advisory preference.
+
+## VII. Reproducibility Canon
+
+Every accepted page MUST bind to:
+
+- PatchPageSpec schema version
+- patch ID and version
+- source run ID
+- source rig revision ID
+- generator version
+- layout profile
+- canonical content hash
+- page asset hash
+- PageFitReport
+
+Fixed normalized input, schema version, generator version, layout profile, and seed MUST produce canonical-equivalent output.
+
+## VIII. Required Rune Surface
+
+- `RUNE.PATCHHIVE.BUILD_PATCH_PAGE_SPEC`
+- `RUNE.PATCHHIVE.SELECT_PAGE_LAYOUT`
+- `RUNE.PATCHHIVE.RENDER_PATCH_PAGE_SVG`
+- `RUNE.PATCHHIVE.VALIDATE_PAGE_FIT`
+- `RUNE.PATCHHIVE.COMPILE_PATCH_PAGE`
+- `RUNE.PATCHHIVE.ASSEMBLE_PATCH_BOOK`
+- `RUNE.PATCHHIVE.VALIDATE_PATCH_BOOK`
+
+`RUNE.PATCHHIVE.COMPILE_PATCH_PAGE` may return an accepted page only when signal validation, required-content validation, diagram legibility, page fit, accessibility, and standalone execution all pass.
+
+## IX. Canonical Reference
+
+The complete engineering contract is [PATCH_BOOK_GENERATOR.md](PATCH_BOOK_GENERATOR.md). That document may refine schemas, budgets, tests, and error taxonomies but may not weaken this canon without an explicit versioned canon update.
+
+---
+
 ## SEAL 🧿
 
-Next logical steps are now constrained and clear:
-1. Function Descriptor (DFD) specs for the bridge ops
-2. RigMetricsPacket → Abraxas metric mapping table
-3. User onboarding questions → rig intent vector
-
-Say which you want instantiated next, and I’ll generate it canon-clean and repo-ready.
+PatchHive publishing is constrained to deterministic, complete, one-page patch artifacts. Complexity must be simplified, decomposed, or rejected rather than hidden.
