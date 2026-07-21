@@ -12,6 +12,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session, selectinload
 
 from cases import catalog_service
+from cases.compatibility import evaluate_catalog_compatibility
+from cases.compatibility_schemas import CompatibilityRequest, CompatibilityResponse
 from cases.catalog_schemas import (
     CaseCatalogDetail,
     CaseCatalogListItem,
@@ -222,3 +224,24 @@ def list_catalog_revisions(slug: str, db: Session = Depends(get_db)):
         model=case.model,
         revisions=[_revision_detail(r) for r in revisions],
     )
+
+
+@router.post(
+    "/catalog/{slug}/compatibility",
+    response_model=CompatibilityResponse,
+    summary="Evaluate module placements against a catalog case revision",
+)
+def evaluate_case_compatibility(
+    slug: str,
+    body: CompatibilityRequest,
+    db: Session = Depends(get_db),
+):
+    """Physical fit, remaining capacity, rail headroom, connectors, +5V, and lid checks.
+
+    Each check reports ``verified``, ``incomplete``, or ``conflict``. Missing
+    case or module specs never invent capacity.
+    """
+    try:
+        return evaluate_catalog_compatibility(db, slug, body)
+    except LookupError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
