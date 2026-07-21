@@ -12,64 +12,26 @@ from datetime import datetime, timezone
 from sqlalchemy.orm import Session
 
 from canon.exports import compensate_failed_export, credit_balance
-from canon.models import (
-    CanonicalCreditLedgerEntryRecord,
-    CanonicalExportRecord,
-    GenerationRunRecord,
-    PatchLibraryRecord,
-    RigRevisionRecord,
-)
+from canon.models import CanonicalCreditLedgerEntryRecord, CanonicalExportRecord
 from core import settings
+from runs.bridge import (
+    ensure_legacy_run_export_bridge,
+)
+from runs.models import Run
 
 
 def _auth_headers(token: str) -> dict:
     return {"Authorization": f"Bearer {token}"}
 
 
-def _attach_canon_export_sources(db_session: Session, *, user_id: int, rig_id: int) -> dict[str, str]:
-    """Create minimal canon hierarchy for export FK targets (bridge ids)."""
-    revision_id = f"legacy-rack-{rig_id}"
-    run_id = f"canon-run-from-rack-{rig_id}"
-    library_id = f"library-from-rack-{rig_id}"
-    manifest_hash = "c" * 64
-
-    if db_session.get(RigRevisionRecord, revision_id) is None:
-        db_session.add(
-            RigRevisionRecord(
-                id=revision_id,
-                rig_id=rig_id,
-                schema_version="patchhive.canon.v1",
-                canonical_rig={"modules": [], "bridge": "legacy-rack"},
-                canonical_hash="a" * 64,
-            )
-        )
-    if db_session.get(GenerationRunRecord, run_id) is None:
-        db_session.add(
-            GenerationRunRecord(
-                id=run_id,
-                user_id=user_id,
-                rig_revision_id=revision_id,
-                schema_version="patchhive.canon.v1",
-                generator_version="1.0.0",
-                generation_seed=7,
-                normalized_input_hash="b" * 64,
-            )
-        )
-    if db_session.get(PatchLibraryRecord, library_id) is None:
-        db_session.add(
-            PatchLibraryRecord(
-                id=library_id,
-                run_id=run_id,
-                artifact_manifest_hash=manifest_hash,
-                canonical_hash="d" * 64,
-            )
-        )
+def _attach_canon_export_sources(db_session: Session, *, run_id: int) -> dict[str, str]:
+    """Ensure server bridge hierarchy for a golden-demo legacy run."""
+    run = db_session.get(Run, run_id)
+    assert run is not None
+    bridge = ensure_legacy_run_export_bridge(db_session, run)
     db_session.commit()
-    return {
-        "source_run_id": run_id,
-        "source_rig_revision_id": revision_id,
-        "artifact_manifest_hash": manifest_hash,
-    }
+    assert bridge.export_bridge_ready
+    return bridge.as_export_body_fields()
 
 
 def _canon_export_body(sources: dict[str, str], idempotency_key: str) -> dict:
@@ -84,9 +46,7 @@ def _canon_export_body(sources: dict[str, str], idempotency_key: str) -> dict:
 
 
 def test_export_blocked_without_credits(api_client, db_session: Session, golden_demo_seed):
-    sources = _attach_canon_export_sources(
-        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
-    )
+    sources = _attach_canon_export_sources(db_session, run_id=golden_demo_seed.run_id)
 
     login_resp = api_client.post(
         "/api/community/auth/login",
@@ -121,9 +81,7 @@ def test_export_blocked_without_credits(api_client, db_session: Session, golden_
 def test_admin_grant_then_export_succeeds(
     api_client, db_session: Session, golden_demo_seed, admin_user
 ):
-    sources = _attach_canon_export_sources(
-        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
-    )
+    sources = _attach_canon_export_sources(db_session, run_id=golden_demo_seed.run_id)
 
     admin_login = api_client.post(
         "/api/community/auth/login",
@@ -211,9 +169,7 @@ def test_failed_export_compensates_without_net_spend(
     api_client, db_session: Session, golden_demo_seed, admin_user
 ):
     """Terminal failure after debit is reversed via one immutable compensation entry."""
-    sources = _attach_canon_export_sources(
-        db_session, user_id=golden_demo_seed.user_id, rig_id=golden_demo_seed.rig_id
-    )
+    sources = _attach_canon_export_sources(db_session, run_id=golden_demo_seed.run_id)
 
     admin_login = api_client.post(
         "/api/community/auth/login",
