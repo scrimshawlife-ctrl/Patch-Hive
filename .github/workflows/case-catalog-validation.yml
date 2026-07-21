@@ -46,12 +46,22 @@ jobs:
           Base.metadata.create_all(bind=engine)
           PY
       - name: Validate seed example dry run
-        run: python -m integrations.case_catalog_populator --input ../data/cases/schema.example.json --dry-run --receipt ../out/case_catalog/example-dry-run-receipt.json
-      - name: Upload focused validation receipt
+        run: |
+          mkdir -p ../out/case_catalog
+          set -o pipefail
+          python -m integrations.case_catalog_populator \
+            --input ../data/cases/schema.example.json \
+            --dry-run \
+            --receipt ../out/case_catalog/example-dry-run-receipt.json \
+            2>&1 | tee ../out/case_catalog/example-dry-run.log
+      - name: Upload focused validation diagnostics
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: case-catalog-focused-validation
-          path: out/case_catalog/example-dry-run-receipt.json
+          path: |
+            out/case_catalog/example-dry-run-receipt.json
+            out/case_catalog/example-dry-run.log
           if-no-files-found: error
 
   migration-chain:
