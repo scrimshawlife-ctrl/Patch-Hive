@@ -146,6 +146,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 25. ~~Dual-path retirement design F0~~ **DONE** ([DUAL_PATH_RETIREMENT_DESIGN.md](evidence/DUAL_PATH_RETIREMENT_DESIGN.md))
 26. Optional: cut `v0.3.0-alpha.1` release tag after this docs/ops PR
 27. Next dual-path code: F3 generate dual-write audit (not delete racks)
+28. ~~RigDetail inventory→generate UX loop~~ **DONE** (this PR)
 
 ### P5 — Explicitly deferred
 
