@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `da790b0` (includes PR #75 fusion confirm UX + Compose receipt)  
-**Tracking:** Issue #46 closed · PR #47–#75 on main  
-**PR #66–#75:** **MERGED** (VSI P0 through multi-photo UI, fusion confirm, local Compose drill)  
+**main HEAD:** `eec5354` (includes PR #78 patchhive import telemetry quarantine)  
+**Tracking:** Issue #46 closed · PR #47–#78 on main  
+**PR #66–#78:** **MERGED** (VSI through multi-photo UX, inventory receipt, modules polish, import quarantine)  
 **Plan:** [evidence/CONTINUATION_PLAN_POST_75.md](evidence/CONTINUATION_PLAN_POST_75.md)
 
 ## Where we are
@@ -109,8 +109,9 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 
 1. ~~**Cases / Patches list pages**~~ **DONE** (PR #69)
 2. ~~Deeper rig revision UX~~ **DONE** (revision picker + overlay notes/favorite/tried).
-3. Stronger empty/loading/error parity on Modules list.
-4. Expand golden fixtures / property tests for compiler edge cases.
+3. ~~Stronger empty/loading/error parity on Modules list~~ **DONE** (PR #77 + prior)  
+4. ~~Expand golden fixtures / property tests for compiler edge cases~~ **DONE** (this PR)  
+
 5. Real image scanner implementation behind `ImageScanner` (ops secret + service).
 
 ### P4b — Visual System Intelligence (ACTIVE residual)
@@ -136,6 +137,8 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 17. ~~RigDetail inventory-revision receipt surface~~ **DONE** (`GET .../evidence/inventory` + overview panel)
 18. ~~Modules catalog polish~~ **DONE** (search/filter/sort + place-on-rig entry; Racks list loading/empty/retry)
 19. ~~`patchhive` import telemetry quarantine~~ **DONE** (Wave 4 — telemetry, markers, CI guard)
+20. ~~Compiler validation edge-case suite expansion~~ **DONE** (signal/direction/feedback/attenuation/empty)
+21. Migrate one `legacy_pipeline` suite onto canon contracts
 
 ### P5 — Explicitly deferred
 

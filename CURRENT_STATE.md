@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `da790b0` (merge of PR #75; pin may lag until this docs pass merges)
+**HEAD:** `eec5354` (merge of PR #78; pin may lag until this docs pass merges)
 
 ### Recent merges (OBSERVED)
 
@@ -16,6 +16,9 @@
 | [#72](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/72) | Rig revision picker, overlays, multi-photo reconcile API |
 | [#74](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/74) | Multi-photo evidence UI + fusion review panel |
 | [#75](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/75) | Fusion confirm/reject/defer + staging Compose receipt |
+| [#76](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/76) | Inventory receipt API/UI, fusion e2e, docs pin |
+| [#77](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/77) | Module gallery search/filter + Racks list parity |
+| [#78](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/78) | `patchhive` import telemetry quarantine + CI guard |
 
 **Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
 
@@ -30,13 +33,14 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 |------|--------|
 | Product identity | Deterministic Eurorack **rig + patch documentation** — not audio DSP / hardware control |
 | Canonical domain | `backend/canon/` |
-| Visual intelligence | P0 on main + multi-photo fuse API/UI + fusion confirm UX (user-initiated only) |
-| FE catalog depth | Cases/Patches/Modules list parity (loading/empty/error/retry) |
-| RackBuilder evidence | Multi-file upload; live `evidenceApi`; fusion panel confirm/reject/defer |
-| AI engineering | `justfile`, `.codebase-memory` rebuild, engineering CI |
+| Visual intelligence | P0 + multi-photo fuse/confirm UX; accuracy `NOT_COMPUTABLE` |
+| FE catalog depth | Cases/Patches/Modules (+ search/filter); Racks list parity |
+| RackBuilder evidence | Multi-file upload; fusion panel; inventory receipt on RigDetail |
+| AI engineering | `justfile`, indexes, engineering CI, import telemetry guard |
+| Historical package | `backend/patchhive` read-mostly; CI blocks canon/evidence imports |
 | Bridge IDs | Native `rig-rev-*` / `gen-run-*` |
 | Alembic head | **`20240930_patch_user_overlays`** |
-| Local Compose | db+backend healthy (see `docs/evidence/STAGING_COMPOSE_RECEIPT.md`) |
+| Local Compose | db+backend healthy (`docs/evidence/STAGING_COMPOSE_RECEIPT.md`) |
 | Payments | Test-mode only; production payments disabled |
 | Production deploy | **Not performed** |
 
@@ -44,20 +48,17 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 
 | Gate | Result | Class |
 |------|--------|-------|
-| PR #74 / #75 CI | success | OBSERVED |
+| PR #76–#78 CI | success | OBSERVED |
 | Vision production accuracy | no representative dataset | `NOT_COMPUTABLE` |
 | Named multi-tenant staging host | not provisioned | `NOT_PERFORMED` |
 | Local Compose drill | pass | OBSERVED |
 
 ## Immediate continuation priorities
 
-See [docs/evidence/CONTINUATION_PLAN_POST_75.md](docs/evidence/CONTINUATION_PLAN_POST_75.md):
-
-1. Docs pin (this file) + capability matrix refresh  
-2. Playwright multi-photo + fusion confirm  
-3. RigDetail inventory-revision receipt surface  
-4. Modules catalog polish  
-5. `patchhive` import telemetry quarantine  
+1. Expand canon compiler golden / property edge cases (this campaign residual)  
+2. Migrate one `legacy_pipeline` test suite onto `canon` contracts  
+3. Named staging host (ops-gated)  
+4. Optional release tag after hardening window  
 
 ## Authority boundary
 
