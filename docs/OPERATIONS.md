@@ -16,6 +16,24 @@ PatchHive remains a modular monolith. Apply the single Alembic head before appli
 8. Verify `STRIPE_TEST_MODE=true` and `ALLOW_PRODUCTION_PAYMENTS=false`.
 9. Perform the manual accessibility protocol ([ACCESSIBILITY.md](ACCESSIBILITY.md)).
 10. Confirm CORS, `SECRET_KEY`, and DB networking meet [SECURITY.md](SECURITY.md).
+11. For Patch Book output, pass every gate in [PATCH_BOOK_GENERATOR.md](PATCH_BOOK_GENERATOR.md), including one-patch-per-page, page-fit, accessibility, manifest, and deterministic replay validation.
+
+## Patch Book production gate
+
+A Patch Book export may be marked `ready` only when:
+
+- every published patch maps to exactly one accepted PatchPageSpec
+- patch count equals patch-page count
+- PDF page count equals PatchBookManifest page count
+- no required content block overflows, clips, or falls below minimum typography
+- diagram routes and ordered connection steps encode the same PatchGraph
+- grayscale and non-color interpretation pass
+- every page binds to patch ID, source run, source rig revision, generator version, canonical hash, and page asset hash
+- all table-of-contents, index, and cross-reference targets resolve
+- all included assets match their manifest hashes
+- deterministic replay reproduces canonical-equivalent JSON and stable SVG structure
+
+A failed page cannot be silently omitted from a paid export. The export must fail with a machine-readable reason, preserve diagnostics, and follow the existing idempotent compensation path.
 
 ## Local / Compose
 
@@ -34,6 +52,8 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 - Repeated export requests return the existing idempotent export and do not debit again.
 - Replayed Stripe events with identical payloads are no-ops; a payload mismatch for the same event ID is rejected.
 - Generation never overwrites a prior run; retry orchestration must create or resume an explicit job and preserve receipts.
+- Page compilation retries must reuse the same normalized input identity and may not create conflicting accepted page artifacts.
+- A PageFitReport failure remains attached to the failed export diagnostics and is never rewritten into a pass.
 - Prefer `/api/canon/*` for new export/credit clients; treat legacy `/api/export` as transitional until CONTINUATION P1 completes.
 
 ## CI authority
@@ -45,6 +65,8 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 | `security.yml` | pip-audit, npm audit, Bandit, Gitleaks, CycloneDX SBOMs |
 
 No workflow deploys the application or activates production payments.
+
+Patch-book implementation must add contract/property coverage, representative golden fixtures, SVG structural regression, rendered visual regression, and PDF/manifest page-count verification before production export is enabled.
 
 ## Deploy targets (inventory only)
 
