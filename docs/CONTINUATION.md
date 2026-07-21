@@ -1,7 +1,7 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
+**main HEAD:** `296fc3bc2548628be504a16d6ca3134fb6fa8a55`  
 **Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED · PR #54 MERGED  
 **Open campaign PRs:** none
 
@@ -30,8 +30,8 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 - [ ] Production or staging deploy
 - [ ] Live Stripe / `ALLOW_PRODUCTION_PAYMENTS=true`
 - [ ] Full retirement of legacy rack/patch/export dual paths
-- [ ] Move acceptance credits path off legacy `POST /api/export/runs/{id}/patchbook`
-- [ ] Run DTOs with real `rig_revision_id` + server-side manifest hash (still `legacy-rack-{id}` bridge)
+- [x] Move acceptance credits path off legacy debit POST (PR #51)
+- [x] Run DTOs with server-authored bridge fields (PR #54; namespace still legacy-*)
 - [ ] Deletion of historical top-level/`backend/patchhive` package and unrouted page modules
 - [ ] Cases/Patches list pages beyond stubs
 - [ ] Hardware, DSP, MIDI/CV, or ModularGrid live provider implementation
@@ -68,7 +68,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 
 1. ~~**Acceptance → canon credits path**~~ **DONE** (PR #51)  
 2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default still true for transitional callers)  
-3. ~~**Run / revision bridge honesty**~~ **DONE** (this PR — server DTO + ensure canon rows; namespace still `legacy-*` until native generator)  
+3. ~~**Run / revision bridge honesty**~~ **DONE** (PR #54 — server DTO + ensure canon rows; namespace still legacy-* until native generator)  
 
 4. **Inventory dual-path plan (design-first, then thin PR)**  
    - Active UI still calls `/api/racks`, `/api/runs`, `/api/patches` for inventory + generate (`Racks.tsx`, `RigDetail.tsx`, `RackBuilder`).  
@@ -157,7 +157,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 ```bash
 # main
 git fetch origin && git checkout main && git pull --ff-only
-git rev-parse HEAD   # expect 7471a2a… or later
+git rev-parse HEAD   # expect 296fc3b… or later
 
 cd backend
 # prefer project venv; scrub Hermes PYTHONPATH if present
@@ -196,4 +196,4 @@ CI authoritative when local Docker/Postgres missing. Full `make test` requires D
 5. Staging optional but recommended before any public traffic claim  
 6. **Stretch (P1 complete):** acceptance + UI share one debit ledger path (canon)
 
-**Active engineering starts at P1 residual item 1** (acceptance → canon exports).
+**Active engineering starts at P1 inventory dual-path plan / P2 dead-UI hygiene.**

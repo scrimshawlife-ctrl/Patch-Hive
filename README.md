@@ -10,12 +10,12 @@ PatchHive is a deterministic Eurorack **rig and patch documentation** workspace.
 | **P1 credits/exports client** | **MERGED** via [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) — MVP UI uses `/api/canon/*` |
 | **P1 acceptance → canon ledger** | **MERGED** via [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) |
 | **P1 run DTO export bridge** | **MERGED** via [PR #54](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/54) |
-| **main HEAD** | `7471a2a09cb7435ebf1ea10fe6280ebc94774500` |
+| **main HEAD** | `296fc3bc2548628be504a16d6ca3134fb6fa8a55` |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
 | **Alembic head** | `20240928_fix_schema_gaps` |
 | **CI on HEAD** | Backend Tests · Code Quality · Security — green |
 | **Production deploy** | Not performed — payments remain test-mode only |
-| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) **P1 residual** (acceptance→canon, run DTO bridge) · [CURRENT_STATE.md](CURRENT_STATE.md) |
+| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) **P1 residual** (inventory dual-path; native canon runs) · [CURRENT_STATE.md](CURRENT_STATE.md) |
 
 Default branch is `main`. No campaign branch checkout required.
 
