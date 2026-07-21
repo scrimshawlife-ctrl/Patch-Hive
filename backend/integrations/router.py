@@ -1,5 +1,5 @@
 """
-API endpoints for ModularGrid integration.
+API endpoints for ModularGrid and Synth Catalog Research integration.
 
 ABX-Core v1.3: Full provenance tracking for all import operations.
 """
@@ -16,8 +16,16 @@ from integrations.modulargrid_importer import (
     import_cases,
     import_modules,
 )
+from integrations.synth_catalog_data import seed_stats
+from integrations.synth_catalog_importer import (
+    import_all as import_synth_catalog_all,
+    import_catalog as import_synth_catalog_rows,
+    import_full_spec_modules as import_synth_full_spec,
+    manufacturers_payload as synth_manufacturers_payload,
+)
 
 router = APIRouter(prefix="/modulargrid", tags=["modulargrid"])
+synth_catalog_router = APIRouter(prefix="/synth-catalog", tags=["synth-catalog"])
 
 
 @router.post("/import/modules")
@@ -98,3 +106,61 @@ def list_manufacturers() -> Dict[str, Any]:
         "manufacturers": get_manufacturers_list(),
         "count": len(get_manufacturers_list()),
     }
+
+
+@synth_catalog_router.get("/stats")
+def synth_catalog_seed_stats() -> Dict[str, Any]:
+    """Return sealed seed stats (counts, content hashes, Abraxas PR link)."""
+    try:
+        return seed_stats()
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@synth_catalog_router.get("/manufacturers")
+def synth_catalog_manufacturers() -> Dict[str, Any]:
+    """Major brands + brand-index sample from Synth Catalog Research."""
+    try:
+        return synth_manufacturers_payload()
+    except FileNotFoundError as e:
+        raise HTTPException(status_code=404, detail=str(e)) from e
+
+
+@synth_catalog_router.post("/import/catalog")
+def import_synth_catalog(
+    dry_run: bool = False,
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Import Phase 2 research rows into lightweight module_catalog."""
+    try:
+        return import_synth_catalog_rows(db, dry_run=dry_run)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}") from e
+
+
+@synth_catalog_router.post("/import/modules")
+def import_synth_full_modules(
+    clear_existing: bool = False,
+    dry_run: bool = False,
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Import curated full-spec modules (source=SynthCatalogResearch)."""
+    try:
+        return import_synth_full_spec(db, clear_existing=clear_existing, dry_run=dry_run)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}") from e
+
+
+@synth_catalog_router.post("/import/all")
+def import_synth_all(
+    clear_existing: bool = False,
+    dry_run: bool = False,
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Import catalog + full-spec tiers from sealed research seed."""
+    try:
+        return import_synth_catalog_all(
+            db, clear_existing_full=clear_existing, dry_run=dry_run
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Import failed: {str(e)}") from e

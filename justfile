@@ -123,6 +123,20 @@ case-catalog-seed:
 	cd "{{root}}"
 	python3 scripts/build_case_catalog_seed.py
 
+# Rebuild synth catalog seed from Abraxas research packet (optional --source-dir)
+synth-catalog-seed *args:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	python3 scripts/build_synth_catalog_seed.py {{args}}
+
+# Dry-run / import synth catalog research seed (pass --dry-run or empty)
+synth-catalog-import *args:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}/backend"
+	../backend/.venv/bin/python -m integrations.synth_catalog_importer {{args}}
+
 # Import demo modules fixture into DATABASE_URL
 modules-demo-import *args:
 	#!/usr/bin/env bash

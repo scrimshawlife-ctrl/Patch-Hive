@@ -1,0 +1,86 @@
+{
+  "status": "success",
+  "dry_run": true,
+  "catalog": {
+    "status": "success",
+    "tier": "module_catalog",
+    "dry_run": true,
+    "imported": 376,
+    "skipped": 0,
+    "errors": [],
+    "input_records": 376,
+    "seed_path": "data/synth-catalog/seed-phase2-v1.json",
+    "seed_sha256": "e7e7a57d2e843add1d6414f6ddc86e853ce9e15c52fff3457dc5eb3ec36ee59d",
+    "provenance": {
+      "run_id": "cdbb1029-6bf2-42a9-bd3c-70bf8e0f4f2e",
+      "entity_type": "synth_catalog_import",
+      "abx_core_version": "1.3",
+      "engine_version": "1.3.0",
+      "started_at": "2026-07-21T23:15:10.169556+00:00",
+      "completed_at": "2026-07-21T23:15:10.285725+00:00",
+      "host": "ci-or-local",
+      "environment": "development",
+      "pipeline": "import",
+      "metrics": {
+        "imported_count": 376,
+        "skipped_count": 0,
+        "error_count": 0
+      }
+    }
+  },
+  "full_spec": {
+    "status": "success",
+    "tier": "modules",
+    "dry_run": true,
+    "imported": 3,
+    "skipped": 0,
+    "input_records": 3,
+    "seed_path": "data/synth-catalog/seed-phase2-v1.json",
+    "seed_sha256": "e7e7a57d2e843add1d6414f6ddc86e853ce9e15c52fff3457dc5eb3ec36ee59d",
+    "provenance": {
+      "run_id": "6048b29d-b8cb-414e-bcd2-c3d314e8099c",
+      "entity_type": "synth_catalog_module_import",
+      "abx_core_version": "1.3",
+      "engine_version": "1.3.0",
+      "started_at": "2026-07-21T23:15:10.286237+00:00",
+      "completed_at": "2026-07-21T23:15:10.288433+00:00",
+      "host": "ci-or-local",
+      "environment": "development",
+      "pipeline": "import",
+      "metrics": {
+        "imported_count": 3,
+        "skipped_count": 0
+      }
+    }
+  },
+  "stats": {
+    "fixture_version": "1.0",
+    "name": "Synth Catalog Research \u2014 Phase 2 major-brand module catalog seed",
+    "generated_at": "2026-07-21T00:00:00Z",
+    "brand_count": 703,
+    "catalog_module_count": 376,
+    "full_spec_module_count": 3,
+    "hp_known_count": 4,
+    "content_hashes": {
+      "phase2_major_br_sha256": "2bfd03d2b3e697d35aaf21c60744df66c984f96944124e901a5d85eb5689c332",
+      "brand_index_sha256": "9d7f7e88d62772cf9f8763f1978a2fbfef380b5fd633893a3b211d070785a04f"
+    },
+    "abraxas_pr": "https://github.com/scrimshawlife-ctrl/Abraxas-v2.0/pull/984",
+    "seed_path": "data/synth-catalog/seed-phase2-v1.json"
+  },
+  "provenance": {
+    "run_id": "89b6c701-8290-4a2a-a961-18dfe9317419",
+    "entity_type": "synth_catalog_full_import",
+    "abx_core_version": "1.3",
+    "engine_version": "1.3.0",
+    "started_at": "2026-07-21T23:15:10.167202+00:00",
+    "completed_at": "2026-07-21T23:15:10.288651+00:00",
+    "host": "ci-or-local",
+    "environment": "development",
+    "pipeline": "import",
+    "metrics": {
+      "catalog_imported": 376,
+      "full_spec_imported": 3
+    }
+  }
+}

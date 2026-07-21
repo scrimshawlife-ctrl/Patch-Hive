@@ -104,7 +104,10 @@ from admin.routes import router as admin_router  # noqa: E402
 from cases.catalog_routes import router as case_catalog_router  # noqa: E402
 from cases.routes import router as cases_router  # noqa: E402
 from export.routes import router as export_router  # noqa: E402
-from integrations.router import router as integrations_router  # noqa: E402
+from integrations.router import (  # noqa: E402
+    router as integrations_router,
+    synth_catalog_router,
+)
 from modules.catalog_routes import router as catalog_router  # noqa: E402
 
 # Import and register routers  # noqa: E402
@@ -132,6 +135,7 @@ app.include_router(export_router, prefix="/api/export", tags=["export"])
 app.include_router(canon_router, prefix="/api/canon", tags=["canon"])
 app.include_router(evidence_router, prefix="/api", tags=["evidence"])
 app.include_router(integrations_router, prefix="/api", tags=["integrations"])
+app.include_router(synth_catalog_router, prefix="/api", tags=["synth-catalog"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])
 app.include_router(admin_router, prefix="/api/admin", tags=["admin"])
 app.include_router(account_router, prefix="/api/me", tags=["account"])
