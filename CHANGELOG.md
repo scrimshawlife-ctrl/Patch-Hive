@@ -28,6 +28,12 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 - Unit coverage for vision provider determinism, candidate self-confirm rejection, inventory immutability, and `NOT_COMPUTABLE` generation without confirmed modules.
 - Inventory gate tests for rack-backed generation and generate-bridge API fields.
+- Inventory persistence, multi-image evidence upload, retention expiry, native bridge IDs.
+- Acceptance (testcontainers): 11 passed on campaign branch.
+
+### Database
+
+- Alembic `20240929_visual_inventory_evidence`: `system_inventory_revisions`, `image_assets`, `classification_evidence_records`.
 
 ## 0.3.0 — Planned line
 

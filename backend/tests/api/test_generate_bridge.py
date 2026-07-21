@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from canon.models import GenerationRunRecord, PatchLibraryRecord, RigRevisionRecord
 from main import app
 from racks.models import Rack
-from runs.bridge import legacy_source_run_id
+from runs.bridge import native_source_run_id, rack_content_hash, build_rack_content_snapshot
 
 
 def _client(db_session: Session) -> TestClient:
@@ -33,8 +33,11 @@ def test_generate_patches_ensures_export_bridge(
     body = resp.json()
     assert body["run_id"] is not None
     assert body["export_bridge_ready"] is True
-    assert body["source_run_id"] == legacy_source_run_id(int(body["run_id"]))
-    assert body["rig_revision_id"] == f"legacy-rack-{sample_rack_basic.id}"
+    snap = build_rack_content_snapshot(db_session, sample_rack_basic)
+    content = rack_content_hash(snap)
+    assert body["source_run_id"] == native_source_run_id(int(body["run_id"]), content)
+    assert body["source_run_id"].startswith("gen-run-")
+    assert body["rig_revision_id"].startswith("rig-rev-")
     assert body["artifact_manifest_hash"] and len(body["artifact_manifest_hash"]) == 64
     assert body.get("inventory_revision_id")
     assert body.get("inventory_gate_code") in {"OK", "FILTERED"}
@@ -44,6 +47,7 @@ def test_generate_patches_ensures_export_bridge(
     rev = db_session.get(RigRevisionRecord, body["rig_revision_id"])
     assert rev is not None
     assert rev.canonical_rig.get("schema") == "patchhive.rack-snapshot.v1"
+    assert rev.canonical_rig.get("bridge") == "native"
     assert isinstance(rev.canonical_rig.get("modules"), list)
     assert len(str(rev.canonical_hash)) == 64
     assert db_session.get(GenerationRunRecord, body["source_run_id"]) is not None

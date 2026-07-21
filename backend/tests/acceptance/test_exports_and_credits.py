@@ -198,7 +198,9 @@ def test_failed_export_compensates_without_net_spend(
     )
     export_resp.raise_for_status()
     export_id = export_resp.json()["export_id"]
-    assert credit_balance(db_session, golden_demo_seed.user_id) == 5 - settings.patchbook_export_cost
+    assert (
+        credit_balance(db_session, golden_demo_seed.user_id) == 5 - settings.patchbook_export_cost
+    )
 
     export_row = db_session.get(CanonicalExportRecord, export_id)
     assert export_row is not None

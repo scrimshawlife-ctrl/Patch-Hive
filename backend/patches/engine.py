@@ -628,9 +628,13 @@ def generate_patches_with_ir(
 
     # Confirmed-inventory gate: rack placements are manual USER_CONFIRMED.
     # Generation must not invent modules outside the placed inventory.
+    from canon.inventory_persist import persist_system_inventory_revision
     from patches.inventory_gate import evaluate_rack_inventory_gate
 
     gate_report, _ = evaluate_rack_inventory_gate(db, rack)
+    persist_system_inventory_revision(
+        db, gate_report.inventory, rack_id=int(rack.id)  # type: ignore[arg-type]
+    )
     provenance.add_metric("inventory_gate", gate_report.provenance_dict())
 
     if not gate_report.ready:
@@ -641,13 +645,28 @@ def generate_patches_with_ir(
         provenance.add_metric("patch_count", 0)
         provenance.add_metric("connection_count", 0)
         provenance.add_metric("generation_status", "NOT_COMPUTABLE")
+        provenance.add_metric("inventory_revision_id", gate_report.inventory.inventory_revision_id)
         return generation_ir, [], provenance
 
     # Generate patches using existing logic
     patch_specs = generate_patches_for_rack(db, rack, seed, config)
 
     # Drop any patch that escapes confirmed catalog modules (defense in depth).
-    gate_report, kept_specs = evaluate_rack_inventory_gate(db, rack, patches=patch_specs)
+    # Reuse the same inventory revision (stable id) for filter metrics.
+    from patches.inventory_gate import filter_patches_to_confirmed_modules
+    from patches.inventory_gate import InventoryGateReport
+
+    kept_specs, dropped, messages = filter_patches_to_confirmed_modules(
+        patch_specs, gate_report.allowed_catalog_module_ids
+    )
+    gate_report = InventoryGateReport(
+        inventory=gate_report.inventory,
+        allowed_catalog_module_ids=gate_report.allowed_catalog_module_ids,
+        ready=True,
+        code="FILTERED" if dropped else "OK",
+        messages=messages,
+        dropped_patch_count=dropped,
+    )
     provenance.add_metric("inventory_gate", gate_report.provenance_dict())
 
     # Convert to PatchGraphIR

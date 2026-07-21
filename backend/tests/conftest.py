@@ -32,6 +32,9 @@ from canon.models import RigRevisionRecord  # noqa: F401
 from canon.models import StageReceiptRecord  # noqa: F401
 from canon.models import StripeEventRecordModel  # noqa: F401
 from canon.models import UserPatchAnnotationRecord  # noqa: F401
+from canon.models import SystemInventoryRevisionRecord  # noqa: F401
+from canon.models import ImageAssetRecord  # noqa: F401
+from canon.models import ClassificationEvidenceRecord  # noqa: F401
 from community.models import Comment  # Import to ensure tables are created
 from community.models import User, Vote
 from core.database import Base

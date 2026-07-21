@@ -14,9 +14,9 @@ from main import app
 from racks.models import Rack
 from runs.bridge import (
     build_rack_content_snapshot,
-    legacy_artifact_manifest_hash,
-    legacy_rig_revision_id,
-    legacy_source_run_id,
+    native_artifact_manifest_hash,
+    native_rig_revision_id,
+    native_source_run_id,
     rack_content_hash,
 )
 from runs.models import Run
@@ -63,7 +63,7 @@ def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Ses
     rack = db_session.get(Rack, run.rack_id)
     assert rack is not None
     content_hash = rack_content_hash(build_rack_content_snapshot(db_session, rack))
-    expected_manifest = legacy_artifact_manifest_hash(
+    expected_manifest = native_artifact_manifest_hash(
         int(run.id), int(run.rack_id), content_hash=content_hash
     )
 
@@ -74,8 +74,8 @@ def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Ses
     row = body["runs"][0]
     assert row["id"] == run.id
     assert row["rack_id"] == run.rack_id
-    assert row["rig_revision_id"] == legacy_rig_revision_id(int(run.rack_id))
-    assert row["source_run_id"] == legacy_source_run_id(int(run.id))
+    assert row["rig_revision_id"] == native_rig_revision_id(content_hash)
+    assert row["source_run_id"] == native_source_run_id(int(run.id), content_hash)
     assert row["artifact_manifest_hash"] == expected_manifest
     assert row["export_bridge_ready"] is True
     assert len(row["artifact_manifest_hash"]) == 64
@@ -85,6 +85,7 @@ def test_list_runs_includes_export_bridge_and_ensures_canon_rows(db_session: Ses
     assert rev is not None
     assert str(rev.canonical_hash) == content_hash
     assert rev.canonical_rig.get("schema") == "patchhive.rack-snapshot.v1"
+    assert rev.canonical_rig.get("bridge") == "native"
     assert db_session.get(GenerationRunRecord, row["source_run_id"]) is not None
     assert db_session.get(PatchLibraryRecord, f"library-{row['source_run_id']}") is not None
 

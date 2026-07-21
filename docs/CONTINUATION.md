@@ -39,7 +39,9 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 - [x] Provider-neutral vision adapter + mock/fixture (VSI campaign WP-02)
 - [x] SystemInventoryRevision + confirmed-inventory patch gate (WP-03)
 - [x] Wire inventory gate into generate path (WP-05 / C2 — rack placements as manual USER_CONFIRMED)
-- [ ] Persist inventory revisions via Alembic (WP-06)
+- [x] Persist inventory revisions via Alembic (WP-06 — `20240929_visual_inventory_evidence`)
+- [x] Native canon bridge IDs (`rig-rev-*` / `gen-run-*`; legacy helpers deprecated)
+- [x] Multi-image evidence upload + retention soft-delete
 - [ ] Live vision provider behind adapter (ops secret + evaluation dataset)
 
 ## Recommended work order
@@ -114,13 +116,14 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 
 See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md), [evidence/WORK_PACKAGES.md](evidence/WORK_PACKAGES.md), and [evidence/CONTINUATION_EXECUTION_2026-07-21.md](evidence/CONTINUATION_EXECUTION_2026-07-21.md).
 
-1. ~~**WP-05:** inventory gate on generate~~ **DONE** on campaign branch (`patches/inventory_gate.py` + `generate_patches_with_ir`)
-2. **WP-06:** Alembic persistence for inventory revisions + evidence assets.
-3. Authenticated multi-image upload with retention/consent.
-4. Ranked candidate confirmation API + RackBuilder multi-candidate UX.
-5. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`).
-6. P1: multi-photo, ports/controls/cables, photo-derived Patch Books.
-7. Land draft PR #66 after CI green (Black + backend tests).
+1. ~~**WP-05:** inventory gate on generate~~ **DONE**
+2. ~~**WP-06:** Alembic inventory + image assets~~ **DONE** (`20240929_visual_inventory_evidence`)
+3. ~~Native bridge IDs~~ **DONE** (`rig-rev-*` / `gen-run-*`)
+4. ~~Multi-image upload + retention~~ **DONE** (`POST/GET/DELETE /api/racks/{id}/evidence/images`)
+5. Ranked candidate confirmation API + RackBuilder multi-candidate UX (next)
+6. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`)
+7. Live cloud vision adapter behind consent (next)
+8. Land PR #66 after human operator + CI green
 
 ### P5 — Explicitly deferred
 

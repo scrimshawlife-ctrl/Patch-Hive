@@ -258,6 +258,79 @@ class CanonicalAdminAuditEventRecord(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
 
 
+class SystemInventoryRevisionRecord(Base):
+    """Persisted immutable system inventory revision (VSI WP-06)."""
+
+    __tablename__ = "system_inventory_revisions"
+
+    id = Column(String(64), primary_key=True)
+    system_id = Column(String(128), nullable=False, index=True)
+    rack_id = Column(
+        Integer, ForeignKey("racks.id", ondelete="RESTRICT"), nullable=True, index=True
+    )
+    previous_revision_id = Column(
+        String(64),
+        ForeignKey("system_inventory_revisions.id", ondelete="RESTRICT"),
+        nullable=True,
+    )
+    schema_version = Column(String(64), nullable=False, default="patchhive.inventory.v1")
+    items = Column(JSON, nullable=False, default=list)
+    unresolved_candidate_ids = Column(JSON, nullable=False, default=list)
+    canonical_hash = Column(String(64), nullable=False, unique=True, index=True)
+    created_by = Column(String(128), nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
+
+
+class ImageAssetRecord(Base):
+    """Secure image evidence asset with retention policy."""
+
+    __tablename__ = "image_assets"
+
+    id = Column(String(64), primary_key=True)
+    rack_id = Column(
+        Integer, ForeignKey("racks.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="RESTRICT"), nullable=False, index=True
+    )
+    content_sha256 = Column(String(64), nullable=False, index=True)
+    media_type = Column(String(64), nullable=False, default="image/jpeg")
+    width = Column(Integer, nullable=False)
+    height = Column(Integer, nullable=False)
+    byte_length = Column(Integer, nullable=False)
+    storage_path = Column(String(500), nullable=False)
+    retention_days = Column(Integer, nullable=False, default=30)
+    retention_expires_at = Column(DateTime(timezone=True), nullable=False)
+    consent_provider_processing = Column(Boolean, nullable=False, default=False)
+    deleted_at = Column(DateTime(timezone=True), nullable=True)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
+
+
+class ClassificationEvidenceRecord(Base):
+    """Append-only classification evidence bound to an image asset."""
+
+    __tablename__ = "classification_evidence_records"
+
+    id = Column(String(64), primary_key=True)
+    image_asset_id = Column(
+        String(64),
+        ForeignKey("image_assets.id", ondelete="RESTRICT"),
+        nullable=False,
+        index=True,
+    )
+    inventory_revision_id = Column(
+        String(64),
+        ForeignKey("system_inventory_revisions.id", ondelete="RESTRICT"),
+        nullable=True,
+        index=True,
+    )
+    evidence_packet = Column(JSON, nullable=False)
+    provider = Column(String(64), nullable=False)
+    pipeline_version = Column(String(64), nullable=False)
+    status = Column(String(32), nullable=False, default="INFERRED")
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
+
+
 def _reject_mutation(_mapper, _connection, target) -> None:
     raise ValueError(f"{type(target).__name__} is append-only and cannot be mutated")
 
@@ -272,6 +345,8 @@ IMMUTABLE_RECORDS = (
     ArtifactManifestRecord,
     CanonicalCreditLedgerEntryRecord,
     CanonicalAdminAuditEventRecord,
+    SystemInventoryRevisionRecord,
+    ClassificationEvidenceRecord,
 )
 
 for _record in IMMUTABLE_RECORDS:

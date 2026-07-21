@@ -133,9 +133,7 @@ def test_mock_vision_provider_is_deterministic_and_untrusted() -> None:
     assert packet_a == packet_b
     assert packet_a["status"] == "INFERRED"
     assert len(packet_a["devices"]) == 2
-    candidates = [
-        ClassificationCandidate.model_validate(item) for item in packet_a["devices"]
-    ]
+    candidates = [ClassificationCandidate.model_validate(item) for item in packet_a["devices"]]
     assert_candidates_are_untrusted(candidates)
     for candidate in candidates:
         assert candidate.classification_status is not ResolutionStatus.USER_CONFIRMED

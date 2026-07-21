@@ -1,11 +1,11 @@
 # CURRENT_STATE
 
 **Authoritative as of:** 2026-07-21  
-**Branch:** `grok/patchhive-visual-system-canon-audit` (campaign; merge pending)  
+**Branch:** `grok/patchhive-visual-system-canon-audit` (campaign; draft PR #66)  
 **Baseline main HEAD:** `2b72d5b10fef1ab70c74d3c40379eb1593cf8293`  
-**Latest product merges on main:** PR #65 (Playwright canon runs mock) and prior P1 slices A–E  
-**Visual intelligence docs on main:** `docs/VISUAL_SYSTEM_INTELLIGENCE.md`, roadmap, ADR-005 (preserved)  
-**Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
+**Draft PR:** [#66](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/66) — VSI P0 + inventory persist + native bridge IDs + multi-image evidence  
+**Operator review:** [docs/evidence/PR66_OPERATOR_REVIEW.md](docs/evidence/PR66_OPERATOR_REVIEW.md) — PASS WITH COMMENTS  
+**Acceptance:** 11 passed (testcontainers) — [STAGING_ACCEPTANCE_RECEIPT.md](docs/evidence/STAGING_ACCEPTANCE_RECEIPT.md)  
 
 This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY_STATUS.md`, pre-canon `CURRENT_STATE` claims). For inventory classification see [docs/CANON_ALIGNMENT.md](docs/CANON_ALIGNMENT.md). For ordered next work see [docs/CONTINUATION.md](docs/CONTINUATION.md). For VSI evidence see [docs/evidence/](docs/evidence/).
 
@@ -22,7 +22,8 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | MVP credits/export UI | Routed through `/api/canon/*` via `canonApi` + `accountApi` aliases |
 | Legacy social/publish/leaderboards/referrals | Feature-flagged **off** by default; pages under `frontend/src/legacy/` |
 | Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` (`.env.example`) |
-| Alembic head | **`20240928_fix_schema_gaps`** (single head; revises `20240927_canon_alignment`) |
+| Alembic head | **`20240929_visual_inventory_evidence`** (single head; revises `20240928_fix_schema_gaps`) |
+| Bridge IDs | Native `rig-rev-*` / `gen-run-*` (content-bound); legacy helpers deprecated only |
 | Production deploy | **Not performed** (`NOT_COMPUTABLE` without ops access) |
 
 ## Stack (active)

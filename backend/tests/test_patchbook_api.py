@@ -56,7 +56,9 @@ def _create_patch(db_session: Session, rack: Rack) -> Patch:
     return patch
 
 
-def test_export_patchbook_api_headers(client: TestClient, db_session: Session, sample_rack_basic: Rack):
+def test_export_patchbook_api_headers(
+    client: TestClient, db_session: Session, sample_rack_basic: Rack
+):
     patch = _create_patch(db_session, sample_rack_basic)
     payload = {"rack_id": sample_rack_basic.id, "patch_ids": [patch.id]}
 

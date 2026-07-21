@@ -53,5 +53,6 @@ def test_canon_runs_alias_matches_legacy_list(db_session: Session) -> None:
     assert canon.status_code == 200
     assert legacy.json() == canon.json()
     assert canon.json()["runs"][0]["export_bridge_ready"] is True
-    assert canon.json()["runs"][0]["source_run_id"].startswith("legacy-run-")
+    assert canon.json()["runs"][0]["source_run_id"].startswith("gen-run-")
+    assert canon.json()["runs"][0]["rig_revision_id"].startswith("rig-rev-")
     app.dependency_overrides.clear()

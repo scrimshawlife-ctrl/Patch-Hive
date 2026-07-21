@@ -140,12 +140,30 @@ status: DONE (this continuation execution)
 estimated_complexity: M
 ```
 
-## WP-06 — Persist inventory revisions (next)
+## WP-06 — Persist inventory revisions
 
 ```yaml
 work_package: WP-06
 objective: Alembic tables for system_inventory_revisions + evidence assets
-dependencies: WP-03, product API design
-status: PLANNED
+files:
+  - backend/alembic/versions/20240929_visual_inventory_evidence.py
+  - backend/canon/models.py
+  - backend/canon/inventory_persist.py
+  - backend/evidence/routes.py
+  - backend/evidence/retention.py
+dependencies: WP-03, WP-05
+status: DONE
 estimated_complexity: L
+```
+
+## WP-07 — Native bridge IDs
+
+```yaml
+work_package: WP-07
+objective: Drop legacy-rack/run namespace from ensure_legacy_run_export_bridge writers
+files:
+  - backend/runs/bridge.py
+  - tests for runs/generate/canon runs
+  - frontend Playwright mocks
+status: DONE
 ```

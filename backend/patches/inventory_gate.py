@@ -95,9 +95,18 @@ def build_manual_inventory_from_rack(
 
     from canon.contracts import canonical_sha256
 
+    # Identity excludes timestamps so repeated builds yield the same revision id.
     payload = {
         "system_id": f"rack-{rack.id}",
-        "items": [item.model_dump(mode="json") for item in items],
+        "items": [
+            {
+                "instance_id": item.instance_id,
+                "module_revision_id": item.module_revision_id,
+                "position": item.position,
+                "resolution": item.resolution.value,
+            }
+            for item in items
+        ],
         "builder": "manual_rack_placement",
         "gate_version": GATE_VERSION,
     }
