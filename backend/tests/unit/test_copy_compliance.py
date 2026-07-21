@@ -3,10 +3,12 @@
 from pathlib import Path
 import re
 
+from tests.monorepo_paths import frontend_src
+
 
 def test_dashboard_copy_compliance():
     """Ensure required copy is present and forbidden terms absent."""
-    account_path = Path(__file__).resolve().parents[3] / "frontend/src/pages/Account.tsx"
+    account_path = frontend_src() / "pages" / "Account.tsx"
     content = account_path.read_text(encoding="utf-8")
 
     required_lines = [

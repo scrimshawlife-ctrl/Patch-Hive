@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from canon import contracts
+from tests.monorepo_paths import frontend_src
 
 REQUIRED_CONTRACTS = {
     "DetectedModule",
@@ -37,7 +38,7 @@ REQUIRED_CONTRACTS = {
 
 
 def test_typescript_bindings_cover_versioned_backend_contracts() -> None:
-    binding_path = Path(__file__).resolve().parents[3] / "frontend" / "src" / "types" / "canon.ts"
+    binding_path = frontend_src() / "types" / "canon.ts"
     binding = binding_path.read_text(encoding="utf-8")
     assert contracts.SCHEMA_VERSION in binding
     for name in REQUIRED_CONTRACTS:

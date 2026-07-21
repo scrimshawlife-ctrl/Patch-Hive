@@ -3,7 +3,13 @@ Core configuration for PatchHive backend.
 Uses pydantic-settings for environment-based configuration.
 """
 
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from __future__ import annotations
+
+import json
+from typing import Annotated, Any
+
+from pydantic import field_validator
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 
 class Settings(BaseSettings):
@@ -22,7 +28,7 @@ class Settings(BaseSettings):
     environment: str = "development"
 
     # Database
-    database_url: str = "postgresql://patchhive:patchhive@localhost:5432/patchhive"
+    database_url: str = "postgresql://patchhive:***@localhost:5432/patchhive"
     database_echo: bool = False
 
     # Security
@@ -30,8 +36,12 @@ class Settings(BaseSettings):
     algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
 
-    # CORS
-    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    # CORS — accepts JSON list or comma-separated env (docker-compose style).
+    # NoDecode: pydantic-settings otherwise JSON-parses list env before validators.
+    cors_origins: Annotated[list[str], NoDecode] = [
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ]
 
     # Frontend
     frontend_base_url: str = "http://localhost:5173"
@@ -71,6 +81,23 @@ class Settings(BaseSettings):
 
     # Git tracking (optional, for provenance)
     git_commit: str = ""  # Set by environment or CI/CD
+
+    @field_validator("cors_origins", mode="before")
+    @classmethod
+    def _parse_cors_origins(cls, value: Any) -> list[str]:
+        if value is None or value == "":
+            return ["http://localhost:5173", "http://localhost:3000"]
+        if isinstance(value, list):
+            return [str(item).strip() for item in value if str(item).strip()]
+        if isinstance(value, str):
+            text = value.strip()
+            if text.startswith("["):
+                parsed = json.loads(text)
+                if not isinstance(parsed, list):
+                    raise ValueError("cors_origins JSON must be a list of strings")
+                return [str(item).strip() for item in parsed if str(item).strip()]
+            return [part.strip() for part in text.split(",") if part.strip()]
+        raise ValueError(f"Unsupported cors_origins type: {type(value)!r}")
 
 
 # Global settings instance
