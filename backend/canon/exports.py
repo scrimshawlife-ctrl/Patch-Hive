@@ -114,7 +114,10 @@ def request_export(
     )
     try:
         with session.begin_nested():
-            session.add_all((export, debit))
+            # Insert export before debit: ledger.export_id FK requires the export row.
+            session.add(export)
+            session.flush()
+            session.add(debit)
             session.flush()
     except IntegrityError:
         winner = session.scalar(
