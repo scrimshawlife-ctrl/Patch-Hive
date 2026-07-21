@@ -1,8 +1,8 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `71a4dfaab7aefe1d4cb920dd9f83abcb7757fea7`  
-**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED  
+**main HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
+**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED  
 **Open campaign PRs:** none
 
 ## Where we are
@@ -51,7 +51,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 
 **Completed slices:**
 - **PR #49:** FE debit/list/balance → canon only.
-- **PR (this):** acceptance debit → `/api/canon/exports`; admin grant dual-writes canonical ledger; legacy debit gateable via `ENABLE_LEGACY_PATCHBOOK_DEBIT`.
+- **PR #51:** acceptance debit → `/api/canon/exports`; admin grant dual-writes canonical ledger; legacy debit gateable via `ENABLE_LEGACY_PATCHBOOK_DEBIT`.
 
 **Progress checklist:**
 - [x] Acceptance debit tests use `POST /api/canon/exports` + canonical ledger
@@ -63,8 +63,8 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 
 **Next slices (ordered):**
 
-1. ~~**Acceptance → canon credits path**~~ **DONE** (this PR)  
-2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (gate + docs; default still true for transitional callers)  
+1. ~~**Acceptance → canon credits path**~~ **DONE** (PR #51)  
+2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default still true for transitional callers)  
 3. **Run / revision bridge honesty**  
    - Extend run list DTO with `rig_revision_id` (or explicit null + bridge flag) and canonical `artifact_manifest_hash` when available.  
    - Replace FE `source_rig_revision_id: legacy-rack-{n}` and client-side `legacyRunManifestHash` once backend supplies truth.  
@@ -157,7 +157,7 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 ```bash
 # main
 git fetch origin && git checkout main && git pull --ff-only
-git rev-parse HEAD   # expect 71a4dfa… or later
+git rev-parse HEAD   # expect 7471a2a… or later
 
 cd backend
 # prefer project venv; scrub Hermes PYTHONPATH if present

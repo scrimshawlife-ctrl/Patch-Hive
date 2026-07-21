@@ -8,7 +8,8 @@ PatchHive is a deterministic Eurorack **rig and patch documentation** workspace.
 |------|--------|
 | **Canon MVP on main** | **MERGED** via [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) |
 | **P1 credits/exports client** | **MERGED** via [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) — MVP UI uses `/api/canon/*` |
-| **main HEAD** | `71a4dfaab7aefe1d4cb920dd9f83abcb7757fea7` |
+| **P1 acceptance → canon ledger** | **MERGED** via [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) |
+| **main HEAD** | `7471a2a09cb7435ebf1ea10fe6280ebc94774500` |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
 | **Alembic head** | `20240928_fix_schema_gaps` |
 | **CI on HEAD** | Backend Tests · Code Quality · Security — green |
@@ -100,7 +101,7 @@ PostgreSQL integration and live migration checks require PostgreSQL or Docker. A
 
 | Gate | Result |
 |------|--------|
-| Main CI @ `71a4dfa` (Backend / Quality / Security) | SUCCESS |
+| Main CI @ PR #51 head (Backend 3.11/3.12 / Quality / Security) | SUCCESS |
 | Frontend unit (post-#49 local) | 51 passed |
 | Playwright MVP | 4 passed |
 | Targeted canon export/copy tests (post-#49 local) | 10 passed |
