@@ -1,4 +1,4 @@
-.PHONY: help dev prod up down restart logs shell test clean build
+.PHONY: help dev prod up down restart logs shell test clean build setup setup-dev lint validate-local index memory docs coverage
 
 # Colors for output
 BLUE := \033[0;34m
@@ -11,6 +11,38 @@ help: ## Show this help message
 	@echo ""
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  $(GREEN)%-15s$(NC) %s\n", $$1, $$2}'
 	@echo ""
+	@echo "$(YELLOW)AI/dev shortcuts: setup-dev lint validate-local index memory docs coverage$(NC)"
+	@echo "$(YELLOW)Prefer: just setup | just validate | just memory$(NC)"
+
+setup: setup-dev ## Alias for setup-dev
+
+setup-dev: ## Install backend+frontend deps and rebuild AI indexes
+	@echo "$(BLUE)Installing backend...$(NC)"
+	cd backend && (command -v uv >/dev/null && uv pip install -e '.[dev]' || pip install -e '.[dev]')
+	@echo "$(BLUE)Installing frontend...$(NC)"
+	cd frontend && npm ci
+	@$(MAKE) index
+	@echo "$(GREEN)✓ setup-dev complete$(NC)"
+
+lint: ## Run backend ruff + frontend eslint/tsc
+	cd backend && python -m ruff check canon evidence || true
+	cd frontend && npm run lint && npm run type-check
+
+validate-local: ## Lint + unit tests without Docker Compose
+	cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q
+	cd frontend && npm test -- --run && npm run type-check
+	@echo "$(GREEN)✓ validate-local complete$(NC)"
+
+coverage: ## Backend coverage (excludes acceptance)
+	cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance --cov -q
+
+index memory: ## Rebuild .codebase-memory indexes (ctags, graph, hashes)
+	bash scripts/ai/rebuild_indexes.sh
+	@echo "$(GREEN)✓ indexes refreshed$(NC)"
+
+docs: ## List engineering + AI context docs
+	@ls -1 docs/engineering
+	@echo "AI_CONTEXT.md SYSTEM_CONTEXT.md ENGINEERING_SETUP_REPORT.md"
 
 # Development
 dev: ## Start development environment
