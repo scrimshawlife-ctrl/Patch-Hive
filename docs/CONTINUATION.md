@@ -120,10 +120,10 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 2. ~~**WP-06:** Alembic inventory + image assets~~ **DONE** (`20240929_visual_inventory_evidence`)
 3. ~~Native bridge IDs~~ **DONE** (`rig-rev-*` / `gen-run-*`)
 4. ~~Multi-image upload + retention~~ **DONE** (`POST/GET/DELETE /api/racks/{id}/evidence/images`)
-5. Ranked candidate confirmation API + RackBuilder multi-candidate UX (next)
+5. ~~Ranked candidate confirmation API + multi-candidate RackBuilder~~ **DONE** (GET candidates / POST confirmations + UX)
 6. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`)
 7. Live cloud vision adapter behind consent (next)
-8. Land PR #66 after human operator + CI green
+8. **Land PR #66** — CI green @ `feec4c9`+; human merge when ready
 
 ### P5 — Explicitly deferred
 

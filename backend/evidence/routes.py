@@ -272,3 +272,228 @@ def delete_rack_evidence_image(
 
     db.commit()
     return {"status": "deleted", "asset_id": asset_id}
+
+
+class CandidateResponse(BaseModel):
+    candidate_id: str
+    entity_type: str
+    manufacturer: str | None = None
+    model: str | None = None
+    confidence: float
+    confidence_method: str
+    alternative_candidates: list[str] = Field(default_factory=list)
+    classification_status: str
+    evidence_id: str
+    image_asset_id: str | None = None
+    gallery_revision_id: str | None = None
+    gallery_module_id: str | None = None
+
+
+class CandidateListResponse(BaseModel):
+    total: int
+    candidates: list[CandidateResponse]
+
+
+class ConfirmationDecisionIn(BaseModel):
+    candidate_id: str
+    status: str = Field(description="confirm | reject | defer | replace | manual_add")
+    module_revision_id: str | None = None
+    replacement_candidate_id: str | None = None
+    notes: str | None = None
+
+
+class ConfirmationBatchRequest(BaseModel):
+    decisions: list[ConfirmationDecisionIn]
+    confirmed_by: str | None = "user"
+
+
+class ConfirmationBatchResponse(BaseModel):
+    inventory_revision_id: str
+    inventory_canonical_hash: str | None
+    confirmed_count: int
+    unresolved_candidate_ids: list[str]
+    ready_for_generation: bool
+
+
+def _load_candidates_for_rack(db: Session, rack_id: int) -> list[dict]:
+    """Flatten device candidates from append-only evidence packets (newest first)."""
+    from canon.visual_contracts import ClassificationCandidate
+
+    rows = (
+        db.query(ClassificationEvidenceRecord)
+        .join(ImageAssetRecord, ImageAssetRecord.id == ClassificationEvidenceRecord.image_asset_id)
+        .filter(
+            ImageAssetRecord.rack_id == rack_id,
+            ImageAssetRecord.deleted_at.is_(None),
+        )
+        .order_by(ClassificationEvidenceRecord.created_at.desc())
+        .all()
+    )
+    seen: set[str] = set()
+    out: list[dict] = []
+    for row in rows:
+        packet = row.evidence_packet or {}
+        devices = packet.get("devices") or []
+        for raw in devices:
+            try:
+                candidate = ClassificationCandidate.model_validate(raw)
+            except Exception:
+                continue
+            if candidate.candidate_id in seen:
+                continue
+            seen.add(candidate.candidate_id)
+            out.append(
+                {
+                    "candidate_id": candidate.candidate_id,
+                    "entity_type": candidate.entity_type,
+                    "manufacturer": candidate.manufacturer,
+                    "model": candidate.model,
+                    "confidence": candidate.confidence,
+                    "confidence_method": candidate.confidence_method,
+                    "alternative_candidates": list(candidate.alternative_candidates),
+                    "classification_status": candidate.classification_status.value,
+                    "evidence_id": candidate.evidence_id,
+                    "image_asset_id": str(row.image_asset_id),
+                    "gallery_revision_id": candidate.gallery_revision_id,
+                    "gallery_module_id": candidate.gallery_module_id,
+                    "_raw": raw,
+                }
+            )
+    # Rank by confidence descending for review UX
+    out.sort(key=lambda item: (-float(item["confidence"]), item["candidate_id"]))
+    return out
+
+
+@router.get("/racks/{rack_id}/evidence/candidates", response_model=CandidateListResponse)
+def list_rack_evidence_candidates(
+    rack_id: int, db: Session = Depends(get_db)
+) -> CandidateListResponse:
+    """Ranked classification candidates for human confirmation (untrusted)."""
+    rack = db.get(Rack, rack_id)
+    if rack is None:
+        raise HTTPException(status_code=404, detail="Rack not found")
+    items = _load_candidates_for_rack(db, rack_id)
+    candidates = [
+        CandidateResponse(**{k: v for k, v in item.items() if k != "_raw"}) for item in items
+    ]
+    return CandidateListResponse(total=len(candidates), candidates=candidates)
+
+
+@router.post(
+    "/racks/{rack_id}/evidence/confirmations",
+    response_model=ConfirmationBatchResponse,
+    status_code=201,
+)
+def confirm_rack_evidence_candidates(
+    rack_id: int,
+    body: ConfirmationBatchRequest,
+    db: Session = Depends(get_db),
+) -> ConfirmationBatchResponse:
+    """Apply human confirmation decisions and mint an immutable inventory revision.
+
+    Provider output remains evidence only. Confirmed modules require an explicit
+    ``module_revision_id`` (gallery revision) on confirm/manual_add.
+    """
+    from canon.inventory import (
+        InventoryBuildError,
+        build_system_inventory_revision,
+        inventory_ready_for_generation,
+    )
+    from canon.inventory_persist import persist_system_inventory_revision
+    from canon.models import ClassificationEvidenceRecord
+    from canon.visual_contracts import (
+        ClassificationCandidate,
+        ConfirmationDecision,
+        ResolutionStatus,
+    )
+
+    rack = db.get(Rack, rack_id)
+    if rack is None:
+        raise HTTPException(status_code=404, detail="Rack not found")
+    if not body.decisions:
+        raise HTTPException(status_code=400, detail="NO_DECISIONS")
+
+    loaded = _load_candidates_for_rack(db, rack_id)
+    by_id = {item["candidate_id"]: item for item in loaded}
+    now = datetime.now(timezone.utc)
+    candidates: list[ClassificationCandidate] = []
+    decisions: list[ConfirmationDecision] = []
+
+    for decision_in in body.decisions:
+        raw_item = by_id.get(decision_in.candidate_id)
+        if raw_item is None:
+            raise HTTPException(
+                status_code=400,
+                detail=f"UNKNOWN_CANDIDATE:{decision_in.candidate_id}",
+            )
+        candidate = ClassificationCandidate.model_validate(raw_item["_raw"])
+        if decision_in.status == "confirm":
+            revision_id = decision_in.module_revision_id or candidate.gallery_revision_id
+            if not revision_id:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"MODULE_REVISION_REQUIRED:{decision_in.candidate_id}",
+                )
+            candidate = candidate.model_copy(update={"gallery_revision_id": revision_id})
+            resolved = ResolutionStatus.USER_CONFIRMED
+        elif decision_in.status == "reject":
+            resolved = ResolutionStatus.REJECTED
+        elif decision_in.status == "defer":
+            resolved = ResolutionStatus.UNKNOWN
+        elif decision_in.status == "replace":
+            resolved = ResolutionStatus.USER_CONFIRMED
+        elif decision_in.status == "manual_add":
+            if not decision_in.module_revision_id:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"MODULE_REVISION_REQUIRED:{decision_in.candidate_id}",
+                )
+            resolved = ResolutionStatus.USER_CONFIRMED
+        else:
+            raise HTTPException(status_code=400, detail=f"INVALID_STATUS:{decision_in.status}")
+
+        candidates.append(candidate)
+        decisions.append(
+            ConfirmationDecision(
+                confirmation_id=f"conf-{uuid.uuid4().hex[:16]}",
+                candidate_id=decision_in.candidate_id,
+                status=decision_in.status,  # type: ignore[arg-type]
+                resolved_status=resolved,
+                confirmed_by=body.confirmed_by,
+                confirmed_at=now,
+                replacement_candidate_id=decision_in.replacement_candidate_id,
+                manual_module_revision_id=(
+                    decision_in.module_revision_id if decision_in.status == "manual_add" else None
+                ),
+                notes=decision_in.notes,
+            )
+        )
+
+    # Include undecided candidates so they remain unresolved
+    decided_ids = {d.candidate_id for d in decisions}
+    for item in loaded:
+        if item["candidate_id"] not in decided_ids:
+            candidates.append(ClassificationCandidate.model_validate(item["_raw"]))
+
+    try:
+        inventory = build_system_inventory_revision(
+            system_id=f"rack-{rack_id}",
+            candidates=candidates,
+            decisions=decisions,
+            created_at=now,
+            created_by=body.confirmed_by,
+        )
+    except InventoryBuildError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+    persist_system_inventory_revision(db, inventory, rack_id=rack_id)
+    # ClassificationEvidenceRecord is append-only; inventory linkage is via
+    # SystemInventoryRevisionRecord + candidate source_candidate_ids, not mutation.
+    db.commit()
+    return ConfirmationBatchResponse(
+        inventory_revision_id=inventory.inventory_revision_id,
+        inventory_canonical_hash=inventory.canonical_hash,
+        confirmed_count=len(inventory.items),
+        unresolved_candidate_ids=list(inventory.unresolved_candidate_ids),
+        ready_for_generation=inventory_ready_for_generation(inventory),
+    )

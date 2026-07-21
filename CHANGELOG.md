@@ -29,6 +29,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 - Unit coverage for vision provider determinism, candidate self-confirm rejection, inventory immutability, and `NOT_COMPUTABLE` generation without confirmed modules.
 - Inventory gate tests for rack-backed generation and generate-bridge API fields.
 - Inventory persistence, multi-image evidence upload, retention expiry, native bridge IDs.
+- Ranked candidate list + confirmation batch API; multi-candidate RackBuilder review UX.
 - Acceptance (testcontainers): 11 passed on campaign branch.
 
 ### Database
