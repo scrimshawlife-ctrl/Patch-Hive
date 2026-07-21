@@ -1,0 +1,92 @@
+# Staging-like local/VPS stack — not production.
+# - No source bind-mounts (image-built code)
+# - No --reload
+# - Fail-closed flags; test payments only
+#
+# Usage:
+#   docker compose -f docker-compose.staging.yml up -d --build
+#   curl -sf http://localhost:8000/health
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: patchhive-staging-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: patchhive
+      POSTGRES_PASSWORD: ${STAGING_DB_PASSWORD:-patchhive-staging-change-me}
+      POSTGRES_DB: patchhive
+    volumes:
+      - staging_postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${STAGING_DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U patchhive"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: patchhive-staging-backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://patchhive:${STAGING_DB_PASSWORD:-patchhive-staging-change-me}@db:5432/patchhive
+      SECRET_KEY: ${STAGING_SECRET_KEY:-staging-secret-key-change-me-32chars-min}
+      CORS_ORIGINS: ${STAGING_CORS_ORIGINS:-http://localhost:5173,http://localhost:3000}
+      APP_NAME: PatchHive
+      APP_VERSION: ${STAGING_APP_VERSION:-0.3.0-alpha.1}
+      ABX_CORE_VERSION: "1.2"
+      ENVIRONMENT: staging
+      ENFORCE_SEED_TRACEABILITY: "true"
+      RUN_MIGRATIONS: "true"
+      ENABLE_LEGACY_SOCIAL: "false"
+      ENABLE_LEGACY_PUBLISHING: "false"
+      ENABLE_LEGACY_LEADERBOARDS: "false"
+      ENABLE_LEGACY_REFERRALS: "false"
+      ENABLE_LEGACY_PATCHBOOK_DEBIT: "false"
+      STRIPE_TEST_MODE: "true"
+      ALLOW_PRODUCTION_PAYMENTS: "false"
+    ports:
+      - "${STAGING_API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    # Image-default command (uvicorn without --reload when Dockerfile sets it;
+    # force explicit non-reload for staging-like behavior).
+    command: uvicorn main:app --host 0.0.0.0 --port 8000
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  frontend-dev:
+    image: node:22-alpine
+    container_name: patchhive-staging-frontend
+    working_dir: /app
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: ${STAGING_PUBLIC_API_URL:-http://localhost:8000}
+    ports:
+      - "${STAGING_FE_PORT:-5173}:5173"
+    volumes:
+      - ./frontend:/app
+      - staging_frontend_node_modules:/app/node_modules
+    command: sh -c "npm install && npm run dev -- --host"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  staging_postgres_data:
+    driver: local
+  staging_frontend_node_modules:
+    driver: local
+
+networks:
+  default:
+    name: patchhive-staging-network

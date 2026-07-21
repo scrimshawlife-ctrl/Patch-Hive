@@ -99,11 +99,12 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 
 ### P3 — Staging operations
 
-1. Stand up non-prod Postgres + app using OPERATIONS release gates.
-2. Run acceptance suite against staging Postgres (clears local `NOT_COMPUTABLE`).
-3. Backup/restore drill; ledger `reconcile` job if present.
-4. Manual accessibility protocol on staging (see ACCESSIBILITY.md).
-5. Expand Playwright beyond mocked MVP when staging exists.
+1. ~~Staging host plan + Compose staging profile~~ **DONE** (design + `docker-compose.staging.yml`; named host still operator pick)
+2. Stand up **named** non-prod host (blocked on operator A/B/C/D pick — [STAGING_HOST_PLAN.md](evidence/STAGING_HOST_PLAN.md)).
+3. Run acceptance suite against staging Postgres.
+4. Backup/restore drill; ledger `reconcile` job if present.
+5. Manual accessibility protocol on staging (see ACCESSIBILITY.md).
+6. Expand Playwright beyond mocked MVP when staging exists.
 
 ### P4 — Product depth (still MVP-scoped)
 
@@ -141,6 +142,10 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 21. ~~Migrate one `legacy_pipeline` suite onto canon contracts~~ **DONE** (`test_schema_roundtrip` → canon `RigMetricsPacket`)
 22. ~~Gallery append-only revisions on canon~~ **DONE** (`canon.gallery_revisions`; patchhive shim)
 23. ~~All residual `legacy_pipeline` unit tests off patchhive~~ **DONE** (function_registry, query_surface, pipeline, export_pack)
+24. ~~Staging host plan + compose.staging~~ **DONE** (named host NOT_PERFORMED)
+25. ~~Dual-path retirement design F0~~ **DONE** ([DUAL_PATH_RETIREMENT_DESIGN.md](evidence/DUAL_PATH_RETIREMENT_DESIGN.md))
+26. Optional: cut `v0.3.0-alpha.1` release tag after this docs/ops PR
+27. Next dual-path code: F3 generate dual-write audit (not delete racks)
 
 ### P5 — Explicitly deferred
 
