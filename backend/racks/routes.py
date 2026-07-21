@@ -11,6 +11,7 @@ from cases.models import Case
 from core import generate_rig_suggested_name, get_db, hash_string_to_seed
 from modules.models import Module
 
+from .catalog_compatibility import evaluate_rack_catalog_compatibility
 from .models import Rack, RackModule
 from .schemas import RackCreate, RackListResponse, RackResponse, RackUpdate
 from .validation import validate_rack_configuration
@@ -113,6 +114,23 @@ def get_rack(rack_id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Rack not found")
 
     return build_rack_response(db, rack)
+
+
+@router.get("/{rack_id}/compatibility")
+def get_rack_catalog_compatibility(
+    rack_id: int,
+    plan_close_lid: bool = Query(False),
+    db: Session = Depends(get_db),
+):
+    """Evaluate catalog compatibility for the rack's placed modules.
+
+    Requires the bound legacy case to have been materialized from the catalog
+    (``meta.catalog_slug``). Returns ``bridge_status`` incomplete when unlinked.
+    """
+    rack = db.query(Rack).filter(Rack.id == rack_id).first()
+    if not rack:
+        raise HTTPException(status_code=404, detail="Rack not found")
+    return evaluate_rack_catalog_compatibility(db, rack, plan_close_lid=plan_close_lid)
 
 
 @router.patch("/{rack_id}", response_model=RackResponse)
@@ -245,6 +263,12 @@ def build_rack_response(
                 "power_12v_ma": case.power_12v_ma,
                 "power_neg12v_ma": case.power_neg12v_ma,
                 "power_5v_ma": case.power_5v_ma,
+                "meta": case.meta if isinstance(case.meta, dict) else {},
+                "catalog_slug": (
+                    (case.meta or {}).get("catalog_slug")
+                    if isinstance(case.meta, dict)
+                    else None
+                ),
             }
             if case
             else None

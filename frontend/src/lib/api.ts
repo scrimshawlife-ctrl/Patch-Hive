@@ -21,6 +21,7 @@ import type {
   Module,
   Case,
   Rack,
+  RackModuleSpec,
   Patch,
   User,
   CanonicalExportRecord,
@@ -134,6 +135,16 @@ export const caseCatalogApi = {
       { params: revision_key ? { revision_key } : undefined },
     ),
 
+  materializeBatch: (params?: { format_family?: string; limit?: number }) =>
+    api.post<{
+      status: string;
+      scanned: number;
+      created: number;
+      updated: number;
+      failed: number;
+      failures: { catalog_slug: string; error: string }[];
+    }>('/cases/catalog/materialize-batch', null, { params }),
+
   compatibility: (
     slug: string,
     body: {
@@ -168,9 +179,23 @@ export const rackApi = {
 
   create: (data: Partial<Rack>) => api.post<Rack>('/racks', data),
 
-  update: (id: number, data: Partial<Rack>) => api.patch<Rack>(`/racks/${id}`, data),
+  update: (
+    id: number,
+    data: Partial<Omit<Rack, 'modules'>> & { modules?: RackModuleSpec[] },
+  ) => api.patch<Rack>(`/racks/${id}`, data),
 
   delete: (id: number) => api.delete(`/racks/${id}`),
+
+  /** Catalog compatibility for a rack's placed modules (requires meta.catalog_slug). */
+  compatibility: (id: number, params?: { plan_close_lid?: boolean }) =>
+    api.get<{
+      bridge_status: string;
+      message: string;
+      catalog_slug?: string | null;
+      case_id?: number;
+      module_count?: number;
+      compatibility?: CompatibilityResponse | null;
+    }>(`/racks/${id}/compatibility`, { params }),
 };
 
 // Patch API

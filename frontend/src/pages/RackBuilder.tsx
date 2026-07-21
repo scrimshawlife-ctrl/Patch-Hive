@@ -3,11 +3,19 @@ import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import {
   caseApi,
   caseCatalogApi,
+  moduleApi,
   evidenceApi,
   rackApi,
   type EvidenceCandidate,
 } from '@/lib/api';
-import type { Case, CatalogCaseListItem, Rack } from '@/types/api';
+import type {
+  Case,
+  CatalogCaseListItem,
+  CompatibilityResponse,
+  Module,
+  Rack,
+  RackModuleSpec,
+} from '@/types/api';
 
 type EvidenceState = 'idle' | 'ready' | 'uploading' | 'review' | 'confirmed' | 'error';
 type CandidateStatus = 'inferred' | 'confirmed' | 'rejected' | 'deferred';
@@ -140,6 +148,23 @@ export default function RackBuilderPage() {
   const [caseQuery, setCaseQuery] = useState('');
   const [compatNote, setCompatNote] = useState<string | null>(null);
 
+  /** Live placement editor (method 01) */
+  const [liveRack, setLiveRack] = useState<Rack | null>(null);
+  const [placementModules, setPlacementModules] = useState<RackModuleSpec[]>([]);
+  const [galleryModules, setGalleryModules] = useState<Module[]>([]);
+  const [addModuleId, setAddModuleId] = useState<number | null>(null);
+  const [addRow, setAddRow] = useState(0);
+  const [addStartHp, setAddStartHp] = useState(0);
+  const [placementSaving, setPlacementSaving] = useState(false);
+  const [placementError, setPlacementError] = useState('');
+  const [rackCompat, setRackCompat] = useState<{
+    bridge_status: string;
+    message: string;
+    catalog_slug?: string | null;
+    compatibility?: CompatibilityResponse | null;
+  } | null>(null);
+  const [batchNote, setBatchNote] = useState('');
+
   const activeRackId = selectedRackId ?? rackId;
   const selectedLegacyCase = useMemo(
     () => legacyCases.find((c) => c.id === selectedCaseId) ?? null,
@@ -256,6 +281,90 @@ export default function RackBuilderPage() {
       setError(formatValidationError(err));
     } finally {
       setCreating(false);
+    }
+  };
+
+  const refreshLiveRack = async (id: number) => {
+    const res = await rackApi.get(id);
+    setLiveRack(res.data);
+    setPlacementModules(
+      (res.data.modules ?? []).map((m) => ({
+        module_id: m.module_id,
+        row_index: m.row_index,
+        start_hp: m.start_hp,
+      })),
+    );
+    try {
+      const compat = await rackApi.compatibility(id);
+      setRackCompat(compat.data);
+    } catch {
+      setRackCompat(null);
+    }
+  };
+
+  useEffect(() => {
+    if (!liveMode || rackId == null) {
+      setLiveRack(null);
+      setPlacementModules([]);
+      setRackCompat(null);
+      return;
+    }
+    void refreshLiveRack(rackId).catch(() => {
+      setLiveRack(null);
+      setPlacementError('Unable to load rig for placement.');
+    });
+    moduleApi
+      .list({ limit: 200 })
+      .then((res) => setGalleryModules(res.data.modules ?? []))
+      .catch(() => setGalleryModules([]));
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- load on rack route
+  }, [liveMode, rackId]);
+
+  const savePlacements = async (next: RackModuleSpec[]) => {
+    if (rackId == null) return;
+    setPlacementSaving(true);
+    setPlacementError('');
+    try {
+      await rackApi.update(rackId, { modules: next });
+      setPlacementModules(next);
+      await refreshLiveRack(rackId);
+    } catch (err) {
+      setPlacementError(formatValidationError(err));
+    } finally {
+      setPlacementSaving(false);
+    }
+  };
+
+  const addPlacement = async () => {
+    if (addModuleId == null) {
+      setPlacementError('Select a module from the gallery.');
+      return;
+    }
+    const next = [
+      ...placementModules,
+      { module_id: addModuleId, row_index: addRow, start_hp: addStartHp },
+    ];
+    await savePlacements(next);
+  };
+
+  const removePlacement = async (index: number) => {
+    const next = placementModules.filter((_, i) => i !== index);
+    await savePlacements(next);
+  };
+
+  const materializeAllEurorack = async () => {
+    setBatchNote('');
+    try {
+      const res = await caseCatalogApi.materializeBatch({ format_family: 'eurorack' });
+      const b = res.data;
+      setBatchNote(
+        `Materialized Eurorack catalog: scanned ${b.scanned}, created ${b.created}, updated ${b.updated}, failed ${b.failed}.`,
+      );
+      // Refresh legacy case list for create flow
+      const legacy = await caseApi.list({ limit: 200, format_family: 'Eurorack' });
+      setLegacyCases(legacy.data.cases ?? []);
+    } catch {
+      setBatchNote('Bulk materialize failed. Ensure catalog seed is imported.');
     }
   };
 
@@ -647,6 +756,25 @@ export default function RackBuilderPage() {
             </p>
           ) : null}
 
+          <div style={{ marginTop: 'var(--space-4)' }}>
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={() => void materializeAllEurorack()}
+            >
+              Materialize all Eurorack catalog cases
+            </button>
+            {batchNote ? (
+              <p className="muted" style={{ marginTop: 'var(--space-2)' }} role="status">
+                {batchNote}
+              </p>
+            ) : (
+              <p className="muted" style={{ marginTop: 'var(--space-2)' }}>
+                Syncs normalized catalog rows into legacy placement cases (idempotent).
+              </p>
+            )}
+          </div>
+
           <hr style={{ border: 0, borderTop: '1px solid var(--border)', margin: 'var(--space-5) 0' }} />
 
           <p className="muted">
@@ -677,17 +805,175 @@ export default function RackBuilderPage() {
           )}
         </div>
       ) : (
-        <p className="muted">
-          Live evidence mode for rig #{rackId}.{' '}
-          <Link to={`/rigs/${rackId}`}>Open rig detail</Link>
-        </p>
+        <div className="panel" style={{ marginBottom: 'var(--space-4)' }}>
+          <p className="muted" style={{ marginTop: 0 }}>
+            Live placement + evidence for rig #{rackId}.{' '}
+            <Link to={`/rigs/${rackId}`}>Open rig detail</Link>
+          </p>
+          {liveRack?.case ? (
+            <p className="muted">
+              Case: {liveRack.case.brand} — {liveRack.case.name}
+              {liveRack.case.catalog_slug
+                ? ` · catalog ${liveRack.case.catalog_slug}`
+                : ' · no catalog link (materialize for full compatibility)'}
+              {liveRack.case.total_hp != null
+                ? ` · ${liveRack.case.total_hp}HP / ${(liveRack.case.hp_per_row || []).join('+') || '—'} rows`
+                : ''}
+            </p>
+          ) : null}
+
+          <h2 style={{ marginTop: 'var(--space-3)' }}>Module placement</h2>
+          <p className="muted">
+            Place modules by row and start HP. Saves through rack validation; catalog
+            compatibility runs when the case has <code>meta.catalog_slug</code>.
+          </p>
+
+          <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+            <label className="field" style={{ flex: '2 1 14rem' }}>
+              Module
+              <select
+                value={addModuleId ?? ''}
+                onChange={(e) => setAddModuleId(e.target.value ? Number(e.target.value) : null)}
+              >
+                <option value="">Select module…</option>
+                {galleryModules.map((m) => (
+                  <option key={m.id} value={m.id}>
+                    {m.brand} — {m.name} ({m.hp}HP
+                    {m.power_12v_ma != null ? ` · +12 ${m.power_12v_ma}mA` : ''})
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label className="field" style={{ flex: '0 0 6rem' }}>
+              Row
+              <input
+                type="number"
+                min={0}
+                value={addRow}
+                onChange={(e) => setAddRow(Number(e.target.value) || 0)}
+              />
+            </label>
+            <label className="field" style={{ flex: '0 0 6rem' }}>
+              Start HP
+              <input
+                type="number"
+                min={0}
+                value={addStartHp}
+                onChange={(e) => setAddStartHp(Number(e.target.value) || 0)}
+              />
+            </label>
+            <button
+              type="button"
+              className="button button-primary"
+              disabled={placementSaving || addModuleId == null}
+              onClick={() => void addPlacement()}
+            >
+              {placementSaving ? 'Saving…' : 'Add placement'}
+            </button>
+          </div>
+
+          {placementError ? (
+            <p className="status status-danger" role="alert">
+              {placementError}
+            </p>
+          ) : null}
+
+          {placementModules.length === 0 ? (
+            <p className="status status-warning">No modules placed yet.</p>
+          ) : (
+            <ul style={{ listStyle: 'none', padding: 0 }}>
+              {placementModules.map((spec, index) => {
+                const mod =
+                  liveRack?.modules?.find(
+                    (m) =>
+                      m.module_id === spec.module_id &&
+                      m.row_index === spec.row_index &&
+                      m.start_hp === spec.start_hp,
+                  )?.module ?? galleryModules.find((m) => m.id === spec.module_id);
+                return (
+                  <li
+                    key={`${spec.module_id}-${spec.row_index}-${spec.start_hp}-${index}`}
+                    className="panel"
+                    style={{ marginBottom: 'var(--space-2)', padding: 'var(--space-3)' }}
+                  >
+                    <strong>
+                      {mod ? `${mod.brand} — ${mod.name}` : `Module #${spec.module_id}`}
+                    </strong>
+                    <span className="muted">
+                      {' '}
+                      · row {spec.row_index} · HP {spec.start_hp}
+                      {mod?.hp != null ? `–${spec.start_hp + mod.hp - 1}` : ''}
+                    </span>
+                    <button
+                      type="button"
+                      className="button button-quiet"
+                      style={{ marginLeft: 'var(--space-3)' }}
+                      disabled={placementSaving}
+                      onClick={() => void removePlacement(index)}
+                    >
+                      Remove
+                    </button>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          {rackCompat ? (
+            <div className="panel" style={{ marginTop: 'var(--space-4)' }} aria-live="polite">
+              <h3 style={{ marginTop: 0 }}>Catalog compatibility</h3>
+              <p className="muted">
+                Bridge: {rackCompat.bridge_status}
+                {rackCompat.catalog_slug ? ` · ${rackCompat.catalog_slug}` : ''}
+              </p>
+              <p>{rackCompat.message}</p>
+              {rackCompat.compatibility ? (
+                <>
+                  <p>
+                    Overall:{' '}
+                    <strong>{rackCompat.compatibility.overall_status}</strong>
+                  </p>
+                  <ul>
+                    <li>Format: {rackCompat.compatibility.format_check.status} — {rackCompat.compatibility.format_check.message}</li>
+                    <li>Physical fit: {rackCompat.compatibility.physical_fit.status} — {rackCompat.compatibility.physical_fit.message}</li>
+                    <li>Connectors: {rackCompat.compatibility.connector_availability.status}</li>
+                    <li>+5V: {rackCompat.compatibility.pos5_compatibility.status}</li>
+                    <li>Lid: {rackCompat.compatibility.lid_close.status}</li>
+                  </ul>
+                  {rackCompat.compatibility.power_headroom?.length ? (
+                    <ul>
+                      {rackCompat.compatibility.power_headroom.map((r) => (
+                        <li key={r.rail}>
+                          {r.rail}: {r.status}
+                          {r.headroom_ma != null ? ` · headroom ${r.headroom_ma}mA` : ''}
+                          {r.case_capacity_ma != null
+                            ? ` · ${r.module_draw_ma}/${r.case_capacity_ma}mA`
+                            : ` · draw ${r.module_draw_ma}mA`}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
+                  {rackCompat.compatibility.warnings?.length ? (
+                    <p className="status status-warning">
+                      {rackCompat.compatibility.warnings.map((w) => w.message).join(' · ')}
+                    </p>
+                  ) : null}
+                </>
+              ) : null}
+            </div>
+          ) : null}
+        </div>
       )}
 
       <div className="builder-grid">
         <article className="panel">
           <p className="eyebrow">Method 01</p>
           <h2>Manual selection</h2>
-          <p className="muted">Search the confirmed module gallery and place exact revisions in your rig.</p>
+          <p className="muted">
+            {liveMode
+              ? 'Use the placement panel above to add modules with row/HP coordinates.'
+              : 'Create a case-bound rig first, then place modules on the edit screen.'}
+          </p>
           <Link className="button button-primary" to="/modules">
             Browse module gallery
           </Link>

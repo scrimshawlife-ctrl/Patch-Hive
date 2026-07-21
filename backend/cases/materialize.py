@@ -201,3 +201,54 @@ def materialize_legacy_case(
     db.commit()
     db.refresh(existing)
     return existing, False
+
+
+def materialize_catalog_batch(
+    db: Session,
+    *,
+    format_family: Optional[str] = "eurorack",
+    limit: int = 500,
+) -> dict[str, Any]:
+    """Materialize many catalog cases into legacy rows for Rack Builder.
+
+    Default format_family is Eurorack-like placement formats only when
+    ``format_family='eurorack'`` (includes intellijel_1u primary family cases
+    only if catalog identity is eurorack; mixed-row 1U cases stay under eurorack).
+    """
+    query = db.query(CaseCatalog).order_by(CaseCatalog.manufacturer.asc(), CaseCatalog.model.asc())
+    if format_family:
+        if format_family == "eurorack":
+            query = query.filter(CaseCatalog.format_family.in_(["eurorack", "intellijel_1u"]))
+        else:
+            query = query.filter(CaseCatalog.format_family == format_family)
+    cases = query.limit(limit).all()
+    created = 0
+    updated = 0
+    failed: list[dict[str, str]] = []
+    results: list[dict[str, Any]] = []
+    for catalog in cases:
+        try:
+            legacy, was_created = materialize_legacy_case(db, catalog.slug)
+            if was_created:
+                created += 1
+            else:
+                updated += 1
+            results.append(
+                {
+                    "catalog_slug": catalog.slug,
+                    "case_id": legacy.id,
+                    "created": was_created,
+                }
+            )
+        except Exception as exc:  # noqa: BLE001 — batch continues; per-row failure retained
+            failed.append({"catalog_slug": catalog.slug, "error": str(exc)})
+    return {
+        "status": "success" if not failed else "partial",
+        "requested_format_family": format_family,
+        "scanned": len(cases),
+        "created": created,
+        "updated": updated,
+        "failed": len(failed),
+        "failures": failed,
+        "cases": results,
+    }

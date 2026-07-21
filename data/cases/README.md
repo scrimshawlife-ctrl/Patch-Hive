@@ -106,10 +106,14 @@ GET /api/cases/catalog/{slug}
 GET /api/cases/catalog/{slug}/revisions
 POST /api/cases/catalog/{slug}/compatibility
 POST /api/cases/catalog/{slug}/materialize
+POST /api/cases/catalog/materialize-batch
+GET  /api/racks/{id}/compatibility
 ```
 
 `materialize` creates or refreshes a legacy `cases` row for Rack Builder (`case_id`).
-Idempotent via `meta.catalog_slug`.
+Idempotent via `meta.catalog_slug`. Use `materialize-batch?format_family=eurorack` to sync all
+placement-capable catalog rows. Rack compatibility evaluates placed modules when the bound case
+has `meta.catalog_slug`.
 
 Filters on list include manufacturer, format_family, capacity range/unit, row count,
 powered, depth, rail headroom, portable/lid/stand, production_status, feature_key, and `q`.
