@@ -101,3 +101,7 @@ class GeneratePatchesResponse(BaseModel):
     source_run_id: Optional[str] = None
     rig_revision_id: Optional[str] = None
     artifact_manifest_hash: Optional[str] = None
+    # Confirmed-inventory gate (manual rack placements → USER_CONFIRMED).
+    inventory_revision_id: Optional[str] = None
+    inventory_gate_code: Optional[str] = None
+    generation_status: Optional[str] = None

@@ -167,6 +167,14 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
     saved_patches = []
     ir_dict = generation_ir.to_dict()
     provenance_dict = provenance.to_dict()
+    metrics = provenance_dict.get("metrics") or {}
+    inventory_revision_id = metrics.get("inventory_revision_id")
+    if not inventory_revision_id and isinstance(metrics.get("inventory_gate"), dict):
+        inventory_revision_id = metrics["inventory_gate"].get("inventory_revision_id")
+    inventory_gate_code = None
+    if isinstance(metrics.get("inventory_gate"), dict):
+        inventory_gate_code = metrics["inventory_gate"].get("code")
+    generation_status = metrics.get("generation_status")
     for spec in patch_graphs:
         tags = _derive_tags([c.to_dict() for c in spec.connections])
         db_patch = Patch(
@@ -203,6 +211,9 @@ def generate_patches(rack_id: int, request: GeneratePatchesRequest, db: Session 
         source_run_id=bridge.source_run_id,
         rig_revision_id=bridge.rig_revision_id,
         artifact_manifest_hash=bridge.artifact_manifest_hash,
+        inventory_revision_id=inventory_revision_id,
+        inventory_gate_code=inventory_gate_code,
+        generation_status=generation_status,
     )
 
 

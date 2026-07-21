@@ -36,6 +36,9 @@ def test_generate_patches_ensures_export_bridge(
     assert body["source_run_id"] == legacy_source_run_id(int(body["run_id"]))
     assert body["rig_revision_id"] == f"legacy-rack-{sample_rack_basic.id}"
     assert body["artifact_manifest_hash"] and len(body["artifact_manifest_hash"]) == 64
+    assert body.get("inventory_revision_id")
+    assert body.get("inventory_gate_code") in {"OK", "FILTERED"}
+    assert body.get("generation_status") in {"OK", "FILTERED"}
 
     assert db_session.get(RigRevisionRecord, body["rig_revision_id"]) is not None
     rev = db_session.get(RigRevisionRecord, body["rig_revision_id"])

@@ -626,14 +626,35 @@ def generate_patches_with_ir(
         git_commit=get_git_commit(),
     )
 
+    # Confirmed-inventory gate: rack placements are manual USER_CONFIRMED.
+    # Generation must not invent modules outside the placed inventory.
+    from patches.inventory_gate import evaluate_rack_inventory_gate
+
+    gate_report, _ = evaluate_rack_inventory_gate(db, rack)
+    provenance.add_metric("inventory_gate", gate_report.provenance_dict())
+
+    if not gate_report.ready:
+        # Fail closed: no confirmed modules → empty library, explicit NOT_COMPUTABLE.
+        end_time = time.time()
+        provenance.mark_completed()
+        provenance.add_metric("duration_ms", (end_time - start_time) * 1000)
+        provenance.add_metric("patch_count", 0)
+        provenance.add_metric("connection_count", 0)
+        provenance.add_metric("generation_status", "NOT_COMPUTABLE")
+        return generation_ir, [], provenance
+
     # Generate patches using existing logic
     patch_specs = generate_patches_for_rack(db, rack, seed, config)
+
+    # Drop any patch that escapes confirmed catalog modules (defense in depth).
+    gate_report, kept_specs = evaluate_rack_inventory_gate(db, rack, patches=patch_specs)
+    provenance.add_metric("inventory_gate", gate_report.provenance_dict())
 
     # Convert to PatchGraphIR
     patch_graphs: List[PatchGraphIR] = []
     ir_hash = generation_ir.get_canonical_hash()
 
-    for spec in patch_specs:
+    for spec in kept_specs:
         connections_ir = [
             ConnectionIR(
                 from_module_id=c.from_module_id,
@@ -661,5 +682,10 @@ def generate_patches_with_ir(
     provenance.add_metric("duration_ms", (end_time - start_time) * 1000)
     provenance.add_metric("patch_count", len(patch_graphs))
     provenance.add_metric("connection_count", sum(len(p.connections) for p in patch_graphs))
+    provenance.add_metric(
+        "generation_status",
+        "FILTERED" if gate_report.code == "FILTERED" else "OK",
+    )
+    provenance.add_metric("inventory_revision_id", gate_report.inventory.inventory_revision_id)
 
     return generation_ir, patch_graphs, provenance
