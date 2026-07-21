@@ -10,6 +10,7 @@ from .models import (
     CaseRow,
     CaseSource,
 )
+from .source_policy import CaseSourcePolicyPacket
 
 __all__ = [
     "Case",
@@ -20,4 +21,5 @@ __all__ = [
     "CaseFeature",
     "CasePrice",
     "CaseSource",
+    "CaseSourcePolicyPacket",
 ]
