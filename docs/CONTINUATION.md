@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `6a85beb32cc8aee0344832de7efda64e645badcc`  
-**Tracking:** Issue #46 closed · PR #47–#66 on main  
-**PR #66:** **MERGED** (VSI P0 contracts, inventory, native bridge IDs, multi-image evidence, confirmation API)
+**main HEAD:** `b1178483e5cd5b1f2fcc517739d6a14e00e56097`  
+**Tracking:** Issue #46 closed · PR #47–#70 on main  
+**PR #66–#70:** **MERGED** (VSI P0, eval/cloud adapter, AI foundation, Cases/Patches+RackBuilder evidence UX)
 
 ## Where we are
 
@@ -34,7 +34,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 - [x] Move acceptance credits path off legacy debit POST (PR #51)
 - [x] Run DTOs with server-authored bridge fields (PR #54; namespace still legacy-*)
 - [ ] Deletion of historical top-level/`backend/patchhive` package and unrouted page modules
-- [ ] Cases/Patches list pages beyond stubs
+- [x] Cases/Patches list pages beyond stubs (PR #69)
 - [ ] Hardware, DSP, MIDI/CV, or ModularGrid live provider implementation
 - [x] Provider-neutral vision adapter + mock/fixture (VSI campaign WP-02)
 - [x] SystemInventoryRevision + confirmed-inventory patch gate (WP-03)
@@ -70,7 +70,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 - [x] RigDetail export uses server bridge fields (no client `legacyRunManifestHash` invent)
 - [x] Default `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` once remaining non-MVP callers cleared
 - [ ] Full retirement of legacy rack/patch list dual path (still needed for inventory UI)
-- [ ] Promote bridge IDs to real immutable revisions (not `legacy-rack-*` / `legacy-run-*` namespace) when generator writes canon runs natively
+- [x] Promote bridge IDs to native `rig-rev-*` / `gen-run-*` (PR #66)
 
 **Next slices (ordered):**
 
@@ -106,7 +106,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 
 ### P4 — Product depth (still MVP-scoped)
 
-1. **Cases / Patches list pages** — currently placeholders (`Cases.tsx`, `Patches.tsx`); wire to existing `caseApi` / `patchApi` with empty/loading/error parity.
+1. ~~**Cases / Patches list pages**~~ **DONE** (PR #69)
 2. Deeper rig revision UX (explicit revision picker, overlay notes/favorite/tried).
 3. Stronger empty/loading/error parity on Modules list.
 4. Expand golden fixtures / property tests for compiler edge cases.
