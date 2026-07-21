@@ -33,7 +33,8 @@ Status vocabulary:
 - expose server-authored rig revision and artifact manifest identities;
 - quarantine historical UI and package surfaces;
 - preserve deterministic compile, immutable runs, and append-only ledgers;
-- validate staging PostgreSQL, migration, backup, and restore behavior.
+- validate staging PostgreSQL, migration, backup, and restore behavior;
+- Visual System Intelligence P0 contracts: secure image evidence, provider-neutral adapters, confirmation → immutable inventory, confirmed-hardware patch gates (see `docs/VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md`).
 
 ### Exit criteria
 
@@ -124,6 +125,25 @@ PatchHive reaches `1.0.0` only when:
 - operational ownership and incident response exist;
 - legal, billing, licensing, and support surfaces are approved;
 - an explicit operator decision authorizes production deployment.
+
+## Visual System Intelligence (cross-cutting)
+
+Authoritative contracts: `docs/VISUAL_SYSTEM_INTELLIGENCE.md`, ADR-005, delivery plan in
+`docs/VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md`.
+
+| Priority | Capability | Status (evidence) |
+|----------|------------|-------------------|
+| P0 | Secure image re-encode + local quality | IMPLEMENTED (unit tests) |
+| P0 | Provider-neutral vision adapter + mock/fixture | IMPLEMENTED (unit tests) |
+| P0 | Classification candidates cannot self-confirm | IMPLEMENTED (contracts + runes) |
+| P0 | Confirmation → immutable `SystemInventoryRevision` | IMPLEMENTED (in-process; ORM follow-on) |
+| P0 | Confirmed-inventory patch constraint enforcement | IMPLEMENTED (unit tests) |
+| P0 | Full HTTP confirmation + multi-photo UI workflow | PARTIAL (RackBuilder evidence UI; no multi-photo) |
+| P1 | Port/control/cable reconstruction | STUB / mock empty |
+| P1 | Photo-derived Patch Books | SPEC_ONLY |
+| P2 | Live camera guidance, marketplace, community match | DEFERRED |
+
+**Out of scope forever unless product canon changes:** audio recording, waveform analysis as ground truth, DSP engines, MIDI/CV hardware activation, DAW/plugin hosting.
 
 ## Deferred beyond 1.0
 

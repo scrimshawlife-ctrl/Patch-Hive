@@ -394,3 +394,31 @@ ORDER BY created_at DESC
 ```sql
 SELECT COUNT(*) FROM votes WHERE rack_id = ?
 ```
+
+---
+
+## Visual System Intelligence contracts (in-process, 2026-07)
+
+These contracts live in `backend/canon/visual_contracts.py` and
+`backend/canon/inventory.py`. They are the authority for photo/manual
+confirmation → inventory → generation gates. ORM migrations for long-term
+persistence are tracked as a follow-on work package; unit contracts and
+hash stability are enforced in tests today.
+
+| Contract | Purpose |
+|----------|---------|
+| `ResolutionStatus` | OBSERVED / INFERRED / USER_CONFIRMED / REJECTED / UNKNOWN / NOT_COMPUTABLE |
+| `ProviderReceipt` | provider, model, versions, input/response hashes |
+| `ClassificationCandidate` | untrusted device/module/port proposal (cannot be USER_CONFIRMED) |
+| `ConfirmationDecision` | user confirm/reject/replace/defer/manual_add |
+| `ConnectionCandidate` | probabilistic cable proposal; obscured ≠ OBSERVED |
+| `SystemInventoryRevision` | immutable confirmed inventory snapshot + canonical hash |
+| `SystemCapabilityGraph` | deterministic capability view bound to one inventory revision |
+
+**Aliases:** System ≈ Rig; SystemInventoryRevision ≈ CanonicalRigRevision /
+RigRevision for generation binding; signal_type `audio` is **port/cable domain
+metadata**, not an audio-processing subsystem.
+
+**Invariant:** generation must call `enforce_confirmed_inventory_constraints`
+(or equivalent) and fail closed with `NOT_COMPUTABLE` when no USER_CONFIRMED
+modules exist.

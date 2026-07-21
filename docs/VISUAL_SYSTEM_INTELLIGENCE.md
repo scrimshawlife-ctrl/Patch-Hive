@@ -232,3 +232,18 @@ This contract must remain aligned with:
 - `docs/CANON_ALIGNMENT.md`
 
 When those documents conflict, the repository's explicit canon and current-state authority rules determine which statement governs. Contradictions must be resolved through a versioned ADR or canon update rather than silently duplicated.
+
+## 15. Implementation pointers (repository)
+
+These code surfaces implement the trust boundary without replacing this contract:
+
+| Concern | Path |
+|---------|------|
+| Secure image prep | `backend/evidence/images.py` |
+| Provider-neutral adapter | `backend/evidence/vision_provider.py` |
+| Visual contracts | `backend/canon/visual_contracts.py` |
+| Inventory + generation gate | `backend/canon/inventory.py` |
+| Provider cannot self-confirm (runes) | `backend/canon/runes.py` `detect_modules` |
+| Audit receipts | `docs/evidence/` |
+
+Signal type `audio` on ports/cables is **domain metadata**. Audio processing remains out of scope.

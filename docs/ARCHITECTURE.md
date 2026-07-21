@@ -119,19 +119,30 @@ The backend is organized into domains, each with clear responsibilities:
 - **Purpose**: Visualization and PDF generation
 - **Components**:
   - `visualization.py`: SVG rack layout and patch diagram generators
-  - `waveform.py`: SVG waveform approximation generator
+  - `waveform.py`: SVG **symbolic** waveform approximation generator (not audio DSP)
   - `pdf.py`: PDF patch book generator using ReportLab
   - `routes.py`: Export endpoints
 - **Key Features**:
-  - Deterministic waveform generation from patch category
-  - Color-coded module types
-  - Multi-page PDF patch books
+  - Deterministic symbolic waveform thumbnails from patch category
+  - Color-coded module types (color is never the only cable signal)
+  - Multi-page PDF patch books (one-page publishing invariant for 0.3.x)
 
 #### 8. **Ingest** (`backend/ingest/`)
 - **Purpose**: External data import
 - **Components**:
   - `modulargrid.py`: ModularGrid adapter (interface only, implementation pending)
 - **Design**: Pluggable adapters for different data sources
+
+#### 8b. **Evidence & Visual System Intelligence** (`backend/evidence/`, `backend/canon/`)
+- **Purpose**: Photo/manual/hybrid system intake without provider authority
+- **Components**:
+  - `evidence/images.py`: secure re-encode, MIME sniffing, local quality gates
+  - `evidence/vision_provider.py`: provider-neutral `VisionEvidenceProvider` (+ mock/fixture)
+  - `canon/visual_contracts.py`: candidates, confirmations, inventory, capability graph
+  - `canon/inventory.py`: immutable inventory revision + confirmed-hardware patch gates
+  - `canon/runes.py`: `detect_modules` rejects self-confirmed provider evidence
+- **Trust boundary**: Image → untrusted evidence → user confirmation → immutable inventory → deterministic generation
+- **Out of scope**: audio capture/analysis/DSP, hardware control, live model dependence in CI
 
 ### Database Schema
 

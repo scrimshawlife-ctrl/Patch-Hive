@@ -19,6 +19,7 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Canonical workspace UI (`App.tsx` routes) | CANON_MVP | Rigs, modules, cases, patches, account, admin diagnostics |
 | Admin diagnostics/auditing | CANON_SUPPORTING | RBAC retained; canonical audit events append-only |
 | Image/provider detection | CANON_SUPPORTING | Untrusted evidence only; validation, scan adapter, re-encoding, metadata stripping |
+| VSI contracts + inventory gate | CANON_SUPPORTING | `canon/visual_contracts.py`, `canon/inventory.py`, `evidence/vision_provider.py` — in-process P0; ORM follow-on |
 | Integration/catalog adapters | CANON_SUPPORTING | Retained behind bounded adapters |
 | Legacy `/api/racks`, `/api/patches`, `/api/runs` | CANON_SUPPORTING / transitional | Still mounted; **active inventory UI** — see **Inventory dual-path matrix** below |
 | Legacy `POST /api/export/runs/{id}/patchbook` debit | CANON_SUPPORTING / transitional | MVP UI + acceptance use `/api/canon/exports` (PR #49/#51); gate via `ENABLE_LEGACY_PATCHBOOK_DEBIT` |

@@ -1,14 +1,15 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `cf443574baf3849c814b837bc8efa8407092207e`  
-**Tracking:** Issue #46 closed · PR #47 MERGED · PR #49 MERGED · PR #51 MERGED · PR #54 MERGED  
-**Open campaign PRs:** none
+**main baseline:** `2b72d5b10fef1ab70c74d3c40379eb1593cf8293`  
+**Tracking:** Issue #46 closed · PR #47–#65 product/docs path on main  
+**Active campaign branch:** `grok/patchhive-visual-system-canon-audit`
 
 ## Where we are
 
 Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85` via PR #47).  
-**P1 client dual-path reduction for credits/exports** is on `main` (`71a4dfa` via PR #49).
+P1 dual-path slices A–E and Visual System Intelligence **specifications** are on `main`.  
+This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patch gates) without production vision models.
 
 ### Done (OBSERVED)
 
@@ -35,6 +36,11 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 - [ ] Deletion of historical top-level/`backend/patchhive` package and unrouted page modules
 - [ ] Cases/Patches list pages beyond stubs
 - [ ] Hardware, DSP, MIDI/CV, or ModularGrid live provider implementation
+- [x] Provider-neutral vision adapter + mock/fixture (VSI campaign WP-02)
+- [x] SystemInventoryRevision + confirmed-inventory patch gate (WP-03)
+- [ ] Wire inventory gate into generate API (WP-05)
+- [ ] Persist inventory revisions via Alembic (WP-06)
+- [ ] Live vision provider behind adapter (ops secret + evaluation dataset)
 
 ## Recommended work order
 
@@ -103,6 +109,17 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 3. Stronger empty/loading/error parity on Modules list.
 4. Expand golden fixtures / property tests for compiler edge cases.
 5. Real image scanner implementation behind `ImageScanner` (ops secret + service).
+
+### P4b — Visual System Intelligence (ACTIVE residual)
+
+See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md) and [evidence/WORK_PACKAGES.md](evidence/WORK_PACKAGES.md).
+
+1. **WP-05:** Call `enforce_confirmed_inventory_constraints` from patch generate path; fail closed with `NOT_COMPUTABLE`.
+2. **WP-06:** Alembic persistence for inventory revisions + evidence assets.
+3. Authenticated multi-image upload with retention/consent.
+4. Ranked candidate confirmation API + RackBuilder multi-candidate UX.
+5. Evaluation dataset + metrics (until then accuracy is `NOT_COMPUTABLE`).
+6. P1: multi-photo, ports/controls/cables, photo-derived Patch Books.
 
 ### P5 — Explicitly deferred
 
