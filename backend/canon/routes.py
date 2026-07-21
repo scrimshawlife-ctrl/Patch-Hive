@@ -49,8 +49,11 @@ class CanonicalExportCreate(BaseModel):
     artifact_manifest_hash: str = Field(..., min_length=64, max_length=64)
     formats: list[ExportFormat] = Field(default_factory=lambda: ["pdf", "json"])
     license: str = Field(default="personal", min_length=1, max_length=100)
+    # When Design Engine is on, client credit_cost is ignored (KD-14).
     credit_cost: int | None = Field(default=None, ge=0)
     idempotency_key: str = Field(..., min_length=8, max_length=128)
+    # Optional inline request recipe (no client tier; no style_recipe_id until library PR)
+    style_recipe: dict[str, Any] | None = None
 
 
 class CanonicalExportResponse(BaseModel):
@@ -62,6 +65,10 @@ class CanonicalExportResponse(BaseModel):
     source_rig_revision_id: str
     idempotency_key: str
     created_at: datetime
+    composition_hash: str | None = None
+    style_recipe_hash: str | None = None
+    error_code: str | None = None
+    pack_manifest_hash: str | None = None
 
 
 class DownloadTokenCreate(BaseModel):
@@ -130,6 +137,10 @@ def _export_response(record: CanonicalExportRecord) -> CanonicalExportResponse:
         source_rig_revision_id=record.source_rig_revision_id,
         idempotency_key=record.idempotency_key,
         created_at=record.created_at,
+        composition_hash=getattr(record, "composition_hash", None),
+        style_recipe_hash=getattr(record, "style_recipe_hash", None),
+        error_code=getattr(record, "error_code", None),
+        pack_manifest_hash=getattr(record, "pack_manifest_hash", None),
     )
 
 
@@ -374,7 +385,39 @@ def create_canonical_export(
     if not body.formats:
         raise HTTPException(status_code=400, detail="At least one export format is required")
 
-    cost = settings.patchbook_export_cost if body.credit_cost is None else body.credit_cost
+    # KD-14: when Design Engine is on, ignore client credit_cost (prevent under-report)
+    if settings.enable_patchbook_design_engine:
+        cost = settings.patchbook_export_cost
+    else:
+        cost = settings.patchbook_export_cost if body.credit_cost is None else body.credit_cost
+
+    resolved_recipe = None
+    request_recipe_dump = None
+    if settings.enable_patchbook_design_engine or settings.enable_canon_export_fulfillment:
+        from canon.entitlements import get_design_entitlements, tier_allows_family
+        from export.patchbook.design.constraints import StyleResolveError, resolve_style_recipe
+        from export.patchbook.design.recipe import RequestStyleRecipe, default_request_recipe, recipe_hash
+
+        entitlements = get_design_entitlements(current_user.id)
+        try:
+            if body.style_recipe is not None:
+                request_recipe = RequestStyleRecipe.model_validate(body.style_recipe)
+            else:
+                request_recipe = default_request_recipe()
+            request_recipe_dump = request_recipe.model_dump(mode="json")
+            resolved_recipe = resolve_style_recipe(
+                request_recipe,
+                resolved_tier=entitlements.tier,
+                family_allowed=tier_allows_family(
+                    entitlements.tier, request_recipe.template_family
+                ),
+                publication_enabled=entitlements.publication_enabled,
+            )
+        except StyleResolveError as exc:
+            raise HTTPException(status_code=400, detail=exc.code) from exc
+        except Exception as exc:
+            raise HTTPException(status_code=400, detail=f"INVALID_STYLE_RECIPE:{exc}") from exc
+
     request_id = hashlib.sha256(
         f"{current_user.id}:{body.idempotency_key}".encode("utf-8")
     ).hexdigest()[:32]
@@ -396,6 +439,15 @@ def create_canonical_export(
             artifact_manifest_hash=body.artifact_manifest_hash,
             export_version=settings.patch_engine_version,
         )
+        if resolved_recipe is not None:
+            from export.patchbook.design.recipe import DESIGN_ENGINE_VERSION, recipe_hash
+
+            export.style_recipe_hash = recipe_hash(resolved_recipe)
+            export.request_style_recipe_json = request_recipe_dump
+            export.resolved_style_recipe_json = resolved_recipe.model_dump(mode="json")
+            export.resolved_tier = resolved_recipe.resolved_tier
+            export.design_engine_version = DESIGN_ENGINE_VERSION
+            export.book_profile = resolved_recipe.constraints.book_profile.value
         db.commit()
         db.refresh(export)
     except ExportBoundaryError as exc:
@@ -407,6 +459,19 @@ def create_canonical_export(
     except Exception:
         db.rollback()
         raise
+
+    # KD-12 inline fulfill after debit commit (acceptance path)
+    if settings.enable_canon_export_fulfillment and settings.enable_inline_export_fulfillment:
+        from canon.fulfillment import fulfill_export
+
+        try:
+            fulfill_export(db, export.id)
+            db.commit()
+            db.refresh(export)
+        except Exception:
+            db.rollback()
+            # leave queued/running for retry; do not 500 the debit response
+            db.refresh(export)
 
     return _export_response(export)
 
@@ -436,8 +501,15 @@ def create_download_token(
     export = db.get(CanonicalExportRecord, export_id)
     if export is None or export.user_id != current_user.id:
         raise HTTPException(status_code=404, detail="Export not found")
-    if export.status not in {"queued", "running", "succeeded"}:
+    # When fulfillment is enabled, only completed packs are downloadable (KD-12).
+    if settings.enable_canon_export_fulfillment:
+        allowed = {"succeeded"}
+    else:
+        allowed = {"queued", "running", "succeeded"}
+    if export.status not in allowed:
         raise HTTPException(status_code=409, detail="Export is not downloadable")
+    if settings.enable_canon_export_fulfillment and not getattr(export, "pack_manifest_hash", None):
+        raise HTTPException(status_code=409, detail="Export pack not ready")
 
     try:
         token = issue_download_token(

@@ -13,6 +13,14 @@ All flags are environment variables parsed case-insensitively by backend setting
 | `ALLOW_PRODUCTION_PAYMENTS` | `false` | Kill switch. When false, production webhook intake returns 403. Startup fails closed if production sets this false while `STRIPE_TEST_MODE=false`, or sets this true without reviewed secrets. |
 | `STRIPE_WEBHOOK_SECRET` | empty | Stripe signing secret for `/api/canon/webhooks/stripe` |
 | `DOWNLOAD_TOKEN_SECRET` | empty | HMAC secret for scoped export download tokens (falls back to `SECRET_KEY` when long enough) |
+| `ENABLE_PATCHBOOK_DESIGN_ENGINE` | `false` | Style recipes, resolve-before-debit seal, Studio surface |
+| `ENABLE_CANON_EXPORT_FULFILLMENT` | `false` | Worker/path that composes PDF pack after debit (closes queued-forever gap) |
+| `ENABLE_INLINE_EXPORT_FULFILLMENT` | `false` | After debit commit, fulfill synchronously on request thread (tests/dev) |
+| `ENABLE_PATCHBOOK_PUBLICATION_PROFILE` | `false` | Multi-page publication + artistic dual-artifact packs |
+| `REQUIRE_SEALED_GENERATED_PATCHES` | `false` | Path A only — fail if no `GeneratedPatchRecord` (post dual-write cutover) |
+| `DESIGN_ENGINE_DEFAULT_TIER` | `core` | Server-side presentation tier until entitlements exist (not client-spoofable) |
+| `EXPORT_FULFILL_MAX_ATTEMPTS` | `5` | Max fulfillment claims before compensate |
+| `EXPORT_STORE_ROOT` | `./exports` | Root for `design_packs/{export_id}` packs |
 
 Auth endpoints (`POST /api/community/auth/login`, registration, profile) are part of the default MVP surface and do **not** require `ENABLE_LEGACY_SOCIAL`.
 

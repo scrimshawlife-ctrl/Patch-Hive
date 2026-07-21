@@ -6,9 +6,14 @@ from pathlib import Path
 
 from .models import PatchBookBranding, PATCHBOOK_TEMPLATE_VERSION
 
-BRAND_PRIMARY = "#111827"
-BRAND_ACCENT = "#F59E0B"
+# Cyber Hive tokens (docs/brand/design-tokens.cyber-hive.json) — PatchHive hero
+BRAND_PRIMARY = "#1A1A1A"  # graphite
+BRAND_ACCENT = "#F5A623"  # cyber-hive amber
+BRAND_CYAN = "#00D4C8"
 BRAND_FONT = "Helvetica"
+# Zero State parent signature (understated; never product hero)
+ZERO_STATE_SIGNATURE = "A Zero State Product"
+PDF_CREATOR = "PatchHive PatchBook; A Zero State Product"
 
 WORDMARK_SVG = """<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <svg width=\"220\" height=\"40\" viewBox=\"0 0 220 40\" xmlns=\"http://www.w3.org/2000/svg\">
