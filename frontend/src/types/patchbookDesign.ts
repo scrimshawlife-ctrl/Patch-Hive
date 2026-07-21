@@ -142,6 +142,82 @@ export const DEFAULT_STYLE_WEIGHTS: StyleWeights = {
   experimental_typography: 5,
 };
 
+/** Full influence catalog (mirrors backend INFLUENCE_IDS). */
+export const ALL_INFLUENCE_IDS = [
+  "engineering",
+  "scientific",
+  "swiss",
+  "editorial",
+  "industrial",
+  "architectural",
+  "museum",
+  "archival",
+  "technical_manual",
+  "field_notebook",
+  "patent",
+  "blueprint",
+  "circuit_board",
+  "oscilloscope",
+  "cyber_hive",
+  "brutalist",
+  "minimal",
+  "luxury",
+  "organic",
+  "biomorphic",
+  "symbolic",
+  "ritual",
+  "abstract",
+  "surreal",
+  "futurist",
+  "retro_futurist",
+  "analog_studio",
+  "modular_synth",
+  "record_packaging",
+  "data_visualization",
+  "generative_geometry",
+  "open_form_zero_state",
+] as const;
+
+export type InfluenceId = (typeof ALL_INFLUENCE_IDS)[number];
+
+export const RECIPE_LIBRARY_STORAGE_KEY = "patchhive.patchbook.recipe_library.v1";
+
+export type SavedStyleRecipe = {
+  id: string;
+  name: string;
+  saved_at: string;
+  recipe: RequestStyleRecipe;
+};
+
+export function loadRecipeLibrary(): SavedStyleRecipe[] {
+  try {
+    const raw = localStorage.getItem(RECIPE_LIBRARY_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw) as SavedStyleRecipe[];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveRecipeToLibrary(name: string, recipe: RequestStyleRecipe): SavedStyleRecipe[] {
+  const entry: SavedStyleRecipe = {
+    id: `recipe-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+    name: name.trim() || "Untitled recipe",
+    saved_at: new Date().toISOString(),
+    recipe,
+  };
+  const next = [entry, ...loadRecipeLibrary()].slice(0, 40);
+  localStorage.setItem(RECIPE_LIBRARY_STORAGE_KEY, JSON.stringify(next));
+  return next;
+}
+
+export function deleteRecipeFromLibrary(id: string): SavedStyleRecipe[] {
+  const next = loadRecipeLibrary().filter((r) => r.id !== id);
+  localStorage.setItem(RECIPE_LIBRARY_STORAGE_KEY, JSON.stringify(next));
+  return next;
+}
+
 export function defaultRequestStyleRecipe(
   seed = 0,
 ): RequestStyleRecipe {
