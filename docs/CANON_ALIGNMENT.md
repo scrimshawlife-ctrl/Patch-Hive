@@ -2,8 +2,8 @@
 
 Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification, product/design specification, repository behavior, and historical claims.
 
-**Campaign:** Issue #46 · PR #47 · branch `codex/patchhive-oneshot-canon-alignment`  
-**Last inventory refresh:** 2026-07-20 · HEAD `1ab518c`  
+**Campaign:** Issue #46 closed · PR #47 merged · PR #49 merged (P1 client)  
+**Last inventory refresh:** 2026-07-21 · main HEAD `71a4dfa`  
 **Continuation plan:** [CONTINUATION.md](CONTINUATION.md)
 
 ## Classification
@@ -20,7 +20,9 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | Admin diagnostics/auditing | CANON_SUPPORTING | RBAC retained; canonical audit events append-only |
 | Image/provider detection | CANON_SUPPORTING | Untrusted evidence only; validation, scan adapter, re-encoding, metadata stripping |
 | Integration/catalog adapters | CANON_SUPPORTING | Retained behind bounded adapters |
-| Legacy `/api/racks`, `/api/patches`, `/api/export` | CANON_SUPPORTING / transitional | Still mounted; dual-path — reduce per CONTINUATION P1 |
+| Legacy `/api/racks`, `/api/patches`, `/api/runs` | CANON_SUPPORTING / transitional | Still mounted; **active inventory UI** — reduce per CONTINUATION P1 residual |
+| Legacy `POST /api/export/runs/{id}/patchbook` debit | CANON_SUPPORTING / transitional | Acceptance still depends; MVP UI debits via `/api/canon/exports` only (PR #49) |
+| Legacy `/api/export/*` PDF/SVG GET bytes | CANON_SUPPORTING | Artifact delivery; no new MVP debits |
 | Community feed, comments, votes, following, notifications | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Public publishing/profiles/sharing | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
 | Leaderboards | FEATURE_FLAGGED_FUTURE | Backend router off by default; absent from navigation |
@@ -67,6 +69,8 @@ Authority: ABX-CAN-043, then workspace/naming doctrine, execution specification,
 | 5 | Photo evidence workflow | Complete (evidence module + UI resolution) |
 | 6 | Exports, credits, Stripe hardening | Complete (test-mode canon routes) |
 | 7 | Security, accessibility, operations | Complete (workflows + docs) |
-| 8 | Full validation and documentation alignment | Complete on branch; **main merge pending** |
+| 8 | Full validation and documentation alignment | Complete — merged main via PR #47 |
+| P1 client | Credits/exports FE → `/api/canon/*` | Complete — merged main via PR #49 |
+| P1 residual | Acceptance debit, run DTO bridge, inventory dual-path | **Open** — see CONTINUATION |
 
 Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not as a re-open of Phase 0–8 unless critical regression appears.

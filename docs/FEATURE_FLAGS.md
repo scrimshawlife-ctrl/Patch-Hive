@@ -28,13 +28,24 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 | `POST` | `/api/canon/exports/{id}/download` | Verify token scope for a completed/queued export |
 | `POST` | `/api/canon/webhooks/stripe` | Replay-safe Stripe-style webhook intake |
 
-### Client preference (P1)
+### Client preference (P1 — PR #49 done for MVP UI)
 
 | Client surface | Preferred path | Residual legacy |
 |---|---|---|
-| Rig workspace credits + patch-book debit | `canonApi` → `/api/canon/credits/balance`, `POST /api/canon/exports` | `exportApi.patchbookExport` deprecated |
-| Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `GET /api/canon/exports` | `/api/me/credits`, `/api/me/exports` |
+| Rig workspace credits + patch-book debit | `canonApi` → `/api/canon/credits/balance`, `POST /api/canon/exports` | `exportApi.patchbookExport` deprecated; **not used by active UI** |
+| Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `GET /api/canon/exports` | `/api/me/credits`, `/api/me/exports` still on server |
 | PDF/SVG file bytes | still `/api/export/...` GETs | Artifact delivery only — **no new debits** |
+| Acceptance debit tests | **should move to** `POST /api/canon/exports` | still call `POST /api/export/runs/{id}/patchbook` (P1 residual) |
+| RigDetail export ids | server `rig_revision_id` + manifest (target) | bridge: `legacy-rack-{id}` + client `legacyRunManifestHash` |
+
+### DEPRECATIONS
+
+| Endpoint / client | Status | Notes |
+|---|---|---|
+| `exportApi.patchbookExport` | Deprecated | Dual-path debit risk; use `canonApi.createExport` |
+| `POST /api/export/runs/{id}/patchbook` | Transitional | Debits legacy ledger path; keep until acceptance ported |
+| `POST /api/export/patchbook` | Document-only builder API | No MVP UI caller for debit flow |
+| `publishingApi` / `communityApi` / `leaderboardsApi` FE clients | Dead for MVP nav | Only referenced by unrouted pages — P2 cleanup |
 
 Legacy `/api/export` PatchBook **POST** routes remain during transition but must not be used by the active UI. Production payments stay disabled unless a separate reviewed change sets `ALLOW_PRODUCTION_PAYMENTS=true` with real secrets.
 
