@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Cyber Hive visual identity kit: brand assets under `brand/`, design system in `docs/brand/`, 48 SVG icons + tokens (`cyber-hive-0.1`).
 - Local Docker staging receipt + domain cutover checklist; `just staging-up` / `staging-down`.
 - F3 generate dual-write audit: native `rig-rev-*`/`gen-run-*` only, inventory row persistence, empty-rack NOT_COMPUTABLE still dual-writes; forbid legacy-* bridge ids on ready bridges.
 - RigDetail inventory → generate → patches loop: step list, readiness-aware generate CTA, generation receipt, Playwright coverage.
