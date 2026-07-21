@@ -54,6 +54,8 @@ export interface Case {
   description?: string;
   manufacturer_url?: string;
   meta?: Record<string, unknown>;
+  /** Present when case was materialized from the normalized catalog. */
+  catalog_slug?: string | null;
   source: string;
   source_reference?: string;
   created_at: string;
@@ -200,6 +202,14 @@ export interface Rack {
     total_hp: number;
     rows: number;
     hp_per_row: number[];
+    format_family?: string | null;
+    capacity_unit?: string | null;
+    powered?: boolean | null;
+    power_12v_ma?: number | null;
+    power_neg12v_ma?: number | null;
+    power_5v_ma?: number | null;
+    meta?: Record<string, unknown>;
+    catalog_slug?: string | null;
   };
   vote_count: number;
 }

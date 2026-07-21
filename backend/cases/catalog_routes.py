@@ -14,7 +14,7 @@ from sqlalchemy.orm import Session, selectinload
 from cases import catalog_service
 from cases.compatibility import evaluate_catalog_compatibility
 from cases.compatibility_schemas import CompatibilityRequest, CompatibilityResponse
-from cases.materialize import materialize_legacy_case
+from cases.materialize import materialize_catalog_batch, materialize_legacy_case
 from cases.schemas import CaseResponse
 from cases.catalog_schemas import (
     CaseCatalogDetail,
@@ -169,6 +169,23 @@ def list_catalog_formats(db: Session = Depends(get_db)):
 @router.get("/catalog/stats", response_model=CaseCatalogStatsResponse)
 def get_catalog_stats(db: Session = Depends(get_db)):
     return CaseCatalogStatsResponse(**catalog_service.catalog_stats(db))
+
+
+@router.post(
+    "/catalog/materialize-batch",
+    response_model=dict,
+    summary="Materialize many catalog cases into legacy rows",
+)
+def materialize_catalog_batch_route(
+    format_family: Optional[str] = Query(
+        "eurorack",
+        description="Catalog format_family filter; eurorack includes intellijel_1u identity",
+    ),
+    limit: int = Query(500, ge=1, le=2000),
+    db: Session = Depends(get_db),
+):
+    """Bulk bridge for Rack Builder. Idempotent per catalog slug."""
+    return materialize_catalog_batch(db, format_family=format_family, limit=limit)
 
 
 @router.get("/catalog/{slug}", response_model=CaseCatalogDetail)

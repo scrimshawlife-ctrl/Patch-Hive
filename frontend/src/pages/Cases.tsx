@@ -67,6 +67,8 @@ export default function CasesPage() {
   const [minCapacity, setMinCapacity] = useState('');
   const [materializing, setMaterializing] = useState<string | null>(null);
   const [actionError, setActionError] = useState('');
+  const [batchNote, setBatchNote] = useState('');
+  const [batchBusy, setBatchBusy] = useState(false);
 
   const load = async () => {
     setState('loading');
@@ -109,6 +111,23 @@ export default function CasesPage() {
     return Array.from(set).sort();
   }, [cases]);
 
+  const materializeAllEurorack = async () => {
+    setBatchBusy(true);
+    setBatchNote('');
+    setActionError('');
+    try {
+      const res = await caseCatalogApi.materializeBatch({ format_family: 'eurorack' });
+      const b = res.data;
+      setBatchNote(
+        `Eurorack materialize: scanned ${b.scanned}, created ${b.created}, updated ${b.updated}, failed ${b.failed}.`,
+      );
+    } catch {
+      setActionError('Bulk materialize failed. Ensure the catalog seed is loaded in this environment.');
+    } finally {
+      setBatchBusy(false);
+    }
+  };
+
   const materializeAndOpenRig = async (item: CatalogCaseListItem) => {
     if (!canPlace(item)) return;
     setMaterializing(item.slug);
@@ -142,11 +161,25 @@ export default function CasesPage() {
           <Link className="button button-primary" to="/racks/new">
             New rig
           </Link>
+          <button
+            className="button button-secondary"
+            type="button"
+            disabled={batchBusy}
+            onClick={() => void materializeAllEurorack()}
+          >
+            {batchBusy ? 'Materializing…' : 'Materialize Eurorack for rigs'}
+          </button>
           <button className="button button-secondary" type="button" onClick={() => void load()}>
             Refresh
           </button>
         </div>
       </header>
+
+      {batchNote ? (
+        <p className="status status-success" role="status">
+          {batchNote}
+        </p>
+      ) : null}
 
       {stats ? (
         <p className="muted" style={{ marginBottom: 'var(--space-4)' }} role="status">
