@@ -176,11 +176,7 @@ def test_signal_type_mismatch_is_blocking() -> None:
     nodes = list(_nodes())
     filter_node = nodes[0]
     nodes[0] = filter_node.model_copy(
-        update={
-            "ports": (
-                filter_node.ports[0].model_copy(update={"signal_type": "cv"}),
-            )
-        }
+        update={"ports": (filter_node.ports[0].model_copy(update={"signal_type": "cv"}),)}
     )
     result = compile_patch(
         run_id="run-1",
@@ -199,11 +195,7 @@ def test_unknown_signal_emits_warning_not_blocking() -> None:
     nodes = list(_nodes())
     filter_node = nodes[0]
     nodes[0] = filter_node.model_copy(
-        update={
-            "ports": (
-                filter_node.ports[0].model_copy(update={"signal_type": "unknown"}),
-            )
-        }
+        update={"ports": (filter_node.ports[0].model_copy(update={"signal_type": "unknown"}),)}
     )
     edge = _edge().model_copy(update={"signal_type": "unknown"})
     result = compile_patch(
@@ -348,9 +340,7 @@ def test_undeclared_feedback_cycle_is_blocking() -> None:
         created_at=NOW,
     )
     assert result.validation_report.valid is False
-    assert "UNDECLARED_FEEDBACK_CYCLE" in {
-        issue.code for issue in result.validation_report.issues
-    }
+    assert "UNDECLARED_FEEDBACK_CYCLE" in {issue.code for issue in result.validation_report.issues}
 
 
 def test_declared_feedback_cycle_is_allowed() -> None:
@@ -444,9 +434,7 @@ def test_normalled_break_is_informational() -> None:
         created_at=NOW,
     )
     assert result.validation_report.valid is True
-    assert "NORMALLED_CONNECTION_BREAK" in {
-        issue.code for issue in result.validation_report.issues
-    }
+    assert "NORMALLED_CONNECTION_BREAK" in {issue.code for issue in result.validation_report.issues}
 
 
 def test_empty_graph_compiles_with_startup_warning_only() -> None:
