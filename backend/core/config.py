@@ -49,6 +49,9 @@ class Settings(BaseSettings):
     max_patches_per_generation: int = 20
     default_generation_seed: int = 42
     patchbook_export_cost: int = 3
+    # Legacy POST /api/export/runs/{id}/patchbook debit path (transitional).
+    # MVP UI and acceptance use /api/canon/exports; set false to hard-disable debit.
+    enable_legacy_patchbook_debit: bool = True
     stripe_test_mode: bool = True
     allow_production_payments: bool = False
     # Empty defaults: development may derive local secrets; production policy enforces real ones.

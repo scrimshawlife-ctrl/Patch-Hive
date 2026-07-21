@@ -80,7 +80,8 @@ See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 
 1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
 2. ~~P1 client: MVP credits/exports → `/api/canon/*`~~ **DONE** (PR #49 @ `71a4dfa`)
-3. **P1 residual:** retire legacy PatchBook POST once acceptance moves to canon; real `rig_revision_id` / manifest on run DTOs; inventory dual-path plan
-4. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
-5. **P3:** non-prod Postgres staging + acceptance against real DB
-6. **P4:** Cases/Patches list depth (currently stubs); revision picker UX
+3. ~~P1 acceptance + admin grant dual-write + legacy debit gate~~ **IN PR** (`feat/p1-acceptance-canon-exports`)
+4. **P1 residual:** real `rig_revision_id` / manifest on run DTOs; inventory dual-path plan
+5. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
+6. **P3:** non-prod Postgres staging + acceptance against real DB
+7. **P4:** Cases/Patches list depth (currently stubs); revision picker UX

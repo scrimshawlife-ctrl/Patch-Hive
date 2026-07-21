@@ -153,6 +153,24 @@ def test_canonical_export_insufficient_credits(client: TestClient, db_session: S
     assert resp.json()["detail"] == "INSUFFICIENT_CREDITS"
 
 
+def test_legacy_patchbook_debit_can_be_disabled(
+    client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    """ENABLE_LEGACY_PATCHBOOK_DEBIT=false returns 410 on the legacy debit route."""
+    import export.routes as export_routes
+
+    monkeypatch.setattr(settings, "enable_legacy_patchbook_debit", False)
+    monkeypatch.setattr(export_routes, "settings", settings)
+
+    user, _patch = _persist_hierarchy(db_session)
+    resp = client.post(
+        "/api/export/runs/1/patchbook",
+        headers=_auth_headers(user),
+    )
+    assert resp.status_code == 410
+    assert "LEGACY_PATCHBOOK_DEBIT_DISABLED" in resp.json()["detail"]
+
+
 def _signature(payload: bytes, secret: str, timestamp: int) -> str:
     digest = hmac.new(
         secret.encode(), f"{timestamp}.".encode() + payload, hashlib.sha256

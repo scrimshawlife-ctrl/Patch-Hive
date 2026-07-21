@@ -69,12 +69,25 @@ def test_admin_grant_credits_writes_audit_log(db_session: Session):
         headers=_auth_headers(admin),
     )
     assert response.status_code == 201
+    assert response.json()["status"] == "granted"
+    assert response.json().get("canonical_ledger_entry_id")
 
     ledger_entries = (
         db_session.query(CreditsLedger).filter(CreditsLedger.user_id == target.id).all()
     )
     assert len(ledger_entries) == 1
     assert ledger_entries[0].credits_delta == 5
+
+    from canon.models import CanonicalCreditLedgerEntryRecord
+
+    canon_entries = (
+        db_session.query(CanonicalCreditLedgerEntryRecord)
+        .filter(CanonicalCreditLedgerEntryRecord.user_id == target.id)
+        .all()
+    )
+    assert len(canon_entries) == 1
+    assert int(canon_entries[0].delta) == 5
+    assert str(canon_entries[0].entry_type) == "grant"
 
     audit_entries = (
         db_session.query(AdminAuditLog).filter(AdminAuditLog.action_type == "credits.grant").all()
