@@ -92,9 +92,7 @@ def validate_brand_marks(
         for mark in page.brand_marks:
             if mark.mark_id == "zero_state":
                 if not _mark_allowed(mark, ZERO_STATE_RULES, page_area_pt):
-                    violations.append(
-                        f"zero_state_mark_policy:{page.page_id}:{mark.page_role}"
-                    )
+                    violations.append(f"zero_state_mark_policy:{page.page_id}:{mark.page_role}")
             elif mark.mark_id == "patchhive":
                 # PatchHive allowed more freely; only flag if absurdly large on footer
                 if mark.page_role == "footer":
@@ -109,7 +107,9 @@ def validate_brand_marks(
     return BrandPolicyResult(ok=not violations, violations=tuple(violations))
 
 
-def _mark_allowed(mark: BrandMarkRef, rules: tuple[BrandSurfaceRule, ...], page_area: float) -> bool:
+def _mark_allowed(
+    mark: BrandMarkRef, rules: tuple[BrandSurfaceRule, ...], page_area: float
+) -> bool:
     _, _, w, h = mark.bbox_pt
     area_ratio = (w * h) / page_area if page_area else 0
     for rule in rules:

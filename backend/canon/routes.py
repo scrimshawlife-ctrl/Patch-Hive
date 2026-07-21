@@ -401,15 +401,23 @@ def preview_patchbook_style(
     db: Session = Depends(get_db),
 ) -> StylePreviewResponse:
     """Free preview: resolve recipe + load content spine; no debit (KD-15)."""
-    _ = current_user
     from canon.entitlements import get_design_entitlements, tier_allows_family
     from export.patchbook.design.constraints import StyleResolveError, resolve_style_recipe
     from export.patchbook.design.content_spine import ContentSpineError, load_patch_compilations
+    from export.patchbook.design.rate_limit import check_preview_rate_limit
     from export.patchbook.design.recipe import (
         RequestStyleRecipe,
         default_request_recipe,
         recipe_hash,
     )
+
+    limit = check_preview_rate_limit(current_user.id)
+    if not limit.allowed:
+        raise HTTPException(
+            status_code=429,
+            detail="PREVIEW_RATE_LIMIT",
+            headers={"Retry-After": str(int(limit.retry_after_seconds) + 1)},
+        )
 
     entitlements = get_design_entitlements(current_user.id)
     try:

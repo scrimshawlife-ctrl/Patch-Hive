@@ -85,17 +85,12 @@ def resolve_style_recipe(
                 )
             )
         if not publication_enabled and constraints.book_profile == BookProfile.PUBLICATION:
-            # Still allow sealing; fulfillment may fail closed if publication flag off
-            events.append(
-                ConstraintResolutionEvent(
-                    code="PUBLICATION_FLAG_OFF",
-                    severity="warning",
-                    message="Publication profile requested while ENABLE_PATCHBOOK_PUBLICATION_PROFILE=false",
-                    field="constraints.book_profile",
-                    requested="publication",
-                    resolved="publication",
-                    authority_layer=3,
-                )
+            # Fail closed before debit when artistic/publication requires dual-artifact
+            # but the product flag is off (unless tests force publication_enabled).
+            raise StyleResolveError(
+                "PUBLICATION_PROFILE_DISABLED",
+                "Publication / artistic dual-artifact profile requires "
+                "ENABLE_PATCHBOOK_PUBLICATION_PROFILE=true",
             )
 
     # Tier family gate (server authority)
@@ -232,6 +227,9 @@ def professional_default_resolved(*, seed: int = 0, tier: TierName = "core") -> 
     req = default_request_recipe(seed=seed)
     # Align weights toward professional mode table
     req = req.model_copy(
-        update={"weights": MODE_WEIGHT_DEFAULTS[PatchBookMode.PROFESSIONAL], "mode": PatchBookMode.PROFESSIONAL}
+        update={
+            "weights": MODE_WEIGHT_DEFAULTS[PatchBookMode.PROFESSIONAL],
+            "mode": PatchBookMode.PROFESSIONAL,
+        }
     )
     return resolve_style_recipe(req, resolved_tier=tier, family_allowed=True)

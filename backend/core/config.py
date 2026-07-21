@@ -81,6 +81,7 @@ class Settings(BaseSettings):
     require_sealed_generated_patches: bool = False
     design_engine_default_tier: str = "core"
     export_fulfill_max_attempts: int = 5
+    preview_rate_limit_per_minute: int = 30
 
     # ABX-Core / SEED
     abx_core_version: str = "1.3"
