@@ -15,6 +15,7 @@ from canon.contracts import (
     PatchPlan,
     PatchPort,
     PatchStep,
+    RigMetricsPacket,
     ValidationIssue,
     ValidationReport,
     canonical_json,
@@ -65,6 +66,30 @@ def test_canonical_numeric_encoding_is_stable(value: float) -> None:
 def test_canonical_json_rejects_non_finite_numbers() -> None:
     with pytest.raises(ValueError, match="non-finite"):
         canonical_json({"value": float("nan")})
+
+
+def test_rig_metrics_packet_roundtrip_byte_identical() -> None:
+    """Canon RigMetricsPacket seals and round-trips without historical patchhive schemas."""
+    sealed = RigMetricsPacket(
+        artifact_id="metrics-test-1",
+        entity_id="rig-rev-test",
+        generator_version="canon-metrics.1.0.0",
+        generation_seed=7,
+        source_run_id="gen-run-test",
+        source_rig_revision_id="rig-rev-test",
+        created_at=NOW,
+        module_count=1,
+        total_hp=12,
+        routing_flex_score=2.5,
+        confidence_notes=("fixture",),
+    ).seal()
+
+    j1 = sealed.canonical_json()
+    restored = RigMetricsPacket.model_validate_json(j1)
+    j2 = restored.canonical_json()
+    assert j1 == j2
+    assert restored.canonical_hash == sealed.canonical_hash
+    assert restored.computed_hash() == sealed.canonical_hash
 
 
 def test_patch_plan_requires_all_five_phases() -> None:

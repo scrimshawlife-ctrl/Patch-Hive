@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Migrated schema roundtrip off historical `patchhive` onto `canon.contracts.RigMetricsPacket` (one fewer `legacy_pipeline` importer).
 - Canon compiler edge-case tests: signal mismatch, direction, feedback declare/undeclared, attenuation, normals, empty graph.
 - `patchhive` import telemetry quarantine: markers, package-test norecursedirs, CI import guard, `just telemetry-patchhive` / `test-historical`.
 - Module gallery search, brand/type filters, sort, and place-on-rig entry links; Racks list loading/empty/retry parity.
