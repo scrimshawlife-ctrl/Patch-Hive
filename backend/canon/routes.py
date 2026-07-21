@@ -14,6 +14,7 @@ from typing import Any, Literal
 
 from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from pydantic import BaseModel, Field
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from canon.contracts import ExportRequest
@@ -24,7 +25,11 @@ from canon.exports import (
     request_export,
     verify_stripe_webhook,
 )
-from canon.models import CanonicalExportRecord, StripeEventRecordModel
+from canon.models import (
+    CanonicalCreditLedgerEntryRecord,
+    CanonicalExportRecord,
+    StripeEventRecordModel,
+)
 from community.auth import require_auth
 from community.models import User
 from core import get_db, settings
@@ -81,6 +86,21 @@ class CreditBalanceResponse(BaseModel):
     balance: int
 
 
+class CreditLedgerEntryResponse(BaseModel):
+    id: str
+    delta: int
+    entry_type: str
+    export_id: str | None
+    created_at: datetime
+
+
+class CreditsSummaryResponse(BaseModel):
+    """Account-dashboard shape: balance + recent canonical ledger rows."""
+
+    balance: int
+    entries: list[CreditLedgerEntryResponse]
+
+
 class StripeWebhookResponse(BaseModel):
     stripe_event_id: str
     status: str
@@ -115,6 +135,55 @@ def get_canonical_credit_balance(
     db: Session = Depends(get_db),
 ) -> CreditBalanceResponse:
     return CreditBalanceResponse(balance=credit_balance(db, current_user.id))
+
+
+@router.get("/credits/summary", response_model=CreditsSummaryResponse)
+def get_canonical_credits_summary(
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+    limit: int = 100,
+) -> CreditsSummaryResponse:
+    """Balance plus recent append-only ledger entries for the authenticated user."""
+
+    capped = max(1, min(limit, 200))
+    rows = db.scalars(
+        select(CanonicalCreditLedgerEntryRecord)
+        .where(CanonicalCreditLedgerEntryRecord.user_id == current_user.id)
+        .order_by(CanonicalCreditLedgerEntryRecord.created_at.desc())
+        .limit(capped)
+    ).all()
+    entries = [
+        CreditLedgerEntryResponse(
+            id=row.id,
+            delta=int(row.delta),
+            entry_type=str(row.entry_type),
+            export_id=row.export_id,
+            created_at=row.created_at,
+        )
+        for row in rows
+    ]
+    return CreditsSummaryResponse(
+        balance=credit_balance(db, current_user.id),
+        entries=entries,
+    )
+
+
+@router.get("/exports", response_model=list[CanonicalExportResponse])
+def list_canonical_exports(
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+    limit: int = 100,
+) -> list[CanonicalExportResponse]:
+    """Owner-scoped export history from the canonical ledger path."""
+
+    capped = max(1, min(limit, 200))
+    rows = db.scalars(
+        select(CanonicalExportRecord)
+        .where(CanonicalExportRecord.user_id == current_user.id)
+        .order_by(CanonicalExportRecord.created_at.desc())
+        .limit(capped)
+    ).all()
+    return [_export_response(row) for row in rows]
 
 
 @router.post("/exports", response_model=CanonicalExportResponse, status_code=201)

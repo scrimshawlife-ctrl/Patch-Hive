@@ -1,9 +1,9 @@
 /**
- * User dashboard page for credits, exports, referrals, and profile.
+ * User dashboard: canonical credits/exports + optional referrals + profile.
  */
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { accountApi, authApi, exportApi } from '@/lib/api';
+import { accountApi, authApi, canonApi } from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
 import type { CreditsSummary, UserExportRecord, ReferralSummary, User } from '@/types/api';
 
@@ -31,6 +31,8 @@ export default function AccountPage() {
   const [avatarUrl, setAvatarUrl] = useState('');
   const [saving, setSaving] = useState(false);
   const [copyStatus, setCopyStatus] = useState('');
+  const [tokenBusy, setTokenBusy] = useState<string | null>(null);
+  const [tokenMessage, setTokenMessage] = useState('');
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -40,23 +42,30 @@ export default function AccountPage() {
 
   useEffect(() => {
     const loadDashboard = async () => {
-      const [creditsRes, exportsRes, referralsRes, profileRes] = await Promise.all([
+      const [creditsRes, exportsRes, profileRes] = await Promise.all([
         accountApi.getCredits(),
         accountApi.getExports(),
-        accountApi.getReferrals(),
         authApi.getMe(),
       ]);
       setCredits(creditsRes.data);
-      setExports(exportsRes.data as unknown as UserExportRecord[]);
-      setReferrals(referralsRes.data);
+      setExports(exportsRes.data as UserExportRecord[]);
       setProfile(profileRes.data);
       setDisplayName(profileRes.data.display_name || profileRes.data.username);
       setAvatarUrl(profileRes.data.avatar_url || '');
       setAuth(profileRes.data, localStorage.getItem('auth_token') || '');
+
+      try {
+        const referralsRes = await accountApi.getReferrals();
+        setReferrals(referralsRes.data);
+      } catch {
+        setReferrals(null);
+      }
     };
 
     if (isAuthenticated()) {
-      loadDashboard();
+      loadDashboard().catch(() => {
+        /* keep empty dashboard on failure */
+      });
     }
   }, [isAuthenticated, setAuth]);
 
@@ -75,17 +84,26 @@ export default function AccountPage() {
   };
 
   const exportRows = useMemo(() => {
-    return exports.map((record) => {
-      const isPatch = record.export_type === 'patch';
-      const label = isPatch ? 'Patch' : 'Rack';
-      const downloadLink = record.unlocked
-        ? isPatch
-          ? exportApi.patchPdf(record.entity_id)
-          : exportApi.rackPdf(record.entity_id)
-        : null;
-      return { ...record, label, downloadLink };
-    });
+    return exports.map((record) => ({
+      ...record,
+      label: record.source === 'canon' ? 'Canonical export' : record.export_type,
+      canRequestToken: Boolean(record.unlocked && record.source === 'canon'),
+    }));
   }, [exports]);
+
+  const handleDownloadToken = async (exportId: string) => {
+    setTokenBusy(exportId);
+    setTokenMessage('');
+    try {
+      const res = await canonApi.createDownloadToken(exportId, 300);
+      setTokenMessage(`Download token issued for ${exportId} (TTL ${res.data.ttl_seconds}s).`);
+    } catch (error: unknown) {
+      const apiError = error as { response?: { data?: { detail?: string } } };
+      setTokenMessage(apiError.response?.data?.detail || 'Could not issue download token.');
+    } finally {
+      setTokenBusy(null);
+    }
+  };
 
   const handleCopy = async () => {
     if (!referrals?.referral_link) return;
@@ -98,14 +116,15 @@ export default function AccountPage() {
     <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
       <h2 style={{ marginBottom: '0.5rem' }}>Account</h2>
       <p style={{ color: '#bbb', marginBottom: '2rem' }}>
-        PatchHive is free to explore. You only pay when you export something you want to keep.
+        PatchHive is free to explore. Credits and export debits use the canonical ledger (
+        <code>/api/canon/*</code>).
       </p>
 
       <section style={sectionStyle}>
         <h3>Credits</h3>
-        <p style={labelStyle}>Balance</p>
+        <p style={labelStyle}>Canonical balance</p>
         <h2 style={{ marginTop: '0.25rem' }}>{credits ? credits.balance : '—'}</h2>
-        <p style={{ ...labelStyle, marginTop: '1rem' }}>History</p>
+        <p style={{ ...labelStyle, marginTop: '1rem' }}>Ledger history</p>
         {credits?.entries.length ? (
           <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
             <thead style={{ textAlign: 'left', color: '#888' }}>
@@ -118,7 +137,7 @@ export default function AccountPage() {
             </thead>
             <tbody>
               {credits.entries.map((entry) => (
-                <tr key={entry.id} style={{ borderTop: '1px solid #222' }}>
+                <tr key={String(entry.id)} style={{ borderTop: '1px solid #222' }}>
                   <td style={{ padding: '0.5rem' }}>{entry.entry_type}</td>
                   <td style={{ padding: '0.5rem' }}>{entry.amount}</td>
                   <td style={{ padding: '0.5rem' }}>{new Date(entry.created_at).toLocaleString()}</td>
@@ -128,40 +147,50 @@ export default function AccountPage() {
             </tbody>
           </table>
         ) : (
-          <p style={{ color: '#777' }}>No credit history yet.</p>
+          <p style={{ color: '#777' }}>No canonical credit history yet.</p>
         )}
       </section>
 
       <section style={sectionStyle}>
         <h3>Exports</h3>
+        {tokenMessage ? <p style={{ color: '#00ff88' }}>{tokenMessage}</p> : null}
         {exportRows.length ? (
           <table style={{ width: '100%', marginTop: '0.5rem', borderCollapse: 'collapse' }}>
             <thead style={{ textAlign: 'left', color: '#888' }}>
               <tr>
                 <th style={{ padding: '0.5rem' }}>Type</th>
                 <th style={{ padding: '0.5rem' }}>Run ID</th>
+                <th style={{ padding: '0.5rem' }}>Status</th>
                 <th style={{ padding: '0.5rem' }}>Date</th>
-                <th style={{ padding: '0.5rem' }}>License</th>
                 <th style={{ padding: '0.5rem' }}>Download</th>
               </tr>
             </thead>
             <tbody>
               {exportRows.map((record) => (
-                <tr key={record.id} style={{ borderTop: '1px solid #222' }}>
+                <tr key={String(record.id)} style={{ borderTop: '1px solid #222' }}>
                   <td style={{ padding: '0.5rem' }}>{record.label}</td>
                   <td style={{ padding: '0.5rem', color: '#888' }}>{record.run_id}</td>
+                  <td style={{ padding: '0.5rem' }}>{record.status || '—'}</td>
                   <td style={{ padding: '0.5rem' }}>{new Date(record.created_at).toLocaleString()}</td>
-                  <td style={{ padding: '0.5rem' }}>{record.license_type || '—'}</td>
                   <td style={{ padding: '0.5rem' }}>
-                    {record.downloadLink ? (
-                      <a
-                        href={record.downloadLink}
-                        style={{ color: '#00ff88', textDecoration: 'none' }}
+                    {record.canRequestToken ? (
+                      <button
+                        type="button"
+                        onClick={() => handleDownloadToken(String(record.id))}
+                        disabled={tokenBusy === String(record.id)}
+                        style={{
+                          background: 'transparent',
+                          border: '1px solid #00ff88',
+                          color: '#00ff88',
+                          padding: '0.25rem 0.5rem',
+                          borderRadius: '4px',
+                          cursor: 'pointer',
+                        }}
                       >
-                        Download
-                      </a>
+                        {tokenBusy === String(record.id) ? 'Issuing…' : 'Issue token'}
+                      </button>
                     ) : (
-                      <span style={{ color: '#666' }}>Locked</span>
+                      <span style={{ color: '#666' }}>{record.unlocked ? 'Ready' : 'Locked'}</span>
                     )}
                   </td>
                 </tr>
@@ -169,69 +198,62 @@ export default function AccountPage() {
             </tbody>
           </table>
         ) : (
-          <p style={{ color: '#777' }}>No exports yet.</p>
+          <p style={{ color: '#777' }}>No canonical exports yet.</p>
         )}
       </section>
 
       <section style={sectionStyle}>
         <h3>Referrals</h3>
-        <p style={{ color: '#bbb' }}>
-          You’ll receive free credits if your friend makes their first purchase.
-        </p>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
-          <input
-            type="text"
-            value={referrals?.referral_link || ''}
-            readOnly
-            style={{
-              flex: 1,
-              background: '#0c0c0c',
-              border: '1px solid #333',
-              color: '#ccc',
-              padding: '0.5rem',
-              borderRadius: '4px',
-            }}
-          />
-          <button
-            onClick={handleCopy}
-            style={{
-              background: '#00ff88',
-              color: '#000',
-              border: 'none',
-              padding: '0.5rem 1rem',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              fontWeight: 'bold',
-            }}
-          >
-            Invite a friend
-          </button>
-          {copyStatus && <span style={{ color: '#00ff88' }}>{copyStatus}</span>}
-        </div>
-        <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
-          <div>
-            <p style={labelStyle}>Pending</p>
-            <h3>{referrals?.pending_count ?? '—'}</h3>
-          </div>
-          <div>
-            <p style={labelStyle}>Earned</p>
-            <h3>{referrals?.earned_count ?? '—'}</h3>
-          </div>
-        </div>
-        {referrals?.recent_referrals.length ? (
-          <div style={{ marginTop: '1rem' }}>
-            <p style={labelStyle}>Recent referrals</p>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {referrals.recent_referrals.map((referral, index) => (
-                <li key={`${referral.referred_user_id}-${index}`} style={{ padding: '0.35rem 0' }}>
-                  <span style={{ color: '#ccc' }}>{referral.referred_user_id}</span>
-                  <span style={{ color: '#666', marginLeft: '0.5rem' }}>{referral.status}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+        {referrals ? (
+          <>
+            <p style={{ color: '#bbb' }}>
+              You’ll receive free credits if your friend makes their first purchase.
+            </p>
+            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginTop: '1rem' }}>
+              <input
+                type="text"
+                value={referrals.referral_link || ''}
+                readOnly
+                style={{
+                  flex: 1,
+                  background: '#0c0c0c',
+                  border: '1px solid #333',
+                  color: '#ccc',
+                  padding: '0.5rem',
+                  borderRadius: '4px',
+                }}
+              />
+              <button
+                onClick={handleCopy}
+                style={{
+                  background: '#00ff88',
+                  color: '#000',
+                  border: 'none',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                }}
+              >
+                Invite a friend
+              </button>
+              {copyStatus && <span style={{ color: '#00ff88' }}>{copyStatus}</span>}
+            </div>
+            <div style={{ display: 'flex', gap: '2rem', marginTop: '1rem' }}>
+              <div>
+                <p style={labelStyle}>Pending</p>
+                <h3>{referrals.pending_count ?? '—'}</h3>
+              </div>
+              <div>
+                <p style={labelStyle}>Earned</p>
+                <h3>{referrals.earned_count ?? '—'}</h3>
+              </div>
+            </div>
+          </>
         ) : (
-          <p style={{ color: '#777', marginTop: '1rem' }}>No referrals yet.</p>
+          <p style={{ color: '#777' }}>
+            Referrals are feature-flagged off in the default MVP (`ENABLE_LEGACY_REFERRALS=false`).
+          </p>
         )}
       </section>
 
@@ -294,9 +316,7 @@ export default function AccountPage() {
           </button>
         </div>
         {profile && (
-          <p style={{ color: '#666', marginTop: '0.75rem' }}>
-            Signed in as {profile.username}
-          </p>
+          <p style={{ color: '#666', marginTop: '0.75rem' }}>Signed in as {profile.username}</p>
         )}
       </section>
     </div>

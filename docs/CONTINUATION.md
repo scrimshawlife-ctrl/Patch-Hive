@@ -45,6 +45,15 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are **merged to main** (
 3. Document residual legacy endpoints in FEATURE_FLAGS or a DEPRECATIONS section.
 4. Do **not** delete acceptance coverage until replacement paths are green on Postgres CI.
 
+**Progress (2026-07-20 P1 client wiring):**
+- [x] `canonApi` + Account/RigDetail use `/api/canon` for balance, summary, list exports, create export, download tokens
+- [x] `GET /api/canon/credits/summary` and `GET /api/canon/exports` added for dashboard
+- [x] `monetizationApi.balance` aliases canon; `exportApi.patchbookExport` marked deprecated
+- [x] Playwright mocks `/api/canon/credits/balance`
+- [ ] Full retirement of legacy rack/patch list dual path (still needed for inventory UI)
+- [ ] Remove legacy PatchBook POST once acceptance no longer depends on it
+- [ ] Run DTOs carrying real `rig_revision_id` / manifest hash (bridge uses `legacy-rack-{id}` + hashed run)
+
 ### P2 — Package hygiene
 
 1. Import telemetry: who still imports top-level `patchhive` vs `backend/*`.

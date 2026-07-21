@@ -24,7 +24,7 @@ import type {
   PublicationRecord,
   PublicPublicationResponse,
   GalleryResponse,
-  CreditsSummary,
+  CanonicalExportRecord,
   ReferralSummary,
   LeaderboardEntry,
 } from '@/types/api';
@@ -166,6 +166,8 @@ export const communityApi = {
 };
 
 // Export API
+// PDF/SVG file URLs remain on legacy `/export/*` (artifact bytes).
+// Debited patch-book requests must use `canonApi.createExport` (ledger boundary).
 export const exportApi = {
   patchPdf: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/pdf`,
 
@@ -177,12 +179,50 @@ export const exportApi = {
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
 
+  /** @deprecated Prefer `canonApi.createExport` — dual-path debit risk. */
   patchbookExport: (runId: number) => api.post(`/export/runs/${runId}/patchbook`),
 };
 
-// Monetization API
+// Canonical credits + exports (preferred MVP monetization boundary)
+export const canonApi = {
+  getBalance: () => api.get<{ balance: number }>('/canon/credits/balance'),
+
+  getCreditsSummary: () =>
+    api.get<{
+      balance: number;
+      entries: Array<{
+        id: string;
+        delta: number;
+        entry_type: string;
+        export_id: string | null;
+        created_at: string;
+      }>;
+    }>('/canon/credits/summary'),
+
+  listExports: () => api.get<CanonicalExportRecord[]>('/canon/exports'),
+
+  getExport: (exportId: string) => api.get<CanonicalExportRecord>(`/canon/exports/${exportId}`),
+
+  createExport: (body: {
+    source_run_id: string;
+    source_rig_revision_id: string;
+    artifact_manifest_hash: string;
+    formats?: Array<'pdf' | 'svg' | 'json' | 'zip'>;
+    license?: string;
+    credit_cost?: number | null;
+    idempotency_key: string;
+  }) => api.post<CanonicalExportRecord>('/canon/exports', body),
+
+  createDownloadToken: (exportId: string, ttl_seconds = 300) =>
+    api.post<{ export_id: string; token: string; ttl_seconds: number }>(
+      `/canon/exports/${exportId}/download-token`,
+      { ttl_seconds },
+    ),
+};
+
+// Monetization API — balance is a thin alias over the canonical ledger.
 export const monetizationApi = {
-  balance: () => api.get<{ balance: number }>(`/monetization/credits/balance`),
+  balance: () => canonApi.getBalance(),
 };
 
 // Admin API
@@ -279,9 +319,41 @@ export const publishingApi = {
 };
 
 // Account API
+// Credits/exports prefer the canonical ledger. Referrals remain legacy-flagged.
 export const accountApi = {
-  getCredits: () => api.get<CreditsSummary>('/me/credits'),
-  getExports: () => api.get<ExportRecord[]>('/me/exports'),
+  getCredits: async () => {
+    const summary = await canonApi.getCreditsSummary();
+    return {
+      ...summary,
+      data: {
+        balance: summary.data.balance,
+        entries: summary.data.entries.map((entry) => ({
+          id: entry.id,
+          entry_type: entry.entry_type,
+          amount: entry.delta,
+          description: entry.export_id ? `export ${entry.export_id}` : undefined,
+          created_at: entry.created_at,
+        })),
+      },
+    };
+  },
+  getExports: async () => {
+    const listed = await canonApi.listExports();
+    return {
+      ...listed,
+      data: listed.data.map((record) => ({
+        id: record.export_id,
+        export_type: 'canon',
+        entity_id: record.source_run_id,
+        run_id: record.source_run_id,
+        unlocked: record.status === 'succeeded' || record.status === 'queued' || record.status === 'running',
+        license_type: undefined,
+        created_at: record.created_at,
+        status: record.status,
+        source: 'canon' as const,
+      })),
+    };
+  },
   getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
 };
 

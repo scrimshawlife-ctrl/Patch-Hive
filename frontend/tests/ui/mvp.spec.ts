@@ -4,16 +4,21 @@ test.describe('PatchHive canonical workspace', () => {
   test.beforeEach(async ({ page }) => {
     await page.route('**/api/runs**', async (route) => {
       const rackId = new URL(route.request().url()).searchParams.get('rack_id');
-      const runs = rackId === '99999'
-        ? []
-        : [
-            { id: 11, rack_id: 1, status: 'succeeded', created_at: '2025-01-01T00:00:00Z' },
-            { id: 12, rack_id: 1, status: 'succeeded', created_at: '2025-02-01T00:00:00Z' },
-          ];
+      const runs =
+        rackId === '99999'
+          ? []
+          : [
+              { id: 11, rack_id: 1, status: 'succeeded', created_at: '2025-01-01T00:00:00Z' },
+              { id: 12, rack_id: 1, status: 'succeeded', created_at: '2025-02-01T00:00:00Z' },
+            ];
       await route.fulfill({ json: { total: runs.length, runs } });
     });
-    await page.route('**/api/monetization/credits/balance', (route) =>
+    // P1: credits read the canonical ledger, not legacy monetization.
+    await page.route('**/api/canon/credits/balance', (route) =>
       route.fulfill({ json: { balance: 0 } }),
+    );
+    await page.route('**/api/monetization/credits/balance', (route) =>
+      route.fulfill({ status: 410, json: { detail: 'use /api/canon/credits/balance' } }),
     );
   });
 
@@ -58,5 +63,6 @@ test.describe('PatchHive canonical workspace', () => {
     await page.getByRole('tab', { name: 'Exports' }).click();
     await expect(page.getByRole('button', { name: 'Export PDF patch book' })).toBeDisabled();
     await expect(page.getByText('Credits are required only for exports.')).toBeVisible();
+    await expect(page.getByText('/api/canon/exports')).toBeVisible();
   });
 });
