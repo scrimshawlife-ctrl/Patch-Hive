@@ -101,6 +101,7 @@ async def root():
 
 from account.routes import router as account_router  # noqa: E402
 from admin.routes import router as admin_router  # noqa: E402
+from cases.catalog_routes import router as case_catalog_router  # noqa: E402
 from cases.routes import router as cases_router  # noqa: E402
 from export.routes import router as export_router  # noqa: E402
 from integrations.router import router as integrations_router  # noqa: E402
@@ -120,6 +121,8 @@ from evidence.routes import router as evidence_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
+# Catalog static paths (/catalog, /catalog/stats, …) before legacy /{case_id}.
+app.include_router(case_catalog_router, prefix="/api/cases")
 app.include_router(cases_router, prefix="/api/cases", tags=["cases"])
 app.include_router(racks_router, prefix="/api/racks", tags=["racks"])
 app.include_router(rack_recommendation_router, prefix="/api/racks", tags=["racks"])

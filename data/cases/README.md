@@ -92,3 +92,19 @@ python -m integrations.case_catalog_populator \
 ```
 
 A production import must use the exact file whose SHA-256 appears in the reviewed dry-run receipt.
+
+## Read API
+
+Normalized catalog endpoints (additive; legacy `/api/cases/{id}` remains):
+
+```text
+GET /api/cases/catalog
+GET /api/cases/catalog/manufacturers
+GET /api/cases/catalog/formats
+GET /api/cases/catalog/stats
+GET /api/cases/catalog/{slug}
+GET /api/cases/catalog/{slug}/revisions
+```
+
+Filters on list include manufacturer, format_family, capacity range/unit, row count,
+powered, depth, rail headroom, portable/lid/stand, production_status, feature_key, and `q`.
