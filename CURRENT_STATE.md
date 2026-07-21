@@ -2,8 +2,9 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `71a4dfaab7aefe1d4cb920dd9f83abcb7757fea7`  
-**Latest product merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) MERGED (P1 canon credits/exports client)  
+**HEAD:** `7471a2a09cb7435ebf1ea10fe6280ebc94774500`  
+**Latest product merge:** [PR #51](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/51) MERGED (P1 acceptance → canon ledger)
+**Prior P1 client merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49)  
 **Prior canon MVP merge:** [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) at `a162f85`  
 **Campaign:** [Issue #46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
 **Open PRs / issues:** none (OBSERVED 2026-07-21)
@@ -23,7 +24,7 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Legacy social/publish/leaderboards/referrals | Feature-flagged **off** by default; not in primary nav |
 | Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` (`.env.example`) |
 | Alembic head | **`20240928_fix_schema_gaps`** (single head; revises `20240927_canon_alignment`) |
-| CI on main @ `71a4dfa` | Backend Tests, Code Quality, Security/SBOM — **SUCCESS** (push after #49) |
+| CI on main @ `7471a2a` | Backend Tests (3.11/3.12), Code Quality, Security — green on PR #51 |
 | Production deploy | **Not performed** (`NOT_COMPUTABLE` without ops access) |
 
 ## Stack (active)
@@ -80,7 +81,7 @@ See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 
 1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
 2. ~~P1 client: MVP credits/exports → `/api/canon/*`~~ **DONE** (PR #49 @ `71a4dfa`)
-3. ~~P1 acceptance + admin grant dual-write + legacy debit gate~~ **IN PR** (`feat/p1-acceptance-canon-exports`)
+3. ~~P1 acceptance + admin grant dual-write + legacy debit gate~~ **DONE** (PR #51 @ `7471a2a`)
 4. **P1 residual:** real `rig_revision_id` / manifest on run DTOs; inventory dual-path plan
 5. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
 6. **P3:** non-prod Postgres staging + acceptance against real DB
