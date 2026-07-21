@@ -8,6 +8,9 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- `GET /api/racks/{id}/evidence/inventory` latest sealed inventory receipt; RigDetail overview surfaces it.
+- Fusion panel applied-status feedback; Playwright covers multi-photo fusion confirm + RigDetail receipt.
+- Continuation plan post-#75 (`docs/evidence/CONTINUATION_PLAN_POST_75.md`).
 - Fusion panel confirm/reject/defer actions and batch “confirm all non-conflict fused” (user-initiated only; conflicts blocked).
 - Staging Compose drill receipt (`docs/evidence/STAGING_COMPOSE_RECEIPT.md`): local db+backend healthy at Alembic head `20240930_patch_user_overlays`.
 - RackBuilder multi-photo upload and fusion review panel (reconcile API; never auto-confirms).

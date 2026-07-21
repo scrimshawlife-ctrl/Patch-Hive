@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { canonApi, legacyPatchRef, runApi } from '@/lib/api';
+import { canonApi, evidenceApi, legacyPatchRef, runApi, type InventoryRevisionSummary } from '@/lib/api';
 import type { Patch, Run } from '@/types/api';
 
 type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
@@ -44,6 +44,8 @@ export default function RigDetailPage() {
   const [loading, setLoading] = useState(true);
   const [exporting, setExporting] = useState(false);
   const [patchesLoading, setPatchesLoading] = useState(false);
+  const [latestInventory, setLatestInventory] = useState<InventoryRevisionSummary | null>(null);
+  const [inventoryError, setInventoryError] = useState('');
 
   const hasRuns = runs.length > 0;
   const tabs = useMemo<WorkspaceTab[]>(
@@ -60,6 +62,18 @@ export default function RigDetailPage() {
     () => runsForRevision.find((run) => run.id === activeRunId) ?? runsForRevision[0] ?? null,
     [runsForRevision, activeRunId],
   );
+
+  useEffect(() => {
+    if (!rigIdNum) return;
+    setInventoryError('');
+    evidenceApi
+      .listInventory(rigIdNum)
+      .then((res) => setLatestInventory(res.data.latest ?? null))
+      .catch(() => {
+        setLatestInventory(null);
+        setInventoryError('Inventory receipt unavailable.');
+      });
+  }, [rigIdNum]);
 
   useEffect(() => {
     if (!rigIdNum) return;
@@ -308,6 +322,42 @@ export default function RigDetailPage() {
               ) : null}
             </p>
           ) : null}
+          <div
+            className="panel"
+            style={{ marginTop: '1rem', marginBottom: '1rem' }}
+            aria-label="Confirmed inventory receipt"
+          >
+            <h3>Confirmed inventory</h3>
+            {inventoryError ? (
+              <p className="status status-warning" role="status">
+                {inventoryError}
+              </p>
+            ) : null}
+            {latestInventory ? (
+              <>
+                <p className="status status-success" role="status">
+                  Inventory revision: <code>{latestInventory.inventory_revision_id}</code>
+                  {latestInventory.ready_for_generation
+                    ? ' · ready for generation'
+                    : ' · not ready for generation'}
+                </p>
+                <p className="muted">
+                  {latestInventory.confirmed_count} confirmed module
+                  {latestInventory.confirmed_count === 1 ? '' : 's'}
+                  {latestInventory.unresolved_count
+                    ? ` · ${latestInventory.unresolved_count} unresolved candidate(s)`
+                    : ''}
+                  {latestInventory.created_at
+                    ? ` · sealed ${new Date(latestInventory.created_at).toLocaleString()}`
+                    : ''}
+                </p>
+              </>
+            ) : !inventoryError ? (
+              <p className="muted" role="status">
+                No sealed inventory revision yet. Confirm photo or manual candidates first.
+              </p>
+            ) : null}
+          </div>
           {!hasRuns ? (
             <Link className="button button-primary" to={`/racks/${rigId}/edit`}>
               Photo evidence / inventory

@@ -127,4 +127,151 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText('Credits are required only for exports.')).toBeVisible();
     await expect(page.getByText('/api/canon/exports')).toBeVisible();
   });
+
+  test('multi-photo fusion panel confirms representative and blocks conflict', async ({ page }) => {
+    await page.route('**/api/racks/1/evidence/images', async (route) => {
+      if (route.request().method() === 'POST') {
+        await route.fulfill({
+          status: 201,
+          json: {
+            uploaded: [
+              { id: 'img-a', rack_id: 1, content_sha256: 'a'.repeat(64) },
+              { id: 'img-b', rack_id: 1, content_sha256: 'b'.repeat(64) },
+            ],
+            rejected: [],
+          },
+        });
+        return;
+      }
+      await route.fallback();
+    });
+    await page.route('**/api/racks/1/evidence/candidates**', async (route) => {
+      await route.fulfill({
+        json: {
+          total: 2,
+          candidates: [
+            {
+              candidate_id: 'cand-osc',
+              entity_type: 'module',
+              manufacturer: 'MockAudio',
+              model: 'Oscillator A',
+              confidence: 0.91,
+              confidence_method: 'mock',
+              alternative_candidates: [],
+              classification_status: 'INFERRED',
+              evidence_id: 'ev-1',
+              gallery_revision_id: 'catalog-module-osc-a',
+            },
+            {
+              candidate_id: 'cand-vca',
+              entity_type: 'module',
+              manufacturer: 'MockAudio',
+              model: 'VCA B',
+              confidence: 0.55,
+              confidence_method: 'mock',
+              alternative_candidates: [],
+              classification_status: 'INFERRED',
+              evidence_id: 'ev-2',
+              gallery_revision_id: 'catalog-module-vca-b',
+            },
+          ],
+        },
+      });
+    });
+    await page.route('**/api/racks/1/evidence/reconcile**', async (route) => {
+      await route.fulfill({
+        json: {
+          image_asset_ids: ['img-a', 'img-b'],
+          image_count: 2,
+          fused_entities: [
+            {
+              fuse_id: 'fuse-osc',
+              entity_key: 'mockaudio|oscillator a',
+              manufacturer: 'MockAudio',
+              model: 'Oscillator A',
+              entity_type: 'module',
+              observation_count: 2,
+              supporting_image_ids: ['img-a', 'img-b'],
+              mean_confidence: 0.88,
+              max_confidence: 0.91,
+              conflict: false,
+              conflict_notes: [],
+              classification_status: 'INFERRED',
+              representative_candidate_id: 'cand-osc',
+            },
+            {
+              fuse_id: 'fuse-conflict',
+              entity_key: 'mockaudio|mystery',
+              manufacturer: 'MockAudio',
+              model: 'Mystery',
+              entity_type: 'module',
+              observation_count: 2,
+              supporting_image_ids: ['img-a', 'img-b'],
+              mean_confidence: 0.4,
+              max_confidence: 0.5,
+              conflict: true,
+              conflict_notes: ['label disagreement across images'],
+              classification_status: 'INFERRED',
+              representative_candidate_id: 'cand-vca',
+            },
+          ],
+          unmatched_candidate_ids: [],
+          conflict_count: 1,
+          status: 'RECONCILED_WITH_CONFLICTS',
+          note: 'Mock multi-photo fusion for e2e.',
+        },
+      });
+    });
+
+    await page.goto('/racks/1/edit');
+    await page.getByRole('button', { name: 'Rig photo' }).setInputFiles([
+      {
+        name: 'rig-a.jpg',
+        mimeType: 'image/jpeg',
+        buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+      },
+      {
+        name: 'rig-b.jpg',
+        mimeType: 'image/jpeg',
+        buffer: Buffer.from([0xff, 0xd8, 0xff, 0xd9]),
+      },
+    ]);
+    await page.getByRole('button', { name: 'Detect modules' }).click();
+    await expect(page.getByLabel('Multi-photo reconciliation')).toBeVisible();
+    await expect(page.getByLabel('Fused module entities')).toBeVisible();
+
+    const conflictRow = page.getByLabel('Resolve fused Mystery');
+    await expect(conflictRow.getByRole('button', { name: 'Confirm fused match' })).toBeDisabled();
+
+    await page.getByRole('button', { name: 'Confirm fused match' }).first().click();
+    await expect(page.getByText(/Applied confirmed to fused/i)).toBeVisible();
+    await expect(page.getByText('Status: confirmed').first()).toBeVisible();
+  });
+
+  test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
+    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+      await route.fulfill({
+        json: {
+          total: 1,
+          latest: {
+            inventory_revision_id: 'inv-rev-e2e-demo',
+            system_id: 'rack-1',
+            rack_id: 1,
+            confirmed_count: 2,
+            unresolved_count: 0,
+            ready_for_generation: true,
+            canonical_hash: 'c'.repeat(64),
+            created_by: 'e2e',
+            created_at: '2026-07-21T00:00:00Z',
+          },
+          revisions: [],
+        },
+      });
+    });
+    await page.goto('/rigs/1');
+    await expect(page.getByLabel('Confirmed inventory receipt')).toBeVisible();
+    await expect(page.getByText(/Inventory revision:/i)).toBeVisible();
+    await expect(page.getByText(/ready for generation/i)).toBeVisible();
+    await expect(page.getByText(/2 confirmed module/i)).toBeVisible();
+  });
 });
