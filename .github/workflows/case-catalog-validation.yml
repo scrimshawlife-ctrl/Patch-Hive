@@ -10,7 +10,9 @@ on:
       - "backend/tests/test_case_catalog_compatibility.py"
       - "backend/tests/test_case_catalog_materialize.py"
       - "backend/tests/test_rack_catalog_compatibility.py"
+      - "backend/tests/test_rack_dual_gate.py"
       - "backend/racks/catalog_compatibility.py"
+      - "fixtures/modules_demo_seed.json"
       - "backend/alembic/versions/20260721_modular_case_catalog.py"
       - "backend/alembic/versions/20260721_case_source_policy.py"
       - "backend/alembic/versions/20260721_module_depth_mm.py"
@@ -41,7 +43,7 @@ jobs:
       - name: Install backend and test dependencies
         run: python -m pip install --upgrade pip && python -m pip install -e '.[dev]'
       - name: Run focused importer and catalog read API tests
-        run: pytest -q tests/test_case_catalog_populator.py tests/test_case_catalog_api.py tests/test_case_catalog_compatibility.py tests/test_case_catalog_materialize.py tests/test_rack_catalog_compatibility.py
+        run: pytest -q tests/test_case_catalog_populator.py tests/test_case_catalog_api.py tests/test_case_catalog_compatibility.py tests/test_case_catalog_materialize.py tests/test_rack_catalog_compatibility.py tests/test_rack_dual_gate.py
       - name: Initialize isolated case schema
         run: |
           python - <<'PY'

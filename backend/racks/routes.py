@@ -11,7 +11,10 @@ from cases.models import Case
 from core import generate_rig_suggested_name, get_db, hash_string_to_seed
 from modules.models import Module
 
-from .catalog_compatibility import evaluate_rack_catalog_compatibility
+from .catalog_compatibility import (
+    dual_gate_catalog_errors_and_warnings,
+    evaluate_rack_catalog_compatibility,
+)
 from .models import Rack, RackModule
 from .schemas import RackCreate, RackListResponse, RackResponse, RackUpdate
 from .validation import validate_rack_configuration
@@ -19,15 +22,8 @@ from .validation import validate_rack_configuration
 router = APIRouter()
 
 
-@router.post("/", response_model=RackResponse, status_code=201)
-def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
-    """Create a new rack with validation."""
-    # For now, use a placeholder user_id (will be replaced with auth)
-    user_id = 1
-
-    # Validate rack configuration
-    is_valid, errors, warnings = validate_rack_configuration(db, rack.case_id, rack.modules)
-    if not is_valid:
+def _raise_if_invalid(errors: list, warnings: list) -> None:
+    if errors:
         raise HTTPException(
             status_code=400,
             detail={
@@ -36,6 +32,24 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
                 "warnings": [w.model_dump() for w in warnings],
             },
         )
+
+
+@router.post("/", response_model=RackResponse, status_code=201)
+def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
+    """Create a new rack with validation."""
+    # For now, use a placeholder user_id (will be replaced with auth)
+    user_id = 1
+
+    # Validate rack configuration (legacy hard gate)
+    is_valid, errors, warnings = validate_rack_configuration(db, rack.case_id, rack.modules)
+    # Dual-gate: catalog conflicts hard-fail when case is materialized
+    cat_errors, cat_warnings = dual_gate_catalog_errors_and_warnings(
+        db, rack.case_id, rack.modules
+    )
+    errors = list(errors) + list(cat_errors)
+    warnings = list(warnings) + list(cat_warnings)
+    if not is_valid or cat_errors:
+        _raise_if_invalid(errors, warnings)
 
     modules = []
     for module_spec in rack.modules:
@@ -151,15 +165,13 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
         is_valid, errors, warnings = validate_rack_configuration(
             db, db_rack.case_id, rack_update.modules
         )
-        if not is_valid:
-            raise HTTPException(
-                status_code=400,
-                detail={
-                    "message": "Rack validation failed",
-                    "errors": [e.model_dump() for e in errors],
-                    "warnings": [w.model_dump() for w in warnings],
-                },
-            )
+        cat_errors, cat_warnings = dual_gate_catalog_errors_and_warnings(
+            db, db_rack.case_id, rack_update.modules
+        )
+        errors = list(errors) + list(cat_errors)
+        warnings = list(warnings) + list(cat_warnings)
+        if not is_valid or cat_errors:
+            _raise_if_invalid(errors, warnings)
 
         db.query(RackModule).filter(RackModule.rack_id == rack_id).delete()
 

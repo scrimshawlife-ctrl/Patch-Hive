@@ -123,6 +123,17 @@ case-catalog-seed:
 	cd "{{root}}"
 	python3 scripts/build_case_catalog_seed.py
 
+# Import demo modules fixture into DATABASE_URL
+modules-demo-import *args:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	if [[ -z "${DATABASE_URL:-}" ]]; then
+		echo "Set DATABASE_URL to the target Postgres instance" >&2
+		exit 1
+	fi
+	backend/.venv/bin/python scripts/import_modules_demo.py {{args}}
+
 # Import seed-v1 into DATABASE_URL (durable; requires migrations at case catalog head)
 case-catalog-seed-import:
 	#!/usr/bin/env bash
