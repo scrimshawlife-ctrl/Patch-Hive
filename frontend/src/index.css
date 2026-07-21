@@ -205,6 +205,13 @@ code { padding: 0.15rem 0.35rem; border-radius: var(--radius-sm); background: va
 .weight-sliders { display: grid; gap: var(--space-2); max-height: 28rem; overflow: auto; }
 .weight-row span { display: flex; justify-content: space-between; font-size: 0.85rem; text-transform: capitalize; }
 .weight-row input[type="range"] { width: 100%; accent-color: var(--ph-amber); }
+.influence-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-height: 20rem;
+}
 @media (max-width: 720px) {
   .style-studio-grid { grid-template-columns: 1fr; }
+  .influence-grid { grid-template-columns: 1fr; }
 }

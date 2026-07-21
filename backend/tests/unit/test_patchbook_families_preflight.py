@@ -120,13 +120,10 @@ def test_preflight_passes_well_formed_page() -> None:
     assert report.ok is True
 
 
-def test_preview_rate_limit(monkeypatch) -> None:
+def test_preview_rate_limit() -> None:
     reset_preview_rate_limits_for_tests()
-    import core.config as config_mod
-
-    monkeypatch.setattr(config_mod.settings, "preview_rate_limit_per_minute", 3)
     for _ in range(3):
-        assert check_preview_rate_limit(99).allowed is True
-    blocked = check_preview_rate_limit(99)
+        assert check_preview_rate_limit(99, limit=3).allowed is True
+    blocked = check_preview_rate_limit(99, limit=3)
     assert blocked.allowed is False
     assert blocked.retry_after_seconds >= 0

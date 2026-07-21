@@ -42,9 +42,28 @@ def test_artistic_forces_appendix_and_publication() -> None:
             book_profile=BookProfile.EXECUTION_PAGE,
         ),
     )
-    resolved = resolve_style_recipe(req, resolved_tier="studio", family_allowed=True)
+    resolved = resolve_style_recipe(
+        req, resolved_tier="studio", family_allowed=True, publication_enabled=True
+    )
     assert resolved.constraints.book_profile == BookProfile.PUBLICATION
     assert resolved.constraints.canonical_appendix_required is True
+
+
+def test_artistic_fails_when_publication_flag_off() -> None:
+    from export.patchbook.design.constraints import StyleResolveError
+
+    req = RequestStyleRecipe(
+        mode=PatchBookMode.SYMBOLIC,
+        template_family=TemplateFamilyId.RITUAL_MACHINE,
+        constraints=StyleConstraints(
+            artistic_disclosure_acknowledged=True,
+            canonical_appendix_required=True,
+            book_profile=BookProfile.PUBLICATION,
+        ),
+    )
+    with pytest.raises(StyleResolveError) as exc:
+        resolve_style_recipe(req, resolved_tier="studio", publication_enabled=False)
+    assert exc.value.code == "PUBLICATION_PROFILE_DISABLED"
 
 
 def test_family_tier_downgrade() -> None:

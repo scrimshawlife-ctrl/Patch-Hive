@@ -45,9 +45,25 @@ class SlidingWindowLimiter:
 _PREVIEW_LIMITER = SlidingWindowLimiter()
 
 
-def check_preview_rate_limit(user_id: int) -> RateLimitResult:
-    limit = int(getattr(settings, "preview_rate_limit_per_minute", 30) or 30)
-    return _PREVIEW_LIMITER.check(f"preview:{user_id}", limit=limit, window_seconds=60.0)
+def check_preview_rate_limit(
+    user_id: int,
+    *,
+    limit: int | None = None,
+    window_seconds: float = 60.0,
+) -> RateLimitResult:
+    """Return whether the user may take another free preview.
+
+    ``limit`` overrides settings for tests; production uses
+    ``settings.preview_rate_limit_per_minute``.
+    """
+    effective = (
+        int(limit)
+        if limit is not None
+        else int(getattr(settings, "preview_rate_limit_per_minute", 30) or 30)
+    )
+    return _PREVIEW_LIMITER.check(
+        f"preview:{user_id}", limit=effective, window_seconds=window_seconds
+    )
 
 
 def reset_preview_rate_limits_for_tests() -> None:

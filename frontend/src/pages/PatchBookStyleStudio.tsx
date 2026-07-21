@@ -44,6 +44,36 @@ const FAMILIES: TemplateFamilyId[] = [
   'impossible_instrument',
 ];
 
+const FAMILY_ALGORITHM: Record<TemplateFamilyId, string> = {
+  signal_manual: 'orthogonal_schematic',
+  hive_systems_atlas: 'hex_cell_map',
+  open_state: 'open_asymmetric_sparse',
+  modular_field_notes: 'notebook_checklist',
+  oscilloscope_journal: 'crt_bezel_frame',
+  circuit_archive: 'title_block_engineering',
+  museum_of_signal: 'gallery_plate_mat',
+  patent_future: 'figure_claims_two_col',
+  patch_cartography: 'seeded_force_cartography',
+  sonic_brutalism: 'brutalist_blocks',
+  ritual_machine: 'radial_seal_frame',
+  impossible_instrument: 'open_form_generative',
+};
+
+const CORE_INFLUENCES = [
+  'engineering',
+  'swiss',
+  'scientific',
+  'cyber_hive',
+  'museum',
+  'editorial',
+  'minimal',
+  'symbolic',
+  'abstract',
+  'surreal',
+  'modular_synth',
+  'open_form_zero_state',
+] as const;
+
 type BridgeFields = {
   source_run_id: string;
   source_rig_revision_id: string;
@@ -245,6 +275,10 @@ export default function PatchBookStyleStudioPage() {
               ))}
             </select>
           </label>
+          <p className="muted" style={{ fontSize: '0.85rem' }}>
+            Layout algorithm:{' '}
+            <code>{FAMILY_ALGORITHM[recipe.template_family]}</code>
+          </p>
           <label className="field">
             Seed
             <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -301,6 +335,61 @@ export default function PatchBookStyleStudioPage() {
             Reset weights
           </button>
         </div>
+      </div>
+
+      <div className="panel" style={{ marginTop: '1rem' }}>
+        <h2>Influence mixer</h2>
+        <p className="muted">
+          Blend style vectors (0–100). Engine normalizes competing groups; conflicts appear in
+          preview resolution events.
+        </p>
+        <div className="weight-sliders influence-grid">
+          {CORE_INFLUENCES.map((key) => {
+            const value = recipe.influences[key] ?? 0;
+            return (
+              <label key={key} className="field weight-row">
+                <span>
+                  {key.replace(/_/g, ' ')} <strong>{value}</strong>
+                </span>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={value}
+                  onChange={(e) => {
+                    const next = Number(e.target.value);
+                    setRecipe((r) => {
+                      const influences = { ...r.influences };
+                      if (next <= 0) {
+                        delete influences[key];
+                      } else {
+                        influences[key] = next;
+                      }
+                      return { ...r, influences };
+                    });
+                  }}
+                />
+              </label>
+            );
+          })}
+        </div>
+        <button
+          className="button button-quiet"
+          type="button"
+          onClick={() =>
+            setRecipe((r) => ({
+              ...r,
+              influences: {
+                engineering: 92,
+                swiss: 65,
+                scientific: 55,
+                cyber_hive: 24,
+              },
+            }))
+          }
+        >
+          Reset influences
+        </button>
       </div>
 
       <div className="panel" style={{ marginTop: '1rem' }}>
