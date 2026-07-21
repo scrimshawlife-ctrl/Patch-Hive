@@ -31,6 +31,7 @@ from canon.models import (
     PatchUserOverlayRecord,
     RigRevisionRecord,
     StripeEventRecordModel,
+    UserStyleRecipeRecord,
 )
 from community.auth import require_auth
 from community.models import User
@@ -52,8 +53,10 @@ class CanonicalExportCreate(BaseModel):
     # When Design Engine is on, client credit_cost is ignored (KD-14).
     credit_cost: int | None = Field(default=None, ge=0)
     idempotency_key: str = Field(..., min_length=8, max_length=128)
-    # Optional inline request recipe (no client tier; no style_recipe_id until library PR)
+    # Optional inline request recipe (no client tier). Prefer one of recipe sources.
     style_recipe: dict[str, Any] | None = None
+    # Optional library recipe id — loads owner recipe when style_recipe omitted.
+    style_recipe_id: str | None = Field(default=None, min_length=8, max_length=64)
 
 
 class CanonicalExportResponse(BaseModel):
@@ -69,6 +72,7 @@ class CanonicalExportResponse(BaseModel):
     style_recipe_hash: str | None = None
     error_code: str | None = None
     pack_manifest_hash: str | None = None
+    style_recipe_id: str | None = None
 
 
 class StylePreviewRequest(BaseModel):
@@ -76,7 +80,30 @@ class StylePreviewRequest(BaseModel):
     source_rig_revision_id: str = Field(..., min_length=1, max_length=64)
     artifact_manifest_hash: str = Field(..., min_length=64, max_length=64)
     style_recipe: dict[str, Any] | None = None
+    style_recipe_id: str | None = Field(default=None, min_length=8, max_length=64)
     max_pages: int = Field(default=3, ge=1, le=5)
+
+
+class StyleRecipeCreate(BaseModel):
+    name: str = Field(..., min_length=1, max_length=120)
+    style_recipe: dict[str, Any]
+    notes: str | None = Field(default=None, max_length=500)
+
+
+class StyleRecipeUpdate(BaseModel):
+    name: str | None = Field(default=None, min_length=1, max_length=120)
+    style_recipe: dict[str, Any] | None = None
+    notes: str | None = Field(default=None, max_length=500)
+
+
+class StyleRecipeResponse(BaseModel):
+    id: str
+    name: str
+    notes: str | None
+    style_recipe: dict[str, Any]
+    recipe_hash: str
+    created_at: datetime
+    updated_at: datetime
 
 
 class StylePreviewResponse(BaseModel):
@@ -159,7 +186,46 @@ def _export_response(record: CanonicalExportRecord) -> CanonicalExportResponse:
         style_recipe_hash=getattr(record, "style_recipe_hash", None),
         error_code=getattr(record, "error_code", None),
         pack_manifest_hash=getattr(record, "pack_manifest_hash", None),
+        style_recipe_id=getattr(record, "style_recipe_id", None),
     )
+
+
+def _style_recipe_response(row: UserStyleRecipeRecord) -> StyleRecipeResponse:
+    return StyleRecipeResponse(
+        id=row.id,
+        name=row.name,
+        notes=row.notes,
+        style_recipe=row.recipe_json if isinstance(row.recipe_json, dict) else {},
+        recipe_hash=row.recipe_hash,
+        created_at=row.created_at,
+        updated_at=row.updated_at,
+    )
+
+
+def _load_request_recipe_payload(
+    *,
+    db: Session,
+    user_id: int,
+    style_recipe: dict[str, Any] | None,
+    style_recipe_id: str | None,
+) -> tuple[dict[str, Any] | None, str | None]:
+    """Return (recipe dict or None for default, library_id used)."""
+    if style_recipe is not None and style_recipe_id:
+        raise HTTPException(
+            status_code=400,
+            detail="STYLE_RECIPE_SOURCE_CONFLICT",
+        )
+    if style_recipe_id:
+        from canon.style_recipes import get_user_recipe
+
+        row = get_user_recipe(db, user_id, style_recipe_id)
+        if row is None:
+            raise HTTPException(status_code=404, detail="RECIPE_NOT_FOUND")
+        payload = row.recipe_json if isinstance(row.recipe_json, dict) else None
+        if not payload:
+            raise HTTPException(status_code=400, detail="INVALID_STYLE_RECIPE")
+        return payload, row.id
+    return style_recipe, None
 
 
 @router.get("/credits/balance", response_model=CreditBalanceResponse)
@@ -394,6 +460,103 @@ def list_canonical_exports(
     return [_export_response(row) for row in rows]
 
 
+@router.get("/style-recipes", response_model=list[StyleRecipeResponse])
+def list_style_recipes(
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> list[StyleRecipeResponse]:
+    from canon.style_recipes import list_user_recipes
+
+    return [_style_recipe_response(r) for r in list_user_recipes(db, current_user.id)]
+
+
+@router.post("/style-recipes", response_model=StyleRecipeResponse, status_code=201)
+def create_style_recipe(
+    body: StyleRecipeCreate,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> StyleRecipeResponse:
+    from canon.style_recipes import StyleRecipeLibraryError, create_user_recipe
+
+    try:
+        row = create_user_recipe(
+            db,
+            user_id=current_user.id,
+            name=body.name,
+            recipe_payload=body.style_recipe,
+            notes=body.notes,
+        )
+        db.commit()
+        db.refresh(row)
+    except StyleRecipeLibraryError as exc:
+        db.rollback()
+        status = 409 if exc.code in {"RECIPE_NAME_CONFLICT", "RECIPE_LIBRARY_FULL"} else 400
+        raise HTTPException(status_code=status, detail=exc.code) from exc
+    return _style_recipe_response(row)
+
+
+@router.get("/style-recipes/{recipe_id}", response_model=StyleRecipeResponse)
+def get_style_recipe(
+    recipe_id: str,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> StyleRecipeResponse:
+    from canon.style_recipes import get_user_recipe
+
+    row = get_user_recipe(db, current_user.id, recipe_id)
+    if row is None:
+        raise HTTPException(status_code=404, detail="RECIPE_NOT_FOUND")
+    return _style_recipe_response(row)
+
+
+@router.patch("/style-recipes/{recipe_id}", response_model=StyleRecipeResponse)
+def update_style_recipe(
+    recipe_id: str,
+    body: StyleRecipeUpdate,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> StyleRecipeResponse:
+    from canon.style_recipes import StyleRecipeLibraryError, update_user_recipe
+
+    try:
+        row = update_user_recipe(
+            db,
+            user_id=current_user.id,
+            recipe_id=recipe_id,
+            name=body.name,
+            recipe_payload=body.style_recipe,
+            notes=body.notes,
+        )
+        db.commit()
+        db.refresh(row)
+    except StyleRecipeLibraryError as exc:
+        db.rollback()
+        if exc.code == "RECIPE_NOT_FOUND":
+            raise HTTPException(status_code=404, detail=exc.code) from exc
+        status = 409 if exc.code == "RECIPE_NAME_CONFLICT" else 400
+        raise HTTPException(status_code=status, detail=exc.code) from exc
+    return _style_recipe_response(row)
+
+
+@router.delete("/style-recipes/{recipe_id}", status_code=204)
+def delete_style_recipe(
+    recipe_id: str,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> None:
+    from canon.style_recipes import StyleRecipeLibraryError, delete_user_recipe
+
+    try:
+        delete_user_recipe(db, user_id=current_user.id, recipe_id=recipe_id)
+        db.commit()
+    except StyleRecipeLibraryError as exc:
+        db.rollback()
+        if exc.code == "RECIPE_NOT_FOUND":
+            raise HTTPException(status_code=404, detail=exc.code) from exc
+        raise HTTPException(status_code=400, detail=exc.code) from exc
+    return None
+
+
 @router.post("/exports/preview", response_model=StylePreviewResponse)
 def preview_patchbook_style(
     body: StylePreviewRequest,
@@ -420,9 +583,15 @@ def preview_patchbook_style(
         )
 
     entitlements = get_design_entitlements(current_user.id)
+    recipe_payload, _lib_id = _load_request_recipe_payload(
+        db=db,
+        user_id=current_user.id,
+        style_recipe=body.style_recipe,
+        style_recipe_id=body.style_recipe_id,
+    )
     try:
-        if body.style_recipe is not None:
-            request_recipe = RequestStyleRecipe.model_validate(body.style_recipe)
+        if recipe_payload is not None:
+            request_recipe = RequestStyleRecipe.model_validate(recipe_payload)
         else:
             request_recipe = default_request_recipe()
         resolved = resolve_style_recipe(
@@ -493,6 +662,7 @@ def create_canonical_export(
 
     resolved_recipe = None
     request_recipe_dump = None
+    library_recipe_id: str | None = None
     if settings.enable_patchbook_design_engine or settings.enable_canon_export_fulfillment:
         from canon.entitlements import get_design_entitlements, tier_allows_family
         from export.patchbook.design.constraints import StyleResolveError, resolve_style_recipe
@@ -503,9 +673,15 @@ def create_canonical_export(
         )
 
         entitlements = get_design_entitlements(current_user.id)
+        recipe_payload, library_recipe_id = _load_request_recipe_payload(
+            db=db,
+            user_id=current_user.id,
+            style_recipe=body.style_recipe,
+            style_recipe_id=body.style_recipe_id,
+        )
         try:
-            if body.style_recipe is not None:
-                request_recipe = RequestStyleRecipe.model_validate(body.style_recipe)
+            if recipe_payload is not None:
+                request_recipe = RequestStyleRecipe.model_validate(recipe_payload)
             else:
                 request_recipe = default_request_recipe()
             request_recipe_dump = request_recipe.model_dump(mode="json")
@@ -552,6 +728,8 @@ def create_canonical_export(
             export.resolved_tier = resolved_recipe.resolved_tier
             export.design_engine_version = DESIGN_ENGINE_VERSION
             export.book_profile = resolved_recipe.constraints.book_profile.value
+            if library_recipe_id:
+                export.style_recipe_id = library_recipe_id
         db.commit()
         db.refresh(export)
     except ExportBoundaryError as exc:

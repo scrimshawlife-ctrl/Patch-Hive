@@ -2,7 +2,7 @@
  * PatchBook Style Studio MVP — weighted recipe controls + preview + export.
  * Presentation only; never mutates patch topology.
  */
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 import { canonApi } from '@/lib/api';
 import {
@@ -10,15 +10,21 @@ import {
   ARTISTIC_MODES,
   DEFAULT_STYLE_WEIGHTS,
   defaultRequestStyleRecipe,
-  deleteRecipeFromLibrary,
-  loadRecipeLibrary,
-  saveRecipeToLibrary,
   type PatchBookMode,
   type RequestStyleRecipe,
-  type SavedStyleRecipe,
   type StyleWeights,
   type TemplateFamilyId,
 } from '@/types/patchbookDesign';
+
+type ServerRecipe = {
+  id: string;
+  name: string;
+  notes: string | null;
+  style_recipe: Record<string, unknown>;
+  recipe_hash: string;
+  created_at: string;
+  updated_at: string;
+};
 
 const WEIGHT_KEYS = Object.keys(DEFAULT_STYLE_WEIGHTS) as Array<keyof StyleWeights>;
 
@@ -101,10 +107,25 @@ export default function PatchBookStyleStudioPage() {
       steps: Array<{ phase: string; instruction: string }>;
     }>;
   } | null>(null);
-  const [library, setLibrary] = useState<SavedStyleRecipe[]>(() => loadRecipeLibrary());
+  const [serverLibrary, setServerLibrary] = useState<ServerRecipe[]>([]);
   const [recipeName, setRecipeName] = useState('');
+  const [libraryBusy, setLibraryBusy] = useState(false);
 
   const artistic = ARTISTIC_MODES.includes(recipe.mode);
+
+  const refreshServerLibrary = useCallback(async () => {
+    try {
+      const res = await canonApi.listStyleRecipes();
+      setServerLibrary(res.data);
+    } catch {
+      // Library endpoints may 401 when signed out — keep empty
+      setServerLibrary([]);
+    }
+  }, []);
+
+  useEffect(() => {
+    void refreshServerLibrary();
+  }, [refreshServerLibrary]);
 
   const setWeight = (key: keyof StyleWeights, value: number) => {
     setRecipe((r) => ({
@@ -385,10 +406,10 @@ export default function PatchBookStyleStudioPage() {
       </div>
 
       <div className="panel" style={{ marginTop: '1rem' }}>
-        <h2>Local recipe library</h2>
+        <h2>Recipe library</h2>
         <p className="muted">
-          Saved in this browser only (until server recipe library ships). Share by exporting JSON
-          notes or re-applying a saved recipe.
+          Server-backed library for your account (max 40). Export/preview can reference a recipe by
+          id so the sealed debit snapshot matches the library entry.
         </p>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', alignItems: 'center' }}>
           <input
@@ -402,51 +423,122 @@ export default function PatchBookStyleStudioPage() {
           <button
             className="button button-secondary"
             type="button"
+            disabled={libraryBusy || !recipeName.trim()}
             onClick={() => {
-              const next = saveRecipeToLibrary(recipeName, buildRequestBody());
-              setLibrary(next);
-              setRecipeName('');
-              setStatus(`Saved recipe locally (${next[0]?.name})`);
+              void (async () => {
+                setLibraryBusy(true);
+                try {
+                  const created = await canonApi.createStyleRecipe({
+                    name: recipeName.trim(),
+                    style_recipe: buildRequestBody() as unknown as Record<string, unknown>,
+                  });
+                  setRecipeName('');
+                  await refreshServerLibrary();
+                  setStatus(`Saved server recipe “${created.data.name}” (${created.data.id})`);
+                } catch (error: unknown) {
+                  const apiError = error as { response?: { data?: { detail?: string } } };
+                  setStatus(apiError.response?.data?.detail || 'Save recipe failed');
+                } finally {
+                  setLibraryBusy(false);
+                }
+              })();
             }}
           >
-            Save recipe
+            Save to account
           </button>
         </div>
-        {library.length === 0 ? (
+        {serverLibrary.length === 0 ? (
           <p className="muted" style={{ marginTop: '0.75rem' }}>
-            No saved recipes yet.
+            No server recipes yet (sign in required).
           </p>
         ) : (
           <ul style={{ marginTop: '0.75rem', paddingLeft: '1.1rem' }}>
-            {library.map((entry) => (
-              <li key={entry.id} style={{ marginBottom: '0.4rem' }}>
-                <strong>{entry.name}</strong>{' '}
-                <span className="muted">
-                  · {entry.recipe.mode} / {entry.recipe.template_family} · seed{' '}
-                  {entry.recipe.seed}
-                </span>{' '}
-                <button
-                  className="button button-quiet"
-                  type="button"
-                  onClick={() => {
-                    setRecipe(entry.recipe);
-                    setStatus(`Loaded “${entry.name}”`);
-                  }}
-                >
-                  Load
-                </button>{' '}
-                <button
-                  className="button button-quiet"
-                  type="button"
-                  onClick={() => {
-                    setLibrary(deleteRecipeFromLibrary(entry.id));
-                    setStatus(`Deleted “${entry.name}”`);
-                  }}
-                >
-                  Delete
-                </button>
-              </li>
-            ))}
+            {serverLibrary.map((entry) => {
+              const loaded = entry.style_recipe as unknown as RequestStyleRecipe;
+              return (
+                <li key={entry.id} style={{ marginBottom: '0.4rem' }}>
+                  <strong>{entry.name}</strong>{' '}
+                  <span className="muted">
+                    · {String(loaded.mode || '?')} / {String(loaded.template_family || '?')} ·{' '}
+                    <code>{entry.recipe_hash.slice(0, 10)}…</code>
+                  </span>{' '}
+                  <button
+                    className="button button-quiet"
+                    type="button"
+                    onClick={() => {
+                      setRecipe(loaded);
+                      setStatus(`Loaded “${entry.name}”`);
+                    }}
+                  >
+                    Load
+                  </button>{' '}
+                  <button
+                    className="button button-quiet"
+                    type="button"
+                    onClick={() => {
+                      void (async () => {
+                        if (!bridge) {
+                          setStatus('Need bridge fields to export by recipe id');
+                          return;
+                        }
+                        setExporting(true);
+                        try {
+                          const created = await canonApi.createExport({
+                            source_run_id: bridge.source_run_id,
+                            source_rig_revision_id: bridge.source_rig_revision_id,
+                            artifact_manifest_hash: bridge.artifact_manifest_hash,
+                            formats: ['pdf', 'json'],
+                            license: 'personal',
+                            idempotency_key: `studio-lib-${entry.id}-${crypto.randomUUID()}`,
+                            style_recipe_id: entry.id,
+                          });
+                          setStatus(
+                            `Export ${created.data.export_id} · ${created.data.status}` +
+                              (created.data.style_recipe_id
+                                ? ` · recipe ${created.data.style_recipe_id}`
+                                : ''),
+                          );
+                        } catch (error: unknown) {
+                          const apiError = error as {
+                            response?: { data?: { detail?: string }; status?: number };
+                          };
+                          setStatus(
+                            apiError.response?.status === 402
+                              ? 'INSUFFICIENT_CREDITS'
+                              : apiError.response?.data?.detail || 'Export failed',
+                          );
+                        } finally {
+                          setExporting(false);
+                        }
+                      })();
+                    }}
+                  >
+                    Export with id
+                  </button>{' '}
+                  <button
+                    className="button button-quiet"
+                    type="button"
+                    disabled={libraryBusy}
+                    onClick={() => {
+                      void (async () => {
+                        setLibraryBusy(true);
+                        try {
+                          await canonApi.deleteStyleRecipe(entry.id);
+                          await refreshServerLibrary();
+                          setStatus(`Deleted “${entry.name}”`);
+                        } catch {
+                          setStatus('Delete failed');
+                        } finally {
+                          setLibraryBusy(false);
+                        }
+                      })();
+                    }}
+                  >
+                    Delete
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         )}
       </div>

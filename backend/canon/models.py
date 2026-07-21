@@ -185,6 +185,29 @@ class GenerationJobRecord(Base):
     __table_args__ = (CheckConstraint("attempts >= 0", name="ck_generation_jobs_attempts"),)
 
 
+class UserStyleRecipeRecord(Base):
+    """Mutable user-owned PatchBook style recipes (Design Engine library).
+
+    Not append-only — users may rename/update/delete their own recipes.
+    Export seals a snapshot of the request recipe JSON at debit time.
+    """
+
+    __tablename__ = "user_style_recipes"
+    __table_args__ = (UniqueConstraint("user_id", "name", name="uq_user_style_recipes_name"),)
+
+    id = Column(String(64), primary_key=True)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    name = Column(String(120), nullable=False)
+    notes = Column(Text, nullable=True)
+    recipe_json = Column(JSON, nullable=False)
+    recipe_hash = Column(String(64), nullable=False, index=True)
+    is_shared = Column(Boolean, nullable=False, default=False)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=utcnow, onupdate=utcnow)
+
+
 class CanonicalExportRecord(Base):
     __tablename__ = "canonical_exports"
 
@@ -223,6 +246,13 @@ class CanonicalExportRecord(Base):
     fulfill_attempts = Column(Integer, nullable=False, default=0)
     running_started_at = Column(DateTime(timezone=True), nullable=True)
     error_code = Column(String(100), nullable=True)
+    # Optional pointer to library row used at request time (audit only; not re-loaded for render)
+    style_recipe_id = Column(
+        String(64),
+        ForeignKey("user_style_recipes.id", ondelete="SET NULL"),
+        nullable=True,
+        index=True,
+    )
     __table_args__ = (CheckConstraint("credit_cost >= 0", name="ck_canonical_exports_cost"),)
 
 
