@@ -63,11 +63,11 @@ export const moduleApi = {
     hp_min?: number;
     hp_max?: number;
     tag?: string;
-  }) => api.get<ModuleListResponse>('/modules', { params }),
+  }) => api.get<ModuleListResponse>('/modules/', { params }),
 
   get: (id: number) => api.get<Module>(`/modules/${id}`),
 
-  create: (data: Partial<Module>) => api.post<Module>('/modules', data),
+  create: (data: Partial<Module>) => api.post<Module>('/modules/', data),
 
   update: (id: number, data: Partial<Module>) => api.patch<Module>(`/modules/${id}`, data),
 
@@ -88,11 +88,11 @@ export type CaseListParams = {
 };
 
 export const caseApi = {
-  list: (params?: CaseListParams) => api.get<CaseListResponse>('/cases', { params }),
+  list: (params?: CaseListParams) => api.get<CaseListResponse>('/cases/', { params }),
 
   get: (id: number) => api.get<Case>(`/cases/${id}`),
 
-  create: (data: Partial<Case>) => api.post<Case>('/cases', data),
+  create: (data: Partial<Case>) => api.post<Case>('/cases/', data),
 
   update: (id: number, data: Partial<Case>) => api.patch<Case>(`/cases/${id}`, data),
 
@@ -173,11 +173,11 @@ export const caseCatalogApi = {
 // Rack API
 export const rackApi = {
   list: (params?: { skip?: number; limit?: number; is_public?: boolean; user_id?: number }) =>
-    api.get<RackListResponse>('/racks', { params }),
+    api.get<RackListResponse>('/racks/', { params }),
 
   get: (id: number) => api.get<Rack>(`/racks/${id}`),
 
-  create: (data: Partial<Rack>) => api.post<Rack>('/racks', data),
+  create: (data: Partial<Rack>) => api.post<Rack>('/racks/', data),
 
   update: (
     id: number,
