@@ -1,33 +1,33 @@
-# PatchHive brand kit (Cyber Hive v0.1)
+# Brand kit — Zero State × PatchHive
 
-Authoritative design write-up: [`docs/brand/VISUAL_IDENTITY.md`](../docs/brand/VISUAL_IDENTITY.md)
+**Guidelines:** [`docs/brand/BRAND_GUIDELINES.md`](../docs/brand/BRAND_GUIDELINES.md)  
+**Design system preview:** open [`design-system/index.html`](design-system/index.html) in a browser  
+**Figma map:** [`docs/brand/figma-structure/README.md`](../docs/brand/figma-structure/README.md)
+
+## Hierarchy
+
+```text
+ZERO STATE          (parent · monochrome · quiet)
+    └── PATCHHIVE   (product · amber/cyan · hero)
+```
 
 ## Layout
 
 ```text
 brand/
-  logo/           cyber-bee mark + flat icon
-  mascot/         Hive Drone
-  splash/         splash + loading frame
-  patterns/       seamless PCB honeycomb
-  marketing/      GitHub banner, empty state, dashboard concept
-  icons/svg/      48 monochrome outline icons + sprite.svg
+  zero-state/           monogram, wordmark, monogram-zs.jpg
+  patchhive/
+    logo/               cyber-bee mark, flat icon, splash hierarchy
+    lockups/            wordmark + from-zero-state horizontal/vertical
+    app-icon/           iOS-style app icon still
+  logo/                 legacy paths (cyber-bee originals)
+  mascot/               Hive Drone
+  splash/ patterns/ marketing/
+  icons/svg/            340 monochrome outline icons + sprite.svg
+  design-system/        HTML component reference
 ```
 
-## Quick use
+## Product scope note
 
-**Icons (React-ish):**
-
-```html
-<svg width="24" height="24" stroke="currentColor" fill="none">
-  <use href="/brand/icons/svg/sprite.svg#ph-icon-patch"/>
-</svg>
-```
-
-Or inline any `brand/icons/svg/<name>.svg`.
-
-**Local preview:** open JPGs under `brand/` or serve the repo root.
-
-## Product note
-
-Visual language may evoke signal, synth, and swarm intelligence. Product scope remains deterministic **rig + patch documentation** — not audio DSP.
+Visual language may use signal / synth / swarm metaphors.  
+Engineering product remains **confirmed inventory → deterministic patches → export** (not audio DSP or hardware control).

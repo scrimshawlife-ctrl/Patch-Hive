@@ -87,6 +87,7 @@ function App() {
 
         <footer className="app-footer">
           Canonical rig revisions · deterministic runs · exports are the credit boundary
+          <span className="zero-state-credit">Designed and engineered by Zero State</span>
         </footer>
       </div>
     </BrowserRouter>
