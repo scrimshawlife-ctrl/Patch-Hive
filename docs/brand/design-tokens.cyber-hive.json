@@ -1,0 +1,43 @@
+{
+  "$schema": "https://design-tokens.github.io/community-group/format/schema.json",
+  "patchhive": {
+    "brand": {
+      "version": { "$type": "string", "$value": "cyber-hive-0.1" }
+    },
+    "color": {
+      "base": {
+        "carbon": { "$type": "color", "$value": "#08090B" },
+        "graphite": { "$type": "color", "$value": "#111318" },
+        "panel": { "$type": "color", "$value": "#1A1D24" },
+        "border": { "$type": "color", "$value": "#2A2F3A" }
+      },
+      "metal": {
+        "titanium": { "$type": "color", "$value": "#8B919C" },
+        "gunmetal": { "$type": "color", "$value": "#4A5160" }
+      },
+      "signal": {
+        "amber": { "$type": "color", "$value": "#F5A623" },
+        "honey": { "$type": "color", "$value": "#D4891A" },
+        "copper": { "$type": "color", "$value": "#B87333" },
+        "cyan": { "$type": "color", "$value": "#3DDCFF" },
+        "azure": { "$type": "color", "$value": "#5B8CFF" }
+      },
+      "status": {
+        "success": { "$type": "color", "$value": "#00C896" },
+        "warning": { "$type": "color", "$value": "#FF8A3D" },
+        "error": { "$type": "color", "$value": "#E23D4A" },
+        "text": { "$type": "color", "$value": "#E8ECF0" },
+        "diagnostics": { "$type": "color", "$value": "#7B61FF" }
+      }
+    },
+    "radius": {
+      "card": { "$type": "dimension", "$value": "18px" },
+      "control": { "$type": "dimension", "$value": "10px" }
+    },
+    "typography": {
+      "ui": { "$type": "fontFamily", "$value": "Inter, Geist, system-ui, sans-serif" },
+      "display": { "$type": "fontFamily", "$value": "Space Grotesk, Inter, system-ui, sans-serif" },
+      "mono": { "$type": "fontFamily", "$value": "JetBrains Mono, ui-monospace, monospace" }
+    }
+  }
+}
