@@ -280,7 +280,47 @@ export const canonApi = {
       `/canon/exports/${exportId}/download-token`,
       { ttl_seconds },
     ),
+
+  listRevisions: (rigId: number) =>
+    api.get<{
+      total: number;
+      revisions: Array<{
+        rig_revision_id: string;
+        content_hash?: string | null;
+        run_count: number;
+        latest_run_id?: number | null;
+        latest_run_at?: string | null;
+        export_bridge_ready: boolean;
+      }>;
+    }>(`/canon/rigs/${rigId}/revisions`),
+
+  getOverlay: (patchRef: string) =>
+    api.get<{
+      id: string;
+      patch_ref: string;
+      notes: string | null;
+      favorite: boolean;
+      tried: boolean;
+      updated_at: string;
+    }>(`/canon/overlays/${encodeURIComponent(patchRef)}`),
+
+  upsertOverlay: (
+    patchRef: string,
+    body: { notes?: string | null; favorite?: boolean; tried?: boolean },
+  ) =>
+    api.put<{
+      id: string;
+      patch_ref: string;
+      notes: string | null;
+      favorite: boolean;
+      tried: boolean;
+      updated_at: string;
+    }>(`/canon/overlays/${encodeURIComponent(patchRef)}`, body),
 };
+
+export function legacyPatchRef(patchId: number): string {
+  return `legacy-patch-${patchId}`;
+}
 
 // Monetization API — balance is a thin alias over the canonical ledger.
 export const monetizationApi = {

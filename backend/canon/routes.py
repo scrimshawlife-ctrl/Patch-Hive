@@ -28,6 +28,8 @@ from canon.exports import (
 from canon.models import (
     CanonicalCreditLedgerEntryRecord,
     CanonicalExportRecord,
+    PatchUserOverlayRecord,
+    RigRevisionRecord,
     StripeEventRecordModel,
 )
 from community.auth import require_auth
@@ -184,6 +186,165 @@ def list_canonical_runs(
     payload = list_runs_for_rack(db, rig_id)
     db.commit()
     return payload
+
+
+class RigRevisionSummary(BaseModel):
+    rig_revision_id: str
+    content_hash: str | None = None
+    run_count: int = 0
+    latest_run_id: int | None = None
+    latest_run_at: datetime | None = None
+    export_bridge_ready: bool = False
+
+
+class RigRevisionListResponse(BaseModel):
+    total: int
+    revisions: list[RigRevisionSummary]
+
+
+class PatchOverlayUpsert(BaseModel):
+    notes: str | None = None
+    favorite: bool | None = None
+    tried: bool | None = None
+
+
+class PatchOverlayResponse(BaseModel):
+    id: str
+    patch_ref: str
+    notes: str | None
+    favorite: bool
+    tried: bool
+    updated_at: datetime
+
+
+def legacy_patch_ref(patch_id: int) -> str:
+    return f"legacy-patch-{int(patch_id)}"
+
+
+@router.get("/rigs/{rig_id}/revisions", response_model=RigRevisionListResponse)
+def list_rig_revisions(rig_id: int, db: Session = Depends(get_db)) -> RigRevisionListResponse:
+    """Distinct server-authored rig revision ids observed for this rig's runs.
+
+    Grouping is derived from the export bridge (immutable revision per content).
+    """
+
+    payload = list_runs_for_rack(db, rig_id)
+    db.commit()
+    by_rev: dict[str, RigRevisionSummary] = {}
+    for run in payload.runs:
+        rev_id = run.rig_revision_id
+        existing = by_rev.get(rev_id)
+        created = run.created_at
+        if existing is None:
+            content_hash = None
+            record = db.get(RigRevisionRecord, rev_id)
+            if record is not None:
+                content_hash = str(record.canonical_hash)
+            by_rev[rev_id] = RigRevisionSummary(
+                rig_revision_id=rev_id,
+                content_hash=content_hash,
+                run_count=1,
+                latest_run_id=run.id,
+                latest_run_at=created,
+                export_bridge_ready=bool(run.export_bridge_ready),
+            )
+        else:
+            existing.run_count += 1
+            if created and (existing.latest_run_at is None or created > existing.latest_run_at):
+                existing.latest_run_id = run.id
+                existing.latest_run_at = created
+                existing.export_bridge_ready = bool(run.export_bridge_ready)
+
+    revisions = sorted(
+        by_rev.values(),
+        key=lambda item: item.latest_run_at or datetime.min.replace(tzinfo=timezone.utc),
+        reverse=True,
+    )
+    return RigRevisionListResponse(total=len(revisions), revisions=revisions)
+
+
+@router.get("/overlays/{patch_ref}", response_model=PatchOverlayResponse)
+def get_patch_overlay(
+    patch_ref: str,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> PatchOverlayResponse:
+    row = db.scalars(
+        select(PatchUserOverlayRecord).where(
+            PatchUserOverlayRecord.user_id == current_user.id,
+            PatchUserOverlayRecord.patch_ref == patch_ref,
+        )
+    ).first()
+    if row is None:
+        # Empty overlay — not an error (personal state is optional).
+        now = datetime.now(timezone.utc)
+        return PatchOverlayResponse(
+            id="",
+            patch_ref=patch_ref,
+            notes=None,
+            favorite=False,
+            tried=False,
+            updated_at=now,
+        )
+    return PatchOverlayResponse(
+        id=str(row.id),
+        patch_ref=str(row.patch_ref),
+        notes=row.notes,
+        favorite=bool(row.favorite),
+        tried=bool(row.tried),
+        updated_at=row.updated_at,
+    )
+
+
+@router.put("/overlays/{patch_ref}", response_model=PatchOverlayResponse)
+def upsert_patch_overlay(
+    patch_ref: str,
+    body: PatchOverlayUpsert,
+    current_user: User = Depends(require_auth),
+    db: Session = Depends(get_db),
+) -> PatchOverlayResponse:
+    """Create or update mutable personal overlay without mutating canonical patches."""
+
+    if not patch_ref or len(patch_ref) > 64:
+        raise HTTPException(status_code=400, detail="INVALID_PATCH_REF")
+    row = db.scalars(
+        select(PatchUserOverlayRecord).where(
+            PatchUserOverlayRecord.user_id == current_user.id,
+            PatchUserOverlayRecord.patch_ref == patch_ref,
+        )
+    ).first()
+    now = datetime.now(timezone.utc)
+    if row is None:
+        import uuid
+
+        row = PatchUserOverlayRecord(
+            id=f"overlay-{uuid.uuid4().hex[:20]}",
+            user_id=current_user.id,
+            patch_ref=patch_ref,
+            notes=body.notes,
+            favorite=bool(body.favorite) if body.favorite is not None else False,
+            tried=bool(body.tried) if body.tried is not None else False,
+            updated_at=now,
+        )
+        db.add(row)
+    else:
+        if body.notes is not None:
+            row.notes = body.notes
+        if body.favorite is not None:
+            row.favorite = body.favorite
+        if body.tried is not None:
+            row.tried = body.tried
+        row.updated_at = now
+    db.commit()
+    db.refresh(row)
+    return PatchOverlayResponse(
+        id=str(row.id),
+        patch_ref=str(row.patch_ref),
+        notes=row.notes,
+        favorite=bool(row.favorite),
+        tried=bool(row.tried),
+        updated_at=row.updated_at,
+    )
 
 
 @router.get("/exports", response_model=list[CanonicalExportResponse])

@@ -385,6 +385,35 @@ def list_rack_evidence_candidates(
     return CandidateListResponse(total=len(candidates), candidates=candidates)
 
 
+class ReconciliationResponse(BaseModel):
+    image_asset_ids: list[str]
+    image_count: int
+    fused_entities: list[dict]
+    unmatched_candidate_ids: list[str]
+    conflict_count: int
+    status: str
+    note: str
+
+
+@router.get(
+    "/racks/{rack_id}/evidence/reconcile",
+    response_model=ReconciliationResponse,
+)
+def reconcile_rack_evidence(rack_id: int, db: Session = Depends(get_db)) -> ReconciliationResponse:
+    """Multi-photo fusion of untrusted candidates for one rack.
+
+    Does not confirm inventory. Conflicts remain explicit for user resolution.
+    """
+    from evidence.reconciliation import reconcile_candidate_observations
+
+    rack = db.get(Rack, rack_id)
+    if rack is None:
+        raise HTTPException(status_code=404, detail="Rack not found")
+    items = _load_candidates_for_rack(db, rack_id)
+    report = reconcile_candidate_observations(items)
+    return ReconciliationResponse(**report.to_dict())
+
+
 @router.post(
     "/racks/{rack_id}/evidence/confirmations",
     response_model=ConfirmationBatchResponse,

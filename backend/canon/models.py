@@ -258,6 +258,27 @@ class CanonicalAdminAuditEventRecord(Base):
     created_at = Column(DateTime(timezone=True), nullable=False, default=utcnow)
 
 
+class PatchUserOverlayRecord(Base):
+    """Mutable personal overlay for a patch (notes/favorite/tried).
+
+    ``patch_ref`` is a dual-path key: ``legacy-patch-{int}`` or a canon generated
+    patch id. No FK to generation tables so dual-path patches remain annotatable.
+    """
+
+    __tablename__ = "patch_user_overlays"
+    __table_args__ = (UniqueConstraint("user_id", "patch_ref", name="uq_overlay_user_patch_ref"),)
+
+    id = Column(String(64), primary_key=True)
+    user_id = Column(
+        Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    patch_ref = Column(String(64), nullable=False, index=True)
+    notes = Column(Text, nullable=True)
+    favorite = Column(Boolean, nullable=False, default=False)
+    tried = Column(Boolean, nullable=False, default=False)
+    updated_at = Column(DateTime(timezone=True), nullable=False, default=utcnow, onupdate=utcnow)
+
+
 class SystemInventoryRevisionRecord(Base):
     """Persisted immutable system inventory revision (VSI WP-06)."""
 

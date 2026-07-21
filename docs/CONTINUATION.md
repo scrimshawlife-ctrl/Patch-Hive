@@ -1,7 +1,7 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `b1178483e5cd5b1f2fcc517739d6a14e00e56097`  
+**main HEAD:** `7bfbd79` (+ revision-picker branch pending merge)  
 **Tracking:** Issue #46 closed · PR #47–#70 on main  
 **PR #66–#70:** **MERGED** (VSI P0, eval/cloud adapter, AI foundation, Cases/Patches+RackBuilder evidence UX)
 
@@ -107,7 +107,7 @@ This campaign implements VSI **P0 contracts** (evidence adapter, inventory, patc
 ### P4 — Product depth (still MVP-scoped)
 
 1. ~~**Cases / Patches list pages**~~ **DONE** (PR #69)
-2. Deeper rig revision UX (explicit revision picker, overlay notes/favorite/tried).
+2. ~~Deeper rig revision UX~~ **DONE** (revision picker + overlay notes/favorite/tried).
 3. Stronger empty/loading/error parity on Modules list.
 4. Expand golden fixtures / property tests for compiler edge cases.
 5. Real image scanner implementation behind `ImageScanner` (ops secret + service).
@@ -121,11 +121,15 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 3. ~~Native bridge IDs~~ **DONE** (`rig-rev-*` / `gen-run-*`)
 4. ~~Multi-image upload + retention~~ **DONE** (`POST/GET/DELETE /api/racks/{id}/evidence/images`)
 5. ~~Ranked candidate confirmation API + multi-candidate RackBuilder~~ **DONE**
-6. Evaluation dataset + metrics harness — **ACTIVE** (`evidence/evaluation.py` + `fixtures/vision_eval/`; production accuracy remains `NOT_COMPUTABLE`)
-7. Consent-gated cloud vision adapter — **ACTIVE** (`evidence/cloud_provider.py`; live calls fail-closed)
-8. ~~Land PR #66~~ **DONE** (`6a85beb`)
-9. ~~Wire RackBuilder file upload/confirm to live rack evidence APIs~~ **DONE** (`evidenceApi` + rack-bound upload/confirm)
-10. ~~Cases/Patches list pages beyond stubs~~ **DONE** (loading/empty/error/retry parity)
+6. ~~Evaluation + cloud adapter~~ **DONE** (PR #67)
+7. ~~AI engineering foundation~~ **DONE** (PR #70)
+8. ~~Land PR #66~~ **DONE**
+9. ~~Wire RackBuilder live evidence APIs~~ **DONE** (PR #69)
+10. ~~Cases/Patches list pages~~ **DONE** (PR #69)
+11. ~~Post-foundation reaudit + telemetry + ast-grep~~ **DONE** (PR #71)
+12. ~~Rig revision picker + personal overlays~~ **DONE** (this branch; Alembic `20240930_patch_user_overlays`)
+13. ~~Multi-photo reconciliation (VSI P1)~~ **PARTIAL** (fuse API + tests; UI optional next)
+14. Staging Compose drill (ops)
 
 ### P5 — Explicitly deferred
 
