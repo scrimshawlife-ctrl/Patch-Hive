@@ -64,6 +64,9 @@ python -m integrations.synth_catalog_importer
 # Catalog only (module_catalog)
 python -m integrations.catalog_populator --synth-research
 
+# Fill null HP from curated ModularGrid + modules table
+python -m integrations.synth_catalog_importer --enrich-hp
+
 # Rebuild seed from Abraxas skill references (optional)
 python3 scripts/build_synth_catalog_seed.py
 ```

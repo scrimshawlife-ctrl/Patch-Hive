@@ -139,6 +139,15 @@ This document provides complete provenance tracking for all data in the PatchHiv
 - `POST /api/synth-catalog/import/catalog?dry_run=`
 - `POST /api/synth-catalog/import/modules?dry_run=&clear_existing=`
 - `POST /api/synth-catalog/import/all?dry_run=&clear_existing=`
+- `POST /api/synth-catalog/enrich/hp?dry_run=` — fill null catalog HP from curated ModularGrid + `modules` table
+
+#### HP enrichment
+
+```bash
+python -m integrations.synth_catalog_importer --enrich-hp
+```
+
+Only copies HP (and UTIL→specific category) when a manufacturer-curated match exists. Never overwrites non-null HP.
 
 ## Data Collection Methodology
 

@@ -112,3 +112,57 @@ def test_dry_run_does_not_write(db_session: Session):
 def test_seed_rebuild_script_exists():
     script = Path(__file__).resolve().parents[2] / "scripts" / "build_synth_catalog_seed.py"
     assert script.is_file()
+
+
+def test_enrich_catalog_hp_from_curated(db_session: Session):
+    from integrations.synth_catalog_importer import enrich_catalog_hp_from_known_specs
+
+    # Catalog row with null HP matching curated ModularGrid Maths
+    db_session.add(
+        ModuleCatalog(
+            slug="make-noise-maths",
+            brand="Make Noise",
+            name="Maths",
+            hp=None,
+            category="UTIL",
+            is_available="available",
+        )
+    )
+    # Catalog row with HP already set — must not be overwritten
+    db_session.add(
+        ModuleCatalog(
+            slug="mutable-instruments-plaits",
+            brand="Mutable Instruments",
+            name="Plaits",
+            hp=12,
+            category="VCO",
+            is_available="available",
+        )
+    )
+    # Unknown module — no curated match
+    db_session.add(
+        ModuleCatalog(
+            slug="unknown-labs-widget",
+            brand="Unknown Labs",
+            name="Widget",
+            hp=None,
+            category=None,
+            is_available="available",
+        )
+    )
+    db_session.commit()
+
+    dry = enrich_catalog_hp_from_known_specs(db_session, dry_run=True)
+    assert dry["updated_hp"] >= 1
+    assert db_session.query(ModuleCatalog).filter_by(slug="make-noise-maths").one().hp is None
+
+    live = enrich_catalog_hp_from_known_specs(db_session, dry_run=False)
+    assert live["updated_hp"] >= 1
+    maths = db_session.query(ModuleCatalog).filter_by(slug="make-noise-maths").one()
+    assert maths.hp == 20
+    # category may upgrade from UTIL → ENV from curated
+    assert maths.category in {"UTIL", "ENV"}
+    plaits = db_session.query(ModuleCatalog).filter_by(slug="mutable-instruments-plaits").one()
+    assert plaits.hp == 12  # unchanged
+    widget = db_session.query(ModuleCatalog).filter_by(slug="unknown-labs-widget").one()
+    assert widget.hp is None
