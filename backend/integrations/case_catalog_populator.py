@@ -1,12 +1,13 @@
 """Deterministic JSON importer for the normalized modular case catalog.
 
-The importer is intentionally strict: missing values remain ``None`` and are
-never inferred. Every run emits a receipt with the input SHA-256 and row counts.
+Missing values remain ``None`` and are never inferred. Every run emits a
+receipt containing the input SHA-256 and mutation counts.
 """
 
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import hashlib
 import json
 from pathlib import Path
@@ -24,6 +25,7 @@ from cases.models import (
     CaseRow,
     CaseSource,
 )
+from cases.source_policy import CaseSourcePolicyPacket
 from core.database import SessionLocal
 
 FORMAT_FAMILIES = {
@@ -38,6 +40,30 @@ FORMAT_FAMILIES = {
 }
 CAPACITY_UNITS = {"hp", "mu_space", "buchla_panel", "serge_panel", "frac_width", "custom"}
 CONFIDENCE = {"verified", "high", "medium", "low", "conflict"}
+ACCESS_BASES = {
+    "official_publication",
+    "authorized_feed",
+    "licensed_dataset",
+    "user_authorized_export",
+    "manual_research",
+    "user_upload",
+    "provider_inference",
+    "unknown",
+}
+EVIDENCE_STATUSES = {
+    "MANUFACTURER_CONFIRMED",
+    "MANUAL_CONFIRMED",
+    "REGISTRY_CONFIRMED",
+    "USER_CONFIRMED",
+    "RETAILER_OBSERVED",
+    "CATALOG_OBSERVED",
+    "INFERRED",
+    "CONFLICTED",
+    "REJECTED",
+    "UNKNOWN",
+    "NOT_COMPUTABLE",
+}
+REVIEW_STATES = {"pending", "accepted", "rejected", "blocked", "conflicted"}
 
 
 def _valid_url(value: str | None) -> bool:
@@ -45,6 +71,19 @@ def _valid_url(value: str | None) -> bool:
         return True
     parsed = urlparse(value)
     return parsed.scheme in {"http", "https"} and bool(parsed.netloc)
+
+
+def _parse_datetime(value: Any, field_name: str) -> datetime:
+    if isinstance(value, datetime):
+        parsed = value
+    elif isinstance(value, str):
+        normalized = value.strip().replace("Z", "+00:00")
+        parsed = datetime.fromisoformat(normalized)
+    else:
+        raise ValueError(f"{field_name}: expected ISO-8601 datetime")
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed
 
 
 def validate_record(record: dict[str, Any], index: int) -> list[str]:
@@ -62,16 +101,68 @@ def validate_record(record: dict[str, Any], index: int) -> list[str]:
     unit = revision.get("capacity_unit")
     if unit is not None and unit not in CAPACITY_UNITS:
         errors.append(f"record[{index}].revision.capacity_unit: unsupported value")
-    confidence = revision.get("confidence", "medium")
-    if confidence not in CONFIDENCE:
+    if revision.get("confidence", "medium") not in CONFIDENCE:
         errors.append(f"record[{index}].revision.confidence: unsupported value")
 
     for source_index, source in enumerate(record.get("sources") or []):
+        prefix = f"record[{index}].sources[{source_index}]"
         if not _valid_url(source.get("url")):
-            errors.append(f"record[{index}].sources[{source_index}].url: invalid URL")
+            errors.append(f"{prefix}.url: invalid URL")
         if source.get("confidence", "medium") not in CONFIDENCE:
-            errors.append(f"record[{index}].sources[{source_index}].confidence: unsupported value")
+            errors.append(f"{prefix}.confidence: unsupported value")
+        policy = source.get("policy") or {}
+        if policy.get("access_basis", "unknown") not in ACCESS_BASES:
+            errors.append(f"{prefix}.policy.access_basis: unsupported value")
+        if policy.get("evidence_status", "UNKNOWN") not in EVIDENCE_STATUSES:
+            errors.append(f"{prefix}.policy.evidence_status: unsupported value")
+        if policy.get("review_state", "pending") not in REVIEW_STATES:
+            errors.append(f"{prefix}.policy.review_state: unsupported value")
+        for timestamp_field in ("observed_at", "retrieved_at", "reviewed_at"):
+            if policy.get(timestamp_field) is not None:
+                try:
+                    _parse_datetime(policy[timestamp_field], f"{prefix}.policy.{timestamp_field}")
+                except (TypeError, ValueError) as exc:
+                    errors.append(str(exc))
+
+    for price_index, price in enumerate(record.get("prices") or []):
+        if price.get("captured_at") is None:
+            errors.append(f"record[{index}].prices[{price_index}].captured_at: required")
+        else:
+            try:
+                _parse_datetime(price["captured_at"], f"record[{index}].prices[{price_index}].captured_at")
+            except (TypeError, ValueError) as exc:
+                errors.append(str(exc))
     return errors
+
+
+def _upsert_policy_packet(
+    db: Session,
+    source: CaseSource,
+    policy_data: dict[str, Any],
+) -> None:
+    packet = (
+        db.query(CaseSourcePolicyPacket)
+        .filter(CaseSourcePolicyPacket.source_id == source.id)
+        .first()
+    ) or CaseSourcePolicyPacket(source_id=source.id)
+    db.add(packet)
+    for field in (
+        "source_name",
+        "external_record_id",
+        "access_basis",
+        "license_status",
+        "evidence_status",
+        "review_state",
+        "content_hash",
+        "normalizer_version",
+        "reviewed_by",
+        "policy_notes",
+    ):
+        if field in policy_data:
+            setattr(packet, field, policy_data[field])
+    for field in ("observed_at", "retrieved_at", "reviewed_at"):
+        if policy_data.get(field) is not None:
+            setattr(packet, field, _parse_datetime(policy_data[field], field))
 
 
 def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = False) -> dict[str, Any]:
@@ -97,7 +188,12 @@ def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = F
         case = db.query(CaseCatalog).filter(CaseCatalog.slug == slug).first()
         created = case is None
         if created:
-            case = CaseCatalog(slug=slug, manufacturer=manufacturer, model=model, format_family=record["format_family"])
+            case = CaseCatalog(
+                slug=slug,
+                manufacturer=manufacturer,
+                model=model,
+                format_family=record["format_family"],
+            )
             db.add(case)
             db.flush()
         case.manufacturer = manufacturer
@@ -120,10 +216,27 @@ def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = F
             db.add(revision)
             db.flush()
         for field in (
-            "revision_label", "row_count", "capacity_value", "capacity_unit", "usable_capacity_value",
-            "depth_min_mm", "depth_max_mm", "depth_notes", "width_mm", "height_mm", "depth_mm",
-            "weight_kg", "materials", "mounting_type", "portable", "removable_lid",
-            "close_patched_lid", "integrated_stand", "rack_mountable", "notes", "confidence",
+            "revision_label",
+            "row_count",
+            "capacity_value",
+            "capacity_unit",
+            "usable_capacity_value",
+            "depth_min_mm",
+            "depth_max_mm",
+            "depth_notes",
+            "width_mm",
+            "height_mm",
+            "depth_mm",
+            "weight_kg",
+            "materials",
+            "mounting_type",
+            "portable",
+            "removable_lid",
+            "close_patched_lid",
+            "integrated_stand",
+            "rack_mountable",
+            "notes",
+            "confidence",
         ):
             if field in revision_data:
                 setattr(revision, field, revision_data[field])
@@ -133,9 +246,21 @@ def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = F
                 db.query(CaseRow)
                 .filter(CaseRow.revision_id == revision.id, CaseRow.row_index == row_data["row_index"])
                 .first()
-            ) or CaseRow(revision_id=revision.id, row_index=row_data["row_index"], format_family=row_data.get("format_family", case.format_family))
+            ) or CaseRow(
+                revision_id=revision.id,
+                row_index=row_data["row_index"],
+                format_family=row_data.get("format_family", case.format_family),
+            )
             db.add(row)
-            for field in ("format_family", "capacity_value", "capacity_unit", "usable_capacity_value", "depth_min_mm", "depth_max_mm", "notes"):
+            for field in (
+                "format_family",
+                "capacity_value",
+                "capacity_unit",
+                "usable_capacity_value",
+                "depth_min_mm",
+                "depth_max_mm",
+                "notes",
+            ):
                 if field in row_data:
                     setattr(row, field, row_data[field])
 
@@ -147,7 +272,19 @@ def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = F
                 .first()
             ) or CasePowerSystem(revision_id=revision.id, name=name)
             db.add(power)
-            for field in ("supply_type", "external_input", "busboard_type", "connector_count", "current_pos12_ma", "current_neg12_ma", "current_pos5_ma", "power_watts", "zoned_distribution", "protections", "notes"):
+            for field in (
+                "supply_type",
+                "external_input",
+                "busboard_type",
+                "connector_count",
+                "current_pos12_ma",
+                "current_neg12_ma",
+                "current_pos5_ma",
+                "power_watts",
+                "zoned_distribution",
+                "protections",
+                "notes",
+            ):
                 if field in power_data:
                     setattr(power, field, power_data[field])
 
@@ -166,16 +303,59 @@ def import_records(db: Session, records: list[dict[str, Any]], dry_run: bool = F
             field_path = source_data.get("field_path")
             source = (
                 db.query(CaseSource)
-                .filter(CaseSource.case_id == case.id, CaseSource.url == source_data["url"], CaseSource.field_path == field_path)
+                .filter(
+                    CaseSource.case_id == case.id,
+                    CaseSource.url == source_data["url"],
+                    CaseSource.field_path == field_path,
+                )
                 .first()
-            ) or CaseSource(case_id=case.id, revision_id=revision.id, url=source_data["url"], field_path=field_path, source_type=source_data["source_type"])
+            ) or CaseSource(
+                case_id=case.id,
+                revision_id=revision.id,
+                url=source_data["url"],
+                field_path=field_path,
+                source_type=source_data["source_type"],
+            )
             db.add(source)
-            for field in ("revision_id", "source_type", "title", "published_value", "normalized_value", "discrepancy_note", "confidence"):
+            for field in (
+                "revision_id",
+                "source_type",
+                "title",
+                "published_value",
+                "normalized_value",
+                "discrepancy_note",
+                "confidence",
+            ):
                 if field in source_data:
                     setattr(source, field, source_data[field])
+            db.flush()
+            _upsert_policy_packet(db, source, source_data.get("policy") or {})
 
         for price_data in record.get("prices") or []:
-            db.add(CasePrice(case_id=case.id, **price_data))
+            captured_at = _parse_datetime(price_data["captured_at"], "captured_at")
+            price = (
+                db.query(CasePrice)
+                .filter(
+                    CasePrice.case_id == case.id,
+                    CasePrice.source_name == price_data["source_name"],
+                    CasePrice.source_url == price_data.get("source_url"),
+                    CasePrice.currency == price_data["currency"],
+                    CasePrice.amount == price_data["amount"],
+                    CasePrice.captured_at == captured_at,
+                )
+                .first()
+            ) or CasePrice(
+                case_id=case.id,
+                source_name=price_data["source_name"],
+                source_url=price_data.get("source_url"),
+                amount=price_data["amount"],
+                currency=price_data["currency"],
+                captured_at=captured_at,
+            )
+            db.add(price)
+            for field in ("region", "price_type", "in_stock"):
+                if field in price_data:
+                    setattr(price, field, price_data[field])
 
         receipt["inserted" if created else "updated"] += 1
 
