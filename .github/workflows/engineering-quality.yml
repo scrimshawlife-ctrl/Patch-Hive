@@ -1,0 +1,73 @@
+name: Engineering Quality
+
+# Extended lint/security/docs gates for AI-native foundation.
+# Complements backend-tests.yml, code-quality.yml, security.yml.
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  engineering:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+
+      - name: Install backend (dev)
+        working-directory: backend
+        run: python -m pip install -e '.[dev]'
+
+      - name: Ruff (canon + evidence)
+        working-directory: backend
+        run: python -m ruff check canon evidence
+
+      - name: Black check (canon + evidence)
+        working-directory: backend
+        run: python -m black --check canon evidence
+
+      - name: Backend unit tests + coverage gate
+        working-directory: backend
+        run: |
+          env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q --cov=canon --cov=evidence --cov-report=term-missing
+
+      - name: Semgrep (optional best-effort)
+        continue-on-error: true
+        run: |
+          python -m pip install semgrep
+          semgrep --config=auto --error --quiet backend/canon backend/evidence || true
+
+      - name: Codespell docs and code (best-effort)
+        continue-on-error: true
+        run: |
+          python -m pip install codespell
+          codespell backend/canon backend/evidence docs README.md AI_CONTEXT.md SYSTEM_CONTEXT.md \
+            --skip="*.json,*.lock,*.svg,*.png,*.bin" || true
+
+      - name: Documentation presence
+        run: |
+          test -f AI_CONTEXT.md
+          test -f SYSTEM_CONTEXT.md
+          test -f docs/engineering/repository_map.md
+          test -f docs/engineering/AI_AGENT_GUIDE.md
+          test -f scripts/ai/rebuild_indexes.sh
+          test -f justfile
+
+      - name: Rebuild indexes (smoke)
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq universal-ctags ripgrep fd-find || true
+          bash scripts/ai/rebuild_indexes.sh
+          test -f .codebase-memory/graph/module_graph.json

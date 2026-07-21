@@ -82,3 +82,23 @@ alembic/versions/__pycache__/
 # Keep frontend source lib tracked (Python lib/ ignore is root-level intent)
 !frontend/src/lib/
 !frontend/src/lib/**
+
+# AI-native local indexes / caches (regenerate with `just memory`)
+# README for the memory layout lives in docs/engineering/ (not under ignored trees)
+.codebase-memory/
+indexes/
+embeddings/
+cache/
+artifacts/
+.mypy_cache/
+.ruff_cache/
+.semgrep/
+.coverage.*
+coverage.xml
+security-artifacts/
+
+# Tooling
+.just/
+*.tags
+tags
+TAGS

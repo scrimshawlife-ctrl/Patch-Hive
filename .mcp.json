@@ -1,0 +1,37 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "."],
+      "description": "Local repository filesystem access"
+    },
+    "github": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "description": "GitHub issues/PRs (requires GITHUB_PERSONAL_ACCESS_TOKEN)",
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "description": "Persistent key-value memory for agent sessions"
+    },
+    "fetch": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-fetch"],
+      "description": "HTTP fetch for public docs"
+    },
+    "git": {
+      "command": "npx",
+      "args": ["-y", "@cyanheads/git-mcp-server"],
+      "description": "Optional git MCP (install may vary; use gh/git CLI if unavailable)"
+    }
+  },
+  "_notes": {
+    "codebase-memory": "Local indexes live in .codebase-memory/ (just memory). Not an npm MCP package.",
+    "sequential-thinking": "Enable in host agent if available; not vendored here.",
+    "security": "Do not commit real tokens. Map secrets via environment only."
+  }
+}

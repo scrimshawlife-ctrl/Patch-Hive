@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- AI-native engineering foundation: `justfile`, `scripts/ai/rebuild_indexes.sh`, `docs/engineering/*`, `AI_CONTEXT.md`, `SYSTEM_CONTEXT.md`, engineering-quality CI, MCP template (see `ENGINEERING_SETUP_REPORT.md`).
 - Vision evaluation harness + synthetic `fixtures/vision_eval` dataset (production accuracy remains `NOT_COMPUTABLE`).
 - Consent-gated `CloudVisionProvider` and `select_vision_provider` (live calls fail-closed; CI uses mock).
 - Canonical one-page Patch Book publishing invariant.
