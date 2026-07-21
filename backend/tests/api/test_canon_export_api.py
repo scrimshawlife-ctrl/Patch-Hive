@@ -153,6 +153,19 @@ def test_canonical_export_insufficient_credits(client: TestClient, db_session: S
     assert resp.json()["detail"] == "INSUFFICIENT_CREDITS"
 
 
+def test_legacy_patchbook_debit_disabled_by_default(
+    client: TestClient, db_session: Session
+) -> None:
+    """Default ENABLE_LEGACY_PATCHBOOK_DEBIT=false rejects legacy debit POST with 410."""
+    user, _patch = _persist_hierarchy(db_session)
+    resp = client.post(
+        "/api/export/runs/1/patchbook",
+        headers=_auth_headers(user),
+    )
+    assert resp.status_code == 410
+    assert "LEGACY_PATCHBOOK_DEBIT_DISABLED" in resp.json()["detail"]
+
+
 def test_legacy_patchbook_debit_can_be_disabled(
     client: TestClient, db_session: Session, monkeypatch: pytest.MonkeyPatch
 ) -> None:

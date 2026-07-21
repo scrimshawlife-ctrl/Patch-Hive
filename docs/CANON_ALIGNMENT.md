@@ -115,7 +115,7 @@ Post-campaign engineering is tracked in [CONTINUATION.md](CONTINUATION.md), not 
 | **A** | On `POST /api/patches/generate/{rack_id}`, after legacy `Run` create, call `ensure_legacy_run_export_bridge` | **DONE** (feat/p1-slice-a-generate-bridge) — response includes bridge fields |
 | **B** | Optional thin `GET /api/canon/runs?rig_id=` alias returning same bridge DTO | FE can migrate one call site; legacy list remains |
 | **C** | Generator writes real `RigRevisionRecord` content hash from rack snapshot (still may keep `legacy-rack-*` id until revision chain exists) | Manifest/hash reflects rack content, not only run id |
-| **D** | P2 move unrouted FE pages to `frontend/src/legacy/` | No import from `App.tsx`; dead client APIs unused |
-| **E** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` default after ripgrep shows no non-test callers | 410 on legacy debit in default env |
+| **D** | P2 move unrouted FE pages to `frontend/src/legacy/` | **DONE** (feat/p2-d-e-hygiene) |
+| **E** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` default after caller audit | **DONE** (default false; opt-in only) |
 
 **Matrix status:** **DESIGN COMPLETE** (this section). Implementation starts at slice **A** on a feature branch — not in docs-only #53 unless bundled.

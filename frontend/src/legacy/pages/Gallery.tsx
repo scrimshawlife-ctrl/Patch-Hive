@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { publishingApi } from '@/lib/api';
+import { publishingApi } from '@/legacy/apiClients';
 import type { PublicationCard } from '@/types/api';
 
 export default function GalleryPage() {

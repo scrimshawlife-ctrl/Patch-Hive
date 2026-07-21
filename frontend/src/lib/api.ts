@@ -13,20 +13,13 @@ import type {
   RunPatchesResponse,
   LoginRequest,
   TokenResponse,
-  FeedResponse,
   Module,
   Case,
   Rack,
   Patch,
   User,
-  ExportRecord,
-  PublicationListResponse,
-  PublicationRecord,
-  PublicPublicationResponse,
-  GalleryResponse,
   CanonicalExportRecord,
   ReferralSummary,
-  LeaderboardEntry,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -148,22 +141,7 @@ export const authApi = {
   getMe: () => api.get<User>('/community/users/me'),
 };
 
-// Community API
-export const communityApi = {
-  getFeed: (params?: { skip?: number; limit?: number }) =>
-    api.get<FeedResponse>('/community/feed', { params }),
-
-  vote: (data: { rack_id?: number; patch_id?: number }) =>
-    api.post('/community/votes', data),
-
-  deleteVote: (voteId: number) => api.delete(`/community/votes/${voteId}`),
-
-  comment: (data: { rack_id?: number; patch_id?: number; content: string }) =>
-    api.post('/community/comments', data),
-
-  getComments: (params: { rack_id?: number; patch_id?: number }) =>
-    api.get('/community/comments', { params }),
-};
+// Community social API clients live under `src/legacy/apiClients.ts` (unrouted MVP).
 
 // Export API
 // PDF/SVG file URLs remain on legacy `/export/*` (artifact bytes).
@@ -178,9 +156,6 @@ export const exportApi = {
   patchDiagramSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/diagram.svg`,
 
   patchWaveformSvg: (patchId: number) => `${API_BASE_URL}/export/patches/${patchId}/waveform.svg`,
-
-  /** @deprecated Prefer `canonApi.createExport` — dual-path debit risk. */
-  patchbookExport: (runId: number) => api.post(`/export/runs/${runId}/patchbook`),
 };
 
 // Canonical credits + exports (preferred MVP monetization boundary)
@@ -283,40 +258,7 @@ export const adminApi = {
     api.get<AdminLeaderboardEntry[]>(`/admin/leaderboards/categories/exported`),
 };
 
-// Publishing API
-export const publishingApi = {
-  createExport: (data: { source_type: 'patch' | 'rack'; source_id: number }) =>
-    api.post<ExportRecord>('/me/exports', data),
-
-  listExports: () => api.get<ExportRecord[]>('/me/exports'),
-
-  createPublication: (data: {
-    export_id: number;
-    title: string;
-    description?: string;
-    visibility: 'public' | 'unlisted';
-    allow_download: boolean;
-    allow_remix: boolean;
-    cover_image_url?: string;
-  }) => api.post<PublicationRecord>('/me/publications', data),
-
-  updatePublication: (publicationId: number, data: Partial<PublicationRecord>) =>
-    api.patch<PublicationRecord>(`/me/publications/${publicationId}`, data),
-
-  listPublications: () => api.get<PublicationListResponse>('/me/publications'),
-
-  getPublication: (slug: string) => api.get<PublicPublicationResponse>(`/p/${slug}`),
-
-  listGallery: (params?: {
-    limit?: number;
-    cursor?: string;
-    export_type?: string;
-    recent_days?: number;
-  }) => api.get<GalleryResponse>('/gallery/publications', { params }),
-
-  reportPublication: (slug: string, data: { reason: string; details?: string }) =>
-    api.post(`/p/${slug}/report`, data),
-};
+// Publishing / leaderboard clients live under `src/legacy/apiClients.ts`.
 
 // Account API
 // Credits/exports prefer the canonical ledger. Referrals remain legacy-flagged.
@@ -355,13 +297,6 @@ export const accountApi = {
     };
   },
   getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
-};
-
-// Leaderboards API
-export const leaderboardsApi = {
-  getPopularModules: () => api.get<LeaderboardEntry[]>('/leaderboards/modules/popular'),
-  getTrendingModules: (windowDays = 30) =>
-    api.get<LeaderboardEntry[]>('/leaderboards/modules/trending', { params: { window_days: windowDays } }),
 };
 
 export default api;

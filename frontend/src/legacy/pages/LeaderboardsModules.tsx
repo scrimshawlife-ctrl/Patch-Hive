@@ -2,7 +2,7 @@
  * Public leaderboards for modules.
  */
 import { useEffect, useState } from 'react';
-import { leaderboardsApi } from '@/lib/api';
+import { leaderboardsApi } from '@/legacy/apiClients';
 import type { LeaderboardEntry } from '@/types/api';
 
 const tableStyle: React.CSSProperties = {

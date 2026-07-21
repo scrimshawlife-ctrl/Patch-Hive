@@ -8,7 +8,7 @@ All flags are environment variables parsed case-insensitively by backend setting
 | `ENABLE_LEGACY_PUBLISHING` | `false` | Compatibility public publication endpoints |
 | `ENABLE_LEGACY_LEADERBOARDS` | `false` | Compatibility leaderboard endpoints |
 | `ENABLE_LEGACY_REFERRALS` | `false` | Gates `/api/me/referrals`, community referral summary, referral signup capture, and monetization purchase-for-referral recording |
-| `ENABLE_LEGACY_PATCHBOOK_DEBIT` | `true` | When `false`, `POST /api/export/runs/{id}/patchbook` returns **410** (use `/api/canon/exports`) |
+| `ENABLE_LEGACY_PATCHBOOK_DEBIT` | `false` | When `false`, `POST /api/export/runs/{id}/patchbook` returns **410** (use `/api/canon/exports`) |
 | `STRIPE_TEST_MODE` | `true` | Reject livemode webhook events in the canonical Stripe adapter and `/api/canon/webhooks/stripe` |
 | `ALLOW_PRODUCTION_PAYMENTS` | `false` | Kill switch. When false, production webhook intake returns 403. Startup fails closed if production sets this false while `STRIPE_TEST_MODE=false`, or sets this true without reviewed secrets. |
 | `STRIPE_WEBHOOK_SECRET` | empty | Stripe signing secret for `/api/canon/webhooks/stripe` |
@@ -43,11 +43,10 @@ Auth endpoints (`POST /api/community/auth/login`, registration, profile) are par
 
 | Endpoint / client | Status | Notes |
 |---|---|---|
-| `exportApi.patchbookExport` | Deprecated | Dual-path debit risk; use `canonApi.createExport` |
-| `POST /api/export/runs/{id}/patchbook` | Transitional / gateable | Debits **legacy** ledger; `deprecated: true` in JSON; set `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` → 410 |
-| `POST /api/export/patchbook` | Document-only builder API | No MVP UI caller for debit flow |
-| Admin `POST /api/admin/users/{id}/credits/grant` | Dual-write | Writes legacy `CreditsLedger` **and** `canonical_credit_ledger` grant row |
-| Acceptance debit tests | **Canon** | `POST /api/canon/exports` + canon ledger asserts (P1 residual port) |
+| `exportApi.patchbookExport` | **Removed from MVP client** | Lived under active `api.ts`; deleted — use `canonApi.createExport` |
+| `POST /api/export/runs/{id}/patchbook` | **Disabled by default** | `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` → 410; opt-in only for compatibility tests |
+| Unrouted FE pages (Feed/Publish/…) | **Quarantined** | `frontend/src/legacy/` — not linked in `App.tsx` |
+| `publishingApi` / `communityApi` / `leaderboardsApi` | **Legacy clients** | `frontend/src/legacy/apiClients.ts` only |
 
 Legacy `/api/export` PatchBook **POST** routes remain during transition but must not be used by the active UI. Production payments stay disabled unless a separate reviewed change sets `ALLOW_PRODUCTION_PAYMENTS=true` with real secrets.
 

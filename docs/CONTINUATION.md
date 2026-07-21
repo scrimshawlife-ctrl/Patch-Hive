@@ -57,30 +57,29 @@ Phases 0–8 of `PATCHHIVE_ONESHOT_CANON_ALIGNMENT_001` are on `main` (`a162f85`
 **Progress checklist:**
 - [x] Acceptance debit tests use `POST /api/canon/exports` + canonical ledger
 - [x] Admin credit grant dual-writes `canonical_credit_ledger`
-- [x] Legacy PatchBook debit: `deprecated` JSON markers + `ENABLE_LEGACY_PATCHBOOK_DEBIT` (default true; false → 410)
+- [x] Legacy PatchBook debit: `deprecated` JSON markers + `ENABLE_LEGACY_PATCHBOOK_DEBIT` (default **false** → 410)
 - [x] Run DTOs carry `rig_revision_id`, `source_run_id`, `artifact_manifest_hash`, `export_bridge_ready` (server-authored via `runs.bridge`)
 - [x] RigDetail export uses server bridge fields (no client `legacyRunManifestHash` invent)
-- [ ] Default `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` once remaining non-MVP callers cleared
+- [x] Default `ENABLE_LEGACY_PATCHBOOK_DEBIT=false` once remaining non-MVP callers cleared
 - [ ] Full retirement of legacy rack/patch list dual path (still needed for inventory UI)
 - [ ] Promote bridge IDs to real immutable revisions (not `legacy-rack-*` / `legacy-run-*` namespace) when generator writes canon runs natively
 
 **Next slices (ordered):**
 
 1. ~~**Acceptance → canon credits path**~~ **DONE** (PR #51)  
-2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default still true for transitional callers)  
+2. ~~**Deprecate / feature-gate legacy debit POST**~~ **DONE** (PR #51; default **false** after caller audit — slice E)  
 3. ~~**Run / revision bridge honesty**~~ **DONE** (PR #54 — server DTO + ensure canon rows; namespace still legacy-* until native generator)  
 
 4. ~~**Inventory dual-path plan (design-first, then thin PR)**~~ **DESIGN DONE** — matrix in [CANON_ALIGNMENT.md](CANON_ALIGNMENT.md#inventory-dual-path-matrix-design-first)  
-   - Implementation slices **A–E** listed there (generate bridge dual-write → optional canon runs alias → content-hash revision → P2 dead UI → default debit flag false).  
+   - Slices **A**, **D**, **E** **DONE**; **B** optional alias; **C** content-hash revision open.  
    - Do **not** big-bang delete racks routers.  
    - **Exit (design):** matrix merged. **Exit (code):** slice A green on CI.
 ### P2 — Package and dead-UI hygiene
 
-1. **Unrouted frontend pages (OBSERVED not in `App.tsx`):**  
-   - `Feed.tsx`, `Publish.tsx`, `Publication.tsx`, `LeaderboardsModules.tsx`, `Gallery.tsx`  
-   - Move to `frontend/src/legacy/` or delete in one PR; drop unused `publishingApi`/`communityApi`/`leaderboardsApi` client exports if nothing imports them after move.  
-   - **Exit:** `rg` for those page names only under `legacy/` or gone; App routes unchanged for MVP.
-
+1. ~~**Unrouted frontend pages**~~ **DONE**  
+   - Moved to `frontend/src/legacy/pages/`; clients in `frontend/src/legacy/apiClients.ts`.  
+   - See `frontend/src/legacy/README.md`.  
+   - **Exit:** `rg` for those page names only under `legacy/`; App routes unchanged.
 2. **Import telemetry for `patchhive` package**  
    - Many `backend/tests/unit/*` and `backend/patchhive/*` still `from patchhive...`.  
    - Classify: CANON_SUPPORTING pipeline vs HISTORICAL duplicate.  

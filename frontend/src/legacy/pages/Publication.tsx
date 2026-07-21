@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { publishingApi } from '@/lib/api';
+import { publishingApi } from '@/legacy/apiClients';
 import type { PublicPublicationResponse } from '@/types/api';
 
 export default function PublicationPage() {
