@@ -2,14 +2,33 @@ import { expect, test } from '@playwright/test';
 
 test.describe('PatchHive canonical workspace', () => {
   test.beforeEach(async ({ page }) => {
-    await page.route('**/api/runs**', async (route) => {
-      const rackId = new URL(route.request().url()).searchParams.get('rack_id');
+    // Slice B: run list is served from /api/canon/runs?rig_id=
+    await page.route('**/api/canon/runs**', async (route) => {
+      const rigId = new URL(route.request().url()).searchParams.get('rig_id');
       const runs =
-        rackId === '99999'
+        rigId === '99999'
           ? []
           : [
-              { id: 11, rack_id: 1, status: 'succeeded', created_at: '2025-01-01T00:00:00Z' },
-              { id: 12, rack_id: 1, status: 'succeeded', created_at: '2025-02-01T00:00:00Z' },
+              {
+                id: 11,
+                rack_id: 1,
+                status: 'succeeded',
+                created_at: '2025-01-01T00:00:00Z',
+                rig_revision_id: 'legacy-rack-1',
+                source_run_id: 'legacy-run-11',
+                artifact_manifest_hash: 'a'.repeat(64),
+                export_bridge_ready: true,
+              },
+              {
+                id: 12,
+                rack_id: 1,
+                status: 'succeeded',
+                created_at: '2025-02-01T00:00:00Z',
+                rig_revision_id: 'legacy-rack-1',
+                source_run_id: 'legacy-run-12',
+                artifact_manifest_hash: 'b'.repeat(64),
+                export_bridge_ready: true,
+              },
             ];
       await route.fulfill({ json: { total: runs.length, runs } });
     });
