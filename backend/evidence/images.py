@@ -43,6 +43,21 @@ class PreparedImageEvidence:
     sha256: str
 
 
+@dataclass(frozen=True)
+class LocalImageQualityAssessment:
+    """Local, non-provider quality gates for secure intake.
+
+    This does not claim ML blur/glare scores. Those remain provider-side and
+    optional. Local gates fail closed on structural problems only.
+    """
+
+    accepted: bool
+    reasons: tuple[str, ...]
+    width: int
+    height: int
+    content_sha256: str
+
+
 def prepare_image_evidence(
     content: bytes,
     *,
@@ -87,4 +102,29 @@ def prepare_image_evidence(
         width=normalized_width,
         height=normalized_height,
         sha256=hashlib.sha256(cleaned).hexdigest(),
+    )
+
+
+def assess_local_image_quality(
+    prepared: PreparedImageEvidence,
+    *,
+    min_dimension: int = 64,
+    min_bytes: int = 128,
+) -> LocalImageQualityAssessment:
+    """Structural quality check after re-encoding.
+
+    Provider-side blur/glare/occlusion scores remain separate evidence fields.
+    """
+
+    reasons: list[str] = []
+    if prepared.width < min_dimension or prepared.height < min_dimension:
+        reasons.append("IMAGE_DIMENSIONS_TOO_SMALL")
+    if len(prepared.content) < min_bytes:
+        reasons.append("IMAGE_BYTES_TOO_SMALL")
+    return LocalImageQualityAssessment(
+        accepted=not reasons,
+        reasons=tuple(reasons),
+        width=prepared.width,
+        height=prepared.height,
+        content_sha256=prepared.sha256,
     )
