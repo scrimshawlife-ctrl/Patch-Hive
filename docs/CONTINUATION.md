@@ -1,7 +1,7 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `7bfbd79` (+ revision-picker branch pending merge)  
+**main HEAD:** `6b7bc2d` (includes PR #72 revision picker + multi-photo reconcile)  
 **Tracking:** Issue #46 closed · PR #47–#70 on main  
 **PR #66–#70:** **MERGED** (VSI P0, eval/cloud adapter, AI foundation, Cases/Patches+RackBuilder evidence UX)
 
