@@ -232,6 +232,9 @@ def professional_default_resolved(*, seed: int = 0, tier: TierName = "core") -> 
     req = default_request_recipe(seed=seed)
     # Align weights toward professional mode table
     req = req.model_copy(
-        update={"weights": MODE_WEIGHT_DEFAULTS[PatchBookMode.PROFESSIONAL], "mode": PatchBookMode.PROFESSIONAL}
+        update={
+            "weights": MODE_WEIGHT_DEFAULTS[PatchBookMode.PROFESSIONAL],
+            "mode": PatchBookMode.PROFESSIONAL,
+        }
     )
     return resolve_style_recipe(req, resolved_tier=tier, family_allowed=True)

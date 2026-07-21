@@ -21,6 +21,7 @@ All flags are environment variables parsed case-insensitively by backend setting
 | `DESIGN_ENGINE_DEFAULT_TIER` | `core` | Server-side presentation tier until entitlements exist (not client-spoofable) |
 | `EXPORT_FULFILL_MAX_ATTEMPTS` | `5` | Max fulfillment claims before compensate |
 | `EXPORT_STORE_ROOT` | `./exports` | Root for `design_packs/{export_id}` packs |
+| `PREVIEW_RATE_LIMIT_PER_MINUTE` | `30` | Free Style Studio preview requests per user per minute |
 
 Auth endpoints (`POST /api/community/auth/login`, registration, profile) are part of the default MVP surface and do **not** require `ENABLE_LEGACY_SOCIAL`.
 

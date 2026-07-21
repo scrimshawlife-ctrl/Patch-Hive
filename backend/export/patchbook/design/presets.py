@@ -193,7 +193,9 @@ def mode_base_recipe(mode: PatchBookMode, *, seed: int = 0) -> RequestStyleRecip
         influences=_default_influences(mode),
         constraints=StyleConstraints(
             book_profile=(
-                BookProfile.PUBLICATION if artistic or mode == PatchBookMode.COLLECTOR else BookProfile.EXECUTION_PAGE
+                BookProfile.PUBLICATION
+                if artistic or mode == PatchBookMode.COLLECTOR
+                else BookProfile.EXECUTION_PAGE
             ),
             canonical_appendix_required=artistic,
             artistic_disclosure_acknowledged=artistic,

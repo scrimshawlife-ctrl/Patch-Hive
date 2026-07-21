@@ -17,7 +17,7 @@ from export.patchbook.design.constraints import (
     revalidate_resolved_recipe,
 )
 from export.patchbook.design.content_spine import ContentSpineError, load_patch_compilations
-from export.patchbook.design.engine import compose_design_export_pack
+from export.patchbook.design.engine import PreflightFailed, compose_design_export_pack
 from export.patchbook.design.recipe import (
     DESIGN_ENGINE_VERSION,
     ResolvedStyleRecipe,
@@ -125,7 +125,7 @@ def fulfill_export(session: Session, export_id: str) -> FulfillResult:
             pack_manifest_hash=result.pack_manifest_hash,
             composition_hash=result.composition_hash,
         )
-    except (ContentSpineError, StyleResolveError) as exc:
+    except (ContentSpineError, StyleResolveError, PreflightFailed) as exc:
         code = getattr(exc, "code", "EXPORT_FULFILL_FAILED")
         return _fail(session, export, code)
     except Exception:

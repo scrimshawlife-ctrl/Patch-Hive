@@ -41,9 +41,7 @@ class LayoutRegion(BaseModel):
     region_id: str
     role: RegionRole
     required: bool
-    bbox_pt: tuple[float, float, float, float] = Field(
-        description="x, y, width, height in points"
-    )
+    bbox_pt: tuple[float, float, float, float] = Field(description="x, y, width, height in points")
     z_index: int = 0
     reading_order: int = Field(ge=0)
 
@@ -109,9 +107,7 @@ class PatchPageLayoutIR(BaseModel):
     def _execution_requires_patch(self) -> PatchPageLayoutIR:
         if self.page_kind in (PageKind.EXECUTION, PageKind.APPENDIX_EXECUTION):
             if not self.patch_artifact_id:
-                raise ValueError(
-                    f"page_kind={self.page_kind.value} requires patch_artifact_id"
-                )
+                raise ValueError(f"page_kind={self.page_kind.value} requires patch_artifact_id")
         if self.schema_version != LAYOUT_IR_SCHEMA_VERSION:
             raise ValueError(f"unsupported layout IR schema: {self.schema_version}")
         region_ids = {r.region_id for r in self.regions}
