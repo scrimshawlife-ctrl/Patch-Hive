@@ -2,7 +2,7 @@
 
 PatchHive remains a modular monolith. Apply the single Alembic head before application rollout, then start the FastAPI and static frontend processes. Production persistence is PostgreSQL; SQLite is a unit-test adapter only.
 
-**Campaign note (2026-07-20):** No production deployment was performed on PR #47. Staging may be stood up after merge using the gates below. See [CONTINUATION.md](CONTINUATION.md) P0–P3.
+**Campaign note (2026-07-21):** No production deployment was performed on PR #47 or #49. Main HEAD `71a4dfa` is CI-green; staging may be stood up using the gates below. See [CONTINUATION.md](CONTINUATION.md) P0–P3. Prefer `/api/canon/*` for export/credit clients; legacy PatchBook debit POST remains transitional until acceptance migrates.
 
 ## Release gates
 

@@ -2,18 +2,18 @@
 
 PatchHive is a deterministic Eurorack **rig and patch documentation** workspace. The canonical MVP helps a user establish a module inventory, preserve immutable rig revisions, generate immutable patch-library runs, inspect safety findings, and purchase exports. It does **not** synthesize audio or control hardware.
 
-## Status (2026-07-20)
+## Status (2026-07-21)
 
 | Item | Value |
 |------|--------|
 | **Canon MVP on main** | **MERGED** via [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) |
-| **main HEAD** | `a162f8547a2da261ca09523f86a4019c42eb04c8` |
-| **Merge commit** | `a162f85` — *Merge pull request #47* |
+| **P1 credits/exports client** | **MERGED** via [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) — MVP UI uses `/api/canon/*` |
+| **main HEAD** | `71a4dfaab7aefe1d4cb920dd9f83abcb7757fea7` |
 | **Campaign issue** | [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed |
-| **Pre-merge baseline** | `9cae772` |
 | **Alembic head** | `20240928_fix_schema_gaps` |
+| **CI on HEAD** | Backend Tests · Code Quality · Security — green |
 | **Production deploy** | Not performed — payments remain test-mode only |
-| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) P1+ · [CURRENT_STATE.md](CURRENT_STATE.md) |
+| **Next work** | [docs/CONTINUATION.md](docs/CONTINUATION.md) **P1 residual** (acceptance→canon, run DTO bridge) · [CURRENT_STATE.md](CURRENT_STATE.md) |
 
 Default branch is `main`. No campaign branch checkout required.
 
@@ -47,11 +47,14 @@ Prerequisites: Python 3.11 or 3.12, Node 22, npm 10+, PostgreSQL 15 for integrat
 ```bash
 git clone https://github.com/scrimshawlife-ctrl/Patch-Hive.git
 cd Patch-Hive
-git checkout codex/patchhive-oneshot-canon-alignment   # until PR #47 merges
+git checkout main
+git pull --ff-only
 
 python3 -m venv .venv
 source .venv/bin/activate
 cd backend
+# If a global Hermes/other PYTHONPATH leaks into the shell, scrub it for project runs:
+#   env -u PYTHONPATH python -m pip install -e '.[dev]'
 python -m pip install -e '.[dev]'
 alembic upgrade head
 uvicorn main:app --reload
@@ -93,14 +96,14 @@ npm audit --audit-level=high
 
 PostgreSQL integration and live migration checks require PostgreSQL or Docker. A missing service is reported as `NOT_COMPUTABLE`, never as a pass. CI (`.github/workflows/`) provisions PostgreSQL 15 and is authoritative when local containers are unavailable. The deterministic Playwright workspace suite uses isolated API fixtures and needs no production services.
 
-### Campaign validation snapshot
+### Validation snapshot
 
 | Gate | Result |
 |------|--------|
-| Backend unit/api (local, acceptance excluded) | 144 passed, 2 xfailed |
-| Frontend unit | 49 passed |
+| Main CI @ `71a4dfa` (Backend / Quality / Security) | SUCCESS |
+| Frontend unit (post-#49 local) | 51 passed |
 | Playwright MVP | 4 passed |
-| PR CI (3.11/3.12, quality, security) | Green on HEAD |
+| Targeted canon export/copy tests (post-#49 local) | 10 passed |
 | Acceptance without Docker/Postgres | `NOT_COMPUTABLE` locally — green path is CI |
 | Golden compile hash | `c2356d416b9784d4487ffadf1fc6aafb974644f0767a5a36cba44d7f397934ee` |
 

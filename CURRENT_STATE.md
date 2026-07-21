@@ -1,11 +1,12 @@
 # CURRENT_STATE
 
-**Authoritative as of:** 2026-07-20  
+**Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `a162f8547a2da261ca09523f86a4019c42eb04c8`  
-**Merge:** [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) MERGED at `2026-07-20T23:46:29Z`  
+**HEAD:** `71a4dfaab7aefe1d4cb920dd9f83abcb7757fea7`  
+**Latest product merge:** [PR #49](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/49) MERGED (P1 canon credits/exports client)  
+**Prior canon MVP merge:** [PR #47](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/47) at `a162f85`  
 **Campaign:** [Issue #46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
-**Pre-merge baseline:** `9cae772413a4f35a6c116923b2d85250452cd0b7`
+**Open PRs / issues:** none (OBSERVED 2026-07-21)
 
 This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY_STATUS.md`, pre-canon `CURRENT_STATE` claims). For inventory classification see [docs/CANON_ALIGNMENT.md](docs/CANON_ALIGNMENT.md). For ordered next work see [docs/CONTINUATION.md](docs/CONTINUATION.md).
 
@@ -16,12 +17,13 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Product identity | Deterministic Eurorack **rig + patch documentation** workspace — not audio synthesis or hardware control |
 | Canonical domain | `backend/canon/` — contracts, compiler, runes, exports, downloads, routes, models, repository |
 | Hierarchy | User → Rig → RigRevision → GenerationRun → exactly one PatchLibrary → GeneratedPatch (ADR 0001) |
-| HTTP canon surface | `/api/canon/*` credits, exports, download tokens, Stripe-style webhook (test-mode) |
-| Frontend shell | Instrument-bench nav: Rigs, Modules, Cases, Patches, Account, Admin diagnostics; light/dark; skip link |
+| HTTP canon surface | `/api/canon/*` credits (balance + summary), exports (list/create/get), download tokens, Stripe-style webhook (test-mode) |
+| Frontend MVP shell | Instrument-bench nav: Rigs, Modules, Cases, Patches, Account, Admin diagnostics; light/dark; skip link |
+| MVP credits/export UI | **Routed through `/api/canon/*`** via `canonApi` + `accountApi` aliases (PR #49) |
 | Legacy social/publish/leaderboards/referrals | Feature-flagged **off** by default; not in primary nav |
-| Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` |
-| Alembic head | **`20240928_fix_schema_gaps`** (revises `20240927_canon_alignment`) |
-| CI at merge | Backend Tests (3.11/3.12 + Postgres), Code Quality, Security/SBOM — green on PR head `69d11b0` |
+| Payments | `STRIPE_TEST_MODE=true`, `ALLOW_PRODUCTION_PAYMENTS=false` (`.env.example`) |
+| Alembic head | **`20240928_fix_schema_gaps`** (single head; revises `20240927_canon_alignment`) |
+| CI on main @ `71a4dfa` | Backend Tests, Code Quality, Security/SBOM — **SUCCESS** (push after #49) |
 | Production deploy | **Not performed** (`NOT_COMPUTABLE` without ops access) |
 
 ## Stack (active)
@@ -36,18 +38,36 @@ This file supersedes older root notes (`CANON_DIFF.md`, `CANON_SYNC.md`, `DEPLOY
 | Surface | Path | Notes |
 |---------|------|--------|
 | Canon ORM adapters | `backend/canon/models.py` | Append-only hierarchy + ledger/audit |
-| Legacy racks/patches/runs | `backend/racks`, `patches`, `runs` | Still mounted; dual-path until full route migration |
-| Monetization (legacy) | `backend/monetization` | Coexists with canon exports/credits |
+| Legacy racks/patches/runs | `backend/racks`, `patches`, `runs` | Still mounted; **inventory dual-path remains** (P1 residual) |
+| Legacy PatchBook POST | `backend/export/routes.py` `/runs/{id}/patchbook` | Still mounted; **acceptance still depends on it** |
+| Monetization (legacy) | `backend/monetization` | Coexists; FE balance aliases canon |
 | Community auth | always on under `/api/community/auth/*` | Social routers require `ENABLE_LEGACY_SOCIAL` |
-| Duplicate package | top-level / nested `patchhive` | HISTORICAL — removal after import telemetry |
+| Duplicate package | top-level / nested `patchhive` | HISTORICAL — many backend tests still import it (P2) |
 | Vision / ModularGrid | adapters fail closed | External implementation required |
 
-## Validation snapshot (PR #47 + CI)
+## Dual-path snapshot (post-#49)
 
-- Local (pre-CI, host without Docker): backend `144 passed, 2 xfailed` (acceptance excluded); frontend `49 passed`; Playwright `4 passed`
-- Acceptance on bare hosts without Postgres/Docker: **`NOT_COMPUTABLE`** — CI with Postgres 15 is authoritative
-- Deterministic golden compilation hash (campaign): `c2356d416b9784d4487ffadf1fc6aafb974644f0767a5a36cba44d7f397934ee`
-- PR checks at head `69d11b0`: Backend Tests, Code Quality, Security — **SUCCESS**
+| Client surface | Preferred | Residual legacy |
+|----------------|-----------|-----------------|
+| Account credits + export list | `accountApi` → `/api/canon/credits/summary`, `/api/canon/exports` | `/api/me/credits`, `/api/me/exports` still exist server-side |
+| Rig workspace debit | `canonApi.createExport` | `exportApi.patchbookExport` deprecated; not used by active UI |
+| PDF/SVG bytes | `/api/export/...` GETs | Artifact delivery only — no new debits from MVP UI |
+| Rig/run inventory | `/api/racks`, `/api/runs`, `/api/patches` | Active UI still uses these (Racks, RigDetail run list, generate) |
+| Export bridge IDs | `source_run_id` stringified run id | `source_rig_revision_id: legacy-rack-{id}` + hashed run manifest |
+
+## Validation snapshot
+
+| Gate | Result | Class |
+|------|--------|-------|
+| CI Backend Tests @ `71a4dfa` | success | OBSERVED |
+| CI Code Quality @ `71a4dfa` | success | OBSERVED |
+| CI Security @ `71a4dfa` | success | OBSERVED |
+| Alembic heads (local) | `20240928_fix_schema_gaps` | OBSERVED |
+| Prior local targeted (session): canon export/copy tests | 10 passed | OBSERVED (prior run) |
+| Prior local: Vitest / tsc / Playwright MVP | 51 / 0 / 4 | OBSERVED (prior run) |
+| Full `make test` without Docker Compose | blocked | `NOT_COMPUTABLE` on hosts without compose plugin |
+| Acceptance without Postgres/Docker | blocked | `NOT_COMPUTABLE` — CI authoritative |
+| Golden compile hash (campaign) | `c2356d416b9784d4487ffadf1fc6aafb974644f0767a5a36cba44d7f397934ee` | OBSERVED (campaign) |
 
 ## Authority boundary (still in force)
 
@@ -59,8 +79,8 @@ Post-merge engineering may continue on feature branches.
 See [docs/CONTINUATION.md](docs/CONTINUATION.md). Short list:
 
 1. ~~Operator review + merge PR #47~~ **DONE** (`a162f85`)
-2. Dual-path cleanup (legacy racks/patches → full canon routes) — **P1**
-3. Remove or quarantine duplicate `patchhive` package after import audit — **P2**
-4. Ops: real Postgres staging deploy (not production payments) — **P3**
-5. Frontend dead pages (`Feed`, `Publish`, `Publication`, leaderboards) — delete or archive — **P2**
-6. Expand Playwright beyond mocked MVP when staging exists — **P3/P4**
+2. ~~P1 client: MVP credits/exports → `/api/canon/*`~~ **DONE** (PR #49 @ `71a4dfa`)
+3. **P1 residual:** retire legacy PatchBook POST once acceptance moves to canon; real `rig_revision_id` / manifest on run DTOs; inventory dual-path plan
+4. **P2:** quarantine unrouted FE pages + duplicate `patchhive` import audit
+5. **P3:** non-prod Postgres staging + acceptance against real DB
+6. **P4:** Cases/Patches list depth (currently stubs); revision picker UX
