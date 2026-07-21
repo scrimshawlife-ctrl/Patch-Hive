@@ -185,6 +185,31 @@ export const evidenceApi = {
   listCandidates: (rackId: number) =>
     api.get<EvidenceCandidateListResponse>(`/racks/${rackId}/evidence/candidates`),
 
+  reconcile: (rackId: number) =>
+    api.get<{
+      image_asset_ids: string[];
+      image_count: number;
+      fused_entities: Array<{
+        fuse_id: string;
+        entity_key: string;
+        manufacturer?: string | null;
+        model?: string | null;
+        entity_type: string;
+        observation_count: number;
+        supporting_image_ids: string[];
+        mean_confidence: number;
+        max_confidence: number;
+        conflict: boolean;
+        conflict_notes: string[];
+        classification_status: string;
+        representative_candidate_id?: string | null;
+      }>;
+      unmatched_candidate_ids: string[];
+      conflict_count: number;
+      status: string;
+      note: string;
+    }>(`/racks/${rackId}/evidence/reconcile`),
+
   confirm: (
     rackId: number,
     body: {

@@ -8,6 +8,7 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- RackBuilder multi-photo upload and fusion review panel (reconcile API; never auto-confirms).
 - Rig revision picker API/UI and mutable patch overlays (notes/favorite/tried) without mutating canonical patches.
 - AI-native engineering foundation: `justfile`, `scripts/ai/rebuild_indexes.sh`, `docs/engineering/*`, `AI_CONTEXT.md`, `SYSTEM_CONTEXT.md`, engineering-quality CI, MCP template (see `ENGINEERING_SETUP_REPORT.md`).
 - Cases and Patches list pages with loading / empty / error / retry parity.
