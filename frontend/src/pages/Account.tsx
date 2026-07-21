@@ -116,8 +116,8 @@ export default function AccountPage() {
     <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
       <h2 style={{ marginBottom: '0.5rem' }}>Account</h2>
       <p style={{ color: '#bbb', marginBottom: '2rem' }}>
-        PatchHive is free to explore. Credits and export debits use the canonical ledger (
-        <code>/api/canon/*</code>).
+        PatchHive is free to explore. You only pay when you export something you want to keep.
+        Credits and export debits use the canonical ledger (<code>/api/canon/*</code>).
       </p>
 
       <section style={sectionStyle}>
