@@ -118,6 +118,87 @@ export const patchApi = {
     api.post<GeneratePatchesResponse>(`/patches/generate/${rackId}`, request),
 };
 
+// Visual evidence API (photo → candidates → confirmation → inventory)
+export interface EvidenceCandidate {
+  candidate_id: string;
+  entity_type: string;
+  manufacturer?: string | null;
+  model?: string | null;
+  confidence: number;
+  confidence_method: string;
+  alternative_candidates: string[];
+  classification_status: string;
+  evidence_id: string;
+  image_asset_id?: string | null;
+  gallery_revision_id?: string | null;
+  gallery_module_id?: string | null;
+}
+
+export interface EvidenceCandidateListResponse {
+  total: number;
+  candidates: EvidenceCandidate[];
+}
+
+export interface MultiImageUploadResponse {
+  uploaded: Array<{
+    id: string;
+    rack_id: number;
+    content_sha256: string;
+    evidence_status?: string | null;
+  }>;
+  rejected: Array<{ filename: string; reason: string }>;
+}
+
+export interface ConfirmationBatchResponse {
+  inventory_revision_id: string;
+  inventory_canonical_hash?: string | null;
+  confirmed_count: number;
+  unresolved_candidate_ids: string[];
+  ready_for_generation: boolean;
+}
+
+export const evidenceApi = {
+  uploadImages: (
+    rackId: number,
+    files: File[],
+    options?: {
+      retention_days?: number;
+      consent_provider_processing?: boolean;
+      run_vision_mock?: boolean;
+    },
+  ) => {
+    const form = new FormData();
+    files.forEach((file) => form.append('files', file));
+    form.append('retention_days', String(options?.retention_days ?? 30));
+    form.append(
+      'consent_provider_processing',
+      String(options?.consent_provider_processing ?? false),
+    );
+    form.append('run_vision_mock', String(options?.run_vision_mock ?? true));
+    return api.post<MultiImageUploadResponse>(`/racks/${rackId}/evidence/images`, form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+  },
+
+  listImages: (rackId: number) => api.get(`/racks/${rackId}/evidence/images`),
+
+  listCandidates: (rackId: number) =>
+    api.get<EvidenceCandidateListResponse>(`/racks/${rackId}/evidence/candidates`),
+
+  confirm: (
+    rackId: number,
+    body: {
+      confirmed_by?: string;
+      decisions: Array<{
+        candidate_id: string;
+        status: string;
+        module_revision_id?: string | null;
+        notes?: string | null;
+      }>;
+    },
+  ) => api.post<ConfirmationBatchResponse>(`/racks/${rackId}/evidence/confirmations`, body),
+};
+
 // Run API — list prefers canon alias; patches still legacy until dual-written.
 export const runApi = {
   /** @deprecated Prefer `canonApi.listRuns` (same bridge DTO). */
