@@ -71,7 +71,10 @@ def _resolve_modules(db: Session, specs: list[CompatibilityModuleIn]) -> tuple[l
 
         name = spec.name or (module.name if module else f"module[{idx}]")
         hp = spec.hp if spec.hp is not None else (module.hp if module else None)
+        # Prefer explicit request depth; fall back to registry depth_mm when present.
         depth = spec.depth_mm
+        if depth is None and module is not None:
+            depth = getattr(module, "depth_mm", None)
         fmt = (spec.format_family or "eurorack").strip().lower()
         p12 = spec.power_12v_ma if spec.power_12v_ma is not None else (module.power_12v_ma if module else None)
         pn12 = (

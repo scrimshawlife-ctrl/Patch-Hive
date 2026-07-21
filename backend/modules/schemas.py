@@ -27,6 +27,9 @@ class ModuleBase(BaseModel):
     power_12v_ma: Optional[int] = Field(None, ge=0)
     power_neg12v_ma: Optional[int] = Field(None, ge=0)
     power_5v_ma: Optional[int] = Field(None, ge=0)
+    depth_mm: Optional[float] = Field(
+        None, ge=0, description="Module depth in mm; null = unspecified"
+    )
     io_ports: list[IOPort] = Field(default_factory=list)
     tags: list[str] = Field(default_factory=list)
     description: Optional[str] = None
@@ -54,6 +57,7 @@ class ModuleUpdate(BaseModel):
     power_12v_ma: Optional[int] = Field(None, ge=0)
     power_neg12v_ma: Optional[int] = Field(None, ge=0)
     power_5v_ma: Optional[int] = Field(None, ge=0)
+    depth_mm: Optional[float] = Field(None, ge=0)
     io_ports: Optional[list[IOPort]] = None
     tags: Optional[list[str]] = None
     description: Optional[str] = None

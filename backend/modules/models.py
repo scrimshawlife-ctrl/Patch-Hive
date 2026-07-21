@@ -32,6 +32,9 @@ class Module(Base):
     power_neg12v_ma = Column(Integer, nullable=True)  # -12V power draw in mA
     power_5v_ma = Column(Integer, nullable=True)  # +5V power draw in mA
 
+    # Physical depth for case fit (null = unspecified; never invent)
+    depth_mm = Column(Float, nullable=True, index=True)
+
     # I/O ports (stored as JSON array)
     # Format: [{"name": "CV In 1", "type": "cv_in"}, {"name": "Audio Out", "type": "audio_out"}, ...]
     io_ports = Column(JSON, nullable=False, default=list)

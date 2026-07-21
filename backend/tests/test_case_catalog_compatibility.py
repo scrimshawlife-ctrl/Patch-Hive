@@ -161,8 +161,13 @@ def test_compatibility_depth_and_power_conflicts(
 
 
 def test_compatibility_incomplete_without_module_depth(
-    client: TestClient, catalog_case: None, modules: dict
+    client: TestClient, catalog_case: None, modules: dict, db_session: Session
 ) -> None:
+    # Ensure registry depth is null so depth fit stays incomplete without override.
+    modules["shallow"].depth_mm = None
+    db_session.add(modules["shallow"])
+    db_session.commit()
+
     resp = client.post(
         "/api/cases/catalog/fit-co-skiff-84/compatibility",
         json={
@@ -179,6 +184,31 @@ def test_compatibility_incomplete_without_module_depth(
     body = resp.json()
     assert body["physical_fit"]["status"] == "incomplete"
     assert any(w["code"] == "DEPTH_MODULE_UNKNOWN" for w in body["warnings"])
+
+
+def test_compatibility_uses_registry_depth_mm(
+    client: TestClient, catalog_case: None, modules: dict, db_session: Session
+) -> None:
+    modules["shallow"].depth_mm = 35.0
+    db_session.add(modules["shallow"])
+    db_session.commit()
+
+    resp = client.post(
+        "/api/cases/catalog/fit-co-skiff-84/compatibility",
+        json={
+            "modules": [
+                {
+                    "module_id": modules["shallow"].id,
+                    "row_index": 0,
+                    "start_hp": 0,
+                }
+            ]
+        },
+    )
+    assert resp.status_code == 200
+    body = resp.json()
+    assert body["physical_fit"]["status"] == "verified"
+    assert not any(w["code"] == "DEPTH_MODULE_UNKNOWN" for w in body["warnings"])
 
 
 def test_compatibility_connector_overflow(

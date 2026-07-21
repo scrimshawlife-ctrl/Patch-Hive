@@ -224,6 +224,10 @@ def build_rack_response(
                         "name": module.name,
                         "hp": module.hp,
                         "module_type": module.module_type,
+                        "power_12v_ma": module.power_12v_ma,
+                        "power_neg12v_ma": module.power_neg12v_ma,
+                        "power_5v_ma": module.power_5v_ma,
+                        "depth_mm": module.depth_mm,
                     }
                     if module
                     else None

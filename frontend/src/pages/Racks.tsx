@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { canonApi, exportApi, patchApi, rackApi, runApi } from '@/lib/api';
-import type { Patch, Rack, Run } from '@/types/api';
+import type { CompatibilityResponse, Patch, Rack, Run } from '@/types/api';
 
 type TabKey = 'overview' | 'patches' | 'exports' | 'modules';
 
@@ -41,6 +41,13 @@ export default function RacksPage() {
     difficulty: 'All',
     weirdness: 'Any',
   });
+  const [compat, setCompat] = useState<{
+    bridge_status: string;
+    message: string;
+    catalog_slug?: string | null;
+    compatibility?: CompatibilityResponse | null;
+  } | null>(null);
+  const [compatLoading, setCompatLoading] = useState(false);
 
   const selectedRack = useMemo(
     () => racks.find((rack) => rack.id === selectedRackId) || null,
@@ -83,6 +90,18 @@ export default function RacksPage() {
     }
   };
 
+  const loadCompat = async (rackId: number) => {
+    setCompatLoading(true);
+    try {
+      const res = await rackApi.compatibility(rackId);
+      setCompat(res.data);
+    } catch {
+      setCompat(null);
+    } finally {
+      setCompatLoading(false);
+    }
+  };
+
   const loadPatches = async (runId: number) => {
     try {
       const response = await runApi.patches(runId);
@@ -118,6 +137,9 @@ export default function RacksPage() {
   useEffect(() => {
     if (selectedRackId !== null) {
       void loadRuns(selectedRackId);
+      void loadCompat(selectedRackId);
+    } else {
+      setCompat(null);
     }
   }, [selectedRackId]);
 
@@ -254,6 +276,62 @@ export default function RacksPage() {
                       <h3 style={{ fontSize: '1rem' }}>{runs[0]?.created_at || 'None yet'}</h3>
                     </div>
                   </div>
+                  {selectedRack.case ? (
+                    <p className="muted" style={{ marginBottom: 0, marginTop: 'var(--space-3)' }}>
+                      Case: {selectedRack.case.brand} — {selectedRack.case.name}
+                      {selectedRack.case.catalog_slug
+                        ? ` · catalog ${selectedRack.case.catalog_slug}`
+                        : ' · not linked to normalized catalog'}
+                    </p>
+                  ) : null}
+                </div>
+
+                <div className="panel" aria-live="polite">
+                  <p className="eyebrow">Catalog compatibility</p>
+                  <h2 style={{ marginTop: 0 }}>Case fit report</h2>
+                  {compatLoading ? (
+                    <p className="muted">Loading compatibility…</p>
+                  ) : compat ? (
+                    <>
+                      <p>
+                        Bridge: <strong>{compat.bridge_status}</strong>
+                        {compat.catalog_slug ? ` · ${compat.catalog_slug}` : ''}
+                      </p>
+                      <p className="muted">{compat.message}</p>
+                      {compat.compatibility ? (
+                        <>
+                          <p>
+                            Overall:{' '}
+                            <strong>{compat.compatibility.overall_status}</strong>
+                          </p>
+                          <ul>
+                            <li>
+                              Format: {compat.compatibility.format_check.status}
+                            </li>
+                            <li>
+                              Physical fit: {compat.compatibility.physical_fit.status}
+                            </li>
+                            <li>
+                              Connectors: {compat.compatibility.connector_availability.status}
+                            </li>
+                            <li>+5V: {compat.compatibility.pos5_compatibility.status}</li>
+                          </ul>
+                          {compat.compatibility.power_headroom?.length ? (
+                            <ul>
+                              {compat.compatibility.power_headroom.map((r) => (
+                                <li key={r.rail}>
+                                  {r.rail}: {r.status}
+                                  {r.headroom_ma != null ? ` · headroom ${r.headroom_ma}mA` : ''}
+                                </li>
+                              ))}
+                            </ul>
+                          ) : null}
+                        </>
+                      ) : null}
+                    </>
+                  ) : (
+                    <p className="muted">Compatibility unavailable for this rig.</p>
+                  )}
                 </div>
 
                 <div className="panel">
@@ -266,6 +344,12 @@ export default function RacksPage() {
                     >
                       {loading ? 'Generating…' : 'Generate patch library'}
                     </button>
+                    <Link
+                      className="button button-secondary"
+                      to={`/racks/${selectedRack.id}/edit`}
+                    >
+                      Place modules
+                    </Link>
                     <Link className="button button-secondary" to="/racks/new">
                       Create rig
                     </Link>
@@ -274,7 +358,8 @@ export default function RacksPage() {
                     </button>
                   </div>
                   <p className="muted" style={{ marginBottom: 0, marginTop: 'var(--space-3)' }}>
-                    Generate once. Patches and exports open as tabs after a run exists.
+                    Generate once. Patches and exports open as tabs after a run exists. Placement
+                    uses catalog compatibility when the case is materialized.
                   </p>
                 </div>
               </div>
@@ -395,18 +480,39 @@ export default function RacksPage() {
                     <h3>{module.module?.name || 'Unknown module'}</h3>
                     <p className="catalog-card-meta">
                       {module.module?.brand || 'Unknown brand'} ·{' '}
-                      {module.module?.module_type || '—'}
+                      {module.module?.module_type || '—'} · {module.module?.hp ?? '—'}HP
+                      {module.module?.depth_mm != null
+                        ? ` · depth ${module.module.depth_mm}mm`
+                        : ' · depth unspecified'}
+                    </p>
+                    <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
+                      Row {module.row_index} · start HP {module.start_hp}
+                      {module.module?.power_12v_ma != null
+                        ? ` · +12 ${module.module.power_12v_ma}mA`
+                        : ''}
                     </p>
                   </article>
                 ))}
                 {selectedRack.modules.length === 0 ? (
                   <div className="panel">
                     <p className="status status-warning">No modules loaded for this rig.</p>
-                    <Link className="button button-secondary" to="/racks/new">
-                      Add modules
+                    <Link
+                      className="button button-secondary"
+                      to={`/racks/${selectedRack.id}/edit`}
+                    >
+                      Place modules
                     </Link>
                   </div>
-                ) : null}
+                ) : (
+                  <div className="panel">
+                    <Link
+                      className="button button-secondary"
+                      to={`/racks/${selectedRack.id}/edit`}
+                    >
+                      Edit placements
+                    </Link>
+                  </div>
+                )}
               </div>
             ) : null}
           </>
