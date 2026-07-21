@@ -118,13 +118,10 @@ class TestRacksAPI:
         assert isinstance(detail.get("errors"), list)
         assert detail["errors"][0]["field"] == "case_id"
 
-    @pytest.mark.xfail(
-        reason="Production bug: RackValidationError not JSON serializable", strict=True
-    )
     def test_create_rack_overlapping_modules(
         self, client: TestClient, sample_case: Case, sample_vco: Module
     ):
-        """Test that overlapping modules are rejected."""
+        """Test that overlapping modules are rejected with serializable 400."""
         payload = {
             "case_id": sample_case.id,
             "modules": [
@@ -133,11 +130,12 @@ class TestRacksAPI:
             ],
         }
 
-        # Known issue: validation errors contain non-JSON-serializable objects
         response = client.post("/api/racks", json=payload)
 
-        # TODO: Should be 400 when validation error serialization is fixed
         assert response.status_code == 400
+        detail = response.json().get("detail") or response.json()
+        assert detail.get("message") == "Rack validation failed"
+        assert any("overlap" in (e.get("message") or "").lower() for e in detail.get("errors", []))
 
     def test_list_racks_empty(self, client: TestClient):
         """Test listing racks when none exist."""
