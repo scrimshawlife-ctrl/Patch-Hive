@@ -40,14 +40,36 @@ PatchHive is a compiler and publishing system—not a preset marketplace, audio 
 | Area | Status |
 |---|---|
 | Canonical MVP | Implemented on `main` |
+| Retroactive release line | `0.2.x` development lineage |
 | Rig revisions and deterministic runs | Implemented |
 | Canonical `/api/canon/*` credits and exports | Implemented in test mode |
-| One-page Patch Book Generator | Canonical specification established; implementation work remains |
+| One-page Patch Book Generator | Planned `0.3.x`; specification established, implementation remains |
+| Release-candidate eligibility | Not yet established |
+| Production readiness | `NOT_COMPUTABLE` until the readiness matrix is completed on an exact SHA |
 | Production payments | Disabled |
 | Production deployment | Not performed |
 | Hardware activation | Explicitly out of scope |
 
-For exact commit, migration, CI, and deployment posture, use [CURRENT_STATE.md](CURRENT_STATE.md). For ordered remaining work, use [docs/CONTINUATION.md](docs/CONTINUATION.md).
+For exact commit, migration, CI, and deployment posture, use [CURRENT_STATE.md](CURRENT_STATE.md). For ordered implementation work, use [docs/CONTINUATION.md](docs/CONTINUATION.md). For the versioned capability sequence, use [docs/ROADMAP.md](docs/ROADMAP.md).
+
+## Release governance
+
+PatchHive follows Semantic Versioning for repository releases while independently versioning public APIs, canonical contracts, migrations, generators, renderers, and artifact formats.
+
+- `0.1.x` — retroactive historical prototype lineage
+- `0.2.x` — canon-aligned MVP lineage
+- `0.3.x` — one-page Patch Book Generator line
+- `0.4.x` — production-hardening line
+- `1.0.0` — first production-supported release, only after all release gates pass
+
+Pre-release labels use `alpha.N`, `beta.N`, and `rc.N`. A release-candidate label is never evidence of readiness by itself. Every candidate must bind to an exact source SHA and retained release receipt. Any release-blocking correction produces a new candidate; tags are never moved silently.
+
+See:
+
+- [Versioning and release policy](docs/VERSIONING.md)
+- [Versioned roadmap](docs/ROADMAP.md)
+- [Production-readiness framework](docs/PRODUCTION_READINESS.md)
+- [Changelog](CHANGELOG.md)
 
 ## One-page Patch Book Generator
 
@@ -108,16 +130,20 @@ Provider-assisted vision is untrusted evidence acquisition. Canonical normalizat
 ## Repository map
 
 ```text
-backend/canon/                 canonical contracts, compiler, runes, exports
-backend/patchhive/             compatibility and operational implementation
-frontend/                      product UI
-schemas/                       versioned schemas
-patchhive/                     retained package and compatibility surfaces
-docs/PATCH_BOOK_GENERATOR.md   publishing and one-page compiler contract
-docs/PATCH_ENGINE.md           patch-generation contract and implementation notes
-docs/CANON.md                  adopted canonical entries
-docs/CONTINUATION.md           prioritized remaining work
-docs/OPERATIONS.md             release, recovery, and production gates
+backend/canon/                    canonical contracts, compiler, runes, exports
+backend/patchhive/                compatibility and operational implementation
+frontend/                         product UI
+schemas/                          versioned schemas
+patchhive/                        retained package and compatibility surfaces
+docs/PATCH_BOOK_GENERATOR.md      one-page compiler and publishing contract
+docs/VERSIONING.md                version and release-candidate policy
+docs/ROADMAP.md                   versioned capability roadmap
+docs/PRODUCTION_READINESS.md      evidence-based release gates
+docs/PATCH_ENGINE.md              patch-generation contract and implementation notes
+docs/CANON.md                     adopted canonical entries
+docs/CONTINUATION.md              prioritized remaining work
+docs/OPERATIONS.md                release, recovery, and deployment gates
+CHANGELOG.md                      notable changes and retroactive lineage
 ```
 
 ## Quick start
@@ -209,12 +235,18 @@ A publishing build cannot ship unless all of the following pass:
 - PDF page count matches the manifest
 - each page binds to patch ID, patch version, source run, generator version, and canonical hash
 
+A production-supported release must additionally satisfy [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md), including migration, backup/restore, security, privacy, billing, accessibility, reliability, observability, compatibility, support, and explicit authority gates.
+
 ## Documentation authority
 
 | Document | Responsibility |
 |---|---|
 | [CURRENT_STATE.md](CURRENT_STATE.md) | Live repository and deployment posture |
 | [docs/PATCH_BOOK_GENERATOR.md](docs/PATCH_BOOK_GENERATOR.md) | Canonical one-page publishing contract |
+| [docs/VERSIONING.md](docs/VERSIONING.md) | Versioning, compatibility, tags, and release receipts |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Versioned capability sequence and exit criteria |
+| [docs/PRODUCTION_READINESS.md](docs/PRODUCTION_READINESS.md) | RC and general-availability readiness gates |
+| [CHANGELOG.md](CHANGELOG.md) | Notable changes and retroactive lineage |
 | [docs/PATCH_ENGINE.md](docs/PATCH_ENGINE.md) | Patch generation and validation |
 | [docs/CANON.md](docs/CANON.md) | Adopted canon entries |
 | [docs/CONTINUATION.md](docs/CONTINUATION.md) | Ordered implementation work |
@@ -243,7 +275,8 @@ Before changing canonical behavior:
 4. Preserve deterministic serialization and append-only provenance.
 5. Run the relevant validation suite.
 6. Record unresolved risks as `NOT_COMPUTABLE` rather than inventing evidence.
-7. Use a branch and pull request; do not deploy or activate production integrations implicitly.
+7. Update versioned contracts and the changelog when externally observable behavior changes.
+8. Use a branch and pull request; do not deploy or activate production integrations implicitly.
 
 ## License
 
