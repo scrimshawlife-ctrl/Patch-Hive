@@ -12,7 +12,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Literal
 
-from fastapi import APIRouter, Depends, Header, HTTPException, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Query, Request
 from pydantic import BaseModel, Field
 from sqlalchemy import select
 from sqlalchemy.orm import Session
@@ -33,6 +33,8 @@ from canon.models import (
 from community.auth import require_auth
 from community.models import User
 from core import get_db, settings
+from runs.listing import list_runs_for_rack
+from runs.schemas import RunListResponse
 
 router = APIRouter()
 
@@ -166,6 +168,22 @@ def get_canonical_credits_summary(
         balance=credit_balance(db, current_user.id),
         entries=entries,
     )
+
+
+@router.get("/runs", response_model=RunListResponse)
+def list_canonical_runs(
+    rig_id: int = Query(
+        ...,
+        ge=1,
+        description="Legacy rack id (rig). Alias of GET /api/runs?rack_id= with same bridge DTO.",
+    ),
+    db: Session = Depends(get_db),
+) -> RunListResponse:
+    """Matrix slice B: canon-prefixed run list for FE migration off /api/runs."""
+
+    payload = list_runs_for_rack(db, rig_id)
+    db.commit()
+    return payload
 
 
 @router.get("/exports", response_model=list[CanonicalExportResponse])

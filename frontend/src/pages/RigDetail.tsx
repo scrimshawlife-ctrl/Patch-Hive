@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { canonApi, runApi } from '@/lib/api';
+import { canonApi } from '@/lib/api';
 import type { Run } from '@/types/api';
 
 type WorkspaceTab = 'overview' | 'patches' | 'exports' | 'gallery';
@@ -35,8 +35,8 @@ export default function RigDetailPage() {
   useEffect(() => {
     if (!rigIdNum) return;
     setLoading(true);
-    runApi
-      .list(rigIdNum)
+    canonApi
+      .listRuns(rigIdNum)
       .then((response) => {
         const ordered = [...response.data.runs].sort(
           (a, b) => Date.parse(b.created_at) - Date.parse(a.created_at),
