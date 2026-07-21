@@ -15,11 +15,18 @@ Critical security, integrity, payment, data-loss, or accessibility blockers cann
 
 ## Current posture
 
-**Classification:** development / pre-release.
+**Classification:** late alpha / pre-release (`v0.3.0-alpha` lineage). **Not production-ready.**
 
-The canon-aligned MVP and one-page Patch Book specifications do not establish production readiness. Production deployment, live payments, and customer charging remain unauthorized until the gates below pass and an explicit release decision is recorded.
+The canon-aligned MVP, Visual System Intelligence P0, and PatchBook Design Engine on `main` do **not** establish production readiness. Production deployment, live payments, and customer charging remain unauthorized until the gates below pass and an explicit release decision is recorded.
 
-**Evidence-bound matrix:** [evidence/PRODUCTION_READINESS_MATRIX.md](evidence/PRODUCTION_READINESS_MATRIX.md) (SHA-pinned; supersedes informal percentage claims).
+| Document | Role |
+|----------|------|
+| [evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md](evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) | Dated narrative: verdict, gate scorecard, blockers, continuity plan |
+| [evidence/PRODUCTION_READINESS_MATRIX.md](evidence/PRODUCTION_READINESS_MATRIX.md) | SHA-pinned area scores (supersedes informal percentage claims) |
+| [ROADMAP.md](ROADMAP.md) | Capability sequence toward beta / RC / GA |
+| [FEATURE_FLAGS.md](FEATURE_FLAGS.md) | Fail-closed payment and legacy defaults |
+
+**Hard rule:** `ALLOW_PRODUCTION_PAYMENTS=false` and `STRIPE_TEST_MODE=true` until a separate payment-activation review.
 
 ## Release maturity ladder
 
