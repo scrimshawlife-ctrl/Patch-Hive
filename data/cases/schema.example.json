@@ -1,0 +1,55 @@
+{
+  "dataset_version": "case-catalog-v1",
+  "status": "example_only_not_research_data",
+  "cases": [
+    {
+      "manufacturer": "Example Manufacturer",
+      "model": "Example 84",
+      "format_family": "eurorack",
+      "production_status": "unknown",
+      "powered": null,
+      "official_url": null,
+      "image_url": null,
+      "revision": {
+        "revision_key": "default",
+        "revision_label": null,
+        "row_count": 1,
+        "capacity_value": 84,
+        "capacity_unit": "hp",
+        "usable_capacity_value": null,
+        "depth_min_mm": null,
+        "depth_max_mm": null,
+        "depth_notes": null,
+        "width_mm": null,
+        "height_mm": null,
+        "depth_mm": null,
+        "weight_kg": null,
+        "materials": null,
+        "mounting_type": null,
+        "portable": null,
+        "removable_lid": null,
+        "close_patched_lid": null,
+        "integrated_stand": null,
+        "rack_mountable": null,
+        "notes": null,
+        "confidence": "low"
+      },
+      "rows": [
+        {
+          "row_index": 0,
+          "format_family": "eurorack",
+          "capacity_value": 84,
+          "capacity_unit": "hp",
+          "usable_capacity_value": null,
+          "depth_min_mm": null,
+          "depth_max_mm": null,
+          "notes": null
+        }
+      ],
+      "power_systems": [],
+      "features": [],
+      "sources": [],
+      "prices": []
+    }
+  ]
+}
