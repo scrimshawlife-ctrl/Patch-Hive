@@ -1,17 +1,17 @@
 """
-SQLAlchemy models for Eurorack cases.
+SQLAlchemy models for modular cases (Eurorack primary; multi-format via capacity_unit).
 """
 
 from datetime import datetime
 
-from sqlalchemy import JSON, Column, DateTime, Integer, String, Text
+from sqlalchemy import JSON, Boolean, Column, DateTime, Integer, String, Text
 from sqlalchemy.orm import relationship
 
 from core.database import Base
 
 
 class Case(Base):
-    """Eurorack case model with power and layout specifications."""
+    """Case / cabinet envelope for rack placement and power budgets."""
 
     __tablename__ = "cases"
 
@@ -21,23 +21,28 @@ class Case(Base):
     brand = Column(String(100), nullable=False, index=True)
     name = Column(String(200), nullable=False, index=True)
 
-    # Layout
-    total_hp = Column(Integer, nullable=False)  # Total width in HP
-    rows = Column(Integer, nullable=False, default=1)  # Number of rows
-    hp_per_row = Column(JSON, nullable=False, default=list)  # HP per row, e.g., [84, 84] for 2x84HP
+    # Layout (total_hp is primary capacity number; unit named by capacity_unit)
+    total_hp = Column(Integer, nullable=False)  # Capacity total (HP for Eurorack)
+    rows = Column(Integer, nullable=False, default=1)
+    hp_per_row = Column(JSON, nullable=False, default=list)
 
-    # Power specifications
-    power_12v_ma = Column(Integer, nullable=True)  # +12V rail capacity in mA
-    power_neg12v_ma = Column(Integer, nullable=True)  # -12V rail capacity in mA
-    power_5v_ma = Column(Integer, nullable=True)  # +5V rail capacity in mA
+    # Format honesty (C1) — first-class filters; meta retains raw research fields
+    format_family = Column(String(64), nullable=True, index=True)  # Eurorack, Buchla, …
+    capacity_unit = Column(String(64), nullable=True, index=True)  # hp, buchla_panels, …
+    powered = Column(Boolean, nullable=True, index=True)  # None = unknown product flag
+
+    # Power specifications (null = unspecified — fail-closed, never invent)
+    power_12v_ma = Column(Integer, nullable=True)
+    power_neg12v_ma = Column(Integer, nullable=True)
+    power_5v_ma = Column(Integer, nullable=True)
 
     # Metadata
     description = Column(Text, nullable=True)
     manufacturer_url = Column(String(500), nullable=True)
-    meta = Column(JSON, nullable=True)  # Additional metadata
+    meta = Column(JSON, nullable=True)
 
     # Data provenance
-    source = Column(String(50), nullable=False)  # "Manual", "CSV", etc.
+    source = Column(String(50), nullable=False)
     source_reference = Column(String(500), nullable=True)
 
     # Timestamps

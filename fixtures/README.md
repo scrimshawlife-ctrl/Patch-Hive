@@ -21,15 +21,16 @@ python scripts/seed_golden_demo.py --print-hashes
 
 ```bash
 # Re-parse markdown → JSON
-python3 scripts/parse_cases_research.py
+just cases-parse
+# or: python3 scripts/parse_cases_research.py
 
 # Validate against Pydantic CaseCreate only
-python3 scripts/import_cases_research.py --dry-run
+just cases-dry-run
 
 # Upsert into DB (requires DATABASE_URL + backend deps)
-python3 scripts/import_cases_research.py
-# optional: delete prior ResearchCSV rows first
-python3 scripts/import_cases_research.py --replace-source
+just cases-import --replace-source
 ```
 
-**Schema notes:** Eurorack uses HP in `total_hp` / `hp_per_row`. Buchla / Serge / MU / Frac store capacity in those columns with `meta.capacity_unit`. Rail currents stay `null` when the research source marked them unspecified (fail-closed).
+Staging walkthrough: [docs/design/CASES_STAGING_BOOTSTRAP.md](../docs/design/CASES_STAGING_BOOTSTRAP.md).
+
+**Schema notes:** First-class `format_family`, `capacity_unit`, `powered` columns (migration `20260721_case_format_columns`). Eurorack uses HP in `total_hp` / `hp_per_row`. Non-Eurorack capacity uses the same numeric fields with `capacity_unit`. Rail currents stay `null` when unspecified (fail-closed).

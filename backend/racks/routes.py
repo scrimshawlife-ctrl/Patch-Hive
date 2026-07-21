@@ -25,13 +25,14 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
     user_id = 1
 
     # Validate rack configuration
-    is_valid, errors = validate_rack_configuration(db, rack.case_id, rack.modules)
+    is_valid, errors, warnings = validate_rack_configuration(db, rack.case_id, rack.modules)
     if not is_valid:
         raise HTTPException(
             status_code=400,
             detail={
                 "message": "Rack validation failed",
                 "errors": [e.model_dump() for e in errors],
+                "warnings": [w.model_dump() for w in warnings],
             },
         )
 
@@ -76,8 +77,7 @@ def create_rack(rack: RackCreate, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_rack)
 
-    # Build response
-    return build_rack_response(db, db_rack)
+    return build_rack_response(db, db_rack, validation_warnings=warnings)
 
 
 @router.get("/", response_model=RackListResponse)
@@ -127,23 +127,24 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
     for field, value in update_data.items():
         setattr(db_rack, field, value)
 
+    warnings: list = []
     # Update modules if provided
     if rack_update.modules is not None:
-        # Validate new configuration
-        is_valid, errors = validate_rack_configuration(db, db_rack.case_id, rack_update.modules)
+        is_valid, errors, warnings = validate_rack_configuration(
+            db, db_rack.case_id, rack_update.modules
+        )
         if not is_valid:
             raise HTTPException(
                 status_code=400,
                 detail={
                     "message": "Rack validation failed",
                     "errors": [e.model_dump() for e in errors],
+                    "warnings": [w.model_dump() for w in warnings],
                 },
             )
 
-        # Delete existing modules
         db.query(RackModule).filter(RackModule.rack_id == rack_id).delete()
 
-        # Add new modules
         modules = []
         for module_spec in rack_update.modules:
             db_rack_module = RackModule(
@@ -163,7 +164,7 @@ def update_rack(rack_id: int, rack_update: RackUpdate, db: Session = Depends(get
     db.commit()
     db.refresh(db_rack)
 
-    return build_rack_response(db, db_rack)
+    return build_rack_response(db, db_rack, validation_warnings=warnings)
 
 
 @router.delete("/{rack_id}", status_code=204)
@@ -178,7 +179,11 @@ def delete_rack(rack_id: int, db: Session = Depends(get_db)):
     return None
 
 
-def build_rack_response(db: Session, rack: Rack) -> RackResponse:
+def build_rack_response(
+    db: Session,
+    rack: Rack,
+    validation_warnings: list | None = None,
+) -> RackResponse:
     """Build a complete rack response with related data."""
     # Get case
     case = db.query(Case).filter(Case.id == rack.case_id).first()
@@ -234,9 +239,16 @@ def build_rack_response(db: Session, rack: Rack) -> RackResponse:
                 "total_hp": case.total_hp,
                 "rows": case.rows,
                 "hp_per_row": case.hp_per_row,
+                "format_family": case.format_family,
+                "capacity_unit": case.capacity_unit,
+                "powered": case.powered,
+                "power_12v_ma": case.power_12v_ma,
+                "power_neg12v_ma": case.power_neg12v_ma,
+                "power_5v_ma": case.power_5v_ma,
             }
             if case
             else None
         ),
         vote_count=vote_count,
+        validation_warnings=list(validation_warnings or []),
     )

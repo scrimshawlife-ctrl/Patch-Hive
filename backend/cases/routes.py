@@ -15,28 +15,49 @@ from .schemas import CaseCreate, CaseListResponse, CaseResponse, CaseUpdate
 router = APIRouter()
 
 
+def _defaults_from_payload(case: CaseCreate) -> dict:
+    """Derive format_family / capacity_unit / powered when omitted."""
+    meta = case.meta if isinstance(case.meta, dict) else {}
+    family = case.format_family or meta.get("format_family") or "Eurorack"
+    unit = case.capacity_unit or meta.get("capacity_unit") or "hp"
+    if case.powered is not None:
+        powered = case.powered
+    elif "powered" in meta:
+        powered = bool(meta.get("powered"))
+    else:
+        name_l = (case.name or "").lower()
+        powered = "no power" not in name_l and "unpowered" not in name_l
+    return {
+        "format_family": str(family)[:64],
+        "capacity_unit": str(unit)[:64],
+        "powered": powered,
+    }
+
+
 @router.post("/", response_model=CaseResponse, status_code=201)
 def create_case(case: CaseCreate, db: Session = Depends(get_db)):
     """Create a new case."""
-    # Validate hp_per_row matches rows
     if len(case.hp_per_row) != case.rows:
         raise HTTPException(
             status_code=400, detail=f"hp_per_row length must match rows ({case.rows})"
         )
 
-    # Validate total_hp matches sum of hp_per_row
     if sum(case.hp_per_row) != case.total_hp:
         raise HTTPException(
             status_code=400,
             detail=f"total_hp ({case.total_hp}) must match sum of hp_per_row ({sum(case.hp_per_row)})",
         )
 
+    derived = _defaults_from_payload(case)
     db_case = Case(
         brand=case.brand,
         name=case.name,
         total_hp=case.total_hp,
         rows=case.rows,
         hp_per_row=case.hp_per_row,
+        format_family=derived["format_family"],
+        capacity_unit=derived["capacity_unit"],
+        powered=derived["powered"],
         power_12v_ma=case.power_12v_ma,
         power_neg12v_ma=case.power_neg12v_ma,
         power_5v_ma=case.power_5v_ma,
@@ -62,16 +83,13 @@ def list_cases(
     q: Optional[str] = Query(None, description="Search brand or name"),
     format_family: Optional[str] = Query(
         None,
-        description="Filter by meta.format_family (e.g. Eurorack). Applied after SQL filters.",
+        description="Filter by format_family (e.g. Eurorack). Null/legacy treated as Eurorack.",
     ),
-    powered: Optional[bool] = Query(
-        None,
-        description="Filter by meta.powered when present; null-power treated as powered for true.",
-    ),
+    powered: Optional[bool] = Query(None, description="Filter by powered flag"),
     min_rows: Optional[int] = Query(None, ge=1),
     db: Session = Depends(get_db),
 ):
-    """List cases with optional filters (SQL + lightweight meta post-filter)."""
+    """List cases with SQL filters on first-class format columns."""
     query = db.query(Case)
 
     if brand:
@@ -86,34 +104,24 @@ def list_cases(
         like = f"%{q}%"
         query = query.filter((Case.brand.ilike(like)) | (Case.name.ilike(like)))
 
-    # Cap pre-meta scan so format/powered filters stay bounded.
-    candidates = query.order_by(Case.brand.asc(), Case.name.asc()).limit(2000).all()
+    if format_family:
+        # Legacy rows with null format_family count as Eurorack for placement defaults.
+        if format_family.lower() == "eurorack":
+            query = query.filter(
+                (Case.format_family.is_(None))
+                | (Case.format_family == "")
+                | (Case.format_family.ilike("eurorack"))
+            )
+        else:
+            query = query.filter(Case.format_family.ilike(format_family))
 
-    def _format_ok(case: Case) -> bool:
-        if not format_family:
-            return True
-        meta = case.meta if isinstance(case.meta, dict) else {}
-        family = (meta.get("format_family") or "").strip()
-        # Legacy seed cases without meta default to Eurorack layout fields.
-        if not family and format_family.lower() == "eurorack":
-            return True
-        return family.lower() == format_family.lower()
+    if powered is not None:
+        query = query.filter(Case.powered.is_(bool(powered)))
 
-    def _powered_ok(case: Case) -> bool:
-        if powered is None:
-            return True
-        want = bool(powered)
-        meta = case.meta if isinstance(case.meta, dict) else {}
-        if "powered" in meta:
-            return bool(meta.get("powered")) is want
-        # Without meta.powered: "No Power" / unpowered in name → unpowered; else powered.
-        name_l = (case.name or "").lower()
-        is_powered = "no power" not in name_l and "unpowered" not in name_l
-        return is_powered is want
-
-    filtered = [c for c in candidates if _format_ok(c) and _powered_ok(c)]
-    total = len(filtered)
-    cases = filtered[skip : skip + limit]
+    total = query.count()
+    cases = (
+        query.order_by(Case.brand.asc(), Case.name.asc()).offset(skip).limit(limit).all()
+    )
 
     return CaseListResponse(total=total, cases=cases)
 
@@ -134,9 +142,7 @@ def update_case(case_id: int, case_update: CaseUpdate, db: Session = Depends(get
     if not db_case:
         raise HTTPException(status_code=404, detail="Case not found")
 
-    # Update fields if provided
     update_data = case_update.model_dump(exclude_unset=True)
-
     for field, value in update_data.items():
         setattr(db_case, field, value)
 

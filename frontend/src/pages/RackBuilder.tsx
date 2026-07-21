@@ -74,7 +74,7 @@ function casePowerSummary(c: Case): string {
   if (c.power_neg12v_ma != null) parts.push(`−12 ${c.power_neg12v_ma}mA`);
   if (c.power_5v_ma != null) parts.push(`+5 ${c.power_5v_ma}mA`);
   if (parts.length) return parts.join(' · ');
-  if (c.meta?.powered === false) return 'Unpowered';
+  if (c.powered === false || c.meta?.powered === false) return 'Unpowered';
   return 'Power unspecified (placement will not enforce rails)';
 }
 

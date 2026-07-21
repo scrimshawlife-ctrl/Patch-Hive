@@ -45,6 +45,9 @@ export interface Case {
   total_hp: number;
   rows: number;
   hp_per_row: number[];
+  format_family?: string | null;
+  capacity_unit?: string | null;
+  powered?: boolean | null;
   power_12v_ma?: number;
   power_neg12v_ma?: number;
   power_5v_ma?: number;

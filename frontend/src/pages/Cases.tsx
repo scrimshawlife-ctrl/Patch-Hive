@@ -9,14 +9,16 @@ import type { Case } from '@/types/api';
 type LoadState = 'loading' | 'ready' | 'empty' | 'error';
 
 function formatFamily(item: Case): string {
+  if (item.format_family) return item.format_family;
   const meta = item.meta ?? {};
   const family = typeof meta.format_family === 'string' ? meta.format_family : '';
   return family || 'Eurorack';
 }
 
 function capacityLabel(item: Case): string {
-  const meta = item.meta ?? {};
-  const unit = typeof meta.capacity_unit === 'string' ? meta.capacity_unit : 'hp';
+  const unit =
+    item.capacity_unit ||
+    (typeof item.meta?.capacity_unit === 'string' ? item.meta.capacity_unit : 'hp');
   if (unit === 'hp' || !unit) {
     return `${item.total_hp} HP · ${item.rows} row${item.rows === 1 ? '' : 's'}${
       item.hp_per_row?.length ? ` · ${item.hp_per_row.join(' + ')}` : ''
@@ -33,8 +35,9 @@ function powerLabel(item: Case): string {
   if (item.power_neg12v_ma != null) parts.push(`−12 ${item.power_neg12v_ma}mA`);
   if (item.power_5v_ma != null) parts.push(`+5 ${item.power_5v_ma}mA`);
   if (parts.length) return parts.join(' · ');
-  const meta = item.meta ?? {};
-  if (meta.powered === false) return 'Unpowered (no rails published)';
+  if (item.powered === false || item.meta?.powered === false) {
+    return 'Unpowered (no rails published)';
+  }
   return 'Power unspecified (not checked at placement)';
 }
 
