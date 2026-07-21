@@ -128,7 +128,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 10. ~~Cases/Patches list pages~~ **DONE** (PR #69)
 11. ~~Post-foundation reaudit + telemetry + ast-grep~~ **DONE** (PR #71)
 12. ~~Rig revision picker + personal overlays~~ **DONE** (this branch; Alembic `20240930_patch_user_overlays`)
-13. Multi-photo reconciliation (VSI P1)
+13. ~~Multi-photo reconciliation (VSI P1)~~ **PARTIAL** (fuse API + tests; UI optional next)
 14. Staging Compose drill (ops)
 
 ### P5 — Explicitly deferred
