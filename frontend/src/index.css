@@ -1,5 +1,20 @@
 :root {
-  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  /* Zero State / PatchHive cyber-hive tokens (docs/brand) */
+  --zs-carbon: #08090b;
+  --zs-graphite: #111318;
+  --zs-panel: #1a1d24;
+  --zs-border: #2a2f3a;
+  --zs-titanium: #8b919c;
+  --ph-amber: #f5a623;
+  --ph-honey: #d4891a;
+  --ph-copper: #b87333;
+  --ph-cyan: #3ddcff;
+  --ph-emerald: #00c896;
+  --ph-violet: #7b61ff;
+  --ph-danger: #e23d4a;
+  --ph-warn: #ff8a3d;
+
+  font-family: Inter, Geist, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --space-1: 0.25rem;
@@ -10,9 +25,10 @@
   --space-6: 2rem;
   --space-8: 3rem;
   --radius-sm: 0.25rem;
-  --radius-md: 0.625rem;
-  --radius-lg: 1rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1.125rem;
   --motion-fast: 140ms;
+  --motion-med: 220ms;
   --focus: 0 0 0 3px color-mix(in srgb, var(--action) 40%, transparent);
   --module-source: #e1b85b;
   --module-shaper: #bc86eb;
@@ -34,21 +50,23 @@ button, input, select, textarea { font: inherit; }
 button, [role="button"], a { -webkit-tap-highlight-color: transparent; }
 
 .app-shell {
-  --surface-canvas: #101210;
-  --surface-panel: #181b18;
-  --surface-raised: #222622;
-  --surface-inset: #0c0e0c;
-  --text-primary: #f4f2e9;
-  --text-secondary: #b9bdb3;
-  --text-muted: #858b82;
-  --border: #3b4039;
-  --border-strong: #656c61;
-  --action: #d2a94f;
+  /* Dark default aligned to Zero State graphite + PatchHive amber */
+  --surface-canvas: var(--zs-graphite);
+  --surface-panel: var(--zs-panel);
+  --surface-raised: #22262e;
+  --surface-inset: var(--zs-carbon);
+  --text-primary: #e8ecf0;
+  --text-secondary: #b4bac4;
+  --text-muted: var(--zs-titanium);
+  --border: var(--zs-border);
+  --border-strong: #4a5160;
+  --action: var(--ph-amber);
   --action-contrast: #191306;
-  --success: #78bd86;
-  --warning: #e5b85b;
-  --danger: #e27b72;
-  --elevation: 0 12px 36px rgb(0 0 0 / 24%);
+  --success: var(--ph-emerald);
+  --warning: var(--ph-warn);
+  --danger: var(--ph-danger);
+  --info: var(--ph-cyan);
+  --elevation: 0 12px 36px rgb(0 0 0 / 28%);
   min-height: 100vh;
   color: var(--text-primary);
   background: var(--surface-canvas);
@@ -90,6 +108,7 @@ a { color: var(--action); }
 
 .workspace { width: min(1200px, 100%); min-height: calc(100vh - 132px); margin: 0 auto; padding: clamp(1.25rem, 4vw, 3rem); }
 .app-footer { padding: var(--space-4); border-top: 1px solid var(--border); color: var(--text-muted); font: 0.78rem/1.4 ui-monospace, monospace; text-align: center; }
+.app-footer .zero-state-credit { display: block; margin-top: var(--space-1); letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.68rem; opacity: 0.85; }
 
 .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 var(--space-4); border: 1px solid transparent; border-radius: var(--radius-sm); cursor: pointer; font-weight: 650; text-decoration: none; transition: background var(--motion-fast), border-color var(--motion-fast); }
 .button-primary { color: var(--action-contrast); background: var(--action); }

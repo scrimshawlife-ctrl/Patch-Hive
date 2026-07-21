@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Zero State monogram: geometric Z + S as interlocking hard-edge mark -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Zero State monogram">
+  <title>ZS</title>
+  <rect width="64" height="64" rx="12" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"/>
+  <!-- Z -->
+  <path d="M18 18h22l-22 28h22" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="square" stroke-linejoin="miter"/>
+  <!-- S as thin geometric curve nested -->
+  <path d="M40 22c6 0 8 4 8 7s-2 5-8 5-8 2-8 5 2 7 8 7" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="square" opacity="0.9"/>
+</svg>

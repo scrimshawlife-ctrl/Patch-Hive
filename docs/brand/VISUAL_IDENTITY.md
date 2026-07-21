@@ -1,9 +1,14 @@
 # PatchHive visual identity
 
-**Version:** 0.1 · Cyber Hive art direction  
+**Version:** 1.0 · Zero State × Cyber Hive  
 **Date:** 2026-07-21  
 **Assets root:** [`brand/`](../../brand/)  
+**Full guidelines:** [BRAND_GUIDELINES.md](BRAND_GUIDELINES.md)  
 **Product law:** visual metaphor may use signal / synth / swarm language; product remains **rig inventory → deterministic patches → export** (not audio DSP / hardware control).
+
+## Parent company
+
+**Zero State** owns the monochrome system language. **PatchHive** is a Zero State product — always the hero, with understated parent credit.
 
 ---
 

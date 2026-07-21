@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 160" role="img" aria-label="PatchHive from Zero State">
+  <title>PatchHive from Zero State</title>
+  <g transform="translate(76,12)" fill="none" stroke="currentColor" stroke-width="1.75">
+    <path d="M24 2l18 10v20L24 42 6 32V12L24 2z"/>
+    <path d="M24 12l9 5v10l-9 5-9-5V17l9-5z"/>
+    <circle cx="24" cy="22" r="2.5" fill="currentColor" stroke="none"/>
+  </g>
+  <text x="100" y="88" text-anchor="middle" fill="currentColor" font-family="Space Grotesk, Inter, system-ui, sans-serif" font-size="26" font-weight="600" letter-spacing="-0.03em">PatchHive</text>
+  <text x="100" y="112" text-anchor="middle" fill="currentColor" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="500" letter-spacing="0.16em" opacity="0.5">FROM ZERO STATE</text>
+</svg>
