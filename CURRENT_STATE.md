@@ -2,7 +2,7 @@
 
 **Authoritative as of:** 2026-07-21  
 **Branch:** `main`  
-**HEAD:** `b1178483e5cd5b1f2fcc517739d6a14e00e56097`  
+**HEAD:** `7bfbd79` (post-#71); feature branch may advance for revision picker  
 
 ### Recent merges (OBSERVED)
 
@@ -31,7 +31,7 @@ For agent bootstrap see [SYSTEM_CONTEXT.md](SYSTEM_CONTEXT.md) + [AI_CONTEXT.md]
 | RackBuilder evidence | Live `evidenceApi` when rack selected; demo fallback |
 | AI engineering | `justfile`, `.codebase-memory` rebuild, engineering CI |
 | Bridge IDs | Native `rig-rev-*` / `gen-run-*` |
-| Alembic head | **`20240929_visual_inventory_evidence`** |
+| Alembic head | **`20240930_patch_user_overlays`** (revises 20240929) on revision-picker branch; main may still be 20240929 until merge |
 | Payments | Test-mode only; production payments disabled |
 | Production deploy | **Not performed** |
 
