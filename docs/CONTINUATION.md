@@ -138,7 +138,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 18. ~~Modules catalog polish~~ **DONE** (search/filter/sort + place-on-rig entry; Racks list loading/empty/retry)
 19. ~~`patchhive` import telemetry quarantine~~ **DONE** (Wave 4 — telemetry, markers, CI guard)
 20. ~~Compiler validation edge-case suite expansion~~ **DONE** (signal/direction/feedback/attenuation/empty)
-21. Migrate one `legacy_pipeline` suite onto canon contracts
+21. ~~Migrate one `legacy_pipeline` suite onto canon contracts~~ **DONE** (`test_schema_roundtrip` → canon `RigMetricsPacket`)
 
 ### P5 — Explicitly deferred
 

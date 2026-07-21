@@ -1,7 +1,7 @@
 # `patchhive` package import telemetry
 
 **Method:** `rg` over repo Python after live `main` checkout  
-**Date:** 2026-07-21 · main baseline `ecdf6b3` (Wave 4 hygiene)  
+**Date:** 2026-07-21 · main baseline post-#79; Wave 4 + first legacy_pipeline migration  
 **Goal:** Classify surfaces so agents do not confuse HISTORICAL `patchhive` trees with CANON_MVP `backend/canon` / `backend/evidence`.  
 **Regenerate:** `just telemetry-patchhive` or `bash scripts/ai/patchhive_import_telemetry.sh`
 
@@ -46,9 +46,10 @@ rg 'from patchhive|import patchhive' backend/patches backend/racks backend/main.
 | `tests/unit/test_pipeline_run.py` | 4 | Pipeline run |
 | `tests/unit/test_function_store_commit.py` | 3 | Function registry |
 | `tests/unit/test_gallery_revisions.py` | — | Gallery append-only |
-| `tests/test_schema_roundtrip.py` | — | Schema roundtrip |
 
-These carry `pytest.mark.legacy_pipeline` and remain in **default** `pytest tests` until a dual-write retirement campaign.
+~~`tests/test_schema_roundtrip.py`~~ **MIGRATED** → `tests/unit/test_canon_contracts.py` (`RigMetricsPacket` on `canon.contracts`; no `patchhive` import).
+
+These remaining files carry `pytest.mark.legacy_pipeline` and stay in **default** `pytest tests` until dual-write retirement.
 
 Filter optionally:
 
