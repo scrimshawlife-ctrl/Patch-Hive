@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `6b7bc2d` (includes PR #72 revision picker + multi-photo reconcile)  
-**Tracking:** Issue #46 closed · PR #47–#70 on main  
-**PR #66–#70:** **MERGED** (VSI P0, eval/cloud adapter, AI foundation, Cases/Patches+RackBuilder evidence UX)
+**main HEAD:** `ba71b7f` (includes PR #74 multi-photo fusion review panel)  
+**Tracking:** Issue #46 closed · PR #47–#74 on main  
+**PR #66–#74:** **MERGED** (VSI P0, eval/cloud adapter, AI foundation, Cases/Patches+RackBuilder evidence UX, multi-photo UI)
 
 ## Where we are
 
@@ -128,8 +128,9 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 10. ~~Cases/Patches list pages~~ **DONE** (PR #69)
 11. ~~Post-foundation reaudit + telemetry + ast-grep~~ **DONE** (PR #71)
 12. ~~Rig revision picker + personal overlays~~ **DONE** (this branch; Alembic `20240930_patch_user_overlays`)
-13. ~~Multi-photo reconciliation (VSI P1)~~ **PARTIAL** (fuse API + RackBuilder multi-file UI; accuracy NOT_COMPUTABLE)
-14. Staging Compose drill (ops)
+13. ~~Multi-photo reconciliation (VSI P1)~~ **PARTIAL** (fuse API + PR #74 multi-file UI; accuracy NOT_COMPUTABLE)
+14. ~~Staging Compose drill (ops)~~ **DONE** (local OBSERVED — `docs/evidence/STAGING_COMPOSE_RECEIPT.md`; not production)
+15. Fusion panel confirm/reject/defer + confirm-all non-conflict (in flight)
 
 ### P5 — Explicitly deferred
 

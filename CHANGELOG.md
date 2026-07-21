@@ -8,6 +8,8 @@ This project follows [Semantic Versioning](docs/VERSIONING.md) beginning with th
 
 ### Added
 
+- Fusion panel confirm/reject/defer actions and batch “confirm all non-conflict fused” (user-initiated only; conflicts blocked).
+- Staging Compose drill receipt (`docs/evidence/STAGING_COMPOSE_RECEIPT.md`): local db+backend healthy at Alembic head `20240930_patch_user_overlays`.
 - RackBuilder multi-photo upload and fusion review panel (reconcile API; never auto-confirms).
 - Rig revision picker API/UI and mutable patch overlays (notes/favorite/tried) without mutating canonical patches.
 - AI-native engineering foundation: `justfile`, `scripts/ai/rebuild_indexes.sh`, `docs/engineering/*`, `AI_CONTEXT.md`, `SYSTEM_CONTEXT.md`, engineering-quality CI, MCP template (see `ENGINEERING_SETUP_REPORT.md`).
