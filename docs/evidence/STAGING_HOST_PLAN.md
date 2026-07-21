@@ -61,8 +61,9 @@ Class: **local OBSERVED** when run on a laptop — still **not** a named multi-t
 | Claim | Status |
 |-------|--------|
 | Local Compose db+backend healthy | **PASS** (prior receipt) |
-| `docker-compose.staging.yml` checked in | **THIS PR** |
-| Operator-chosen public/private hostname | **NOT_PERFORMED** — blocked on host pick |
+| `docker-compose.staging.yml` checked in | **DONE** |
+| Local Docker staging stack (db+backend+FE) | **PASS** — [STAGING_LOCAL_DOCKER_RECEIPT.md](STAGING_LOCAL_DOCKER_RECEIPT.md) |
+| Operator-chosen public/private hostname | **NOT_PERFORMED** — see [DOMAIN_CUTOVER_CHECKLIST.md](DOMAIN_CUTOVER_CHECKLIST.md) |
 | Production deploy | **NOT_PERFORMED** |
 
 ## Operator action required
