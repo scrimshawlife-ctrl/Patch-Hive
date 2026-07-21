@@ -42,7 +42,7 @@ def upgrade() -> None:
             name="ck_case_source_policy_evidence_status",
         ),
         sa.CheckConstraint(
-            "review_state IN ('unreviewed','accepted','rejected','conflicted','needs_review')",
+            "review_state IN ('unreviewed','pending','accepted','rejected','blocked','conflicted','needs_review')",
             name="ck_case_source_policy_review_state",
         ),
         sa.UniqueConstraint("source_id", name="uq_case_source_policy_source"),
