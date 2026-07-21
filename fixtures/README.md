@@ -2,6 +2,19 @@
 
 This directory holds canonical fixture data used by acceptance tests and demos.
 
+## Demo modules (placement / compatibility)
+
+| File | Role |
+|------|------|
+| `modules_demo_seed.json` | 12 demo modules with HP, rails, and optional depth for catalog fit demos |
+
+```bash
+export DATABASE_URL=postgresql://...
+just modules-demo-import
+# or dry-run:
+just modules-demo-import -- --dry-run
+```
+
 ## Golden Demo
 
 `golden_demo_seed.json` defines the deterministic rig + seed used by both backend acceptance tests and UI Playwright smoke tests.

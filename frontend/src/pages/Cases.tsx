@@ -304,6 +304,9 @@ export default function CasesPage() {
                     {item.production_status ? ` · ${item.production_status}` : ''}
                   </p>
                   <div className="page-hero-actions">
+                    <Link className="button button-secondary" to={`/cases/${encodeURIComponent(item.slug)}`}>
+                      Details
+                    </Link>
                     {placeable ? (
                       <button
                         className="button button-primary"

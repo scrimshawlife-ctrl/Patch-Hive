@@ -2,14 +2,26 @@
 
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any, Optional, Protocol, Sequence
 
 from sqlalchemy.orm import Session
 
 from cases.compatibility import evaluate_catalog_compatibility
-from cases.compatibility_schemas import CompatibilityModuleIn, CompatibilityRequest, CompatibilityResponse
+from cases.compatibility_schemas import (
+    CompatibilityModuleIn,
+    CompatibilityRequest,
+    CompatibilityResponse,
+    CompatibilityStatus,
+)
 from cases.models import Case
 from racks.models import Rack, RackModule
+from racks.schemas import RackValidationError
+
+
+class _ModulePlacement(Protocol):
+    module_id: int
+    row_index: int
+    start_hp: int
 
 
 def catalog_slug_for_case(case: Case) -> Optional[str]:
@@ -28,19 +40,32 @@ def revision_key_for_case(case: Case) -> Optional[str]:
     return None
 
 
-def evaluate_rack_catalog_compatibility(
+def _placements_to_compat_modules(placements: Sequence[_ModulePlacement]) -> list[CompatibilityModuleIn]:
+    return [
+        CompatibilityModuleIn(
+            module_id=p.module_id,
+            row_index=p.row_index,
+            start_hp=p.start_hp,
+        )
+        for p in placements
+    ]
+
+
+def evaluate_case_module_catalog_compatibility(
     db: Session,
-    rack: Rack,
+    case_id: int,
+    placements: Sequence[_ModulePlacement],
     *,
     plan_close_lid: bool = False,
 ) -> dict[str, Any]:
-    """Return catalog compatibility for a rack, or an incomplete bridge report."""
-    case = db.query(Case).filter(Case.id == rack.case_id).first()
+    """Evaluate catalog compatibility for a case_id + module placements (pre- or post-persist)."""
+    case = db.query(Case).filter(Case.id == case_id).first()
     if case is None:
         return {
             "bridge_status": "conflict",
-            "message": f"Legacy case_id {rack.case_id} not found",
+            "message": f"Legacy case_id {case_id} not found",
             "catalog_slug": None,
+            "case_id": case_id,
             "compatibility": None,
         }
 
@@ -57,15 +82,7 @@ def evaluate_rack_catalog_compatibility(
             "compatibility": None,
         }
 
-    rack_modules = db.query(RackModule).filter(RackModule.rack_id == rack.id).all()
-    modules = [
-        CompatibilityModuleIn(
-            module_id=rm.module_id,
-            row_index=rm.row_index,
-            start_hp=rm.start_hp,
-        )
-        for rm in rack_modules
-    ]
+    modules = _placements_to_compat_modules(placements)
     request = CompatibilityRequest(
         revision_key=revision_key_for_case(case),
         modules=modules,
@@ -90,3 +107,116 @@ def evaluate_rack_catalog_compatibility(
         "module_count": len(modules),
         "compatibility": report.model_dump(mode="json"),
     }
+
+
+def dual_gate_catalog_errors_and_warnings(
+    db: Session,
+    case_id: int,
+    placements: Sequence[_ModulePlacement],
+    *,
+    plan_close_lid: bool = False,
+) -> tuple[list[RackValidationError], list[RackValidationError]]:
+    """Map catalog compatibility into hard errors (conflict) and soft warnings (incomplete).
+
+    When the case is not linked to the catalog, no dual-gate findings are emitted
+    (legacy validation remains authoritative alone).
+    """
+    report = evaluate_case_module_catalog_compatibility(
+        db, case_id, placements, plan_close_lid=plan_close_lid
+    )
+    errors: list[RackValidationError] = []
+    warnings: list[RackValidationError] = []
+
+    if report["bridge_status"] == "incomplete" and report.get("catalog_slug") is None:
+        # Unlinked legacy case — dual-gate not applicable.
+        return errors, warnings
+
+    if report["bridge_status"] == "conflict" and report.get("compatibility") is None:
+        errors.append(
+            RackValidationError(
+                field="catalog",
+                message=report.get("message") or "Catalog compatibility bridge failed",
+                details={"code": "CATALOG_BRIDGE_CONFLICT", "bridge": report},
+            )
+        )
+        return errors, warnings
+
+    compat = report.get("compatibility") or {}
+    overall: CompatibilityStatus | str = compat.get("overall_status") or "incomplete"
+
+    def _collect(status: str, code: str, message: str, details: dict | None = None) -> None:
+        item = RackValidationError(
+            field="catalog",
+            message=message,
+            details={"code": code, **(details or {})},
+        )
+        if status == "conflict":
+            errors.append(item)
+        elif status == "incomplete":
+            warnings.append(item)
+
+    for key in (
+        "format_check",
+        "physical_fit",
+        "connector_availability",
+        "pos5_compatibility",
+        "lid_close",
+    ):
+        check = compat.get(key) or {}
+        if check.get("status") in {"conflict", "incomplete"}:
+            _collect(
+                check["status"],
+                check.get("code") or key.upper(),
+                check.get("message") or key,
+                {"check": key},
+            )
+
+    for rail in compat.get("power_headroom") or []:
+        if rail.get("status") in {"conflict", "incomplete"}:
+            _collect(
+                rail["status"],
+                f"RAIL_{rail.get('rail', 'UNKNOWN')}",
+                rail.get("message") or str(rail.get("rail")),
+                {"rail": rail.get("rail")},
+            )
+
+    for warn in compat.get("warnings") or []:
+        if warn.get("status") == "conflict":
+            _collect(warn["status"], warn.get("code") or "CATALOG_WARNING", warn.get("message") or "")
+        elif warn.get("status") == "incomplete":
+            _collect(warn["status"], warn.get("code") or "CATALOG_WARNING", warn.get("message") or "")
+
+    if overall == "conflict" and not errors:
+        errors.append(
+            RackValidationError(
+                field="catalog",
+                message="Catalog compatibility overall status is conflict",
+                details={"code": "CATALOG_OVERALL_CONFLICT", "overall_status": overall},
+            )
+        )
+    elif overall == "incomplete" and not warnings and not errors:
+        warnings.append(
+            RackValidationError(
+                field="catalog",
+                message="Catalog compatibility overall status is incomplete (missing specs)",
+                details={"code": "CATALOG_OVERALL_INCOMPLETE", "overall_status": overall},
+            )
+        )
+
+    return errors, warnings
+
+
+def evaluate_rack_catalog_compatibility(
+    db: Session,
+    rack: Rack,
+    *,
+    plan_close_lid: bool = False,
+) -> dict[str, Any]:
+    """Return catalog compatibility for a rack, or an incomplete bridge report."""
+    rack_modules = db.query(RackModule).filter(RackModule.rack_id == rack.id).all()
+    return evaluate_case_module_catalog_compatibility(
+        db,
+        rack.case_id,
+        rack_modules,
+        plan_close_lid=plan_close_lid,
+    )

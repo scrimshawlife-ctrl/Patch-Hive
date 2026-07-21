@@ -8,6 +8,7 @@ import AdminGallery from '@/pages/admin/AdminGallery';
 import AdminModules from '@/pages/admin/AdminModules';
 import AdminRuns from '@/pages/admin/AdminRuns';
 import AdminUsers from '@/pages/admin/AdminUsers';
+import CaseDetailPage from '@/pages/CaseDetail';
 import CasesPage from '@/pages/Cases';
 import Home from '@/pages/Home';
 import LoginPage from '@/pages/Login';
@@ -69,6 +70,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/modules" element={<ModulesPage />} />
             <Route path="/cases" element={<CasesPage />} />
+            <Route path="/cases/:slug" element={<CaseDetailPage />} />
             <Route path="/racks" element={<RacksPage />} />
             <Route path="/racks/new" element={<RackBuilderPage />} />
             <Route path="/racks/:id/edit" element={<RackBuilderPage />} />
