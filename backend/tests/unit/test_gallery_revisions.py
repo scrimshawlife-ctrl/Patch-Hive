@@ -1,12 +1,12 @@
+"""Append-only gallery revision file store (canon)."""
+
 from __future__ import annotations
-
-import pytest
-
-pytestmark = pytest.mark.legacy_pipeline
 
 from pathlib import Path
 
-from patchhive.gallery.revisions import GalleryRevision, append_revision
+import pytest
+
+from canon.gallery_revisions import GalleryRevision, append_revision
 
 
 def test_gallery_revisions_append_only(tmp_path: Path) -> None:
@@ -25,3 +25,12 @@ def test_gallery_revisions_append_only(tmp_path: Path) -> None:
     assert rev_a.version == 0
     assert rev_b.version == 1
     assert len(files) == 2
+
+
+def test_gallery_revisions_reject_duplicate_payload(tmp_path: Path) -> None:
+    payload = {"name": "Module A", "hp": 10}
+    first = GalleryRevision(module_key="gallery.test.module_a", payload=payload)
+    second = GalleryRevision(module_key="gallery.test.module_a", payload=dict(payload))
+    append_revision(str(tmp_path), first, evidence_ref="test:a")
+    with pytest.raises(RuntimeError, match="already exists"):
+        append_revision(str(tmp_path), second, evidence_ref="test:dup")

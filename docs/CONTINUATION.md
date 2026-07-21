@@ -1,9 +1,9 @@
 # PatchHive continuation plan
 
 **Status date:** 2026-07-21  
-**main HEAD:** `eec5354` (includes PR #78 patchhive import telemetry quarantine)  
-**Tracking:** Issue #46 closed · PR #47–#78 on main  
-**PR #66–#78:** **MERGED** (VSI through multi-photo UX, inventory receipt, modules polish, import quarantine)  
+**main HEAD:** `678ff66` (includes PR #80 schema roundtrip → canon)  
+**Tracking:** Issue #46 closed · PR #47–#80 on main  
+**PR #66–#80:** **MERGED** (VSI through multi-photo UX, modules polish, import quarantine, first legacy migrations)  
 **Plan:** [evidence/CONTINUATION_PLAN_POST_75.md](evidence/CONTINUATION_PLAN_POST_75.md)
 
 ## Where we are
@@ -139,6 +139,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 19. ~~`patchhive` import telemetry quarantine~~ **DONE** (Wave 4 — telemetry, markers, CI guard)
 20. ~~Compiler validation edge-case suite expansion~~ **DONE** (signal/direction/feedback/attenuation/empty)
 21. ~~Migrate one `legacy_pipeline` suite onto canon contracts~~ **DONE** (`test_schema_roundtrip` → canon `RigMetricsPacket`)
+22. ~~Gallery append-only revisions on canon~~ **DONE** (`canon.gallery_revisions`; patchhive shim)
 
 ### P5 — Explicitly deferred
 
