@@ -8,6 +8,7 @@ import {
   rackApi,
   type EvidenceCandidate,
 } from '@/lib/api';
+import { firstFreeStartHp, packModulesOntoRows } from '@/lib/placementPack';
 import type {
   Case,
   CatalogCaseListItem,
@@ -118,7 +119,7 @@ function gateTone(status?: string | null): 'success' | 'warning' | 'danger' | 'n
   return 'neutral';
 }
 
-/** First free start HP on a row that fits moduleHp (contiguous occupancy). */
+/** Suggest start HP for single add (0 if row cannot fit — user may still override). */
 function nextFreeStartHp(
   rowIndex: number,
   moduleHp: number,
@@ -126,27 +127,7 @@ function nextFreeStartHp(
   resolveHp: (moduleId: number) => number | null,
   rowCapacity: number,
 ): number {
-  const occupied = placements
-    .filter((p) => p.row_index === rowIndex)
-    .map((p) => {
-      const hp = resolveHp(p.module_id) ?? 0;
-      return { start: p.start_hp, end: p.start_hp + hp };
-    })
-    .filter((o) => o.end > o.start)
-    .sort((a, b) => a.start - b.start);
-
-  let cursor = 0;
-  for (const block of occupied) {
-    if (block.start - cursor >= moduleHp) {
-      return cursor;
-    }
-    cursor = Math.max(cursor, block.end);
-  }
-  if (rowCapacity - cursor >= moduleHp) {
-    return cursor;
-  }
-  // Full or oversized — leave at end of last block so validation can explain overflow
-  return cursor;
+  return firstFreeStartHp(rowIndex, moduleHp, placements, resolveHp, rowCapacity) ?? 0;
 }
 
 export default function RackBuilderPage() {
@@ -208,6 +189,9 @@ export default function RackBuilderPage() {
   const [batchNote, setBatchNote] = useState('');
   const [moduleMaterializeNote, setModuleMaterializeNote] = useState('');
   const [moduleQuery, setModuleQuery] = useState('');
+  /** Multi-select for batch place (module ids). */
+  const [batchSelectedIds, setBatchSelectedIds] = useState<number[]>([]);
+  const [batchPlaceNote, setBatchPlaceNote] = useState('');
   /** Label for module_id deep-link when gallery list is not yet loaded (create flow). */
   const [preselectedLabel, setPreselectedLabel] = useState<string | null>(null);
 
@@ -585,6 +569,82 @@ export default function RackBuilderPage() {
       { module_id: addModuleId, row_index: addRow, start_hp: addStartHp },
     ];
     await savePlacements(next);
+  };
+
+  const rowCapacities = useMemo(() => {
+    if (!liveRack?.case) return [] as number[];
+    const c = liveRack.case;
+    if (c.hp_per_row?.length) return c.hp_per_row;
+    const rows = c.rows || 1;
+    const each = Math.floor((c.total_hp || 0) / rows) || c.total_hp || 0;
+    return Array.from({ length: rows }, () => each);
+  }, [liveRack]);
+
+  const batchPreview = useMemo(() => {
+    if (!batchSelectedIds.length || !rowCapacities.length) {
+      return null;
+    }
+    return packModulesOntoRows(
+      batchSelectedIds,
+      placementModules,
+      resolveModuleHp,
+      rowCapacities,
+      addRow,
+    );
+  }, [batchSelectedIds, placementModules, resolveModuleHp, rowCapacities, addRow]);
+
+  const toggleBatchModule = (id: number) => {
+    setBatchSelectedIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id],
+    );
+    setBatchPlaceNote('');
+  };
+
+  const selectAllFilteredForBatch = () => {
+    setBatchSelectedIds(filteredGalleryModules.map((m) => m.id));
+    setBatchPlaceNote('');
+  };
+
+  const clearBatchSelection = () => {
+    setBatchSelectedIds([]);
+    setBatchPlaceNote('');
+  };
+
+  const addBatchPlacements = async () => {
+    if (!batchSelectedIds.length) {
+      setPlacementError('Select at least one module for batch place.');
+      return;
+    }
+    if (!rowCapacities.length) {
+      setPlacementError('Case row capacity unknown — cannot batch pack.');
+      return;
+    }
+    const result = packModulesOntoRows(
+      batchSelectedIds,
+      placementModules,
+      resolveModuleHp,
+      rowCapacities,
+      addRow,
+    );
+    if (!result.added.length) {
+      setPlacementError(
+        result.unplaced.length
+          ? `Nothing placed. ${result.unplaced.map((u) => `#${u.module_id}: ${u.reason}`).join(' · ')}`
+          : 'Nothing to place.',
+      );
+      setBatchPlaceNote('');
+      return;
+    }
+    await savePlacements(result.placements);
+    const unMsg = result.unplaced.length
+      ? ` · ${result.unplaced.length} could not fit (${result.unplaced
+          .map((u) => `#${u.module_id}`)
+          .join(', ')})`
+      : '';
+    setBatchPlaceNote(
+      `Batch placed ${result.added.length} module${result.added.length === 1 ? '' : 's'}${unMsg}.`,
+    );
+    setBatchSelectedIds([]);
   };
 
   const removePlacement = async (index: number) => {
@@ -1251,6 +1311,7 @@ export default function RackBuilderPage() {
                           </button>
                         ))}
                         {previewModule &&
+                        !batchSelectedIds.length &&
                         addRow === row.row &&
                         previewModule.hp > 0 &&
                         row.capacity > 0 ? (
@@ -1267,6 +1328,30 @@ export default function RackBuilderPage() {
                             <span className="rack-row-map__block-hp">{previewModule.hp}H</span>
                           </div>
                         ) : null}
+                        {batchPreview?.added
+                          .filter((spec) => spec.row_index === row.row)
+                          .map((spec) => {
+                            const hp = resolveModuleHp(spec.module_id) ?? 0;
+                            if (hp <= 0 || row.capacity <= 0) return null;
+                            const mod = galleryModules.find((m) => m.id === spec.module_id);
+                            return (
+                              <div
+                                key={`batch-preview-${spec.module_id}-${spec.start_hp}`}
+                                className="rack-row-map__block rack-row-map__block--preview rack-row-map__block--batch"
+                                style={{
+                                  left: `${(spec.start_hp / row.capacity) * 100}%`,
+                                  width: `${Math.max(1.5, (hp / row.capacity) * 100)}%`,
+                                }}
+                                aria-hidden="true"
+                                title={`Batch plan: ${mod ? `${mod.brand} ${mod.name}` : `#${spec.module_id}`} @ HP ${spec.start_hp}`}
+                              >
+                                <span className="rack-row-map__block-label">
+                                  {mod?.name || `#${spec.module_id}`}
+                                </span>
+                                <span className="rack-row-map__block-hp">{hp}H</span>
+                              </div>
+                            );
+                          })}
                       </div>
                       <div className="rack-row-map__scale" aria-hidden="true">
                         <span>0</span>
@@ -1429,6 +1514,107 @@ export default function RackBuilderPage() {
               want a specific slot.
             </p>
           ) : null}
+
+          <div
+            className="panel batch-place-panel"
+            style={{ marginTop: 'var(--space-4)' }}
+            aria-labelledby="batch-place-title"
+          >
+            <p className="eyebrow" style={{ marginTop: 0 }}>
+              Multi-module
+            </p>
+            <h3 id="batch-place-title" style={{ marginTop: 0 }}>
+              Batch place
+            </h3>
+            <p className="muted" style={{ marginTop: 0 }}>
+              Select several gallery modules, then pack left-to-right starting at row {addRow}.
+              Unknown HP is skipped (never invented). One save applies the full pack.
+            </p>
+            <div className="toolbar" style={{ marginBottom: 'var(--space-3)' }}>
+              <button
+                type="button"
+                className="button button-quiet"
+                onClick={selectAllFilteredForBatch}
+                disabled={!filteredGalleryModules.length}
+              >
+                Select filtered ({filteredGalleryModules.length})
+              </button>
+              <button
+                type="button"
+                className="button button-quiet"
+                onClick={clearBatchSelection}
+                disabled={!batchSelectedIds.length}
+              >
+                Clear selection
+              </button>
+              <button
+                type="button"
+                className="button button-primary"
+                disabled={placementSaving || !batchSelectedIds.length}
+                onClick={() => void addBatchPlacements()}
+              >
+                {placementSaving
+                  ? 'Saving…'
+                  : `Place ${batchSelectedIds.length || 0} selected`}
+              </button>
+            </div>
+            {batchPreview && batchSelectedIds.length > 0 ? (
+              <p className="muted" role="status" style={{ fontSize: '0.9rem' }}>
+                Plan: <strong>{batchPreview.added.length}</strong> will pack
+                {batchPreview.unplaced.length
+                  ? ` · ${batchPreview.unplaced.length} will not fit`
+                  : ''}
+                {batchPreview.added.length
+                  ? ` · e.g. row ${batchPreview.added[0].row_index} @ HP ${batchPreview.added[0].start_hp}`
+                  : ''}
+              </p>
+            ) : null}
+            {batchPlaceNote ? (
+              <p className="status status-success" role="status">
+                {batchPlaceNote}
+              </p>
+            ) : null}
+            <ul className="batch-module-list" aria-label="Batch module selection">
+              {filteredGalleryModules.slice(0, 80).map((m) => {
+                const checked = batchSelectedIds.includes(m.id);
+                const already = placementModules.some((p) => p.module_id === m.id);
+                return (
+                  <li key={m.id}>
+                    <label className={`batch-module-list__item${checked ? ' is-selected' : ''}`}>
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() => toggleBatchModule(m.id)}
+                        aria-label={`Select ${m.brand} ${m.name} for batch`}
+                      />
+                      <span>
+                        <strong>
+                          {m.brand} — {m.name}
+                        </strong>
+                        <span className="muted">
+                          {' '}
+                          · {m.hp}HP
+                          {m.power_12v_ma != null
+                            ? ` · +12 ${m.power_12v_ma}mA`
+                            : ' · power unknown'}
+                          {already ? ' · already on rig' : ''}
+                        </span>
+                      </span>
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+            {filteredGalleryModules.length > 80 ? (
+              <p className="muted" style={{ fontSize: '0.85rem' }}>
+                Showing first 80 of {filteredGalleryModules.length} filtered — narrow the filter to
+                batch more precisely.
+              </p>
+            ) : null}
+            {!filteredGalleryModules.length ? (
+              <p className="status status-warning">No modules match the filter.</p>
+            ) : null}
+          </div>
 
           {placementError ? (
             <p className="status status-danger" role="alert">

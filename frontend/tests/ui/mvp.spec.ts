@@ -567,6 +567,164 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText(/Soft warnings/i)).toBeVisible();
     await expect(page.getByText(/MODULE_POWER_UNKNOWN/)).toBeVisible();
     await expect(page.getByRole('button', { name: 'Materialize HP-known modules' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Batch place' })).toBeVisible();
+    await expect(page.getByLabel('Batch module selection')).toBeVisible();
+  });
+
+  test('rack builder batch place packs selected modules in one save', async ({ page }) => {
+    let putBody: { modules?: { module_id: number; row_index: number; start_hp: number }[] } | null =
+      null;
+    await page.route('**/api/racks/7**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('/compatibility')) {
+        await route.fulfill({
+          json: {
+            bridge_status: 'ok',
+            message: 'ok',
+            catalog_slug: 'sim-co-sim-84',
+            case_id: 10,
+            module_count: 0,
+            compatibility: {
+              case_slug: 'sim-co-sim-84',
+              manufacturer: 'Sim Co',
+              model: 'Sim 84',
+              format_family: 'eurorack',
+              revision_key: 'sim',
+              overall_status: 'verified',
+              format_check: { status: 'verified', code: 'OK', message: 'ok' },
+              physical_fit: { status: 'verified', code: 'OK', message: 'ok' },
+              remaining_capacity: [],
+              power_headroom: [],
+              connector_availability: { status: 'verified', code: 'OK', message: 'ok' },
+              pos5_compatibility: { status: 'verified', code: 'OK', message: 'ok' },
+              lid_close: { status: 'verified', code: 'OK', message: 'ok' },
+              warnings: [],
+              notes: [],
+            },
+          },
+        });
+        return;
+      }
+      if (route.request().method() === 'PUT' || route.request().method() === 'PATCH') {
+        putBody = route.request().postDataJSON();
+        await route.fulfill({
+          json: {
+            id: 7,
+            name: 'Sim rack',
+            case_id: 10,
+            user_id: 1,
+            generation_seed: 1,
+            modules: (putBody?.modules ?? []).map((m, i) => ({
+              id: i + 1,
+              ...m,
+              module: {
+                id: m.module_id,
+                brand: 'Sim',
+                name: m.module_id === 10 ? 'Gamma' : 'Delta',
+                hp: m.module_id === 10 ? 12 : 6,
+                module_type: 'UTIL',
+                power_12v_ma: 20,
+              },
+            })),
+            case: {
+              id: 10,
+              brand: 'Sim Co',
+              name: 'Sim 84',
+              total_hp: 84,
+              rows: 1,
+              hp_per_row: [84],
+              catalog_slug: 'sim-co-sim-84',
+              power_12v_ma: 2000,
+              power_neg12v_ma: 1200,
+              power_5v_ma: 500,
+            },
+          },
+        });
+        return;
+      }
+      if (route.request().method() === 'GET' && /\/api\/racks\/7\/?$/.test(new URL(url).pathname)) {
+        await route.fulfill({
+          json: {
+            id: 7,
+            name: 'Sim rack',
+            case_id: 10,
+            user_id: 1,
+            generation_seed: 1,
+            modules: [],
+            case: {
+              id: 10,
+              brand: 'Sim Co',
+              name: 'Sim 84',
+              total_hp: 84,
+              rows: 1,
+              hp_per_row: [84],
+              catalog_slug: 'sim-co-sim-84',
+              power_12v_ma: 2000,
+              power_neg12v_ma: 1200,
+              power_5v_ma: 500,
+            },
+          },
+        });
+        return;
+      }
+      await route.continue();
+    });
+    await page.route('**/api/modules/**', async (route) => {
+      if (new URL(route.request().url()).pathname.includes('materialize-batch')) {
+        await route.fulfill({
+          json: { status: 'success', scanned: 0, created: 0, exists: 0, failed: 0 },
+        });
+        return;
+      }
+      await route.fulfill({
+        json: {
+          total: 2,
+          modules: [
+            {
+              id: 10,
+              brand: 'Sim',
+              name: 'Gamma',
+              hp: 12,
+              module_type: 'VCO',
+              power_12v_ma: 40,
+              source: 'ModuleCatalog',
+              io_ports: [],
+              tags: [],
+              imported_at: '2026-01-01',
+              created_at: '2026-01-01',
+              updated_at: '2026-01-01',
+            },
+            {
+              id: 11,
+              brand: 'Sim',
+              name: 'Delta',
+              hp: 6,
+              module_type: 'VCA',
+              power_12v_ma: 15,
+              source: 'ModuleCatalog',
+              io_ports: [],
+              tags: [],
+              imported_at: '2026-01-01',
+              created_at: '2026-01-01',
+              updated_at: '2026-01-01',
+            },
+          ],
+        },
+      });
+    });
+
+    await page.goto('/racks/7/edit');
+    await expect(page.getByRole('heading', { name: 'Batch place' })).toBeVisible({
+      timeout: 15000,
+    });
+    await page.getByRole('checkbox', { name: /Select Sim Gamma for batch/i }).check();
+    await page.getByRole('checkbox', { name: /Select Sim Delta for batch/i }).check();
+    await expect(page.getByText(/Plan: 2 will pack/i)).toBeVisible();
+    await page.getByRole('button', { name: 'Place 2 selected' }).click();
+    await expect(page.getByText(/Batch placed 2 modules/i)).toBeVisible({ timeout: 10000 });
+    expect(putBody?.modules?.length).toBe(2);
+    expect(putBody?.modules?.[0]).toEqual({ module_id: 10, row_index: 0, start_hp: 0 });
+    expect(putBody?.modules?.[1]).toEqual({ module_id: 11, row_index: 0, start_hp: 12 });
   });
 
   test('module gallery URL filters and status chips', async ({ page }) => {
