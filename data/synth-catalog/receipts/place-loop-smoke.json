@@ -1,0 +1,82 @@
+{
+  "status": "success",
+  "rack_id": 2,
+  "name": "Hermes catalog place-loop smoke",
+  "case_id": 10,
+  "case_name": "Doepfer A-100LC3 84HP",
+  "hp_used": 71,
+  "module_count": 7,
+  "modules": [
+    {
+      "module_id": 2,
+      "start_hp": 0,
+      "brand": "Make Noise",
+      "name": "Maths",
+      "hp": 20,
+      "source": null
+    },
+    {
+      "module_id": 20,
+      "start_hp": 20,
+      "brand": "Make Noise",
+      "name": "Mimeophon",
+      "hp": 16,
+      "source": null
+    },
+    {
+      "module_id": 23,
+      "start_hp": 36,
+      "brand": "Make Noise",
+      "name": "Optomix",
+      "hp": 8,
+      "source": null
+    },
+    {
+      "module_id": 21,
+      "start_hp": 44,
+      "brand": "Doepfer",
+      "name": "A-110",
+      "hp": 10,
+      "source": null
+    },
+    {
+      "module_id": 1,
+      "start_hp": 54,
+      "brand": "Mutable Instruments",
+      "name": "Plaits",
+      "hp": 12,
+      "source": null
+    },
+    {
+      "module_id": 22,
+      "start_hp": 66,
+      "brand": "Erica Synths",
+      "name": "Pico DRUMS",
+      "hp": 3,
+      "source": null
+    },
+    {
+      "module_id": 24,
+      "start_hp": 69,
+      "brand": "Intellijel",
+      "name": "Buff Mult",
+      "hp": 2,
+      "source": null
+    }
+  ],
+  "gates": {
+    "physical_fit": "pass",
+    "overflow_test": "Muxlicer 16HP at 71 failed as expected on 84HP row",
+    "generation_seed_overflow": "auto hash can exceed signed int32 \u2014 pass explicit seed",
+    "user_fk": "required users.id=1 bootstrap for rack create"
+  },
+  "materialized_slugs": [
+    "make-noise-maths",
+    "make-noise-mimeophon",
+    "make-noise-optomix",
+    "doepfer-a-110",
+    "mutable-instruments-plaits",
+    "erica-synths-pico-drums",
+    "intellijel-buff-mult"
+  ]
+}

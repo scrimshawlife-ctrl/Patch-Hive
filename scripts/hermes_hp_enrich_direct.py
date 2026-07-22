@@ -176,20 +176,20 @@ def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
         urls.append((f"https://schneidersladen.de/en/cwejman-{n}", "retailer"))
 
     elif brand == "Dreadbox":
-        # strip version suffixes for slug
-        base = re.sub(r"-?\d+\.\d+$", "", n)
-        base = re.sub(r"-1u.*$", "", base)
+        # strip version suffixes: "Hysteria 1.0" → hysteria-1-0 → hysteria
+        base = re.sub(r"-1u.*$", "", n)
         base = re.sub(r"-silver.*$|-black.*$", "", base)
-        base = base.strip("-")
+        base = re.sub(r"(-\d+)+$", "", base)
+        base = base.strip("-") or n
+        # ModularGrid first (official/PC often 403)
+        urls.append((f"https://modulargrid.net/e/dreadbox-{base}", "modulargrid"))
+        urls.append((f"https://modulargrid.net/e/dreadbox-{n}", "modulargrid"))
         urls.append((f"https://www.dreadbox-fx.com/product/{base}/", "official"))
         urls.append((f"https://www.dreadbox-fx.com/product/{n}/", "official"))
         urls.append((f"https://www.dreadbox-fx.com/{base}/", "official"))
-        # Schneidersladen often works when PC 403s
         urls.append((f"https://schneidersladen.de/en/dreadbox-{base}", "retailer"))
-        urls.append((f"https://schneidersladen.de/en/dreadbox-{n}", "retailer"))
         urls.append((f"https://www.thomann.de/intl/dreadbox_{base.replace('-', '_')}.htm", "retailer"))
         urls.append((f"https://www.perfectcircuit.com/dreadbox-{base}.html", "retailer"))
-        urls.append((f"https://www.perfectcircuit.com/dreadbox-{n}.html", "retailer"))
 
     # ModularGrid product pages as last resort (community catalog dimensions)
     # Prefer exact module page patterns used by MG slugs
@@ -233,13 +233,11 @@ def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
                     )
                 )
         elif brand == "Cwejman":
-            urls.append((f"https://modulargrid.net/e/cwejman-{n}", "modulargrid"))
+            # Prefer MG early (official site false 2HP power chip)
+            urls.insert(0, (f"https://modulargrid.net/e/cwejman-{n}", "modulargrid"))
             urls.append((f"https://modulargrid.net/e/cwejman-{n}-", "modulargrid"))
         elif brand == "Dreadbox":
-            base = re.sub(r"-?\d+\.\d+$", "", n)
-            base = re.sub(r"-1u.*$|-silver.*$|-black.*$", "", base).strip("-")
-            urls.append((f"https://modulargrid.net/e/dreadbox-{base}", "modulargrid"))
-            urls.append((f"https://modulargrid.net/e/dreadbox-{n}", "modulargrid"))
+            pass  # MG URLs already added early for Dreadbox
 
     # de-dupe
     seen: set[str] = set()
@@ -288,12 +286,17 @@ def process_one(target: dict, sleep_s: float) -> dict:
         if brand == "Cwejman" and hp == 2 and kind == "official":
             if not re.search(r"Dimensions\s+2\s*HP|Width:\s*2\s*HP|Occupies\s*2\s*HP", html, re.I):
                 continue
-        # ModularGrid: require Dimensions / depth pattern
+        # ModularGrid: accept "N HP" when a Dimensions section exists on the module page
         if kind == "modulargrid":
-            if not (
+            ok = bool(
                 re.search(rf"Dimensions\s+{hp}\s*HP", html, re.I)
                 or re.search(rf"{hp}\s*HP\s+\d+\s*mm\s+deep", html, re.I)
-            ):
+                or (
+                    re.search(r"Dimensions", html, re.I)
+                    and re.search(rf"\b{hp}\s*HP\b", html)
+                )
+            )
+            if not ok:
                 continue
         return {
             "brand": brand,

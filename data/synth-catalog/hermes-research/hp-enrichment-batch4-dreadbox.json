@@ -1,0 +1,245 @@
+{
+  "batch": 4,
+  "brand": "Dreadbox",
+  "targets": [
+    {
+      "brand": "Dreadbox",
+      "name": "Alpha",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-alpha"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ataxia",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-ataxia"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Delta",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "dreadbox-delta"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Drips",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-drips"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Epsilon",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-epsilon"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Eudemonia",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-eudemonia"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Gamma",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-gamma"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hades",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-hades"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hysteria 1.0",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-hysteria-1-0"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Lamda",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-lamda"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-milky-way-1u-silver"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Nostalgia 1.0",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-nostalgia-1-0"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Omikron",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-omikron"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Splash",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-splash"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Taff2 Scientific Tremolo",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-taff2-scientific-tremolo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Theta",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "dreadbox-theta"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-two-of-cups-black"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Attenuator",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-attenuator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Divider",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-divider"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Drive",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-drive"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Dual VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-dual-vca"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Echo",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-echo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Envelope",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-envelope"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Filter",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-filter"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL LFO",
+      "category": "LFO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-lfo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Mixer",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-mixer"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Modulator",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-modulator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Multiple",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-multiple"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Murmux Filter",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-murmux-filter"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Oscillator",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-oscillator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Phaser",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-phaser"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Random",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-random"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Reflector",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-reflector"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "dreadbox-ypsilon"
+    }
+  ],
+  "target_count": 34
+}
