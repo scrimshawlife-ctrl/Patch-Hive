@@ -361,6 +361,196 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText('Oscillator A')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Place on new rig' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Prepare for rig' }).first()).toBeVisible();
+
+    // Prepare for rig → materialize + navigate to rack create with module_id
+    await page.getByRole('button', { name: 'Prepare for rig' }).first().click();
+    await page.waitForURL(/\/racks\/new\?module_id=99/);
+    await expect(page).toHaveURL(/module_id=99/);
+  });
+
+  test('rack builder edit shows dual-gate panel and power completeness', async ({ page }) => {
+    await page.route('**/api/racks/7**', async (route) => {
+      const url = route.request().url();
+      if (url.includes('/compatibility')) {
+        await route.fulfill({
+          json: {
+            bridge_status: 'ok',
+            message: 'Catalog compatibility evaluated',
+            catalog_slug: 'sim-co-sim-84',
+            case_id: 10,
+            module_count: 2,
+            compatibility: {
+              case_slug: 'sim-co-sim-84',
+              manufacturer: 'Sim Co',
+              model: 'Sim 84',
+              format_family: 'eurorack',
+              revision_key: 'sim',
+              overall_status: 'incomplete',
+              format_check: {
+                status: 'verified',
+                code: 'FORMAT_OK',
+                message: 'ok',
+              },
+              physical_fit: {
+                status: 'verified',
+                code: 'PHYSICAL_FIT_OK',
+                message: 'ok',
+              },
+              remaining_capacity: [],
+              power_headroom: [
+                {
+                  rail: '+12V',
+                  case_capacity_ma: 2000,
+                  module_draw_ma: 100,
+                  headroom_ma: 1900,
+                  status: 'verified',
+                  message: '+12V: 1900mA headroom',
+                },
+              ],
+              connector_availability: {
+                status: 'verified',
+                code: 'CONNECTORS_OK',
+                message: '2/8 connectors',
+              },
+              pos5_compatibility: {
+                status: 'verified',
+                code: 'POS5_OK',
+                message: 'ok',
+              },
+              lid_close: {
+                status: 'verified',
+                code: 'LID_OK',
+                message: 'ok',
+              },
+              warnings: [
+                {
+                  status: 'incomplete',
+                  code: 'MODULE_POWER_UNKNOWN',
+                  message: 'One or more modules lack power specs',
+                },
+              ],
+              notes: [],
+            },
+          },
+        });
+        return;
+      }
+      if (route.request().method() === 'GET' && /\/api\/racks\/7\/?$/.test(new URL(url).pathname)) {
+        await route.fulfill({
+          json: {
+            id: 7,
+            name: 'Sim rack',
+            case_id: 10,
+            user_id: 1,
+            generation_seed: 1,
+            modules: [
+              {
+                module_id: 1,
+                row_index: 0,
+                start_hp: 0,
+                module: {
+                  id: 1,
+                  brand: 'Sim',
+                  name: 'Alpha',
+                  hp: 10,
+                  module_type: 'VCO',
+                  power_12v_ma: 40,
+                  power_neg12v_ma: 20,
+                  power_5v_ma: 0,
+                },
+              },
+              {
+                module_id: 2,
+                row_index: 0,
+                start_hp: 10,
+                module: {
+                  id: 2,
+                  brand: 'Sim',
+                  name: 'Beta',
+                  hp: 8,
+                  module_type: 'VCF',
+                  power_12v_ma: null,
+                  power_neg12v_ma: null,
+                },
+              },
+            ],
+            case: {
+              id: 10,
+              brand: 'Sim Co',
+              name: 'Sim 84',
+              total_hp: 84,
+              rows: 1,
+              hp_per_row: [84],
+              catalog_slug: 'sim-co-sim-84',
+              power_12v_ma: 2000,
+              power_neg12v_ma: 1200,
+              power_5v_ma: 500,
+            },
+          },
+        });
+        return;
+      }
+      await route.continue();
+    });
+    await page.route('**/api/modules/**', async (route) => {
+      const path = new URL(route.request().url()).pathname;
+      if (path.includes('materialize-batch')) {
+        await route.fulfill({
+          json: { status: 'success', scanned: 3, created: 0, exists: 3, failed: 0 },
+        });
+        return;
+      }
+      await route.fulfill({
+        json: {
+          total: 2,
+          modules: [
+            {
+              id: 1,
+              brand: 'Sim',
+              name: 'Alpha',
+              hp: 10,
+              module_type: 'VCO',
+              power_12v_ma: 40,
+              power_neg12v_ma: 20,
+              power_5v_ma: 0,
+              source: 'ModuleCatalog',
+              io_ports: [],
+              tags: [],
+              imported_at: '2026-01-01',
+              created_at: '2026-01-01',
+              updated_at: '2026-01-01',
+            },
+            {
+              id: 2,
+              brand: 'Sim',
+              name: 'Beta',
+              hp: 8,
+              module_type: 'VCF',
+              power_12v_ma: null,
+              source: 'ModuleCatalog',
+              io_ports: [],
+              tags: [],
+              imported_at: '2026-01-01',
+              created_at: '2026-01-01',
+              updated_at: '2026-01-01',
+            },
+          ],
+        },
+      });
+    });
+
+    await page.goto('/racks/7/edit');
+    await expect(page.getByRole('heading', { name: 'Module placement' })).toBeVisible({
+      timeout: 15000,
+    });
+    await expect(page.getByText(/Placement power/i)).toBeVisible();
+    await expect(page.getByText(/1 modules with \+12 known/i)).toBeVisible();
+    await expect(page.getByText(/1 unknown/i)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Dual-gate compatibility' })).toBeVisible();
+    await expect(page.getByText(/\+12V/)).toBeVisible();
+    await expect(page.getByText(/Soft warnings/i)).toBeVisible();
+    await expect(page.getByText(/MODULE_POWER_UNKNOWN/)).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Materialize HP-known modules' })).toBeVisible();
   });
 
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
