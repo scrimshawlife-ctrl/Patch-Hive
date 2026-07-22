@@ -96,9 +96,39 @@ def slugify(name: str) -> str:
     return s.strip("-")
 
 
-def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
+def mg_brand_slug(brand: str) -> str:
+    """ModularGrid brand path segment."""
+    special = {
+        "ADDAC System": "addac-system",
+        "Acid Rain Technology": "acid-rain-technology",
+        "Bastl Instruments": "bastl-instruments",
+        "Endorphin.es": "endorphin-es",
+        "Erica Synths": "erica-synths",
+        "Expert Sleepers": "expert-sleepers",
+        "Mutable Instruments": "mutable-instruments",
+        "Make Noise": "make-noise",
+        "ALM Busy Circuits": "alm-busy-circuits",
+    }
+    if brand in special:
+        return special[brand]
+    return slugify(brand)
+
+
+def candidate_urls(brand: str, name: str, catalog_slug: str | None = None) -> list[tuple[str, str]]:
     n = slugify(name)
     urls: list[tuple[str, str]] = []
+    mg_brand = mg_brand_slug(brand)
+
+    # ModularGrid-first for residual coverage (official/PC often 403; Firecrawl credits 0).
+    # Catalog slug often matches MG e-path (e.g. erica-synths-pico-drums).
+    if catalog_slug:
+        urls.append((f"https://modulargrid.net/e/{catalog_slug}", "modulargrid"))
+        # strip leading brand segment for alternate MG paths
+        if catalog_slug.startswith(mg_brand + "-"):
+            short = catalog_slug[len(mg_brand) + 1 :]
+            if short:
+                urls.append((f"https://modulargrid.net/e/{mg_brand}-{short}", "modulargrid"))
+    urls.append((f"https://modulargrid.net/e/{mg_brand}-{n}", "modulargrid"))
 
     if brand == "Doepfer":
         # A-101-1 → a1011.htm ; A-110 → a110.htm ; A-118-2 → a1182.htm
@@ -191,53 +221,65 @@ def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
         urls.append((f"https://www.thomann.de/intl/dreadbox_{base.replace('-', '_')}.htm", "retailer"))
         urls.append((f"https://www.perfectcircuit.com/dreadbox-{base}.html", "retailer"))
 
-    # ModularGrid product pages as last resort (community catalog dimensions)
-    # Prefer exact module page patterns used by MG slugs
-    mg_brand = {
-        "Doepfer": "doepfer",
-        "ADDAC System": "addac-system",
-        "Cwejman": "cwejman",
-        "Dreadbox": "dreadbox",
-    }.get(brand)
-    if mg_brand:
-        if brand == "Doepfer":
-            m = re.match(r"A-?(\d+)(?:-(\d+))?", name.strip(), re.I)
-            if m:
-                a, b = m.group(1), m.group(2)
-                if b:
-                    urls.append(
-                        (f"https://modulargrid.net/e/doepfer-a-{a}-{b}-", "modulargrid")
-                    )
-                    urls.append(
-                        (f"https://modulargrid.net/e/doepfer-a-{a}-{b}", "modulargrid")
-                    )
-                urls.append((f"https://modulargrid.net/e/doepfer-a-{a}", "modulargrid"))
-                urls.append((f"https://modulargrid.net/e/doepfer-a-{a}-", "modulargrid"))
-        elif brand == "ADDAC System":
-            m = re.search(r"ADDAC\s*(\d+)", name, re.I)
-            if m:
-                code = m.group(1)
+    # Brand-specific ModularGrid path variants (after generic MG-first above).
+    if brand == "Doepfer":
+        m = re.match(r"A-?(\d+)(?:-(\d+))?", name.strip(), re.I)
+        if m:
+            a, b = m.group(1), m.group(2)
+            if b:
                 urls.append(
-                    (
-                        f"https://modulargrid.net/e/addac-system-addac{code}-wav-player",
-                        "modulargrid",
-                    )
+                    (f"https://modulargrid.net/e/doepfer-a-{a}-{b}-", "modulargrid")
                 )
                 urls.append(
-                    (f"https://modulargrid.net/e/addac-system-addac{code}", "modulargrid")
+                    (f"https://modulargrid.net/e/doepfer-a-{a}-{b}", "modulargrid")
                 )
-                urls.append(
-                    (
-                        f"https://modulargrid.net/e/addac-system-addac{code}-",
-                        "modulargrid",
-                    )
-                )
-        elif brand == "Cwejman":
-            # Prefer MG early (official site false 2HP power chip)
-            urls.insert(0, (f"https://modulargrid.net/e/cwejman-{n}", "modulargrid"))
-            urls.append((f"https://modulargrid.net/e/cwejman-{n}-", "modulargrid"))
-        elif brand == "Dreadbox":
-            pass  # MG URLs already added early for Dreadbox
+            urls.append((f"https://modulargrid.net/e/doepfer-a-{a}", "modulargrid"))
+            urls.append((f"https://modulargrid.net/e/doepfer-a-{a}-", "modulargrid"))
+    elif brand == "ADDAC System":
+        m = re.search(r"ADDAC\s*(\d+)", name, re.I)
+        if m:
+            code = m.group(1)
+            urls.append(
+                (f"https://modulargrid.net/e/addac-system-addac{code}", "modulargrid")
+            )
+    elif brand == "Cwejman":
+        urls.insert(0, (f"https://modulargrid.net/e/cwejman-{n}", "modulargrid"))
+    elif brand == "Befaco":
+        urls.append((f"https://www.befaco.org/en/{n}/", "official"))
+        urls.append((f"https://www.perfectcircuit.com/befaco-{n}.html", "retailer"))
+    elif brand == "Erica Synths":
+        # strip series prefixes for shop paths
+        base = re.sub(r"^(black-|pico-|fusion-|polivoks-)", "", n)
+        urls.append((f"https://www.ericasynths.lv/shop/eurorack-modules/{n}/", "official"))
+        urls.append(
+            (f"https://www.ericasynths.lv/shop/eurorack-modules/by-series/black-series/{n}/", "official")
+        )
+        urls.append(
+            (f"https://www.ericasynths.lv/shop/eurorack-modules/by-series/pico-series/{n}/", "official")
+        )
+        urls.append((f"https://www.perfectcircuit.com/erica-synths-{n}.html", "retailer"))
+        if base != n:
+            urls.append((f"https://www.perfectcircuit.com/erica-synths-{base}.html", "retailer"))
+    elif brand == "Expert Sleepers":
+        urls.append((f"https://www.expert-sleepers.co.uk/{n.replace('-', '')}.html", "official"))
+        urls.append((f"https://www.expert-sleepers.co.uk/{n}.html", "official"))
+        urls.append((f"https://www.perfectcircuit.com/expert-sleepers-{n}.html", "retailer"))
+    elif brand == "Endorphin.es":
+        base = re.sub(r"-(black|golden|silver)$", "", n)
+        urls.append((f"https://www.endorphin.es/modules/{base}", "official"))
+        urls.append((f"https://www.perfectcircuit.com/endorphin-es-{base}.html", "retailer"))
+        urls.append((f"https://modulargrid.net/e/endorphin-es-{base}", "modulargrid"))
+    elif brand == "Intellijel":
+        urls.append((f"https://intellijel.com/{n}/", "official"))
+        urls.append((f"https://intellijel.com/shop/eurorack/{n}/", "official"))
+        urls.append((f"https://www.perfectcircuit.com/intellijel-{n}.html", "retailer"))
+    elif brand == "Make Noise":
+        urls.append((f"https://www.makenoisemusic.com/modules/{n}", "official"))
+        urls.append((f"https://www.perfectcircuit.com/make-noise-{n}.html", "retailer"))
+    elif brand == "Mutable Instruments":
+        base = re.sub(r"-\(old-version\)$|-\(eurorack\)$", "", n)
+        urls.append((f"https://mutable-instruments.net/modules/{base}/", "official"))
+        urls.append((f"https://www.perfectcircuit.com/mutable-instruments-{base}.html", "retailer"))
 
     # de-dupe
     seen: set[str] = set()
@@ -255,7 +297,7 @@ def process_one(target: dict, sleep_s: float) -> dict:
     slug = target["slug"]
     print(f"→ {brand} / {name}", flush=True)
 
-    for url, kind in candidate_urls(brand, name)[:10]:
+    for url, kind in candidate_urls(brand, name, catalog_slug=slug)[:12]:
         html = fetch(url)
         time.sleep(sleep_s)
         if not html or len(html) < 200:
