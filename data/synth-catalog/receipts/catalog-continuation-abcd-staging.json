@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "residual_targets": 73,
+  "residual_found": 36,
+  "residual_applied": 36,
+  "modulecatalog_p12_pct": 84.7,
+  "null_p12_remaining": 61,
+  "hygiene": {
+    "pip_brand": "ALM Busy Circuits",
+    "null_hp_flags": [
+      "non_eurorack",
+      "desktop",
+      "unresolved"
+    ],
+    "duplicate_slicer": "befaco-slicer-v3"
+  },
+  "overlays": [
+    "module-catalog-hp-v1.json",
+    "module-power-depth-v1.json",
+    "module-power-depth-v2.json"
+  ]
+}

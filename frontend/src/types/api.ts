@@ -52,6 +52,8 @@ export interface CatalogModule {
   modulargrid_url?: string | null;
   manufacturer_url?: string | null;
   is_available?: string | null;
+  /** Admit pipeline, e.g. SynthCatalogResearch */
+  source?: string | null;
   created_at?: string;
   updated_at?: string;
 }
@@ -75,6 +77,8 @@ export interface CatalogModuleStats {
     unknown: number;
     coverage_pct: number;
   };
+  /** Counts by module_catalog.source when present */
+  by_source?: Record<string, number>;
   availability: {
     available: number;
     discontinued: number;
