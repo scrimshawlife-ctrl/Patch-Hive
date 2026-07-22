@@ -1,0 +1,161 @@
+{
+  "status": "success",
+  "dry_run": false,
+  "results_path": "../data/synth-catalog/hermes-research/hp-enrichment-batch3-results.filtered.json",
+  "input_results": 78,
+  "updated_hp": 78,
+  "skipped": 0,
+  "missing_catalog": 0,
+  "samples": [
+    {
+      "slug": "doepfer-a-101-1",
+      "hp": 16,
+      "source_url": "https://doepfer.de/a1011.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-101-2",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1012.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-101-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1014.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-101-6",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1016.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-102",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a102.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-103",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a103.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-104",
+      "hp": 20,
+      "source_url": "https://doepfer.de/a104.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-106-1",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1061.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-106-5-sem",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1065.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-106-6",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a1066.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-108",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a108.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-110",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a110.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-111-5",
+      "hp": 24,
+      "source_url": "https://doepfer.de/a1115.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-112",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a112.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-113",
+      "hp": 26,
+      "source_url": "https://doepfer.de/a113.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-114",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a114.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-115",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a115.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-119",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a119.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-124-se",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a124.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-138m",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a138.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-141-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1414.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-151",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a151.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-155",
+      "hp": 4,
+      "source_url": "https://www.thomann.de/intl/doepfer_a_155.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-156",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a156.htm",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "doepfer-a-160-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1602.htm",
+      "provenance": "OBSERVED"
+    }
+  ]
+}

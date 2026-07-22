@@ -1,0 +1,512 @@
+{
+  "batch": 3,
+  "generated_by": "hermes-direct-http-pipeline",
+  "results": [
+    {
+      "brand": "Doepfer",
+      "name": "A-101-1",
+      "slug": "doepfer-a-101-1",
+      "hp": 16,
+      "source_url": "https://doepfer.de/a1011.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-2",
+      "slug": "doepfer-a-101-2",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1012.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "slug": "doepfer-a-101-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1014.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-5",
+      "slug": "doepfer-a-101-5",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-6",
+      "slug": "doepfer-a-101-6",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1016.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-102",
+      "slug": "doepfer-a-102",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a102.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-103",
+      "slug": "doepfer-a-103",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a103.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-104",
+      "slug": "doepfer-a-104",
+      "hp": 20,
+      "source_url": "https://doepfer.de/a104.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-1",
+      "slug": "doepfer-a-106-1",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1061.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-5 SEM",
+      "slug": "doepfer-a-106-5-sem",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1065.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-6",
+      "slug": "doepfer-a-106-6",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a1066.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-108",
+      "slug": "doepfer-a-108",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a108.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-110",
+      "slug": "doepfer-a-110",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a110.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-5",
+      "slug": "doepfer-a-111-5",
+      "hp": 24,
+      "source_url": "https://doepfer.de/a1115.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-112",
+      "slug": "doepfer-a-112",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a112.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-113",
+      "slug": "doepfer-a-113",
+      "hp": 26,
+      "source_url": "https://doepfer.de/a113.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-114",
+      "slug": "doepfer-a-114",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a114.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-115",
+      "slug": "doepfer-a-115",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a115.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-118-1",
+      "slug": "doepfer-a-118-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-119",
+      "slug": "doepfer-a-119",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a119.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-124 SE",
+      "slug": "doepfer-a-124-se",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a124.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-138m",
+      "slug": "doepfer-a-138m",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a138.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-141-4",
+      "slug": "doepfer-a-141-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1414.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-151",
+      "slug": "doepfer-a-151",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a151.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-155",
+      "slug": "doepfer-a-155",
+      "hp": 4,
+      "source_url": "https://www.thomann.de/intl/doepfer_a_155.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-156",
+      "slug": "doepfer-a-156",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a156.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-160-2",
+      "slug": "doepfer-a-160-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1602.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-161",
+      "slug": "doepfer-a-161",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a161.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-162",
+      "slug": "doepfer-a-162",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a162.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-163",
+      "slug": "doepfer-a-163",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a163.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-1",
+      "slug": "doepfer-a-170-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-2",
+      "slug": "doepfer-a-170-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "slug": "doepfer-a-180-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "slug": "doepfer-a-180-2-multiples",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/doepfer-a180-2.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-3",
+      "slug": "doepfer-a-180-3",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1803.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "slug": "doepfer-a-182-1",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/doepfer-a-182-1.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "slug": "doepfer-a-182-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1822.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "slug": "doepfer-a-183-1",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1831.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-2",
+      "slug": "doepfer-a-183-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1832.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-1",
+      "slug": "doepfer-a-184-1",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1841.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-2",
+      "slug": "doepfer-a-184-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1842.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-1",
+      "slug": "doepfer-a-185-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-2",
+      "slug": "doepfer-a-185-2",
+      "hp": 6,
+      "source_url": "https://doepfer.de/a1852.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-105",
+      "slug": "doepfer-a-105",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a105.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-107",
+      "slug": "doepfer-a-107",
+      "hp": 26,
+      "source_url": "https://doepfer.de/a107.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-109 (Discontinued)",
+      "slug": "doepfer-a-109-discontinued",
+      "hp": 20,
+      "source_url": "https://doepfer.de/a109.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-1",
+      "slug": "doepfer-a-111-1",
+      "hp": 14,
+      "source_url": "https://doepfer.de/a1111.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-116",
+      "slug": "doepfer-a-116",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a116.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-117",
+      "slug": "doepfer-a-117",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a117.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-181",
+      "slug": "doepfer-a-181",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a181.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    }
+  ],
+  "summary": {
+    "targets": 50,
+    "processed": 50,
+    "found": 44,
+    "not_found": 6
+  }
+}

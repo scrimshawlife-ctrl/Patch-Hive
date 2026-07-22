@@ -1,0 +1,357 @@
+{
+  "batch": 3,
+  "brand": "Doepfer",
+  "target_count": 50,
+  "targets": [
+    {
+      "brand": "Doepfer",
+      "name": "A-101-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-2",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-4"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-5",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-5"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-6",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-6"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-102",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-102"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-103",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-103"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-104",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-104"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-106-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-5 SEM",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-106-5-sem"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-6",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-106-6"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-108",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-108"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-110",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-110"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-5",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-111-5"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-112",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-112"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-113",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "doepfer-a-113"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-114",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-114"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-115",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-115"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-118-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-118-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-119",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-119"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-124 SE",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-124-se"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-138m",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "doepfer-a-138m"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-141-4",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "doepfer-a-141-4"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-151",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-151"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-155",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-155"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-156",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-156"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-160-2",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-160-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-161",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-161"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-162",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-162"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-163",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-163"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-1",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "doepfer-a-170-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-2",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "doepfer-a-170-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-2-multiples"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-3",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-3"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-182-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-182-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-183-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-183-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-184-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-184-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-185-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-185-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-105",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-105"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-107",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-107"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-109 (Discontinued)",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-109-discontinued"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-1",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-111-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-116",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-116"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-117",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-117"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-181",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-181"
+    }
+  ]
+}

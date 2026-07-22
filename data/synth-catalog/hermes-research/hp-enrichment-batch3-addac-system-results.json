@@ -1,0 +1,292 @@
+{
+  "batch": 3,
+  "generated_by": "hermes-direct-http-pipeline",
+  "results": [
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC101 .WAV Player",
+      "slug": "addac-system-addac101-wav-player",
+      "hp": 11,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac100-series/addac101",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC102 VC FM Radio",
+      "slug": "addac-system-addac102-vc-fm-radio",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac100-series/addac102",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "slug": "addac-system-addac200-multiples",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200PI",
+      "slug": "addac-system-addac200pi",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "slug": "addac-system-addac200s-size-matter-black",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC203 CV Mapping",
+      "slug": "addac-system-addac203-cv-mapping",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac203",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC204 VC CV Mapping",
+      "slug": "addac-system-addac204-vc-cv-mapping",
+      "hp": 6,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac204",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC205 Dual Oscilloscope & AWG",
+      "slug": "addac-system-addac205-dual-oscilloscope-awg",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac205",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207",
+      "slug": "addac-system-addac207",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac207",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207 Intuitive Quantizer (black)",
+      "slug": "addac-system-addac207-intuitive-quantizer-black",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac207",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "slug": "addac-system-addac213b",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC215",
+      "slug": "addac-system-addac215",
+      "hp": 6,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac215",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC216",
+      "slug": "addac-system-addac216",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC306",
+      "slug": "addac-system-addac306",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac300-series/addac306",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501 Complex Random",
+      "slug": "addac-system-addac501-complex-random",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac501",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501B Complex Random Expansion",
+      "slug": "addac-system-addac501b-complex-random-expansion",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac501",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC503 Marble Physics",
+      "slug": "addac-system-addac503-marble-physics",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac503",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC601 VC Fixed Filterbank",
+      "slug": "addac-system-addac601-vc-fixed-filterbank",
+      "hp": 20,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac600-series/addac601",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "slug": "addac-system-addac602-passive-ring-modulator",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac600-series/addac602",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC801 Simple Mixer",
+      "slug": "addac-system-addac801-simple-mixer",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac801",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "slug": "addac-system-addac802-vc-mixer",
+      "hp": 12,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac802",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC803",
+      "slug": "addac-system-addac803",
+      "hp": 14,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac803",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC804 AUDIO iNTEGRATOR",
+      "slug": "addac-system-addac804-audio-integrator",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac804",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC001 VCC (Voltage Controlled Computer)",
+      "slug": "addac-system-addac001-vcc-voltage-controlled-computer",
+      "hp": 12,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac001",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC003 VCC Manual Inputs",
+      "slug": "addac-system-addac003-vcc-manual-inputs",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac003",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC005 VCC Gate Outputs",
+      "slug": "addac-system-addac005-vcc-gate-outputs",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac005",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC302 Nchunk Control",
+      "slug": "addac-system-addac302-nchunk-control",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac300-series/addac302",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC502 Ultra Lissajous",
+      "slug": "addac-system-addac502-ultra-lissajous",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac502",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    }
+  ],
+  "summary": {
+    "targets": 28,
+    "processed": 28,
+    "found": 26,
+    "not_found": 2
+  }
+}
