@@ -100,6 +100,21 @@ export const moduleApi = {
   materializeCatalog: (slug: string) =>
     api.post<CatalogMaterializeResponse>(`/modules/catalog/${encodeURIComponent(slug)}/materialize`),
 
+  /** Bulk materialize HP-known catalog rows into placeable modules. */
+  materializeCatalogBatch: (params?: {
+    brand?: string;
+    hp_known_only?: boolean;
+    limit?: number;
+  }) =>
+    api.post<{
+      status: string;
+      scanned: number;
+      created: number;
+      exists: number;
+      failed: number;
+      failed_samples?: { catalog_slug: string; error: string }[];
+    }>('/modules/catalog/materialize-batch', null, { params }),
+
   get: (id: number) => api.get<Module>(`/modules/${id}`),
 
   create: (data: Partial<Module>) => api.post<Module>('/modules/', data),

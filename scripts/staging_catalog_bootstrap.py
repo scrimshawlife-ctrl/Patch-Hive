@@ -31,9 +31,6 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
 
     sys.path.insert(0, str(REPO / "backend"))
-    from core.database import SessionLocal
-    from modules.catalog_routes import materialize_catalog_batch
-
     # Import apply helpers by path
     sys.path.insert(0, str(REPO / "scripts"))
     import apply_module_catalog_hp_overlay as hp_apply  # type: ignore
@@ -51,14 +48,46 @@ def main(argv: list[str] | None = None) -> int:
         receipt["steps"].append({"step": "hp_overlay", "exit": r})
 
     if not args.skip_materialize:
-        db = SessionLocal()
+        # Prefer live API (avoids partial ORM mapper bootstrap in CLI)
+        import os
+        import urllib.error
+        import urllib.request
+
+        api = (
+            os.environ.get("PATCHHIVE_API_URL")
+            or os.environ.get("STAGING_PUBLIC_API_URL")
+            or "http://localhost:8000"
+        ).rstrip("/")
+        url = f"{api}/api/modules/catalog/materialize-batch?limit={args.limit}&hp_known_only=true"
         try:
-            batch = materialize_catalog_batch(
-                db, brand=None, hp_known_only=True, limit=args.limit
+            req = urllib.request.Request(url, method="POST", data=b"")
+            with urllib.request.urlopen(req, timeout=300) as resp:
+                batch = json.loads(resp.read().decode())
+            receipt["steps"].append(
+                {"step": "materialize_batch", "via": "api", "result": batch}
             )
-        finally:
-            db.close()
-        receipt["steps"].append({"step": "materialize_batch", "result": batch})
+        except Exception as exc:  # noqa: BLE001
+            # Fallback: full app model import then ORM batch
+            import main  # noqa: F401 — registers all SQLAlchemy mappers
+
+            from core.database import SessionLocal
+            from modules.catalog_routes import materialize_catalog_batch
+
+            db = SessionLocal()
+            try:
+                batch = materialize_catalog_batch(
+                    db, brand=None, hp_known_only=True, limit=args.limit
+                )
+            finally:
+                db.close()
+            receipt["steps"].append(
+                {
+                    "step": "materialize_batch",
+                    "via": "orm_fallback",
+                    "api_error": str(exc),
+                    "result": batch,
+                }
+            )
 
     if not args.skip_power_overlay:
         overlays = args.power_overlay or [

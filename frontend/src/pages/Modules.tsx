@@ -3,7 +3,7 @@
  * with optional materialize into full-spec inventory for rack placement.
  */
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { moduleApi } from '@/lib/api';
 import type { CatalogModule, CatalogModuleStats } from '@/types/api';
 
@@ -14,6 +14,7 @@ type HpFilter = 'all' | 'known' | 'unknown';
 const PAGE_SIZE = 48;
 
 export default function ModulesPage() {
+  const navigate = useNavigate();
   const [modules, setModules] = useState<CatalogModule[]>([]);
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<CatalogModuleStats | null>(null);
@@ -109,9 +110,12 @@ export default function ModulesPage() {
         return;
       }
       const res = await moduleApi.materializeCatalog(row.slug);
+      const mid = res.data.module_id;
       setActionMsg(
-        `${res.data.module.brand} ${res.data.module.name} ready (module #${res.data.module_id}, ${res.data.status}). Open a rig to place it.`,
+        `${res.data.module.brand} ${res.data.module.name} ready (module #${mid}, ${res.data.status}). Opening rack builder…`,
       );
+      // Deep-link create flow with module preselected after materialize
+      navigate(`/racks/new?module_id=${mid}`);
     } catch {
       setActionMsg(
         `${row.brand} ${row.name}: materialize failed (needs known HP or API error).`,
