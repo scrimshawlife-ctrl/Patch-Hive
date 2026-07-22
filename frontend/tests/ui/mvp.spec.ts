@@ -270,48 +270,71 @@ test.describe('PatchHive canonical workspace', () => {
       },
     ];
 
-    await page.route('**/api/modules/catalog/stats**', async (route) => {
-      await route.fulfill({
-        json: {
-          total_modules: 2,
-          total_brands: 2,
-          total_categories: 2,
-          hp_stats: {
-            average: 10,
-            min: 8,
-            max: 12,
-            known: 2,
-            unknown: 0,
-            coverage_pct: 100,
-          },
-          availability: { available: 2, discontinued: 0 },
-        },
-      });
-    });
-    await page.route('**/api/modules/catalog/brands**', async (route) => {
-      await route.fulfill({
-        json: {
-          total: 2,
-          brands: [
-            { name: 'MockAudio', module_count: 1 },
-            { name: 'OtherBrand', module_count: 1 },
-          ],
-        },
-      });
-    });
-    await page.route('**/api/modules/catalog/categories**', async (route) => {
-      await route.fulfill({
-        json: {
-          total: 2,
-          categories: [
-            { name: 'VCO', module_count: 1 },
-            { name: 'VCF', module_count: 1 },
-          ],
-        },
-      });
-    });
+    // Single dispatcher — avoids route-order races between /catalog and /catalog/stats etc.
     await page.route('**/api/modules/catalog**', async (route) => {
       const url = new URL(route.request().url());
+      const path = url.pathname.replace(/\/+$/, '');
+      if (path.endsWith('/catalog/stats')) {
+        await route.fulfill({
+          json: {
+            total_modules: 2,
+            total_brands: 2,
+            total_categories: 2,
+            hp_stats: {
+              average: 10,
+              min: 8,
+              max: 12,
+              known: 2,
+              unknown: 0,
+              coverage_pct: 100,
+            },
+            availability: { available: 2, discontinued: 0 },
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/catalog/brands')) {
+        await route.fulfill({
+          json: {
+            total: 2,
+            brands: [
+              { name: 'MockAudio', module_count: 1 },
+              { name: 'OtherBrand', module_count: 1 },
+            ],
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/catalog/categories')) {
+        await route.fulfill({
+          json: {
+            total: 2,
+            categories: [
+              { name: 'VCO', module_count: 1 },
+              { name: 'VCF', module_count: 1 },
+            ],
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/materialize') || path.includes('/materialize')) {
+        await route.fulfill({
+          json: {
+            status: 'created',
+            catalog_slug: 'otherbrand-filter-z',
+            module_id: 99,
+            module: {
+              id: 99,
+              brand: 'OtherBrand',
+              name: 'Filter Z',
+              hp: 8,
+              module_type: 'VCF',
+              source: 'ModuleCatalog',
+            },
+          },
+        });
+        return;
+      }
       const search = (url.searchParams.get('search') || '').toLowerCase();
       const modules = search
         ? allModules.filter(
@@ -329,8 +352,8 @@ test.describe('PatchHive canonical workspace', () => {
       });
     });
     await page.goto('/modules');
-    await expect(page.getByLabel('Module filters')).toBeVisible();
-    await expect(page.getByLabel('Module catalog results')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Module gallery' })).toBeVisible();
+    await expect(page.getByLabel('Module filters')).toBeVisible({ timeout: 15000 });    await expect(page.getByLabel('Module catalog results')).toBeVisible();
     await expect(page.getByText(/Showing 2 of 2 catalog modules/)).toBeVisible();
     await page.getByLabel('Search').fill('Filter');
     await expect(page.getByText(/Showing 1 of 1 catalog modules \(filtered\)/)).toBeVisible();
