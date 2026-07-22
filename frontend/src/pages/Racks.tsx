@@ -26,6 +26,15 @@ const weirdnessFromConnections = (patch: Patch) => {
   return Math.min(100, modulationEdges * 8);
 };
 
+function gateTone(status?: string | null): 'success' | 'warning' | 'danger' | 'neutral' {
+  if (!status) return 'neutral';
+  const s = status.toLowerCase();
+  if (s === 'verified' || s === 'ok' || s === 'pass') return 'success';
+  if (s === 'incomplete' || s === 'warning' || s === 'unknown') return 'warning';
+  if (s === 'conflict' || s === 'fail' || s === 'error') return 'danger';
+  return 'neutral';
+}
+
 export default function RacksPage() {
   const [racks, setRacks] = useState<Rack[]>([]);
   const [selectedRackId, setSelectedRackId] = useState<number | null>(null);
@@ -253,6 +262,30 @@ export default function RacksPage() {
 
             {activeTab === 'overview' ? (
               <div style={{ display: 'grid', gap: 'var(--space-5)' }}>
+                {selectedRack.modules.length === 0 ? (
+                  <div className="panel placement-cta" role="region" aria-label="Place modules">
+                    <p className="eyebrow" style={{ marginTop: 0 }}>
+                      Next step
+                    </p>
+                    <h2 style={{ marginTop: 0 }}>This rig has no modules yet</h2>
+                    <p className="muted">
+                      Place catalog modules by row and start HP, or prepare placeable rows from the
+                      module gallery first.
+                    </p>
+                    <div className="page-hero-actions">
+                      <Link
+                        className="button button-primary"
+                        to={`/racks/${selectedRack.id}/edit`}
+                      >
+                        Place modules
+                      </Link>
+                      <Link className="button button-secondary" to="/modules?hp=known">
+                        Browse placeable catalog
+                      </Link>
+                    </div>
+                  </div>
+                ) : null}
+
                 <div className="panel">
                   <p className="eyebrow">Summary</p>
                   <h2 style={{ marginTop: 0 }}>Rig inventory</h2>
@@ -282,7 +315,20 @@ export default function RacksPage() {
                       {selectedRack.case.catalog_slug
                         ? ` · catalog ${selectedRack.case.catalog_slug}`
                         : ' · not linked to normalized catalog'}
+                      {selectedRack.case.total_hp != null
+                        ? ` · ${selectedRack.case.total_hp}HP`
+                        : ''}
                     </p>
+                  ) : null}
+                  {selectedRack.modules.length > 0 ? (
+                    <div className="page-hero-actions" style={{ marginTop: 'var(--space-3)' }}>
+                      <Link
+                        className="button button-secondary"
+                        to={`/racks/${selectedRack.id}/edit`}
+                      >
+                        Edit placements
+                      </Link>
+                    </div>
                   ) : null}
                 </div>
 
@@ -300,32 +346,93 @@ export default function RacksPage() {
                       <p className="muted">{compat.message}</p>
                       {compat.compatibility ? (
                         <>
-                          <p>
-                            Overall:{' '}
-                            <strong>{compat.compatibility.overall_status}</strong>
-                          </p>
-                          <ul>
-                            <li>
-                              Format: {compat.compatibility.format_check.status}
-                            </li>
-                            <li>
-                              Physical fit: {compat.compatibility.physical_fit.status}
-                            </li>
-                            <li>
-                              Connectors: {compat.compatibility.connector_availability.status}
-                            </li>
-                            <li>+5V: {compat.compatibility.pos5_compatibility.status}</li>
-                          </ul>
-                          {compat.compatibility.power_headroom?.length ? (
+                          <div className="gate-chip-row" aria-label="Dual-gate summary">
+                            <span
+                              className={`status-chip status-chip--${gateTone(compat.compatibility.overall_status)}`}
+                            >
+                              overall: {compat.compatibility.overall_status}
+                            </span>
+                            <span
+                              className={`status-chip status-chip--${gateTone(compat.compatibility.physical_fit.status)}`}
+                            >
+                              physical: {compat.compatibility.physical_fit.status}
+                            </span>
+                            <span
+                              className={`status-chip status-chip--${gateTone(compat.compatibility.connector_availability.status)}`}
+                            >
+                              connectors: {compat.compatibility.connector_availability.status}
+                            </span>
+                            <span
+                              className={`status-chip status-chip--${gateTone(compat.compatibility.format_check.status)}`}
+                            >
+                              format: {compat.compatibility.format_check.status}
+                            </span>
+                            {compat.compatibility.power_headroom?.map((r) => (
+                              <span
+                                key={r.rail}
+                                className={`status-chip status-chip--${gateTone(r.status)}`}
+                                title={
+                                  r.headroom_ma != null
+                                    ? `headroom ${r.headroom_ma}mA`
+                                    : r.message
+                                }
+                              >
+                                {r.rail}: {r.status}
+                              </span>
+                            ))}
+                          </div>
+                          {compat.compatibility.overall_status === 'incomplete' ? (
+                            <p className="muted" style={{ fontSize: '0.9rem' }}>
+                              Soft gaps only — missing power/depth/case rails stay missing (never
+                              invented).
+                            </p>
+                          ) : null}
+                          {compat.compatibility.overall_status === 'conflict' ? (
+                            <p className="status status-danger" style={{ fontSize: '0.9rem' }}>
+                              Hard fail — overflow, connectors, or rail over budget.
+                            </p>
+                          ) : null}
+                          {compat.compatibility.warnings?.length ? (
+                            <p className="status status-warning" style={{ fontSize: '0.9rem' }}>
+                              {compat.compatibility.warnings.length} soft warning
+                              {compat.compatibility.warnings.length === 1 ? '' : 's'}
+                              {compat.compatibility.warnings[0]?.code
+                                ? ` · e.g. ${compat.compatibility.warnings[0].code}`
+                                : ''}
+                            </p>
+                          ) : null}
+                          <details style={{ marginTop: 'var(--space-2)' }}>
+                            <summary className="muted" style={{ cursor: 'pointer' }}>
+                              Full dual-gate detail
+                            </summary>
                             <ul>
-                              {compat.compatibility.power_headroom.map((r) => (
+                              <li>
+                                Format: {compat.compatibility.format_check.status}
+                                {compat.compatibility.format_check.message
+                                  ? ` — ${compat.compatibility.format_check.message}`
+                                  : ''}
+                              </li>
+                              <li>
+                                Physical fit: {compat.compatibility.physical_fit.status}
+                              </li>
+                              <li>
+                                Connectors:{' '}
+                                {compat.compatibility.connector_availability.status}
+                                {compat.compatibility.connector_availability.message
+                                  ? ` — ${compat.compatibility.connector_availability.message}`
+                                  : ''}
+                              </li>
+                              <li>+5V: {compat.compatibility.pos5_compatibility.status}</li>
+                              {compat.compatibility.power_headroom?.map((r) => (
                                 <li key={r.rail}>
                                   {r.rail}: {r.status}
-                                  {r.headroom_ma != null ? ` · headroom ${r.headroom_ma}mA` : ''}
+                                  {r.headroom_ma != null
+                                    ? ` · headroom ${r.headroom_ma}mA`
+                                    : ''}
                                 </li>
                               ))}
                             </ul>
-                          ) : null}
+                          </details>
                         </>
                       ) : null}
                     </>
@@ -340,7 +447,12 @@ export default function RacksPage() {
                       type="button"
                       className="button button-primary"
                       onClick={() => void handleGenerate()}
-                      disabled={loading}
+                      disabled={loading || selectedRack.modules.length === 0}
+                      title={
+                        selectedRack.modules.length === 0
+                          ? 'Place at least one module before generating'
+                          : undefined
+                      }
                     >
                       {loading ? 'Generating…' : 'Generate patch library'}
                     </button>

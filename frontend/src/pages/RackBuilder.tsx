@@ -108,6 +108,47 @@ function formatValidationError(err: unknown): string {
   return 'Could not create rig. Check case selection and try again.';
 }
 
+/** Map dual-gate status → chip tone class. */
+function gateTone(status?: string | null): 'success' | 'warning' | 'danger' | 'neutral' {
+  if (!status) return 'neutral';
+  const s = status.toLowerCase();
+  if (s === 'verified' || s === 'ok' || s === 'pass') return 'success';
+  if (s === 'incomplete' || s === 'warning' || s === 'unknown') return 'warning';
+  if (s === 'conflict' || s === 'fail' || s === 'error') return 'danger';
+  return 'neutral';
+}
+
+/** First free start HP on a row that fits moduleHp (contiguous occupancy). */
+function nextFreeStartHp(
+  rowIndex: number,
+  moduleHp: number,
+  placements: RackModuleSpec[],
+  resolveHp: (moduleId: number) => number | null,
+  rowCapacity: number,
+): number {
+  const occupied = placements
+    .filter((p) => p.row_index === rowIndex)
+    .map((p) => {
+      const hp = resolveHp(p.module_id) ?? 0;
+      return { start: p.start_hp, end: p.start_hp + hp };
+    })
+    .filter((o) => o.end > o.start)
+    .sort((a, b) => a.start - b.start);
+
+  let cursor = 0;
+  for (const block of occupied) {
+    if (block.start - cursor >= moduleHp) {
+      return cursor;
+    }
+    cursor = Math.max(cursor, block.end);
+  }
+  if (rowCapacity - cursor >= moduleHp) {
+    return cursor;
+  }
+  // Full or oversized — leave at end of last block so validation can explain overflow
+  return cursor;
+}
+
 export default function RackBuilderPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -167,8 +208,39 @@ export default function RackBuilderPage() {
   const [batchNote, setBatchNote] = useState('');
   const [moduleMaterializeNote, setModuleMaterializeNote] = useState('');
   const [moduleQuery, setModuleQuery] = useState('');
+  /** Label for module_id deep-link when gallery list is not yet loaded (create flow). */
+  const [preselectedLabel, setPreselectedLabel] = useState<string | null>(null);
 
   const activeRackId = selectedRackId ?? rackId;
+
+  useEffect(() => {
+    if (preselectedModuleId == null) {
+      setPreselectedLabel(null);
+      return;
+    }
+    let cancelled = false;
+    moduleApi
+      .list({ limit: 500 })
+      .then((res) => {
+        if (cancelled) return;
+        const rows = res.data.modules ?? [];
+        const m = rows.find((row) => row.id === preselectedModuleId);
+        if (m) {
+          setPreselectedLabel(`${m.brand} — ${m.name} (${m.hp}HP)`);
+          if (!liveMode) {
+            setGalleryModules((prev) => (prev.length ? prev : rows));
+          }
+        } else {
+          setPreselectedLabel(`Module #${preselectedModuleId}`);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setPreselectedLabel(`Module #${preselectedModuleId}`);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [preselectedModuleId, liveMode]);
 
   const placementPowerSummary = useMemo(() => {
     let known = 0;
@@ -216,6 +288,47 @@ export default function RackBuilderPage() {
     });
     return rows;
   }, [galleryModules, moduleQuery]);
+
+  const resolveModuleHp = useMemo(() => {
+    return (moduleId: number): number | null => {
+      const fromLive = liveRack?.modules?.find((m) => m.module_id === moduleId)?.module;
+      if (fromLive?.hp != null) return fromLive.hp;
+      const fromGallery = galleryModules.find((m) => m.id === moduleId);
+      return fromGallery?.hp ?? null;
+    };
+  }, [liveRack, galleryModules]);
+
+  /** Per-row HP occupancy for visual usage bars. */
+  const rowHpUsage = useMemo(() => {
+    if (!liveRack?.case) return [] as { row: number; capacity: number; used: number; free: number }[];
+    const rows = liveRack.case.rows || liveRack.case.hp_per_row?.length || 1;
+    const hpPerRow =
+      liveRack.case.hp_per_row?.length
+        ? liveRack.case.hp_per_row
+        : Array.from({ length: rows }, () =>
+            Math.floor((liveRack.case?.total_hp || 0) / rows) || liveRack.case?.total_hp || 0,
+          );
+    return hpPerRow.map((capacity, row) => {
+      let used = 0;
+      for (const spec of placementModules) {
+        if (spec.row_index !== row) continue;
+        used += resolveModuleHp(spec.module_id) ?? 0;
+      }
+      return { row, capacity, used, free: Math.max(0, capacity - used) };
+    });
+  }, [liveRack, placementModules, resolveModuleHp]);
+
+  const preselectedModule = useMemo(() => {
+    if (preselectedModuleId == null) return null;
+    return galleryModules.find((m) => m.id === preselectedModuleId) ?? null;
+  }, [galleryModules, preselectedModuleId]);
+
+  const builderStep = liveMode
+    ? 3
+    : selectedCatalogSlug || selectedCaseId
+      ? 2
+      : 1;
+
   const selectedLegacyCase = useMemo(
     () => legacyCases.find((c) => c.id === selectedCaseId) ?? null,
     [legacyCases, selectedCaseId],
@@ -224,6 +337,28 @@ export default function RackBuilderPage() {
     () => catalogCases.find((c) => c.slug === selectedCatalogSlug) ?? null,
     [catalogCases, selectedCatalogSlug],
   );
+
+  /** Smart start HP: snap to first free gap when module or row changes. */
+  useEffect(() => {
+    if (!liveMode || addModuleId == null || !liveRack?.case) return;
+    const modHp = resolveModuleHp(addModuleId);
+    if (modHp == null || modHp <= 0) return;
+    const capacity =
+      liveRack.case.hp_per_row?.[addRow] ??
+      (liveRack.case.rows
+        ? Math.floor(liveRack.case.total_hp / liveRack.case.rows)
+        : liveRack.case.total_hp);
+    const next = nextFreeStartHp(
+      addRow,
+      modHp,
+      placementModules,
+      resolveModuleHp,
+      capacity || liveRack.case.total_hp,
+    );
+    setAddStartHp(next);
+    // Only when selection changes — not every keystroke of start HP
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: module/row/placement driven
+  }, [liveMode, addModuleId, addRow, placementModules, liveRack?.case, resolveModuleHp]);
 
   useEffect(() => {
     if (rackId != null) {
@@ -672,8 +807,10 @@ export default function RackBuilderPage() {
     <section aria-labelledby="builder-title">
       <header className="workspace-header">
         <div>
-          <p className="eyebrow">Create rig</p>
-          <h1 id="builder-title">Establish your module inventory</h1>
+          <p className="eyebrow">{liveMode ? 'Place modules' : 'Create rig'}</p>
+          <h1 id="builder-title">
+            {liveMode ? 'Place modules on this rig' : 'Establish your module inventory'}
+          </h1>
           <p className="muted">
             Bind a Eurorack case, then place modules manually or review photo evidence. Multi-photo
             fusion never auto-confirms inventory. Missing case power stays unchecked.
@@ -681,9 +818,54 @@ export default function RackBuilderPage() {
         </div>
       </header>
 
+      <nav className="step-progress" aria-label="Builder steps">
+        {(
+          [
+            { n: 1, label: 'Case' },
+            { n: 2, label: 'Create rig' },
+            { n: 3, label: 'Place modules' },
+          ] as const
+        ).map((step) => {
+          const state =
+            builderStep > step.n ? 'done' : builderStep === step.n ? 'current' : 'todo';
+          return (
+            <div
+              key={step.n}
+              className={`step-progress__item step-progress__item--${state}`}
+              aria-current={state === 'current' ? 'step' : undefined}
+            >
+              <span className="step-progress__num" aria-hidden="true">
+                {state === 'done' ? '✓' : step.n}
+              </span>
+              <span className="step-progress__label">{step.label}</span>
+            </div>
+          );
+        })}
+      </nav>
+
+      {!liveMode && preselectedModuleId != null ? (
+        <div
+          className="panel module-preselect-banner"
+          role="status"
+          style={{ marginBottom: 'var(--space-4)' }}
+        >
+          <p className="eyebrow" style={{ marginTop: 0 }}>
+            Module ready to place
+          </p>
+          <p style={{ margin: 0 }}>
+            {preselectedLabel ||
+              (preselectedModule
+                ? `${preselectedModule.brand} — ${preselectedModule.name} (${preselectedModule.hp}HP)`
+                : `Module #${preselectedModuleId}`)}
+            {' · '}
+            <strong>create a rig</strong>, then placement opens with this module preselected.
+          </p>
+        </div>
+      ) : null}
+
       {!liveMode ? (
         <div className="panel" style={{ marginBottom: 'var(--space-4)' }} aria-labelledby="case-step-title">
-          <p className="eyebrow">Step 0 · required</p>
+          <p className="eyebrow">Step 1 · case envelope</p>
           <h2 id="case-step-title" style={{ marginTop: 0 }}>
             Choose a case envelope
           </h2>
@@ -891,6 +1073,8 @@ export default function RackBuilderPage() {
           <p className="muted" style={{ marginTop: 0 }}>
             Live placement + evidence for rig #{rackId}.{' '}
             <Link to={`/rigs/${rackId}`}>Open rig detail</Link>
+            {' · '}
+            <Link to="/racks">Back to rigs</Link>
           </p>
           {liveRack?.case ? (
             <p className="muted">
@@ -904,11 +1088,62 @@ export default function RackBuilderPage() {
             </p>
           ) : null}
 
+          {preselectedModuleId != null ? (
+            <div className="module-preselect-banner" role="status">
+              <p style={{ margin: 0 }}>
+                Preselected from gallery:{' '}
+                <strong>
+                  {preselectedModule
+                    ? `${preselectedModule.brand} — ${preselectedModule.name}`
+                    : `module #${preselectedModuleId}`}
+                </strong>
+                {preselectedModule?.hp != null ? ` · ${preselectedModule.hp}HP` : ''}
+                {' · '}start HP auto-snaps to the first free gap on the selected row.
+              </p>
+            </div>
+          ) : null}
+
           <h2 style={{ marginTop: 'var(--space-3)' }}>Module placement</h2>
           <p className="muted">
             Place modules by row and start HP. Saves through rack validation; catalog
             compatibility runs when the case has <code>meta.catalog_slug</code>.
           </p>
+
+          {rowHpUsage.length > 0 ? (
+            <div className="hp-usage" aria-label="Row HP usage">
+              {rowHpUsage.map((row) => {
+                const pct =
+                  row.capacity > 0 ? Math.min(100, Math.round((row.used / row.capacity) * 100)) : 0;
+                const tone =
+                  pct >= 100 ? 'danger' : pct >= 85 ? 'warning' : pct > 0 ? 'success' : 'neutral';
+                return (
+                  <div key={row.row} className="hp-usage__row">
+                    <div className="hp-usage__meta">
+                      <span>
+                        Row {row.row}
+                      </span>
+                      <span className="muted">
+                        {row.used}/{row.capacity}HP used · {row.free} free
+                      </span>
+                    </div>
+                    <div
+                      className="usage-bar"
+                      role="meter"
+                      aria-valuemin={0}
+                      aria-valuemax={row.capacity}
+                      aria-valuenow={row.used}
+                      aria-label={`Row ${row.row} HP usage`}
+                    >
+                      <div
+                        className={`usage-bar__fill usage-bar__fill--${tone}`}
+                        style={{ width: `${pct}%` }}
+                      />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : null}
 
           <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
             <button
@@ -918,7 +1153,7 @@ export default function RackBuilderPage() {
             >
               Materialize HP-known modules
             </button>
-            <Link className="button button-quiet" to="/modules?hp_known=true">
+            <Link className="button button-quiet" to="/modules?hp=known">
               Browse placeable catalog
             </Link>
           </div>
@@ -956,6 +1191,7 @@ export default function RackBuilderPage() {
               <select
                 value={addModuleId ?? ''}
                 onChange={(e) => setAddModuleId(e.target.value ? Number(e.target.value) : null)}
+                aria-label="Select module to place"
               >
                 <option value="">Select module…</option>
                 {filteredGalleryModules.map((m) => (
@@ -975,15 +1211,18 @@ export default function RackBuilderPage() {
                 type="number"
                 min={0}
                 value={addRow}
+                aria-label="Row index"
                 onChange={(e) => setAddRow(Number(e.target.value) || 0)}
               />
             </label>
-            <label className="field" style={{ flex: '0 0 6rem' }}>
+            <label className="field" style={{ flex: '0 0 7rem' }}>
               Start HP
               <input
                 type="number"
                 min={0}
                 value={addStartHp}
+                aria-label="Start HP"
+                title="Auto-fills to first free gap when you pick a module or row; override freely"
                 onChange={(e) => setAddStartHp(Number(e.target.value) || 0)}
               />
             </label>
@@ -996,6 +1235,12 @@ export default function RackBuilderPage() {
               {placementSaving ? 'Saving…' : 'Add placement'}
             </button>
           </div>
+          {addModuleId != null ? (
+            <p className="muted" style={{ marginTop: 'var(--space-2)', fontSize: '0.85rem' }}>
+              Start HP suggests the first free gap ({addStartHp}) on row {addRow}. Override if you
+              want a specific slot.
+            </p>
+          ) : null}
 
           {placementError ? (
             <p className="status status-danger" role="alert">
@@ -1054,6 +1299,31 @@ export default function RackBuilderPage() {
               <p>{rackCompat.message}</p>
               {rackCompat.compatibility ? (
                 <>
+                  <div className="gate-chip-row" aria-label="Dual-gate summary">
+                    <span
+                      className={`status-chip status-chip--${gateTone(rackCompat.compatibility.overall_status)}`}
+                    >
+                      overall: {rackCompat.compatibility.overall_status}
+                    </span>
+                    <span
+                      className={`status-chip status-chip--${gateTone(rackCompat.compatibility.physical_fit.status)}`}
+                    >
+                      physical: {rackCompat.compatibility.physical_fit.status}
+                    </span>
+                    <span
+                      className={`status-chip status-chip--${gateTone(rackCompat.compatibility.connector_availability.status)}`}
+                    >
+                      connectors: {rackCompat.compatibility.connector_availability.status}
+                    </span>
+                    {rackCompat.compatibility.power_headroom?.map((r) => (
+                      <span
+                        key={r.rail}
+                        className={`status-chip status-chip--${gateTone(r.status)}`}
+                      >
+                        {r.rail}: {r.status}
+                      </span>
+                    ))}
+                  </div>
                   <p>
                     Overall:{' '}
                     <strong>{rackCompat.compatibility.overall_status}</strong>

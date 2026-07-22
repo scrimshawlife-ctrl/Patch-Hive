@@ -543,14 +543,102 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByRole('heading', { name: 'Module placement' })).toBeVisible({
       timeout: 15000,
     });
+    await expect(page.getByLabel('Builder steps')).toBeVisible();
+    await expect(page.getByText('Place modules').first()).toBeVisible();
+    await expect(page.getByLabel('Row HP usage')).toBeVisible();
+    await expect(page.getByText(/18\/84HP used/i)).toBeVisible();
     await expect(page.getByText(/Placement power/i)).toBeVisible();
     await expect(page.getByText(/1 modules with \+12 known/i)).toBeVisible();
     await expect(page.getByText(/1 unknown/i)).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Dual-gate compatibility' })).toBeVisible();
-    await expect(page.getByText(/\+12V/)).toBeVisible();
+    await expect(page.getByLabel('Dual-gate summary')).toBeVisible();
+    await expect(
+      page.getByLabel('Dual-gate summary').getByText('overall: incomplete', { exact: true }),
+    ).toBeVisible();
+    await expect(page.getByText(/\+12V/).first()).toBeVisible();
     await expect(page.getByText(/Soft warnings/i)).toBeVisible();
     await expect(page.getByText(/MODULE_POWER_UNKNOWN/)).toBeVisible();
     await expect(page.getByRole('button', { name: 'Materialize HP-known modules' })).toBeVisible();
+  });
+
+  test('module gallery URL filters and status chips', async ({ page }) => {
+    const allModules = [
+      {
+        id: 1,
+        slug: 'mockaudio-oscillator-a',
+        brand: 'MockAudio',
+        name: 'Oscillator A',
+        hp: 12,
+        category: 'VCO',
+        source: 'SynthCatalogResearch',
+        is_available: 'available',
+      },
+      {
+        id: 2,
+        slug: 'otherbrand-filter-z',
+        brand: 'OtherBrand',
+        name: 'Filter Z',
+        hp: 8,
+        category: 'VCF',
+        source: 'ModuleCatalog',
+        is_available: 'available',
+      },
+    ];
+    await page.route('**/api/modules/**', async (route) => {
+      const url = new URL(route.request().url());
+      const path = url.pathname;
+      if (path.endsWith('/catalog/stats')) {
+        await route.fulfill({
+          json: {
+            total_modules: 2,
+            total_brands: 2,
+            total_categories: 2,
+            hp_stats: { average: 10, min: 8, max: 12, known: 2, unknown: 0, coverage_pct: 100 },
+            availability: { available: 2 },
+            by_source: { SynthCatalogResearch: 1, ModuleCatalog: 1 },
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/catalog/brands')) {
+        await route.fulfill({
+          json: {
+            total: 2,
+            brands: [
+              { name: 'MockAudio', module_count: 1 },
+              { name: 'OtherBrand', module_count: 1 },
+            ],
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/catalog/categories')) {
+        await route.fulfill({
+          json: {
+            total: 2,
+            categories: [
+              { name: 'VCO', module_count: 1 },
+              { name: 'VCF', module_count: 1 },
+            ],
+          },
+        });
+        return;
+      }
+      if (path.includes('/catalog')) {
+        await route.fulfill({
+          json: { total: allModules.length, skip: 0, limit: 48, modules: allModules },
+        });
+        return;
+      }
+      await route.continue();
+    });
+
+    await page.goto('/modules?hp=known');
+    await expect(page.getByRole('heading', { name: 'Module gallery' })).toBeVisible();
+    await expect(page.getByLabel('Active filters')).toBeVisible();
+    await expect(page.getByText('HP known').first()).toBeVisible();
+    await expect(page.getByText('placeable').first()).toBeVisible();
+    await expect(page).toHaveURL(/hp=known/);
   });
 
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
