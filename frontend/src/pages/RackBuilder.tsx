@@ -116,6 +116,7 @@ export default function RackBuilderPage() {
   const liveMode = rackId != null;
   const preselectedCaseId = Number(searchParams.get('case_id') || '') || null;
   const preselectedCatalogSlug = searchParams.get('catalog_slug') || null;
+  const preselectedModuleId = Number(searchParams.get('module_id') || '') || null;
 
   const [racks, setRacks] = useState<Rack[]>([]);
   const [selectedRackId, setSelectedRackId] = useState<number | null>(rackId);
@@ -164,8 +165,57 @@ export default function RackBuilderPage() {
     compatibility?: CompatibilityResponse | null;
   } | null>(null);
   const [batchNote, setBatchNote] = useState('');
+  const [moduleMaterializeNote, setModuleMaterializeNote] = useState('');
+  const [moduleQuery, setModuleQuery] = useState('');
 
   const activeRackId = selectedRackId ?? rackId;
+
+  const placementPowerSummary = useMemo(() => {
+    let known = 0;
+    let unknown = 0;
+    let draw12 = 0;
+    let drawN12 = 0;
+    let draw5 = 0;
+    for (const spec of placementModules) {
+      const mod =
+        liveRack?.modules?.find((m) => m.module_id === spec.module_id)?.module ??
+        galleryModules.find((m) => m.id === spec.module_id);
+      if (!mod) {
+        unknown += 1;
+        continue;
+      }
+      if (mod.power_12v_ma != null) {
+        known += 1;
+        draw12 += mod.power_12v_ma || 0;
+        drawN12 += mod.power_neg12v_ma || 0;
+        draw5 += mod.power_5v_ma || 0;
+      } else {
+        unknown += 1;
+      }
+    }
+    return { known, unknown, draw12, drawN12, draw5, total: placementModules.length };
+  }, [placementModules, liveRack, galleryModules]);
+
+  const filteredGalleryModules = useMemo(() => {
+    const q = moduleQuery.trim().toLowerCase();
+    let rows = [...galleryModules];
+    if (q) {
+      rows = rows.filter(
+        (m) =>
+          m.brand.toLowerCase().includes(q) ||
+          m.name.toLowerCase().includes(q) ||
+          String(m.id) === q,
+      );
+    }
+    // Prefer modules with known power, then smaller HP
+    rows.sort((a, b) => {
+      const ap = a.power_12v_ma != null ? 0 : 1;
+      const bp = b.power_12v_ma != null ? 0 : 1;
+      if (ap !== bp) return ap - bp;
+      return a.hp - b.hp || a.brand.localeCompare(b.brand);
+    });
+    return rows;
+  }, [galleryModules, moduleQuery]);
   const selectedLegacyCase = useMemo(
     () => legacyCases.find((c) => c.id === selectedCaseId) ?? null,
     [legacyCases, selectedCaseId],
@@ -276,7 +326,9 @@ export default function RackBuilderPage() {
         modules: [],
       });
       const id = res.data.id;
-      navigate(`/racks/${id}/edit`);
+      const qs =
+        preselectedModuleId != null ? `?module_id=${preselectedModuleId}` : '';
+      navigate(`/racks/${id}/edit${qs}`);
     } catch (err) {
       setError(formatValidationError(err));
     } finally {
@@ -314,11 +366,21 @@ export default function RackBuilderPage() {
       setPlacementError('Unable to load rig for placement.');
     });
     moduleApi
-      .list({ limit: 200 })
-      .then((res) => setGalleryModules(res.data.modules ?? []))
+      .list({ limit: 500 })
+      .then((res) => {
+        const rows = res.data.modules ?? [];
+        setGalleryModules(rows);
+        if (preselectedModuleId != null) {
+          const hit = rows.find((m) => m.id === preselectedModuleId);
+          if (hit) {
+            setAddModuleId(hit.id);
+            setModuleQuery(`${hit.brand} ${hit.name}`);
+          }
+        }
+      })
       .catch(() => setGalleryModules([]));
     // eslint-disable-next-line react-hooks/exhaustive-deps -- load on rack route
-  }, [liveMode, rackId]);
+  }, [liveMode, rackId, preselectedModuleId]);
 
   const savePlacements = async (next: RackModuleSpec[]) => {
     if (rackId == null) return;
@@ -365,6 +427,26 @@ export default function RackBuilderPage() {
       setLegacyCases(legacy.data.cases ?? []);
     } catch {
       setBatchNote('Bulk materialize failed. Ensure catalog seed is imported.');
+    }
+  };
+
+  const materializeHpKnownModules = async () => {
+    setModuleMaterializeNote('');
+    try {
+      const res = await moduleApi.materializeCatalogBatch({
+        hp_known_only: true,
+        limit: 500,
+      });
+      const b = res.data;
+      setModuleMaterializeNote(
+        `Module catalog materialize: scanned ${b.scanned}, created ${b.created}, exists ${b.exists}, failed ${b.failed}.`,
+      );
+      const list = await moduleApi.list({ limit: 500 });
+      setGalleryModules(list.data.modules ?? []);
+    } catch {
+      setModuleMaterializeNote(
+        'Module bulk materialize failed. Ensure research catalog is imported and API is up.',
+      );
     }
   };
 
@@ -829,6 +911,46 @@ export default function RackBuilderPage() {
           </p>
 
           <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+            <button
+              type="button"
+              className="button button-secondary"
+              onClick={() => void materializeHpKnownModules()}
+            >
+              Materialize HP-known modules
+            </button>
+            <Link className="button button-quiet" to="/modules?hp_known=true">
+              Browse placeable catalog
+            </Link>
+          </div>
+          {moduleMaterializeNote ? (
+            <p className="status" role="status">
+              {moduleMaterializeNote}
+            </p>
+          ) : null}
+
+          {placementModules.length > 0 ? (
+            <p className="muted" aria-live="polite">
+              Placement power: <strong>{placementPowerSummary.known}</strong> modules with +12 known
+              {placementPowerSummary.unknown
+                ? ` · ${placementPowerSummary.unknown} unknown (not assumed)`
+                : ''}
+              {placementPowerSummary.known
+                ? ` · Σ +12 ${placementPowerSummary.draw12}mA / −12 ${placementPowerSummary.drawN12}mA / +5 ${placementPowerSummary.draw5}mA`
+                : ''}
+            </p>
+          ) : null}
+
+          <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+            <label className="field" style={{ flex: '1 1 10rem' }}>
+              Filter modules
+              <input
+                type="search"
+                value={moduleQuery}
+                placeholder="Brand, name, id…"
+                aria-label="Filter placeable modules"
+                onChange={(e) => setModuleQuery(e.target.value)}
+              />
+            </label>
             <label className="field" style={{ flex: '2 1 14rem' }}>
               Module
               <select
@@ -836,11 +958,13 @@ export default function RackBuilderPage() {
                 onChange={(e) => setAddModuleId(e.target.value ? Number(e.target.value) : null)}
               >
                 <option value="">Select module…</option>
-                {galleryModules.map((m) => (
+                {filteredGalleryModules.map((m) => (
                   <option key={m.id} value={m.id}>
                     {m.brand} — {m.name} ({m.hp}HP
-                    {m.power_12v_ma != null ? ` · +12 ${m.power_12v_ma}mA` : ''}
-                    {m.depth_mm != null ? ` · ${m.depth_mm}mm` : ''})
+                    {m.power_12v_ma != null
+                      ? ` · +12 ${m.power_12v_ma}mA`
+                      : ' · power unknown'}
+                    {m.depth_mm != null ? ` · ${m.depth_mm}mm` : ' · depth unknown'})
                   </option>
                 ))}
               </select>
@@ -922,7 +1046,7 @@ export default function RackBuilderPage() {
 
           {rackCompat ? (
             <div className="panel" style={{ marginTop: 'var(--space-4)' }} aria-live="polite">
-              <h3 style={{ marginTop: 0 }}>Catalog compatibility</h3>
+              <h3 style={{ marginTop: 0 }}>Dual-gate compatibility</h3>
               <p className="muted">
                 Bridge: {rackCompat.bridge_status}
                 {rackCompat.catalog_slug ? ` · ${rackCompat.catalog_slug}` : ''}
@@ -933,31 +1057,81 @@ export default function RackBuilderPage() {
                   <p>
                     Overall:{' '}
                     <strong>{rackCompat.compatibility.overall_status}</strong>
+                    {rackCompat.compatibility.overall_status === 'incomplete'
+                      ? ' — soft gaps only (missing power/depth/case rails stay missing)'
+                      : null}
+                    {rackCompat.compatibility.overall_status === 'conflict'
+                      ? ' — hard fail (overflow, connectors, or rail over budget)'
+                      : null}
                   </p>
                   <ul>
-                    <li>Format: {rackCompat.compatibility.format_check.status} — {rackCompat.compatibility.format_check.message}</li>
-                    <li>Physical fit: {rackCompat.compatibility.physical_fit.status} — {rackCompat.compatibility.physical_fit.message}</li>
-                    <li>Connectors: {rackCompat.compatibility.connector_availability.status}</li>
-                    <li>+5V: {rackCompat.compatibility.pos5_compatibility.status}</li>
-                    <li>Lid: {rackCompat.compatibility.lid_close.status}</li>
+                    <li>
+                      Format: <strong>{rackCompat.compatibility.format_check.status}</strong> —{' '}
+                      {rackCompat.compatibility.format_check.message}
+                    </li>
+                    <li>
+                      Physical fit:{' '}
+                      <strong>{rackCompat.compatibility.physical_fit.status}</strong> —{' '}
+                      {rackCompat.compatibility.physical_fit.message}
+                    </li>
+                    <li>
+                      Connectors:{' '}
+                      <strong>{rackCompat.compatibility.connector_availability.status}</strong>
+                      {rackCompat.compatibility.connector_availability.message
+                        ? ` — ${rackCompat.compatibility.connector_availability.message}`
+                        : ''}
+                    </li>
+                    <li>
+                      +5V: <strong>{rackCompat.compatibility.pos5_compatibility.status}</strong>
+                      {rackCompat.compatibility.pos5_compatibility.message
+                        ? ` — ${rackCompat.compatibility.pos5_compatibility.message}`
+                        : ''}
+                    </li>
+                    <li>
+                      Lid: <strong>{rackCompat.compatibility.lid_close.status}</strong>
+                    </li>
                   </ul>
                   {rackCompat.compatibility.power_headroom?.length ? (
-                    <ul>
-                      {rackCompat.compatibility.power_headroom.map((r) => (
-                        <li key={r.rail}>
-                          {r.rail}: {r.status}
-                          {r.headroom_ma != null ? ` · headroom ${r.headroom_ma}mA` : ''}
-                          {r.case_capacity_ma != null
-                            ? ` · ${r.module_draw_ma}/${r.case_capacity_ma}mA`
-                            : ` · draw ${r.module_draw_ma}mA`}
-                        </li>
-                      ))}
-                    </ul>
+                    <>
+                      <p className="eyebrow" style={{ marginBottom: 0 }}>
+                        Power rails
+                      </p>
+                      <ul>
+                        {rackCompat.compatibility.power_headroom.map((r) => (
+                          <li key={r.rail}>
+                            <strong>{r.rail}</strong>: {r.status}
+                            {r.case_capacity_ma != null
+                              ? ` · ${r.module_draw_ma}/${r.case_capacity_ma}mA`
+                              : ` · draw ${r.module_draw_ma}mA (case capacity unspecified)`}
+                            {r.headroom_ma != null ? ` · headroom ${r.headroom_ma}mA` : ''}
+                            {r.message ? ` — ${r.message}` : ''}
+                          </li>
+                        ))}
+                      </ul>
+                    </>
                   ) : null}
                   {rackCompat.compatibility.warnings?.length ? (
-                    <p className="status status-warning">
-                      {rackCompat.compatibility.warnings.map((w) => w.message).join(' · ')}
-                    </p>
+                    <div className="status status-warning" role="status">
+                      <p style={{ marginTop: 0 }}>
+                        <strong>Soft warnings</strong> (not hard fails):
+                      </p>
+                      <ul style={{ marginBottom: 0 }}>
+                        {Array.from(
+                          new Map(
+                            rackCompat.compatibility.warnings.map((w) => [
+                              w.code || w.message,
+                              w,
+                            ]),
+                          ).values(),
+                        ).map((w) => (
+                          <li key={w.code || w.message}>
+                            {w.code ? <code>{w.code}</code> : null}
+                            {w.code ? ' — ' : null}
+                            {w.message}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   ) : null}
                 </>
               ) : null}

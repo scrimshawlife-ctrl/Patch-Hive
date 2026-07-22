@@ -1,0 +1,55 @@
+{
+  "status": "success",
+  "mode": "idempotent_rebuild_validation",
+  "method": "sql_hp_overlay + POST /api/modules/catalog/materialize-batch + sql_power_overlays_v1-v4",
+  "before": {
+    "module_catalog_total": 408,
+    "module_catalog_hp_known": 404,
+    "modules_total": 418,
+    "modules_from_catalog": 399,
+    "modules_catalog_with_p12": 359
+  },
+  "steps": [
+    {
+      "step": "hp_overlay",
+      "result": {
+        "entries": 404,
+        "null_hp_after": 4,
+        "notes": "fill-null only; residual 4 typed non-placeable"
+      }
+    },
+    {
+      "step": "materialize_batch",
+      "result": {
+        "status": "success",
+        "scanned": 404,
+        "created": 0,
+        "exists": 404,
+        "failed": 0
+      }
+    },
+    {
+      "step": "power_overlays_v1_v4_merged",
+      "result": {
+        "merged_entries": 365,
+        "notes": "COALESCE fill-null from overlays v1-v4"
+      }
+    }
+  ],
+  "after": {
+    "module_catalog_total": 408,
+    "module_catalog_hp_known": 404,
+    "hp_coverage_pct": 99.0,
+    "modules_total": 418,
+    "modules_from_catalog": 399,
+    "modules_catalog_with_p12": 359,
+    "p12_coverage_pct": 90.0
+  },
+  "validation": {
+    "hp_known_ok": true,
+    "materialize_ok": true,
+    "power_ok": true,
+    "idempotent_materialize": true,
+    "all_ok": true
+  }
+}
