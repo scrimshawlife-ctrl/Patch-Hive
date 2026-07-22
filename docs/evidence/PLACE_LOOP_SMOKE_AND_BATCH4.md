@@ -50,3 +50,19 @@ Method: ModularGrid-first direct HTTP (official/PC 403; Firecrawl still at 0 cre
 ## Code fix
 
 `backend/core/naming.py` — `hash_string_to_seed` masked to 31-bit signed range.
+
+## 4. Demo-set power enrichment (post-merge continue)
+
+After #120 merge: filled `power_12v_ma` / `power_neg12v_ma` on place-loop modules from ModularGrid (OBSERVED). Depth still null where MG page lacked mm deep token.
+
+| Module | +12 mA | −12 mA |
+|--------|-------:|-------:|
+| Mimeophon | 100 | 10 |
+| Optomix | 25 | 25 |
+| A-110 | 90 | 20 |
+| Pico DRUMS | 35 | 4 |
+| Buff Mult | 4 | 17 |
+| Maths / Plaits | already filled | |
+
+Receipt: `data/synth-catalog/receipts/demo-set-power-depth.json`
+Staging catalog HP known remains **271/408 (66.4%)**.
