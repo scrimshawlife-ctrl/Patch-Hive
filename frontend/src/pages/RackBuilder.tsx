@@ -268,6 +268,49 @@ export default function RackBuilderPage() {
     return { known, unknown, draw12, drawN12, draw5, total: placementModules.length };
   }, [placementModules, liveRack, galleryModules]);
 
+  /** Case rail capacity vs known placement draw (fail-closed: null capacity = unspecified). */
+  const powerRailMeters = useMemo(() => {
+    const c = liveRack?.case;
+    if (!c) return [] as {
+      rail: string;
+      draw: number;
+      capacity: number | null;
+      headroom: number | null;
+      tone: 'success' | 'warning' | 'danger' | 'neutral';
+      pct: number;
+    }[];
+
+    const rails: { rail: string; draw: number; capacity: number | null | undefined }[] = [
+      { rail: '+12V', draw: placementPowerSummary.draw12, capacity: c.power_12v_ma },
+      { rail: '−12V', draw: placementPowerSummary.drawN12, capacity: c.power_neg12v_ma },
+      { rail: '+5V', draw: placementPowerSummary.draw5, capacity: c.power_5v_ma },
+    ];
+
+    return rails.map((r) => {
+      const capacity = r.capacity ?? null;
+      if (capacity == null) {
+        return {
+          rail: r.rail,
+          draw: r.draw,
+          capacity: null,
+          headroom: null,
+          tone: 'neutral' as const,
+          pct: 0,
+        };
+      }
+      const headroom = capacity - r.draw;
+      const pct = capacity > 0 ? Math.min(100, Math.round((r.draw / capacity) * 100)) : 0;
+      const tone =
+        headroom < 0 ? ('danger' as const) : pct >= 85 ? ('warning' as const) : ('success' as const);
+      return { rail: r.rail, draw: r.draw, capacity, headroom, tone, pct };
+    });
+  }, [liveRack, placementPowerSummary]);
+
+  const previewModule = useMemo(() => {
+    if (addModuleId == null) return null;
+    return galleryModules.find((m) => m.id === addModuleId) ?? null;
+  }, [addModuleId, galleryModules]);
+
   const filteredGalleryModules = useMemo(() => {
     const q = moduleQuery.trim().toLowerCase();
     let rows = [...galleryModules];
@@ -1207,6 +1250,23 @@ export default function RackBuilderPage() {
                             <span className="rack-row-map__block-hp">{b.hp}H</span>
                           </button>
                         ))}
+                        {previewModule &&
+                        addRow === row.row &&
+                        previewModule.hp > 0 &&
+                        row.capacity > 0 ? (
+                          <div
+                            className="rack-row-map__block rack-row-map__block--preview"
+                            style={{
+                              left: `${(addStartHp / row.capacity) * 100}%`,
+                              width: `${Math.max(1.5, (previewModule.hp / row.capacity) * 100)}%`,
+                            }}
+                            aria-hidden="true"
+                            title={`Preview: ${previewModule.brand} ${previewModule.name} @ HP ${addStartHp}`}
+                          >
+                            <span className="rack-row-map__block-label">{previewModule.name}</span>
+                            <span className="rack-row-map__block-hp">{previewModule.hp}H</span>
+                          </div>
+                        ) : null}
                       </div>
                       <div className="rack-row-map__scale" aria-hidden="true">
                         <span>0</span>
@@ -1238,16 +1298,69 @@ export default function RackBuilderPage() {
             </p>
           ) : null}
 
-          {placementModules.length > 0 ? (
-            <p className="muted" aria-live="polite">
-              Placement power: <strong>{placementPowerSummary.known}</strong> modules with +12 known
-              {placementPowerSummary.unknown
-                ? ` · ${placementPowerSummary.unknown} unknown (not assumed)`
-                : ''}
-              {placementPowerSummary.known
-                ? ` · Σ +12 ${placementPowerSummary.draw12}mA / −12 ${placementPowerSummary.drawN12}mA / +5 ${placementPowerSummary.draw5}mA`
-                : ''}
-            </p>
+          {placementModules.length > 0 || liveRack?.case ? (
+            <div className="power-rail-panel" aria-label="Power rail usage" aria-live="polite">
+              <p className="muted" style={{ marginTop: 0, marginBottom: 'var(--space-2)' }}>
+                Placement power:{' '}
+                <strong>{placementPowerSummary.known}</strong> modules with +12 known
+                {placementPowerSummary.unknown
+                  ? ` · ${placementPowerSummary.unknown} unknown (not assumed)`
+                  : ''}
+                {placementPowerSummary.known
+                  ? ` · Σ +12 ${placementPowerSummary.draw12}mA / −12 ${placementPowerSummary.drawN12}mA / +5 ${placementPowerSummary.draw5}mA`
+                  : ''}
+              </p>
+              {powerRailMeters.length > 0 ? (
+                <div className="power-rail-meters">
+                  {powerRailMeters.map((rail) => (
+                    <div key={rail.rail} className="power-rail-meters__row">
+                      <div className="hp-usage__meta">
+                        <span>
+                          <span
+                            className={`status-chip status-chip--${rail.tone}`}
+                            style={{ marginRight: '0.35rem' }}
+                          >
+                            {rail.rail}
+                          </span>
+                        </span>
+                        <span className="muted">
+                          {rail.capacity == null
+                            ? `draw ${rail.draw}mA · case capacity unspecified`
+                            : `${rail.draw}/${rail.capacity}mA · headroom ${rail.headroom}mA`}
+                        </span>
+                      </div>
+                      <div
+                        className="usage-bar"
+                        role="meter"
+                        aria-valuemin={0}
+                        aria-valuemax={rail.capacity ?? 0}
+                        aria-valuenow={rail.draw}
+                        aria-label={`${rail.rail} power usage`}
+                      >
+                        <div
+                          className={`usage-bar__fill usage-bar__fill--${rail.tone}`}
+                          style={{
+                            width:
+                              rail.capacity == null
+                                ? rail.draw > 0
+                                  ? '8%'
+                                  : '0%'
+                                : `${rail.pct}%`,
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : null}
+              {placementPowerSummary.unknown > 0 ? (
+                <p className="status status-warning" style={{ marginBottom: 0, fontSize: '0.85rem' }}>
+                  Soft gap: {placementPowerSummary.unknown} module
+                  {placementPowerSummary.unknown === 1 ? '' : 's'} without +12 specs — not assumed
+                  in draw totals.
+                </p>
+              ) : null}
+            </div>
           ) : null}
 
           <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>

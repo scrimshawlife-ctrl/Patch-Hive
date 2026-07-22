@@ -869,3 +869,28 @@ code { padding: 0.15rem 0.35rem; border-radius: var(--radius-sm); background: va
   font-size: 0.7rem;
   font-variant-numeric: tabular-nums;
 }
+.rack-row-map__block--preview {
+  pointer-events: none;
+  border-style: dashed;
+  border-color: var(--action);
+  color: var(--action);
+  background: color-mix(in srgb, var(--action) 18%, transparent);
+  opacity: 0.92;
+  z-index: 2;
+}
+
+.power-rail-panel {
+  margin-top: var(--space-3);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+.power-rail-meters {
+  display: grid;
+  gap: var(--space-3);
+}
+.power-rail-meters__row {
+  display: grid;
+  gap: var(--space-1);
+}
