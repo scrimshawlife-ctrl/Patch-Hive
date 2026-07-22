@@ -194,12 +194,13 @@ export default function ModulesPage() {
           <div className="panel" aria-label="Module filters" style={{ marginBottom: 'var(--space-4)' }}>
             <div className="toolbar">
               <label className="field" htmlFor="module-search" style={{ flex: '1 1 12rem' }}>
-                Search
+                Search modules
                 <input
                   id="module-search"
                   type="search"
                   value={query}
                   placeholder="Brand, name…"
+                  aria-label="Search modules"
                   onChange={(event) => {
                     setPage(0);
                     setQuery(event.target.value);
