@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "batch": "power-depth-1",
+  "policy": "fill-null COALESCE; OBSERVED only",
+  "targets": 393,
+  "found": 344,
+  "not_found": 49,
+  "applied_candidates": 344,
+  "with_p12_in_results": 320,
+  "with_depth_in_results": 311,
+  "staging_after": {
+    "total": 399,
+    "with_p12": 326,
+    "null_p12": 73,
+    "with_depth": 317,
+    "null_depth": 82,
+    "p12_coverage_pct": 81.7
+  },
+  "results_path": "data/synth-catalog/hermes-research/power-depth-batch1-results.filtered.json",
+  "overlay_path": "data/synth-catalog/overlays/module-power-depth-v1.json"
+}

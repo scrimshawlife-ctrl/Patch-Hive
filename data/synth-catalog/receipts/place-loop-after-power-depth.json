@@ -1,0 +1,80 @@
+{
+  "status": "success",
+  "after_power_depth_apply": true,
+  "racks": [
+    {
+      "rack_id": 6,
+      "label": "lc3",
+      "overall_status": "incomplete",
+      "physical_fit": "PHYSICAL_FIT_INCOMPLETE",
+      "power_headroom": [
+        {
+          "rail": "+12V",
+          "draw_ma": 1949,
+          "capacity_ma": 2000,
+          "headroom_ma": 51,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw_ma": 694,
+          "capacity_ma": 1200,
+          "headroom_ma": 506,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw_ma": 0,
+          "capacity_ma": 4000,
+          "headroom_ma": 4000,
+          "status": "verified"
+        }
+      ],
+      "warning_codes": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ]
+    },
+    {
+      "rack_id": 7,
+      "label": "mantis",
+      "overall_status": "incomplete",
+      "physical_fit": "PHYSICAL_FIT_INCOMPLETE",
+      "power_headroom": [
+        {
+          "rail": "+12V",
+          "draw_ma": 649,
+          "capacity_ma": 3000,
+          "headroom_ma": 2351,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw_ma": 251,
+          "capacity_ma": 1100,
+          "headroom_ma": 849,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw_ma": 35,
+          "capacity_ma": 300,
+          "headroom_ma": 265,
+          "status": "verified"
+        }
+      ],
+      "warning_codes": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ]
+    }
+  ],
+  "modulecatalog": {
+    "total": 399,
+    "with_p12": 326,
+    "null_p12": 73,
+    "with_depth": 317,
+    "null_depth": 82,
+    "p12_coverage_pct": 81.7
+  }
+}
