@@ -66,3 +66,32 @@ After #120 merge: filled `power_12v_ma` / `power_neg12v_ma` on place-loop module
 
 Receipt: `data/synth-catalog/receipts/demo-set-power-depth.json`
 Staging catalog HP known remains **271/408 (66.4%)**.
+
+## 5. ModuleCatalog power/depth expansion (Muxlicer + residual depth)
+
+After #121: Muxlicer was the only `modules` row still missing power. Filled from ModularGrid **OBSERVED** (cross-checked Perfect Circuit for Muxlicer). Residual `depth_mm` nulls on the other ModuleCatalog place-loop modules filled from the same MG pages. Policy: fill-null only; no invent.
+
+| Module | +12 mA | −12 mA | +5 mA | depth mm | Notes |
+|--------|-------:|-------:|------:|---------:|-------|
+| Muxlicer | 50 | 5 | 0 | 23 | power+depth (was all null) |
+| Mimeophon | 100 | 10 | 0 | 30 | depth + 5V |
+| Optomix | 25 | 25 | 0 | 24 | depth + 5V |
+| A-110 | 90 | 20 | 0 | 55 | depth + 5V |
+| Pico DRUMS | 35 | 4 | 0 | 35 | depth + 5V |
+| Buff Mult | 4 | 17 | 0 | 39 | depth + 5V |
+
+### Place-loop recheck
+
+- **Rack id:** 4 — `Hermes place-loop power-depth recheck` (same 7 modules, 71 HP)
+- **Module draw:** +12 **369 mA** · −12 **131 mA** · +5 **0 mA**
+- **Module-level missing power warnings:** none
+- **Residual incomplete:** case rail capacities unspecified on A-100LC3 (fail-closed; headroom not computed)
+- **Overflow:** Muxlicer 16HP at start 71 still hard-fails physical fit
+
+Receipts:
+
+- `data/synth-catalog/hermes-research/modulecatalog-power-depth-results.json`
+- `data/synth-catalog/receipts/modulecatalog-power-depth-staging-apply.json`
+- `data/synth-catalog/receipts/place-loop-power-depth-recheck.json`
+
+Staging: **25/25** `modules` rows have `power_12v_ma`; all 6 `source=ModuleCatalog` rows have power + depth.

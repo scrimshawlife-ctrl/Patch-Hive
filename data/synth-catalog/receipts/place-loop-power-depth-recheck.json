@@ -1,0 +1,21 @@
+{
+  "status": "success",
+  "rack_id": 4,
+  "name": "Hermes place-loop power-depth recheck",
+  "case_id": 10,
+  "hp_used": 71,
+  "module_count": 7,
+  "power_draw_ma": {
+    "plus12": 369,
+    "neg12": 131,
+    "plus5": 0
+  },
+  "module_power_complete": true,
+  "case_power_capacity": null,
+  "gates": {
+    "physical_fit": "pass",
+    "power_headroom": "incomplete_case_capacity_unspecified_fail_closed",
+    "overflow_test": "Muxlicer 16HP at 71 hard-fails as expected"
+  },
+  "notes": "Module-level missing power warnings cleared after Muxlicer fill; residual warnings are case rail capacity only."
+}
