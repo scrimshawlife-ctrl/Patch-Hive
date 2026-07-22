@@ -355,7 +355,7 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByRole('heading', { name: 'Module gallery' })).toBeVisible();
     await expect(page.getByLabel('Module filters')).toBeVisible({ timeout: 15000 });    await expect(page.getByLabel('Module catalog results')).toBeVisible();
     await expect(page.getByText(/Showing 2 of 2 catalog modules/)).toBeVisible();
-    await page.getByLabel('Search').fill('Filter');
+    await page.getByRole('searchbox', { name: 'Search modules' }).fill('Filter');
     await expect(page.getByText(/Showing 1 of 1 catalog modules \(filtered\)/)).toBeVisible();
     await expect(page.getByText('OtherBrand — Filter Z')).toBeVisible();
     await expect(page.getByText('Oscillator A')).toHaveCount(0);

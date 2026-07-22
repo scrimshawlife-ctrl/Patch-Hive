@@ -25,6 +25,8 @@ export default function ModulesPage() {
   const [brandFilter, setBrandFilter] = useState('all');
   const [typeFilter, setTypeFilter] = useState('all');
   const [hpFilter, setHpFilter] = useState<HpFilter>('all');
+  const [sourceFilter, setSourceFilter] = useState('all');
+  const [availabilityFilter, setAvailabilityFilter] = useState('all');
   const [sortKey, setSortKey] = useState<SortKey>('brand');
   const [page, setPage] = useState(0);
   const [busySlug, setBusySlug] = useState<string | null>(null);
@@ -45,6 +47,8 @@ export default function ModulesPage() {
     if (typeFilter !== 'all') params.category = typeFilter;
     if (hpFilter === 'known') params.hp_known = true;
     if (hpFilter === 'unknown') params.hp_known = false;
+    if (sourceFilter !== 'all') params.source = sourceFilter;
+    if (availabilityFilter !== 'all') params.is_available = availabilityFilter;
 
     Promise.all([
       moduleApi.catalog(params),
@@ -67,7 +71,7 @@ export default function ModulesPage() {
         setError('Unable to load module catalog. Check that the API is reachable and try again.');
         setState('error');
       });
-  }, [page, sortKey, query, brandFilter, typeFilter, hpFilter]);
+  }, [page, sortKey, query, brandFilter, typeFilter, hpFilter, sourceFilter, availabilityFilter]);
 
   useEffect(() => {
     load();
@@ -78,12 +82,19 @@ export default function ModulesPage() {
     setBrandFilter('all');
     setTypeFilter('all');
     setHpFilter('all');
+    setSourceFilter('all');
+    setAvailabilityFilter('all');
     setSortKey('brand');
     setPage(0);
   };
 
   const filtersActive =
-    query.trim() || brandFilter !== 'all' || typeFilter !== 'all' || hpFilter !== 'all';
+    query.trim() ||
+    brandFilter !== 'all' ||
+    typeFilter !== 'all' ||
+    hpFilter !== 'all' ||
+    sourceFilter !== 'all' ||
+    availabilityFilter !== 'all';
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
@@ -183,12 +194,13 @@ export default function ModulesPage() {
           <div className="panel" aria-label="Module filters" style={{ marginBottom: 'var(--space-4)' }}>
             <div className="toolbar">
               <label className="field" htmlFor="module-search" style={{ flex: '1 1 12rem' }}>
-                Search
+                Search modules
                 <input
                   id="module-search"
                   type="search"
                   value={query}
                   placeholder="Brand, name…"
+                  aria-label="Search modules"
                   onChange={(event) => {
                     setPage(0);
                     setQuery(event.target.value);
@@ -245,6 +257,52 @@ export default function ModulesPage() {
                   <option value="all">All</option>
                   <option value="known">Known width</option>
                   <option value="unknown">Unknown width</option>
+                </select>
+              </label>
+              <label className="inline-field" htmlFor="module-source">
+                Source
+                <select
+                  id="module-source"
+                  value={sourceFilter}
+                  onChange={(event) => {
+                    setPage(0);
+                    setSourceFilter(event.target.value);
+                  }}
+                >
+                  <option value="all">All sources</option>
+                  {stats?.by_source
+                    ? Object.keys(stats.by_source)
+                        .filter(Boolean)
+                        .sort()
+                        .map((src) => (
+                          <option key={src} value={src}>
+                            {src}
+                          </option>
+                        ))
+                    : null}
+                  {!stats?.by_source ? (
+                    <option value="SynthCatalogResearch">SynthCatalogResearch</option>
+                  ) : null}
+                </select>
+              </label>
+              <label className="inline-field" htmlFor="module-availability">
+                Status
+                <select
+                  id="module-availability"
+                  value={availabilityFilter}
+                  onChange={(event) => {
+                    setPage(0);
+                    setAvailabilityFilter(event.target.value);
+                  }}
+                >
+                  <option value="all">All status</option>
+                  <option value="available">available</option>
+                  <option value="discontinued">discontinued</option>
+                  <option value="upcoming">upcoming</option>
+                  <option value="duplicate">duplicate</option>
+                  <option value="non_eurorack">non_eurorack</option>
+                  <option value="desktop">desktop</option>
+                  <option value="unresolved">unresolved</option>
                 </select>
               </label>
               <label className="inline-field" htmlFor="module-sort">

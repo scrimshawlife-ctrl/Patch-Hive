@@ -64,6 +64,7 @@ def main(argv: list[str] | None = None) -> int:
         overlays = args.power_overlay or [
             REPO / "data/synth-catalog/overlays/module-power-depth-v1.json",
             REPO / "data/synth-catalog/overlays/module-power-depth-v2.json",
+            REPO / "data/synth-catalog/overlays/module-power-depth-v3.json",
         ]
         for ov in overlays:
             ov = Path(ov)
