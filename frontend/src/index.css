@@ -642,3 +642,156 @@ code { padding: 0.15rem 0.35rem; border-radius: var(--radius-sm); background: va
   .style-studio-grid { grid-template-columns: 1fr; }
   .influence-grid { grid-template-columns: 1fr; }
 }
+
+/* Catalog / place UX polish */
+.step-progress {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-5);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface-inset);
+}
+.step-progress__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: 40px;
+  padding: 0 var(--space-3);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 650;
+}
+.step-progress__num {
+  display: grid;
+  place-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.step-progress__item--current {
+  color: var(--text-primary);
+  background: var(--surface-raised);
+}
+.step-progress__item--current .step-progress__num {
+  border-color: var(--action);
+  color: var(--action-contrast);
+  background: var(--action);
+}
+.step-progress__item--done {
+  color: var(--success);
+}
+.step-progress__item--done .step-progress__num {
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.status-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 1.75rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--text-secondary);
+  background: var(--surface-inset);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.status-chip--success {
+  border-color: color-mix(in srgb, var(--success) 55%, var(--border));
+  color: var(--success);
+  background: color-mix(in srgb, var(--success) 12%, transparent);
+}
+.status-chip--warning {
+  border-color: color-mix(in srgb, var(--warning) 55%, var(--border));
+  color: var(--warning);
+  background: color-mix(in srgb, var(--warning) 12%, transparent);
+}
+.status-chip--danger {
+  border-color: color-mix(in srgb, var(--danger) 55%, var(--border));
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 12%, transparent);
+}
+.status-chip--neutral {
+  color: var(--text-muted);
+}
+.status-chip--interactive {
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.status-chip--interactive:hover {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+.status-chip--interactive.is-active,
+.status-chip--interactive.status-chip--success {
+  /* selected quick-filter affordance already covered by tone classes */
+}
+
+.gate-chip-row,
+.filter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
+}
+
+.module-preselect-banner {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid color-mix(in srgb, var(--info) 40%, var(--border));
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--info) 10%, var(--surface-panel));
+  margin-bottom: var(--space-3);
+}
+
+.hp-usage {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+.hp-usage__row {
+  display: grid;
+  gap: var(--space-1);
+}
+.hp-usage__meta {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  font-size: 0.85rem;
+  font-weight: 650;
+}
+.usage-bar {
+  height: 0.55rem;
+  border-radius: 999px;
+  background: var(--surface-inset);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+.usage-bar__fill {
+  height: 100%;
+  border-radius: inherit;
+  background: var(--text-muted);
+  transition: width var(--motion-med) ease;
+}
+.usage-bar__fill--success { background: var(--success); }
+.usage-bar__fill--warning { background: var(--warning); }
+.usage-bar__fill--danger { background: var(--danger); }
+.usage-bar__fill--neutral { background: var(--border-strong); }
+
+.placement-cta {
+  border-color: color-mix(in srgb, var(--action) 45%, var(--border));
+  background: color-mix(in srgb, var(--action) 8%, var(--surface-panel));
+}

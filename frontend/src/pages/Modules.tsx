@@ -2,8 +2,8 @@
  * Module gallery — browse lightweight module_catalog (research + curated)
  * with optional materialize into full-spec inventory for rack placement.
  */
-import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { moduleApi } from '@/lib/api';
 import type { CatalogModule, CatalogModuleStats } from '@/types/api';
 
@@ -13,8 +13,21 @@ type HpFilter = 'all' | 'known' | 'unknown';
 
 const PAGE_SIZE = 48;
 
+function parseHpFilter(raw: string | null): HpFilter {
+  if (raw === 'known' || raw === 'true' || raw === '1') return 'known';
+  if (raw === 'unknown' || raw === 'false' || raw === '0') return 'unknown';
+  return 'all';
+}
+
+function parseSort(raw: string | null): SortKey {
+  if (raw === 'name' || raw === 'hp' || raw === 'category' || raw === 'brand') return raw;
+  return 'brand';
+}
+
 export default function ModulesPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
   const [modules, setModules] = useState<CatalogModule[]>([]);
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<CatalogModuleStats | null>(null);
@@ -22,16 +35,55 @@ export default function ModulesPage() {
   const [categories, setCategories] = useState<string[]>([]);
   const [state, setState] = useState<LoadState>('loading');
   const [error, setError] = useState('');
-  const [query, setQuery] = useState('');
-  const [brandFilter, setBrandFilter] = useState('all');
-  const [typeFilter, setTypeFilter] = useState('all');
-  const [hpFilter, setHpFilter] = useState<HpFilter>('all');
-  const [sourceFilter, setSourceFilter] = useState('all');
-  const [availabilityFilter, setAvailabilityFilter] = useState('all');
-  const [sortKey, setSortKey] = useState<SortKey>('brand');
-  const [page, setPage] = useState(0);
+  const [query, setQuery] = useState(() => searchParams.get('q') || searchParams.get('search') || '');
+  const [brandFilter, setBrandFilter] = useState(() => searchParams.get('brand') || 'all');
+  const [typeFilter, setTypeFilter] = useState(
+    () => searchParams.get('category') || searchParams.get('type') || 'all',
+  );
+  const [hpFilter, setHpFilter] = useState<HpFilter>(() =>
+    parseHpFilter(searchParams.get('hp') || searchParams.get('hp_known')),
+  );
+  const [sourceFilter, setSourceFilter] = useState(() => searchParams.get('source') || 'all');
+  const [availabilityFilter, setAvailabilityFilter] = useState(
+    () => searchParams.get('status') || searchParams.get('availability') || 'all',
+  );
+  const [sortKey, setSortKey] = useState<SortKey>(() => parseSort(searchParams.get('sort')));
+  const [page, setPage] = useState(() => {
+    const p = Number(searchParams.get('page') || '1');
+    return Number.isFinite(p) && p > 1 ? p - 1 : 0;
+  });
   const [busySlug, setBusySlug] = useState<string | null>(null);
   const [actionMsg, setActionMsg] = useState('');
+  const [lastPrepared, setLastPrepared] = useState<{
+    brand: string;
+    name: string;
+    moduleId: number;
+  } | null>(null);
+
+  // Keep URL in sync so filters are shareable / back-button friendly
+  useEffect(() => {
+    const next = new URLSearchParams();
+    if (query.trim()) next.set('q', query.trim());
+    if (brandFilter !== 'all') next.set('brand', brandFilter);
+    if (typeFilter !== 'all') next.set('category', typeFilter);
+    if (hpFilter === 'known') next.set('hp', 'known');
+    if (hpFilter === 'unknown') next.set('hp', 'unknown');
+    if (sourceFilter !== 'all') next.set('source', sourceFilter);
+    if (availabilityFilter !== 'all') next.set('status', availabilityFilter);
+    if (sortKey !== 'brand') next.set('sort', sortKey);
+    if (page > 0) next.set('page', String(page + 1));
+    setSearchParams(next, { replace: true });
+  }, [
+    query,
+    brandFilter,
+    typeFilter,
+    hpFilter,
+    sourceFilter,
+    availabilityFilter,
+    sortKey,
+    page,
+    setSearchParams,
+  ]);
 
   const load = useCallback(() => {
     setState('loading');
@@ -97,11 +149,77 @@ export default function ModulesPage() {
     sourceFilter !== 'all' ||
     availabilityFilter !== 'all';
 
+  const activeFilterChips = useMemo(() => {
+    const chips: { key: string; label: string; clear: () => void }[] = [];
+    if (query.trim()) {
+      chips.push({
+        key: 'q',
+        label: `Search: ${query.trim()}`,
+        clear: () => {
+          setQuery('');
+          setPage(0);
+        },
+      });
+    }
+    if (brandFilter !== 'all') {
+      chips.push({
+        key: 'brand',
+        label: `Brand: ${brandFilter}`,
+        clear: () => {
+          setBrandFilter('all');
+          setPage(0);
+        },
+      });
+    }
+    if (typeFilter !== 'all') {
+      chips.push({
+        key: 'cat',
+        label: `Category: ${typeFilter}`,
+        clear: () => {
+          setTypeFilter('all');
+          setPage(0);
+        },
+      });
+    }
+    if (hpFilter !== 'all') {
+      chips.push({
+        key: 'hp',
+        label: hpFilter === 'known' ? 'HP known' : 'HP unknown',
+        clear: () => {
+          setHpFilter('all');
+          setPage(0);
+        },
+      });
+    }
+    if (sourceFilter !== 'all') {
+      chips.push({
+        key: 'source',
+        label: `Source: ${sourceFilter}`,
+        clear: () => {
+          setSourceFilter('all');
+          setPage(0);
+        },
+      });
+    }
+    if (availabilityFilter !== 'all') {
+      chips.push({
+        key: 'status',
+        label: `Status: ${availabilityFilter}`,
+        clear: () => {
+          setAvailabilityFilter('all');
+          setPage(0);
+        },
+      });
+    }
+    return chips;
+  }, [query, brandFilter, typeFilter, hpFilter, sourceFilter, availabilityFilter]);
+
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const placeFromCatalog = async (row: CatalogModule) => {
     setBusySlug(row.slug);
     setActionMsg('');
+    setLastPrepared(null);
     try {
       if (row.hp == null) {
         setActionMsg(
@@ -111,6 +229,7 @@ export default function ModulesPage() {
       }
       const res = await moduleApi.materializeCatalog(row.slug);
       const mid = res.data.module_id;
+      setLastPrepared({ brand: res.data.module.brand, name: res.data.module.name, moduleId: mid });
       setActionMsg(
         `${res.data.module.brand} ${res.data.module.name} ready (module #${mid}, ${res.data.status}). Opening rack builder…`,
       );
@@ -160,13 +279,57 @@ export default function ModulesPage() {
                   .join(', ')}`
               : ''}
           </p>
+          <div className="gate-chip-row" style={{ marginTop: 'var(--space-3)' }}>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${hpFilter === 'known' ? ' status-chip--success' : ''}`}
+              onClick={() => {
+                setHpFilter('known');
+                setPage(0);
+              }}
+            >
+              Placeable (HP known)
+            </button>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${hpFilter === 'unknown' ? ' status-chip--warning' : ''}`}
+              onClick={() => {
+                setHpFilter('unknown');
+                setPage(0);
+              }}
+            >
+              HP unknown
+            </button>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${hpFilter === 'all' ? ' status-chip--neutral is-active' : ''}`}
+              onClick={() => {
+                setHpFilter('all');
+                setPage(0);
+              }}
+            >
+              All widths
+            </button>
+          </div>
         </div>
       ) : null}
 
       {actionMsg ? (
-        <p className="status" role="status" style={{ marginBottom: 'var(--space-4)' }}>
-          {actionMsg}
-        </p>
+        <div
+          className={`panel${lastPrepared ? ' module-preselect-banner' : ''}`}
+          role="status"
+          style={{ marginBottom: 'var(--space-4)' }}
+        >
+          <p className="status" style={{ margin: 0 }}>
+            {actionMsg}
+          </p>
+          {lastPrepared ? (
+            <p className="muted" style={{ margin: 'var(--space-2) 0 0' }}>
+              Next: pick a case → create rig → module #{lastPrepared.moduleId} is preselected for
+              placement.
+            </p>
+          ) : null}
+        </div>
       ) : null}
 
       {state === 'loading' ? (
@@ -331,6 +494,21 @@ export default function ModulesPage() {
                 </button>
               ) : null}
             </div>
+            {activeFilterChips.length > 0 ? (
+              <div className="filter-chip-row" aria-label="Active filters">
+                {activeFilterChips.map((chip) => (
+                  <button
+                    key={chip.key}
+                    type="button"
+                    className="status-chip status-chip--interactive"
+                    onClick={chip.clear}
+                    title="Remove filter"
+                  >
+                    {chip.label} ×
+                  </button>
+                ))}
+              </div>
+            ) : null}
           </div>
 
           <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
@@ -363,33 +541,38 @@ export default function ModulesPage() {
                       ) : (
                         <span title="Width not confirmed — not placeable">HP unknown</span>
                       )}
+                    </p>
+                    <div className="gate-chip-row" aria-label="Module status">
                       {module.hp != null ? (
-                        <span className="muted" title="Catalog width is known">
-                          {' '}
-                          · placeable
+                        <span className="status-chip status-chip--success">placeable</span>
+                      ) : (
+                        <span className="status-chip status-chip--warning">HP unknown</span>
+                      )}
+                      {module.source ? (
+                        <span className="status-chip status-chip--neutral">{module.source}</span>
+                      ) : null}
+                      {module.is_available && module.is_available !== 'available' ? (
+                        <span className="status-chip status-chip--warning">
+                          {module.is_available}
                         </span>
                       ) : null}
-                      {module.source ? ` · ${module.source}` : ''}
-                      {module.is_available && module.is_available !== 'available'
-                        ? ` · ${module.is_available}`
-                        : ''}
-                    </p>
+                    </div>
                     <div className="page-hero-actions">
                       <button
-                        className="button button-secondary"
+                        className="button button-primary"
                         type="button"
                         disabled={busySlug === module.slug || module.hp == null}
                         title={
                           module.hp == null
                             ? 'Needs manufacturer-confirmed HP before placement'
-                            : 'Materialize full module record for rack placement'
+                            : 'Materialize full module record, then open rack builder with it preselected'
                         }
                         onClick={() => placeFromCatalog(module)}
                       >
                         {busySlug === module.slug
-                          ? 'Working…'
+                          ? 'Preparing…'
                           : module.hp == null
-                            ? 'HP unknown'
+                            ? 'Needs HP'
                             : 'Prepare for rig'}
                       </button>
                       <Link className="button button-quiet" to="/racks">
