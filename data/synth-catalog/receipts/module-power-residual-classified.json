@@ -1,0 +1,250 @@
+{
+  "status": "success",
+  "modulecatalog_p12_pct": 90.0,
+  "with_p12": 359,
+  "null_p12": 40,
+  "residual_classified": [
+    {
+      "module_id": 33,
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 39,
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 55,
+      "brand": "ALM Busy Circuits",
+      "name": "Pamela's NEW Workout",
+      "reason": "slug_mismatch_MG"
+    },
+    {
+      "module_id": 63,
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 65,
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 70,
+      "brand": "Bastl Instruments",
+      "name": "CV Trinity Expander",
+      "reason": "expander_draw_unresolved"
+    },
+    {
+      "module_id": 79,
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider Expander",
+      "reason": "expander_draw_unresolved"
+    },
+    {
+      "module_id": 95,
+      "brand": "Bastl Instruments",
+      "name": "Wackel Kontakt",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 98,
+      "brand": "Befaco",
+      "name": "BEFACO SLICER V3",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 99,
+      "brand": "Befaco",
+      "name": "BF20 VCF",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 107,
+      "brand": "Befaco",
+      "name": "Input/Output",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 113,
+      "brand": "Befaco",
+      "name": "Noise & Lag",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 116,
+      "brand": "Befaco",
+      "name": "Out",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 121,
+      "brand": "Befaco",
+      "name": "QUAD VCA",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 123,
+      "brand": "Befaco",
+      "name": "RING MOD",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 125,
+      "brand": "Befaco",
+      "name": "S&H + Lag",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 126,
+      "brand": "Befaco",
+      "name": "STmix",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 129,
+      "brand": "Befaco",
+      "name": "Slicer V3",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 131,
+      "brand": "Befaco",
+      "name": "Tube Distortion VCA",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 132,
+      "brand": "Befaco",
+      "name": "VCO III",
+      "reason": "vintage_befaco_or_404_MG"
+    },
+    {
+      "module_id": 135,
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "reason": "cwejman_pages_unresolved"
+    },
+    {
+      "module_id": 141,
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "reason": "cwejman_pages_unresolved"
+    },
+    {
+      "module_id": 155,
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "reason": "cwejman_pages_unresolved"
+    },
+    {
+      "module_id": 165,
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 207,
+      "brand": "Doepfer",
+      "name": "A-181",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 225,
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 248,
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 262,
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (black)",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 263,
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (golden)",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 268,
+      "brand": "Erica Synths",
+      "name": "Black Input",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 280,
+      "brand": "Erica Synths",
+      "name": "Matrix Mixer",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 326,
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk2 Gate Expander",
+      "reason": "expander_draw_unresolved"
+    },
+    {
+      "module_id": 353,
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "reason": "intellijel_MG_unresolved"
+    },
+    {
+      "module_id": 357,
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "reason": "intellijel_MG_unresolved"
+    },
+    {
+      "module_id": 361,
+      "brand": "Intellijel",
+      "name": "Quadrax",
+      "reason": "intellijel_MG_unresolved"
+    },
+    {
+      "module_id": 370,
+      "brand": "Intellijel",
+      "name": "\u03bcAtt",
+      "reason": "intellijel_MG_unresolved"
+    },
+    {
+      "module_id": 371,
+      "brand": "Joranalogue",
+      "name": "Filter 8",
+      "reason": "joranalogue_slug_unresolved"
+    },
+    {
+      "module_id": 372,
+      "brand": "Joranalogue",
+      "name": "Generate 3",
+      "reason": "joranalogue_slug_unresolved"
+    },
+    {
+      "module_id": 379,
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "reason": "no_OBSERVED_power_page"
+    },
+    {
+      "module_id": 383,
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "reason": "no_OBSERVED_power_page"
+    }
+  ],
+  "safe_apply_this_round": 8,
+  "notes": "Rejected false passive 0mA from marketing pages; blanks/panels only"
+}
