@@ -1,0 +1,42 @@
+{
+  "status": "success",
+  "scope": "case rail capacity enrichment (A-100LC3 + NiftyCASE)",
+  "policy": "fill-null only; no invent",
+  "applied": [
+    {
+      "case": "Doepfer A-100LC3",
+      "slug": "doepfer-a-100lc3",
+      "legacy_case_id": 10,
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
+      "provenance": "PSU3 common ratings from same research pack as A-100LC1/LC6/P6 siblings (Cases4PatchHive); LC3 power_raw previously omitted numeric rails",
+      "tables": [
+        "cases",
+        "case_power_systems",
+        "fixtures/cases_research_2026.json",
+        "data/cases/seed-v1.json"
+      ]
+    },
+    {
+      "case": "Cre8audio NiftyCASE",
+      "slug": "cre8audio-niftycase",
+      "legacy_case_id": 35,
+      "power_12v_ma": 1500,
+      "power_neg12v_ma": 500,
+      "power_5v_ma": 500,
+      "provenance": "OBSERVED official https://www.cre8audio.com/niftycase peak rail currents 2026-07-22",
+      "tables": [
+        "cases",
+        "case_power_systems",
+        "fixtures/cases_research_2026.json",
+        "data/cases/seed-v1.json"
+      ]
+    }
+  ],
+  "deferred_null_rails": [
+    "Tiptop Happy Ending Kit (adapter mA only; microZEUS rail split not OBSERVED)",
+    "4ms Pod* (research: rail current unspecified)",
+    "Erica travel cases / several Pittsburgh / Buchla boats (unspecified)"
+  ]
+}

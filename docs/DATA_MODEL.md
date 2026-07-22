@@ -135,6 +135,33 @@ Represents a Eurorack case with power and layout specifications.
 
 ---
 
+### ModuleCatalog
+
+Lightweight browse/search directory (two-tier with `modules`).
+
+**Table**: `module_catalog`
+
+| Column           | Type         | Constraints           | Description                                      |
+|------------------|--------------|-----------------------|--------------------------------------------------|
+| id               | Integer      | PK, Auto              | Unique identifier                                |
+| modulargrid_id   | Integer      | Unique, Nullable      | ModularGrid ID when known                        |
+| slug             | String(200)  | Unique, Not Null      | `brand-name` normalized                          |
+| brand            | String(100)  | Not Null, Indexed     | Manufacturer brand                               |
+| name             | String(200)  | Not Null, Indexed     | Module name                                      |
+| hp               | Integer      | Nullable, Indexed     | Width in HP (null = unknown; never invent)       |
+| category         | String(50)   | Nullable, Indexed     | VCO/VCF/… taxonomy                               |
+| image_url        | String(500)  | Nullable              | Module image                                     |
+| modulargrid_url  | String(500)  | Nullable              | ModularGrid page                                 |
+| manufacturer_url | String(500)  | Nullable              | Manufacturer page                                |
+| is_available     | String(20)   | Indexed               | available / discontinued / upcoming              |
+| source           | String(50)   | Nullable, Indexed     | Admit pipeline (e.g. SynthCatalogResearch)       |
+| created_at       | String(50)   | Nullable              | ISO timestamp                                    |
+| updated_at       | String(50)   | Nullable              | ISO timestamp                                    |
+
+Full specs live on `modules` after materialize (`source=ModuleCatalog`).
+
+---
+
 ### Rack
 
 Represents a user's rack configuration (case + modules).

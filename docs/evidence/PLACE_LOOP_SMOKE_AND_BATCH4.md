@@ -95,3 +95,11 @@ Receipts:
 - `data/synth-catalog/receipts/place-loop-power-depth-recheck.json`
 
 Staging: **25/25** `modules` rows have `power_12v_ma`; all 6 `source=ModuleCatalog` rows have power + depth.
+
+## 6. Case rails + catalog source (post-merge continue)
+
+See `docs/evidence/CASE_RAIL_AND_CATALOG_SOURCE.md`.
+
+- **A-100LC3** rails filled (PSU3 2000/1200/4000) → place-loop power headroom **verified** (+12 1631 / −12 1069 / +5 4000 mA).
+- **NiftyCASE** rails filled from official OBSERVED peak currents.
+- **`module_catalog.source`** column + `SynthCatalogResearch` backfill (408/408).

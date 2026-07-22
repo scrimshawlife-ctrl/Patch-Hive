@@ -359,9 +359,9 @@
       "format_family": "Eurorack",
       "capacity_unit": "hp",
       "powered": true,
-      "power_12v_ma": null,
-      "power_neg12v_ma": null,
-      "power_5v_ma": null,
+      "power_12v_ma": 2000,
+      "power_neg12v_ma": 1200,
+      "power_5v_ma": 4000,
       "description": "Desktop/raw wood \u00b7 84HP 3U",
       "manufacturer_url": null,
       "meta": {
@@ -375,12 +375,12 @@
         "capacity_unit": "hp",
         "capacity": 84,
         "mounting": "Desktop/raw wood",
-        "power_raw": "PSU3/PSU3A or PSU2; see manufacturer PSU ratings; Doepfer bus board",
+        "power_raw": "PSU3/PSU3A or PSU2; common ratings +12 2A, -12 1.2A, +5 4A (PSU3) aligned with A-100LC1 sibling in same research pack; Doepfer bus board",
         "build_raw": "5.51lb; raw wood cabinet; street $250; MSRP unspecified; unspecified",
         "powered": true
       },
       "source": "ResearchCSV",
-      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+      "source_reference": "fixtures/Cases4PatchHive.md + sibling PSU3 ratings (LC1/LC6/P6); enrichment 2026-07-22"
     },
     {
       "brand": "Doepfer",
@@ -1267,11 +1267,11 @@
       "format_family": "Eurorack",
       "capacity_unit": "hp",
       "powered": true,
-      "power_12v_ma": null,
-      "power_neg12v_ma": null,
-      "power_5v_ma": null,
+      "power_12v_ma": 1500,
+      "power_neg12v_ma": 500,
+      "power_5v_ma": 500,
       "description": "Desktop portable \u00b7 84HP 3U",
-      "manufacturer_url": null,
+      "manufacturer_url": "https://www.cre8audio.com/niftycase",
       "meta": {
         "format_raw": "Eurorack",
         "size_raw": "84HP 3U; depth unspecified; usable unspecified; dims unspecified",
@@ -1283,13 +1283,13 @@
         "capacity_unit": "hp",
         "capacity": 84,
         "mounting": "Desktop portable",
-        "power_raw": "Built-in powered case; 9 power outlets on cable per user/manual discussion; exact rail currents unspecified; USB + 5-pin MIDI to CV/Gate/Clock/Mod; integrated cable harness",
+        "power_raw": "Official cre8audio.com/niftycase: peak +12V 1500mA, -12V 500mA, +5V 500mA (10-gang flying bus); OBSERVED 2026-07-22",
         "build_raw": "3.96lb; metal chassis with real wood endcaps; street $199.99; official price unspecified on current capture; 2020",
         "release_year": 2020,
         "powered": true
       },
       "source": "ResearchCSV",
-      "source_reference": "fixtures/Cases4PatchHive.md master table (research 2026; unspecified \u2192 null)"
+      "source_reference": "official cre8audio.com/niftycase OBSERVED peak rail currents 2026-07-22"
     },
     {
       "brand": "Behringer",

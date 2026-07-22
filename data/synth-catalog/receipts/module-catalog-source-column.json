@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "migration": "20260722_module_catalog_source",
+  "column": "module_catalog.source",
+  "backfill": "SynthCatalogResearch for all existing rows",
+  "staging": {
+    "by_source": {
+      "SynthCatalogResearch": 408
+    },
+    "null_source": 0
+  },
+  "api": {
+    "browse_filter": "GET /api/modules/catalog?source=SynthCatalogResearch",
+    "stats_field": "by_source"
+  }
+}

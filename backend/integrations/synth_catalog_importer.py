@@ -99,6 +99,7 @@ def import_catalog(
             modulargrid_url=row.get("modulargrid_url"),
             image_url=row.get("image_url"),
             is_available=row.get("is_available") or "available",
+            source=(row.get("source") or SOURCE_NAME),
         )
         db.add(entry)
         imported += 1
