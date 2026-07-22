@@ -74,6 +74,42 @@ def test_catalog_stats_hp_coverage(db_session: Session, client=None):
     assert stats["hp_stats"]["coverage_pct"] == 50.0
 
 
+def test_materialize_batch_hp_known_only(db_session: Session):
+    from modules.catalog_routes import materialize_catalog_batch
+
+    _entry(db_session, brand="BatchCo", name="Alpha", hp=8)
+    _entry(db_session, brand="BatchCo", name="Beta", hp=None)
+    _entry(db_session, brand="BatchCo", name="Gamma", hp=12)
+
+    first = materialize_catalog_batch(
+        db_session, brand="BatchCo", hp_known_only=True, limit=50
+    )
+    assert first["scanned"] == 2
+    assert first["created"] == 2
+    assert first["exists"] == 0
+    assert first["failed"] == 0
+
+    second = materialize_catalog_batch(
+        db_session, brand="BatchCo", hp_known_only=True, limit=50
+    )
+    assert second["created"] == 0
+    assert second["exists"] == 2
+
+    count = (
+        db_session.query(Module)
+        .filter(Module.brand == "BatchCo")
+        .count()
+    )
+    assert count == 2
+    # Null-HP Beta must not materialize
+    assert (
+        db_session.query(Module)
+        .filter(Module.brand == "BatchCo", Module.name == "Beta")
+        .count()
+        == 0
+    )
+
+
 def test_catalog_source_persisted_and_filterable(db_session: Session):
     row = ModuleCatalog(
         slug=ModuleCatalog.create_slug("TestCo", "Widget"),

@@ -1,0 +1,192 @@
+{
+  "status": "success",
+  "modules_total": 418,
+  "modules_from_catalog": 399,
+  "modules_null_power": 393,
+  "materialize_batch": {
+    "scanned": 404,
+    "created": 393,
+    "exists": 11,
+    "failed": 0,
+    "rebatch": {
+      "created": 0,
+      "exists": 404,
+      "failed": 0
+    }
+  },
+  "racks": [
+    {
+      "label": "lc3",
+      "rack_id": 6,
+      "case_id": 10,
+      "case_name": "Doepfer A-100LC3 84HP",
+      "module_count": 15,
+      "hp_used_per_row": [
+        84
+      ],
+      "overall_status": "incomplete",
+      "physical_fit": "PHYSICAL_FIT_INCOMPLETE",
+      "power_headroom": [
+        {
+          "rail": "+12V",
+          "draw_ma": 449,
+          "capacity_ma": 2000,
+          "headroom_ma": 1551,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw_ma": 194,
+          "capacity_ma": 1200,
+          "headroom_ma": 1006,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw_ma": 0,
+          "capacity_ma": 4000,
+          "headroom_ma": 4000,
+          "status": "verified"
+        }
+      ],
+      "warning_codes": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ],
+      "notes": "Packed prefer-powered modules; residual MODULE_POWER_UNKNOWN/DEPTH for unenriched ModuleCatalog rows"
+    },
+    {
+      "label": "mantis",
+      "rack_id": 7,
+      "case_id": 7,
+      "case_name": "Tiptop Mantis 2x104HP",
+      "module_count": 36,
+      "hp_used_per_row": [
+        103,
+        4
+      ],
+      "overall_status": "incomplete",
+      "physical_fit": "PHYSICAL_FIT_INCOMPLETE",
+      "connector_availability": "CONNECTORS_OK",
+      "power_headroom": [
+        {
+          "rail": "+12V",
+          "draw_ma": 139,
+          "capacity_ma": 3000,
+          "headroom_ma": 2861,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw_ma": 49,
+          "capacity_ma": 1100,
+          "headroom_ma": 1051,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw_ma": 0,
+          "capacity_ma": 300,
+          "headroom_ma": 300,
+          "status": "verified"
+        }
+      ],
+      "warning_codes": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ],
+      "notes": "Capped at 36 modules for connector budget (hard CONNECTORS_EXCEEDED at 61)",
+      "modules_sample": [
+        {
+          "module_id": 24,
+          "name": "Buff Mult",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 0
+        },
+        {
+          "module_id": 31,
+          "name": "ADDAC200 Multiples",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 2
+        },
+        {
+          "module_id": 32,
+          "name": "ADDAC200PI",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 4
+        },
+        {
+          "module_id": 33,
+          "name": "ADDAC200S Size Matter black",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 6
+        },
+        {
+          "module_id": 70,
+          "name": "CV Trinity Expander",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 8
+        },
+        {
+          "module_id": 78,
+          "name": "Knit Rider",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 10
+        },
+        {
+          "module_id": 79,
+          "name": "Knit Rider Expander",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 12
+        },
+        {
+          "module_id": 81,
+          "name": "Multiple",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 14
+        },
+        {
+          "module_id": 85,
+          "name": "Propust",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 16
+        },
+        {
+          "module_id": 92,
+          "name": "Solenoid CV Velocity Expander",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 18
+        },
+        {
+          "module_id": 205,
+          "name": "A-180-2 Multiples",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 20
+        },
+        {
+          "module_id": 232,
+          "name": "WL Attenuator",
+          "hp": 2,
+          "row": 0,
+          "start_hp": 22
+        }
+      ]
+    }
+  ],
+  "gates_observed": {
+    "connectors_exceeded": "61 modules on Mantis hard-failed CONNECTORS_EXCEEDED (budget 36) \u2014 fail-closed dual-gate",
+    "depth_unknown": "DEPTH_MODULE_UNKNOWN soft for most ModuleCatalog-sourced rows",
+    "module_power_unknown": "MODULE_POWER_UNKNOWN soft until bulk power enrichment"
+  }
+}
