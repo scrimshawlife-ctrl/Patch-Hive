@@ -283,6 +283,91 @@ def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
     }
 
 
+def materialize_catalog_batch(
+    db: Session,
+    *,
+    brand: Optional[str] = None,
+    hp_known_only: bool = True,
+    limit: int = 500,
+) -> Dict[str, Any]:
+    """Materialize many catalog rows into full ``modules`` (idempotent).
+
+    Default: only HP-known rows (placeable). Does not invent power/depth/I/O.
+    Continues on per-row failures so one bad slug cannot abort the batch.
+    """
+    query = db.query(ModuleCatalog).order_by(
+        ModuleCatalog.brand.asc(), ModuleCatalog.name.asc()
+    )
+    if brand:
+        query = query.filter(ModuleCatalog.brand == brand)
+    if hp_known_only:
+        query = query.filter(ModuleCatalog.hp.isnot(None))
+    entries = query.limit(limit).all()
+
+    created = 0
+    exists = 0
+    failed: list[dict[str, str]] = []
+    samples: list[dict[str, Any]] = []
+
+    for entry in entries:
+        try:
+            result = materialize_catalog_entry(db, entry.slug)
+            status = result.get("status")
+            if status == "created":
+                created += 1
+            elif status == "exists":
+                exists += 1
+            if len(samples) < 30:
+                samples.append(
+                    {
+                        "catalog_slug": entry.slug,
+                        "status": status,
+                        "module_id": result.get("module_id"),
+                        "hp": entry.hp,
+                    }
+                )
+        except HTTPException as exc:
+            failed.append(
+                {
+                    "catalog_slug": entry.slug,
+                    "error": str(exc.detail),
+                    "status_code": str(exc.status_code),
+                }
+            )
+        except Exception as exc:  # noqa: BLE001 — batch continues
+            failed.append({"catalog_slug": entry.slug, "error": str(exc)})
+
+    return {
+        "status": "success" if not failed else "partial",
+        "scanned": len(entries),
+        "created": created,
+        "exists": exists,
+        "failed": len(failed),
+        "failed_samples": failed[:20],
+        "samples": samples,
+        "filters": {
+            "brand": brand,
+            "hp_known_only": hp_known_only,
+            "limit": limit,
+        },
+    }
+
+
+@router.post("/catalog/materialize-batch")
+def materialize_module_catalog_batch(
+    brand: Optional[str] = Query(None, description="Optional brand filter"),
+    hp_known_only: bool = Query(
+        True, description="If true (default), only rows with known HP"
+    ),
+    limit: int = Query(500, ge=1, le=2000),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    """Bulk materialize catalog rows into placeable ``modules`` (idempotent)."""
+    return materialize_catalog_batch(
+        db, brand=brand, hp_known_only=hp_known_only, limit=limit
+    )
+
+
 @router.post("/catalog/{slug}/materialize")
 def materialize_module_from_catalog(slug: str, db: Session = Depends(get_db)) -> Dict[str, Any]:
     """

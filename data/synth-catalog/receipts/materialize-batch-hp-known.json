@@ -1,0 +1,195 @@
+{
+    "status": "success",
+    "scanned": 404,
+    "created": 393,
+    "exists": 11,
+    "failed": 0,
+    "failed_samples": [],
+    "samples": [
+        {
+            "catalog_slug": "addac-system-addac001-vcc-voltage-controlled-computer",
+            "status": "created",
+            "module_id": 26,
+            "hp": 12
+        },
+        {
+            "catalog_slug": "addac-system-addac003-vcc-manual-inputs",
+            "status": "created",
+            "module_id": 27,
+            "hp": 4
+        },
+        {
+            "catalog_slug": "addac-system-addac005-vcc-gate-outputs",
+            "status": "created",
+            "module_id": 28,
+            "hp": 4
+        },
+        {
+            "catalog_slug": "addac-system-addac101-wav-player",
+            "status": "created",
+            "module_id": 29,
+            "hp": 11
+        },
+        {
+            "catalog_slug": "addac-system-addac102-vc-fm-radio",
+            "status": "created",
+            "module_id": 30,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac200-multiples",
+            "status": "created",
+            "module_id": 31,
+            "hp": 2
+        },
+        {
+            "catalog_slug": "addac-system-addac200pi",
+            "status": "created",
+            "module_id": 32,
+            "hp": 2
+        },
+        {
+            "catalog_slug": "addac-system-addac200s-size-matter-black",
+            "status": "created",
+            "module_id": 33,
+            "hp": 2
+        },
+        {
+            "catalog_slug": "addac-system-addac203-cv-mapping",
+            "status": "created",
+            "module_id": 34,
+            "hp": 4
+        },
+        {
+            "catalog_slug": "addac-system-addac204-vc-cv-mapping",
+            "status": "created",
+            "module_id": 35,
+            "hp": 6
+        },
+        {
+            "catalog_slug": "addac-system-addac205-dual-oscilloscope-awg",
+            "status": "created",
+            "module_id": 36,
+            "hp": 10
+        },
+        {
+            "catalog_slug": "addac-system-addac207",
+            "status": "created",
+            "module_id": 37,
+            "hp": 10
+        },
+        {
+            "catalog_slug": "addac-system-addac207-intuitive-quantizer-black",
+            "status": "created",
+            "module_id": 38,
+            "hp": 10
+        },
+        {
+            "catalog_slug": "addac-system-addac213b",
+            "status": "created",
+            "module_id": 39,
+            "hp": 3
+        },
+        {
+            "catalog_slug": "addac-system-addac215",
+            "status": "created",
+            "module_id": 40,
+            "hp": 6
+        },
+        {
+            "catalog_slug": "addac-system-addac216",
+            "status": "created",
+            "module_id": 41,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac302-nchunk-control",
+            "status": "created",
+            "module_id": 42,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac306",
+            "status": "created",
+            "module_id": 43,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac501-complex-random",
+            "status": "created",
+            "module_id": 44,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac501b-complex-random-expansion",
+            "status": "created",
+            "module_id": 45,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "addac-system-addac502-ultra-lissajous",
+            "status": "created",
+            "module_id": 46,
+            "hp": 10
+        },
+        {
+            "catalog_slug": "addac-system-addac503-marble-physics",
+            "status": "created",
+            "module_id": 47,
+            "hp": 10
+        },
+        {
+            "catalog_slug": "addac-system-addac601-vc-fixed-filterbank",
+            "status": "created",
+            "module_id": 48,
+            "hp": 20
+        },
+        {
+            "catalog_slug": "addac-system-addac602-passive-ring-modulator",
+            "status": "created",
+            "module_id": 49,
+            "hp": 4
+        },
+        {
+            "catalog_slug": "addac-system-addac801-simple-mixer",
+            "status": "created",
+            "module_id": 50,
+            "hp": 4
+        },
+        {
+            "catalog_slug": "addac-system-addac802-vc-mixer",
+            "status": "created",
+            "module_id": 51,
+            "hp": 12
+        },
+        {
+            "catalog_slug": "addac-system-addac803",
+            "status": "created",
+            "module_id": 52,
+            "hp": 14
+        },
+        {
+            "catalog_slug": "addac-system-addac804-audio-integrator",
+            "status": "created",
+            "module_id": 53,
+            "hp": 8
+        },
+        {
+            "catalog_slug": "alm-busy-circuits-akemie-s-castle",
+            "status": "created",
+            "module_id": 54,
+            "hp": 18
+        },
+        {
+            "catalog_slug": "alm-busy-circuits-pamela-s-new-workout",
+            "status": "created",
+            "module_id": 55,
+            "hp": 8
+        }
+    ],
+    "filters": {
+        "brand": null,
+        "hp_known_only": true,
+        "limit": 500
+    }
+}
