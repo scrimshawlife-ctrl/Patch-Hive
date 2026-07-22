@@ -1,0 +1,522 @@
+{
+  "batch": "1-retry",
+  "generated_by": "hermes-firecrawl-scrape-pipeline",
+  "results": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "slug": "acid-rain-technology-3u-to-1u-panel",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "slug": "acid-rain-technology-constellation",
+      "hp": 28,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-constellation.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "slug": "acid-rain-technology-maestro",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-maestro.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "slug": "acid-rain-technology-navigator",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-navigator.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "slug": "acid-rain-technology-ripsaw",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ripsaw.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "slug": "acid-rain-technology-splitwave",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "slug": "acid-rain-technology-trellis",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "slug": "acid-rain-technology-ziggurat",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ziggurat.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "slug": "acid-rain-technology-chainsaw",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-chainsaw.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "slug": "acid-rain-technology-switchblade",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-technology-switchblade.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "slug": "mutable-instruments-anushri-eurorack",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "slug": "mutable-instruments-braids-old-version",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "slug": "mutable-instruments-anushri-exp",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "slug": "make-noise-richter-wogglebug-2014",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "slug": "make-noise-strega",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "slug": "make-noise-1hp-blank",
+      "hp": 1,
+      "source_url": "https://www.perfectcircuit.com/make-noise-1hp-blank.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "slug": "make-noise-6hp-blank",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/make-noise-6hp-blank.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "slug": "make-noise-analogue-memory",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "slug": "make-noise-blank-4hp",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/make-noise-blank-4hp.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "slug": "make-noise-din-power",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "slug": "make-noise-format-jumbler",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "slug": "make-noise-mysteron",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/make-noise-mysteron.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "slug": "make-noise-rene-limited-edition-white",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "slug": "make-noise-moddemod",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "slug": "intellijel-aux-mix",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "slug": "intellijel-quadra",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "slug": "intellijel-quadra-expander",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/intellijel-quadra-expander.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "slug": "intellijel-stereo-i-o-1u",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/intellijel-stereo-i-o-1u.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "slug": "intellijel-stereo-line-out-1u",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "slug": "intellijel-audio-interface",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "slug": "intellijel-azimuth",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "slug": "intellijel-corgasmatron",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "slug": "intellijel-cylonix-cyclebox-ii",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "slug": "intellijel-dixie",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "slug": "intellijel-dixie-ii",
+      "hp": 8,
+      "source_url": "https://www.perfectcircuit.com/intellijel-dixie-ii.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "slug": "intellijel-dr-octature",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "slug": "intellijel-hex-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "slug": "intellijel-metropolis",
+      "hp": 34,
+      "source_url": "https://www.perfectcircuit.com/intellijel-metropolis.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "slug": "intellijel-mutamix",
+      "hp": 18,
+      "source_url": "https://www.perfectcircuit.com/intellijel-mutamix.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "slug": "intellijel-planar",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "slug": "intellijel-pulse-tornado",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "slug": "intellijel-rubicon",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "slug": "intellijel-spock",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "slug": "intellijel-vcf",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "slug": "instruo-l-badh",
+      "hp": 20,
+      "source_url": "https://www.instruomodular.com/product/lubadh/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "slug": "instruo-seashell",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "slug": "instruo-c-is-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "slug": "instruo-d-il",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/dail/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "slug": "instruo-glo-c",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "slug": "instruo-re",
+      "hp": 8,
+      "source_url": "https://www.instruomodular.com/product/ire/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "slug": "instruo-chd",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/ochd/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    }
+  ],
+  "summary": {
+    "targets": 51,
+    "processed": 51,
+    "found": 20,
+    "not_found": 31
+  }
+}

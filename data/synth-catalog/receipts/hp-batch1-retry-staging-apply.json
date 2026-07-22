@@ -1,0 +1,131 @@
+{
+  "status": "success",
+  "dry_run": false,
+  "results_path": "../data/synth-catalog/hermes-research/hp-enrichment-batch1-retry-results.filtered.json",
+  "input_results": 20,
+  "updated_hp": 20,
+  "skipped": 0,
+  "missing_catalog": 0,
+  "samples": [
+    {
+      "slug": "acid-rain-technology-constellation",
+      "hp": 28,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-constellation.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-maestro",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-maestro.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-navigator",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-navigator.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-ripsaw",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ripsaw.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-ziggurat",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ziggurat.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-chainsaw",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-chainsaw.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "acid-rain-technology-switchblade",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-technology-switchblade.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-1hp-blank",
+      "hp": 1,
+      "source_url": "https://www.perfectcircuit.com/make-noise-1hp-blank.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-6hp-blank",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/make-noise-6hp-blank.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-blank-4hp",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/make-noise-blank-4hp.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-mysteron",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/make-noise-mysteron.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-quadra-expander",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/intellijel-quadra-expander.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-stereo-i-o-1u",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/intellijel-stereo-i-o-1u.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-dixie-ii",
+      "hp": 8,
+      "source_url": "https://www.perfectcircuit.com/intellijel-dixie-ii.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-metropolis",
+      "hp": 34,
+      "source_url": "https://www.perfectcircuit.com/intellijel-metropolis.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-mutamix",
+      "hp": 18,
+      "source_url": "https://www.perfectcircuit.com/intellijel-mutamix.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "instruo-l-badh",
+      "hp": 20,
+      "source_url": "https://www.instruomodular.com/product/lubadh/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "instruo-d-il",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/dail/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "instruo-re",
+      "hp": 8,
+      "source_url": "https://www.instruomodular.com/product/ire/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "instruo-chd",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/ochd/",
+      "provenance": "OBSERVED"
+    }
+  ]
+}

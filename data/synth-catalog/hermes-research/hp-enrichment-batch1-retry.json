@@ -1,0 +1,516 @@
+{
+  "batch": "1-retry",
+  "target_count": 51,
+  "targets": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "slug": "acid-rain-technology-3u-to-1u-panel",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 6,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%203U%20to%201U%20Panel",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "slug": "acid-rain-technology-constellation",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 28,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Constellation",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "slug": "acid-rain-technology-maestro",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 20,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Maestro",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "slug": "acid-rain-technology-navigator",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Navigator",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "slug": "acid-rain-technology-ripsaw",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 6,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Ripsaw",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "slug": "acid-rain-technology-splitwave",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Splitwave",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "slug": "acid-rain-technology-trellis",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Trellis",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "slug": "acid-rain-technology-ziggurat",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 14,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Ziggurat",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "slug": "acid-rain-technology-chainsaw",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Chainsaw",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "slug": "acid-rain-technology-switchblade",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Switchblade",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "slug": "mutable-instruments-anushri-eurorack",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 20,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20Anushri%20%28Eurorack%29",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "slug": "mutable-instruments-braids-old-version",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 8,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20Braids%20%28old%20version%29",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "slug": "mutable-instruments-anushri-exp",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20anushri%20exp",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "slug": "make-noise-richter-wogglebug-2014",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 10,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Richter%20Wogglebug%202014",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "slug": "make-noise-strega",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Strega",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "slug": "make-noise-1hp-blank",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 1,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%201hp%20Blank",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "slug": "make-noise-6hp-blank",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 6,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%206hp%20Blank",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "slug": "make-noise-analogue-memory",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Analogue%20Memory",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "slug": "make-noise-blank-4hp",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Blank%204hp",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "slug": "make-noise-din-power",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Din%20Power",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "slug": "make-noise-format-jumbler",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 10,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Format%20Jumbler",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "slug": "make-noise-mysteron",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Mysteron",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "slug": "make-noise-rene-limited-edition-white",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 34,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Rene%20%28Limited%20Edition%20White%29",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "slug": "make-noise-moddemod",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20modDemod",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "slug": "intellijel-aux-mix",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 84,
+      "prior_url": "https://intellijel.com/shop/eurorack/aux-mix/",
+      "prior_notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "slug": "intellijel-quadra",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Quadra",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "slug": "intellijel-quadra-expander",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Quadra%20Expander",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "slug": "intellijel-stereo-i-o-1u",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 84,
+      "prior_url": "https://intellijel.com/shop/eurorack/stereo-i-o-1u/",
+      "prior_notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "slug": "intellijel-stereo-line-out-1u",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 84,
+      "prior_url": "https://intellijel.com/shop/eurorack/stereo-line-out-1u/",
+      "prior_notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "slug": "intellijel-audio-interface",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Audio%20Interface",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "slug": "intellijel-azimuth",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Azimuth",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "slug": "intellijel-corgasmatron",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Corgasmatron",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "slug": "intellijel-cylonix-cyclebox-ii",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Cylonix%20-%20Cyclebox%20II",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "slug": "intellijel-dixie",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dixie",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "slug": "intellijel-dixie-ii",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dixie%20II",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "slug": "intellijel-dr-octature",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dr.%20Octature",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "slug": "intellijel-hex-vca",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Hex%20VCA",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "slug": "intellijel-metropolis",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Metropolis",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "slug": "intellijel-mutamix",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Mutamix",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "slug": "intellijel-planar",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Planar",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "slug": "intellijel-pulse-tornado",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Pulse%20Tornado",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "slug": "intellijel-rubicon",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Rubicon",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "slug": "intellijel-spock",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Spock",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "slug": "intellijel-vcf",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20%C2%B5VCF",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "slug": "instruo-l-badh",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 2,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20L%C3%BAbadh",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "slug": "instruo-seashell",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 12,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20Seashell",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "slug": "instruo-c-is-2",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": null,
+      "prior_url": null,
+      "prior_notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "slug": "instruo-d-il",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20d%C3%A0il",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "slug": "instruo-glo-c",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 12,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20glo%CC%84c",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "slug": "instruo-re",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 12,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20%C3%ADre",
+      "prior_notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "slug": "instruo-chd",
+      "category": null,
+      "is_available": null,
+      "prior_hp_suspect": 4,
+      "prior_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20%C3%B8chd",
+      "prior_notes": "source_class=retailer"
+    }
+  ]
+}
