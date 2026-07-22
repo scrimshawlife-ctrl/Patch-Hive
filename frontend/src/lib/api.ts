@@ -79,6 +79,7 @@ export const moduleApi = {
     hp_max?: number;
     hp_known?: boolean;
     is_available?: string;
+    source?: string;
     sort_by?: string;
     sort_order?: string;
   }) => api.get<CatalogModuleListResponse>('/modules/catalog', { params }),

@@ -1,0 +1,61 @@
+{
+  "status": "success",
+  "residual2_found": 29,
+  "modulecatalog_p12_pct": 88.7,
+  "null_p12_remaining": 45,
+  "case_rails": "no invent; Happy Ending is rail-kit not case capacity; 4ms Pods rail unspecified in research",
+  "fe": "source + is_available filters on Modules gallery",
+  "overlay": "module-power-depth-v3.json",
+  "racks": [
+    {
+      "label": "lc3",
+      "rack_id": 6,
+      "power": [
+        {
+          "rail": "+12V",
+          "draw": 1949,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw": 694,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw": 0,
+          "status": "verified"
+        }
+      ],
+      "warnings": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ]
+    },
+    {
+      "label": "mantis",
+      "rack_id": 7,
+      "power": [
+        {
+          "rail": "+12V",
+          "draw": 764,
+          "status": "verified"
+        },
+        {
+          "rail": "-12V",
+          "draw": 346,
+          "status": "verified"
+        },
+        {
+          "rail": "+5V",
+          "draw": 65,
+          "status": "verified"
+        }
+      ],
+      "warnings": [
+        "DEPTH_MODULE_UNKNOWN",
+        "MODULE_POWER_UNKNOWN"
+      ]
+    }
+  ]
+}
