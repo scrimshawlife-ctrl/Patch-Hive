@@ -63,6 +63,29 @@ export default function RacksPage() {
     [racks, selectedRackId],
   );
 
+  const inventoryPower = useMemo(() => {
+    if (!selectedRack) {
+      return { known: 0, unknown: 0, draw12: 0, drawN12: 0, draw5: 0 };
+    }
+    let known = 0;
+    let unknown = 0;
+    let draw12 = 0;
+    let drawN12 = 0;
+    let draw5 = 0;
+    for (const rm of selectedRack.modules) {
+      const mod = rm.module;
+      if (!mod || mod.power_12v_ma == null) {
+        unknown += 1;
+        continue;
+      }
+      known += 1;
+      draw12 += mod.power_12v_ma || 0;
+      drawN12 += mod.power_neg12v_ma || 0;
+      draw5 += mod.power_5v_ma || 0;
+    }
+    return { known, unknown, draw12, drawN12, draw5 };
+  }, [selectedRack]);
+
   const hasRuns = runs.length > 0;
 
   const loadRacks = async () => {
@@ -319,6 +342,61 @@ export default function RacksPage() {
                         ? ` · ${selectedRack.case.total_hp}HP`
                         : ''}
                     </p>
+                  ) : null}
+                  {selectedRack.modules.length > 0 ? (
+                    <div
+                      className="power-rail-panel"
+                      style={{ marginTop: 'var(--space-3)' }}
+                      aria-label="Inventory power summary"
+                    >
+                      <p className="muted" style={{ margin: 0, fontSize: '0.9rem' }}>
+                        Power known on <strong>{inventoryPower.known}</strong>/
+                        {selectedRack.modules.length} modules
+                        {inventoryPower.unknown
+                          ? ` · ${inventoryPower.unknown} unknown (not assumed)`
+                          : ''}
+                      </p>
+                      {selectedRack.case ? (
+                        <div className="gate-chip-row" style={{ marginTop: 'var(--space-2)' }}>
+                          {(
+                            [
+                              {
+                                rail: '+12V',
+                                draw: inventoryPower.draw12,
+                                cap: selectedRack.case.power_12v_ma,
+                              },
+                              {
+                                rail: '−12V',
+                                draw: inventoryPower.drawN12,
+                                cap: selectedRack.case.power_neg12v_ma,
+                              },
+                              {
+                                rail: '+5V',
+                                draw: inventoryPower.draw5,
+                                cap: selectedRack.case.power_5v_ma,
+                              },
+                            ] as const
+                          ).map((r) => {
+                            const tone =
+                              r.cap == null
+                                ? 'neutral'
+                                : r.draw > r.cap
+                                  ? 'danger'
+                                  : r.cap > 0 && r.draw / r.cap >= 0.85
+                                    ? 'warning'
+                                    : 'success';
+                            return (
+                              <span key={r.rail} className={`status-chip status-chip--${tone}`}>
+                                {r.rail}{' '}
+                                {r.cap == null
+                                  ? `${r.draw}mA`
+                                  : `${r.draw}/${r.cap}mA`}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      ) : null}
+                    </div>
                   ) : null}
                   {selectedRack.modules.length > 0 ? (
                     <div className="page-hero-actions" style={{ marginTop: 'var(--space-3)' }}>

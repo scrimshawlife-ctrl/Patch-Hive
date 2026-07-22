@@ -60,8 +60,11 @@ export default function Home() {
               Sign in
             </Link>
           )}
-          <Link className="button button-secondary" to="/modules">
-            Browse modules
+          <Link className="button button-secondary" to="/modules?hp=known">
+            Placeable modules
+          </Link>
+          <Link className="button button-secondary" to="/cases?format=eurorack">
+            Eurorack cases
           </Link>
           <Link className="button button-quiet" to="/racks/new">
             New rig

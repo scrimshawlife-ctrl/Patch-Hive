@@ -553,6 +553,11 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText(/Placement power/i)).toBeVisible();
     await expect(page.getByText(/1 modules with \+12 known/i)).toBeVisible();
     await expect(page.getByText(/1 unknown/i)).toBeVisible();
+    await expect(page.getByLabel('Power rail usage')).toBeVisible();
+    await expect(page.getByLabel('+12V power usage')).toBeVisible();
+    // Alpha: +12 40 / case 2000 · Beta power unknown not assumed
+    await expect(page.getByText(/40\/2000mA/i).first()).toBeVisible();
+    await expect(page.getByText(/Soft gap: 1 module without \+12 specs/i)).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Dual-gate compatibility' })).toBeVisible();
     await expect(page.getByLabel('Dual-gate summary')).toBeVisible();
     await expect(
