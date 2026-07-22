@@ -1,0 +1,832 @@
+{
+  "batch": 1,
+  "generated_by": "hermes-firecrawl-scrape-pipeline",
+  "results": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "slug": "acid-rain-technology-3u-to-1u-panel",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%203U%20to%201U%20Panel",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "slug": "acid-rain-technology-constellation",
+      "hp": 28,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Constellation",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "slug": "acid-rain-technology-maestro",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Maestro",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "slug": "acid-rain-technology-navigator",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Navigator",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "slug": "acid-rain-technology-ripsaw",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Ripsaw",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "slug": "acid-rain-technology-splitwave",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Splitwave",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "slug": "acid-rain-technology-trellis",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Trellis",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "slug": "acid-rain-technology-ziggurat",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Ziggurat",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "slug": "acid-rain-technology-chainsaw",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Chainsaw",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "slug": "acid-rain-technology-switchblade",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Acid%20Rain%20Technology%20Switchblade",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Frames",
+      "slug": "mutable-instruments-frames",
+      "hp": 18,
+      "source_url": "https://mutable-instruments.net/modules/frames/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "slug": "mutable-instruments-anushri-eurorack",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20Anushri%20%28Eurorack%29",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "slug": "mutable-instruments-braids-old-version",
+      "hp": 8,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20Braids%20%28old%20version%29",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Edges",
+      "slug": "mutable-instruments-edges",
+      "hp": 20,
+      "source_url": "https://mutable-instruments.net/modules/edges/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Grids",
+      "slug": "mutable-instruments-grids",
+      "hp": 16,
+      "source_url": "https://mutable-instruments.net/modules/grids/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Links",
+      "slug": "mutable-instruments-links",
+      "hp": 4,
+      "source_url": "https://mutable-instruments.net/modules/links/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Tides (2014 version)",
+      "slug": "mutable-instruments-tides-2014-version",
+      "hp": 14,
+      "source_url": "https://mutable-instruments.net/modules/tides/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Yarns",
+      "slug": "mutable-instruments-yarns",
+      "hp": 12,
+      "source_url": "https://mutable-instruments.net/modules/yarns/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "slug": "mutable-instruments-anushri-exp",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Mutable%20Instruments%20anushri%20exp",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Echophon",
+      "slug": "make-noise-echophon",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/echophon",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Erbe-Verb",
+      "slug": "make-noise-erbe-verb",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/erbe-verb",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "FXDf",
+      "slug": "make-noise-fxdf",
+      "hp": 4,
+      "source_url": "https://www.makenoisemusic.com/modules/fxdf",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mimeophon",
+      "slug": "make-noise-mimeophon",
+      "hp": 16,
+      "source_url": "https://www.makenoisemusic.com/modules/mimeophon",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Optomix",
+      "slug": "make-noise-optomix",
+      "hp": 8,
+      "source_url": "https://www.makenoisemusic.com/modules/optomix",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Pressure Points",
+      "slug": "make-noise-pressure-points",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/pressure-points",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "slug": "make-noise-richter-wogglebug-2014",
+      "hp": 10,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Richter%20Wogglebug%202014",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "RxMx",
+      "slug": "make-noise-rxmx",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/rxmx",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "slug": "make-noise-strega",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Strega",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "slug": "make-noise-1hp-blank",
+      "hp": 1,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%201hp%20Blank",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "slug": "make-noise-6hp-blank",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%206hp%20Blank",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "slug": "make-noise-analogue-memory",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Analogue%20Memory",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "slug": "make-noise-blank-4hp",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Blank%204hp",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Brains",
+      "slug": "make-noise-brains",
+      "hp": 4,
+      "source_url": "https://www.makenoisemusic.com/modules/brains",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "slug": "make-noise-din-power",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Din%20Power",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "slug": "make-noise-format-jumbler",
+      "hp": 10,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Format%20Jumbler",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Function",
+      "slug": "make-noise-function",
+      "hp": 8,
+      "source_url": "https://www.makenoisemusic.com/modules/function",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "slug": "make-noise-mysteron",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Mysteron",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Phonogene",
+      "slug": "make-noise-phonogene",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/phonogene",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "QMMG",
+      "slug": "make-noise-qmmg",
+      "hp": 24,
+      "source_url": "https://www.makenoisemusic.com/modules/qmmg",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene",
+      "slug": "make-noise-rene",
+      "hp": 34,
+      "source_url": "https://www.makenoisemusic.com/modules/rene",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "slug": "make-noise-rene-limited-edition-white",
+      "hp": 34,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20Rene%20%28Limited%20Edition%20White%29",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Wogglebug",
+      "slug": "make-noise-wogglebug",
+      "hp": 10,
+      "source_url": "https://www.makenoisemusic.com/modules/wogglebug",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemix",
+      "slug": "make-noise-moddemix",
+      "hp": 6,
+      "source_url": "https://www.makenoisemusic.com/modules/moddemix",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "slug": "make-noise-moddemod",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Make%20Noise%20modDemod",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "slug": "intellijel-aux-mix",
+      "hp": 84,
+      "source_url": "https://intellijel.com/shop/eurorack/aux-mix/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult",
+      "slug": "intellijel-buff-mult",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/buff-mult/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult 1U",
+      "slug": "intellijel-buff-mult-1u",
+      "hp": 14,
+      "source_url": "https://intellijel.com/shop/eurorack/buff-mult-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic",
+      "slug": "intellijel-mems-mic",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/mems-mic/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic 1U",
+      "slug": "intellijel-mems-mic-1u",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/mems-mic-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Multigrain",
+      "slug": "intellijel-multigrain",
+      "hp": 20,
+      "source_url": "https://intellijel.com/shop/eurorack/multigrain/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "slug": "intellijel-quadra",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Quadra",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "slug": "intellijel-quadra-expander",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Quadra%20Expander",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadratt 1U",
+      "slug": "intellijel-quadratt-1u",
+      "hp": 28,
+      "source_url": "https://intellijel.com/shop/eurorack/quadratt-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "slug": "intellijel-stereo-i-o-1u",
+      "hp": 84,
+      "source_url": "https://intellijel.com/shop/eurorack/stereo-i-o-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "slug": "intellijel-stereo-line-out-1u",
+      "hp": 84,
+      "source_url": "https://intellijel.com/shop/eurorack/stereo-line-out-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Swells",
+      "slug": "intellijel-swells",
+      "hp": 20,
+      "source_url": "https://intellijel.com/shop/eurorack/swells/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Xfade 1U",
+      "slug": "intellijel-xfade-1u",
+      "hp": 26,
+      "source_url": "https://intellijel.com/shop/eurorack/xfade-1u/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "slug": "intellijel-audio-interface",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Audio%20Interface",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "slug": "intellijel-azimuth",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Azimuth",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "slug": "intellijel-corgasmatron",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Corgasmatron",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "slug": "intellijel-cylonix-cyclebox-ii",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Cylonix%20-%20Cyclebox%20II",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "slug": "intellijel-dixie",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dixie",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "slug": "intellijel-dixie-ii",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dixie%20II",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "slug": "intellijel-dr-octature",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Dr.%20Octature",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "slug": "intellijel-hex-vca",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Hex%20VCA",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "slug": "intellijel-metropolis",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Metropolis",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "slug": "intellijel-mutamix",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Mutamix",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "slug": "intellijel-planar",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Planar",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "slug": "intellijel-pulse-tornado",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Pulse%20Tornado",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "slug": "intellijel-rubicon",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Rubicon",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "slug": "intellijel-spock",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20Spock",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "slug": "intellijel-vcf",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Intellijel%20%C2%B5VCF",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u03bcAtt",
+      "slug": "intellijel-att",
+      "hp": 6,
+      "source_url": "https://intellijel.com/shop/eurorack/att/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "slug": "instruo-l-badh",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20L%C3%BAbadh",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "slug": "instruo-seashell",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20Seashell",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "arbhar",
+      "slug": "instruo-arbhar",
+      "hp": 18,
+      "source_url": "https://www.instruomodular.com/product/arbhar/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "slug": "instruo-c-is-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Instruo",
+      "name": "dh\u00e0",
+      "slug": "instruo-dh",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/dh/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "slug": "instruo-d-il",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20d%C3%A0il",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "slug": "instruo-glo-c",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20glo%CC%84c",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "slug": "instruo-re",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20%C3%ADre",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "slug": "instruo-chd",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/catalogsearch/result/?q=Instruo%20%C3%B8chd",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    }
+  ],
+  "summary": {
+    "targets": 82,
+    "processed": 82,
+    "found": 81,
+    "not_found": 1
+  }
+}

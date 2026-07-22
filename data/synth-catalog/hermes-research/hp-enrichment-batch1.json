@@ -1,0 +1,588 @@
+{
+  "goal": "Manufacturer-confirmed HP widths for PatchHive module_catalog rows with null hp",
+  "rules": [
+    "OBSERVED only from official manufacturer pages, manuals, or reputable retailers (Perfect Circuit, Thomann)",
+    "Never invent HP. If not found, leave hp null and set status=not_found",
+    "Use multi-source rotation; do not hammer ModularGrid",
+    "Prefer active modules; discontinued OK if official archive lists HP",
+    "Output JSON array of {brand, name, slug, hp, source_url, provenance, notes}"
+  ],
+  "target_count": 82,
+  "targets": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "acid-rain-technology-3u-to-1u-panel"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "acid-rain-technology-constellation"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "acid-rain-technology-maestro"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "acid-rain-technology-navigator"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "acid-rain-technology-ripsaw"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "acid-rain-technology-splitwave"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "acid-rain-technology-trellis"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "acid-rain-technology-ziggurat"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "acid-rain-technology-chainsaw"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "acid-rain-technology-switchblade"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Frames",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "mutable-instruments-frames"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-anushri-eurorack"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-braids-old-version"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Edges",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-edges"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Grids",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-grids"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Links",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-links"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Tides (2014 version)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-tides-2014-version"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Yarns",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-yarns"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-anushri-exp"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Echophon",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "make-noise-echophon"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Erbe-Verb",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-erbe-verb"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "FXDf",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-fxdf"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mimeophon",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-mimeophon"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Optomix",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "make-noise-optomix"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Pressure Points",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "make-noise-pressure-points"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-richter-wogglebug-2014"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "RxMx",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-rxmx"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-strega"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-1hp-blank"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-6hp-blank"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-analogue-memory"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-blank-4hp"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Brains",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-brains"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-din-power"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-format-jumbler"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Function",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "make-noise-function"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-mysteron"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Phonogene",
+      "category": "SAMP",
+      "is_available": "discontinued",
+      "slug": "make-noise-phonogene"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "QMMG",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "make-noise-qmmg"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-rene"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-rene-limited-edition-white"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Wogglebug",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-wogglebug"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemix",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "make-noise-moddemix"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-moddemod"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "intellijel-aux-mix"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-buff-mult"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-buff-mult-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-mems-mic"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-mems-mic-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Multigrain",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "intellijel-multigrain"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "intellijel-quadra"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "intellijel-quadra-expander"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadratt 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-quadratt-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-stereo-i-o-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-stereo-line-out-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Swells",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "intellijel-swells"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Xfade 1U",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "intellijel-xfade-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-audio-interface"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-azimuth"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-corgasmatron"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-cylonix-cyclebox-ii"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-dixie"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-dixie-ii"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-dr-octature"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-hex-vca"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-metropolis"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-mutamix"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-planar"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-pulse-tornado"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-rubicon"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-spock"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-vcf"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u03bcAtt",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-att"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "instruo-l-badh"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "instruo-seashell"
+    },
+    {
+      "brand": "Instruo",
+      "name": "arbhar",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "instruo-arbhar"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "instruo-c-is-2"
+    },
+    {
+      "brand": "Instruo",
+      "name": "dh\u00e0",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "instruo-dh"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "instruo-d-il"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "instruo-glo-c"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "instruo-re"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "instruo-chd"
+    }
+  ],
+  "batch": 1
+}

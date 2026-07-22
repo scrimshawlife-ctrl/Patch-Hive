@@ -1,0 +1,2624 @@
+{
+  "goal": "Manufacturer-confirmed HP widths for PatchHive module_catalog rows with null hp",
+  "rules": [
+    "OBSERVED only from official manufacturer pages, manuals, or reputable retailers (Perfect Circuit, Thomann)",
+    "Never invent HP. If not found, leave hp null and set status=not_found",
+    "Use multi-source rotation; do not hammer ModularGrid",
+    "Prefer active modules; discontinued OK if official archive lists HP",
+    "Output JSON array of {brand, name, slug, hp, source_url, provenance, notes}"
+  ],
+  "target_count": 373,
+  "targets": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "acid-rain-technology-3u-to-1u-panel"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "acid-rain-technology-constellation"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "acid-rain-technology-maestro"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "acid-rain-technology-navigator"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "acid-rain-technology-ripsaw"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "acid-rain-technology-splitwave"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "acid-rain-technology-trellis"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "acid-rain-technology-ziggurat"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "acid-rain-technology-chainsaw"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "acid-rain-technology-switchblade"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Frames",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "mutable-instruments-frames"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-anushri-eurorack"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-braids-old-version"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Edges",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-edges"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Grids",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-grids"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Links",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-links"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Tides (2014 version)",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-tides-2014-version"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Yarns",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-yarns"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "mutable-instruments-anushri-exp"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Echophon",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "make-noise-echophon"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Erbe-Verb",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-erbe-verb"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "FXDf",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-fxdf"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mimeophon",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-mimeophon"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Optomix",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "make-noise-optomix"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Pressure Points",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "make-noise-pressure-points"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-richter-wogglebug-2014"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "RxMx",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-rxmx"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "make-noise-strega"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-1hp-blank"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-6hp-blank"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-analogue-memory"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-blank-4hp"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Brains",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-brains"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-din-power"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-format-jumbler"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Function",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "make-noise-function"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-mysteron"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Phonogene",
+      "category": "SAMP",
+      "is_available": "discontinued",
+      "slug": "make-noise-phonogene"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "QMMG",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "make-noise-qmmg"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-rene"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-rene-limited-edition-white"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Wogglebug",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "make-noise-wogglebug"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemix",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "make-noise-moddemix"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "make-noise-moddemod"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "intellijel-aux-mix"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-buff-mult"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Buff Mult 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-buff-mult-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-mems-mic"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "MEMS Mic 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-mems-mic-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Multigrain",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "intellijel-multigrain"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "intellijel-quadra"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "intellijel-quadra-expander"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadratt 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-quadratt-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-stereo-i-o-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "intellijel-stereo-line-out-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Swells",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "intellijel-swells"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Xfade 1U",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "intellijel-xfade-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-audio-interface"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-azimuth"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-corgasmatron"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-cylonix-cyclebox-ii"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-dixie"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-dixie-ii"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-dr-octature"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-hex-vca"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-metropolis"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-mutamix"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "intellijel-planar"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "intellijel-pulse-tornado"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-rubicon"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-spock"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "intellijel-vcf"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u03bcAtt",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "intellijel-att"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "instruo-l-badh"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "instruo-seashell"
+    },
+    {
+      "brand": "Instruo",
+      "name": "arbhar",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "instruo-arbhar"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "instruo-c-is-2"
+    },
+    {
+      "brand": "Instruo",
+      "name": "dh\u00e0",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "instruo-dh"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "instruo-d-il"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "instruo-glo-c"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "instruo-re"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "instruo-chd"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Input",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-black-input"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black VC EG Expander",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "erica-synths-black-vc-eg-expander"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 1",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "erica-synths-black-varishape-vco-1"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 2",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "erica-synths-black-varishape-vco-2"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black XFade",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "erica-synths-black-xfade"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Dtech VCF",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "erica-synths-dtech-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion VCF",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "erica-synths-erica-fusion-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion analogue Chorus/Delay",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "erica-synths-erica-fusion-analogue-chorus-delay"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion Ring modulator",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-fusion-ring-modulator"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Graphic VCO",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-graphic-vco"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Matrix Mixer",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "erica-synths-matrix-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Midi to Clock V2",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "erica-synths-midi-to-clock-v2"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mixer/Splitter",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "erica-synths-mixer-splitter"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Modulator",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-modulator"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mutant Brain",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-mutant-brain"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico DRUMS",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-pico-drums"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico OUT",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-pico-out"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico VC EG",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "erica-synths-pico-vc-eg"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Mixer",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-modulator"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator (Custom Panel)",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-modulator-custom-panel"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCA",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-vca"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF (Custom Panel)",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-vcf-custom-panel"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO1",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-vco1"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO2",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-vco2"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks(ish) ADSR EG DIY kit",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "erica-synths-polivoks-ish-adsr-eg-diy-kit"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Sample Drum",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-sample-drum"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Sequential Switch",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-sequential-switch"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Synth Voice",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-synth-voice"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "TOMS",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "erica-synths-toms"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "VCO signal Mixer",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "erica-synths-vco-signal-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "erica-synths-fusion-vca"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Moog Parametric Equalizer",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "erica-synths-moog-parametric-equalizer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Wogglebug",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "erica-synths-wogglebug"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "wogglebug DIY",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "erica-synths-wogglebug-diy"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BEFACO SLICER V3",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "befaco-befaco-slicer-v3"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Bandit",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "befaco-bandit"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Chopping Kinky",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "befaco-chopping-kinky"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Input/Output",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "befaco-input-output"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface v2",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "befaco-instrument-interface-v2"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Lich",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "befaco-lich"
+    },
+    {
+      "brand": "Befaco",
+      "name": "MIDI Thing V2",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "befaco-midi-thing-v2"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Muxlicer",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "befaco-muxlicer"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Noise & Lag",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "befaco-noise-lag"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Noise Plethora",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "befaco-noise-plethora"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Octaves VCO",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "befaco-octaves-vco"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Filter",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "befaco-pip-filter"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip LFO",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "befaco-pip-lfo"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Slope",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "befaco-pip-slope"
+    },
+    {
+      "brand": "Befaco",
+      "name": "S&H + Lag",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "befaco-s-h-lag"
+    },
+    {
+      "brand": "Befaco",
+      "name": "STmix",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "befaco-stmix"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Sallen Key Filter BF-22",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "befaco-sallen-key-filter-bf-22"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slew",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "befaco-slew"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slicer V3",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "befaco-slicer-v3"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slope Gen 282",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "befaco-slope-gen-282"
+    },
+    {
+      "brand": "Befaco",
+      "name": "VCO III",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "befaco-vco-iii"
+    },
+    {
+      "brand": "Befaco",
+      "name": "ADSR",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "befaco-adsr"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BF20 VCF",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "befaco-bf20-vcf"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Crush Delay",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "befaco-crush-delay"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Dual Atenuverter",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "befaco-dual-atenuverter"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Even VCO",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "befaco-even-vco"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Hexa VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "befaco-hexa-vca"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "befaco-instrument-interface"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Mixer",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "befaco-mixer"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Out",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "befaco-out"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Output module with headphones out.",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "befaco-output-module-with-headphones-out"
+    },
+    {
+      "brand": "Befaco",
+      "name": "QUAD VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "befaco-quad-vca"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Quad VCA V2",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "befaco-quad-vca-v2"
+    },
+    {
+      "brand": "Befaco",
+      "name": "RING MOD",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "befaco-ring-mod"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Tube Distortion VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "befaco-tube-distortion-vca"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Autopilot (golden)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "endorphin-es-autopilot-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Blck_Noir (black)",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "endorphin-es-blck-noir-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Cockpit (black)",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "endorphin-es-cockpit-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (black)",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "endorphin-es-furthrrrr-generator-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (golden)",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "endorphin-es-furthrrrr-generator-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (black)",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "endorphin-es-grand-terminal-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (golden)",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "endorphin-es-grand-terminal-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Milky Way 1U (silver)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "endorphin-es-milky-way-1u-silver"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (black)",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-control-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (golden)",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-control-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (black)",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-mate-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (golden)",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-mate-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (black)",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-system-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (golden)",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "endorphin-es-shuttle-system-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Two Of Cups (black)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "endorphin-es-two-of-cups-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Cockpit (golden)",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "endorphin-es-cockpit-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (black)",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "endorphin-es-gateway-terminal-expansion-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (golden)",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "endorphin-es-gateway-terminal-expansion-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Terminal",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "endorphin-es-terminal"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk4",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-disting-mk4"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk4",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-3-mk4"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-4 SPDIF/CV Interface",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-4-spdif-cv-interface"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-40 SPDIF Interface",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-40-spdif-interface"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-6"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-7 CV Input Expander",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-7-cv-input-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-8",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-8"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-9",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-es-9"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk3",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-esx-8gt-mk3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD mk2",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "expert-sleepers-esx-8md-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-2 'factotum'",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-fh-2-factotum"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "disting EX",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "expert-sleepers-disting-ex"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk1",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-disting-mk1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk3",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-disting-mk3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1 (DB25 version)",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-1-db25-version"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-2-2",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-2-2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 MK3",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-3-mk3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk2",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-3-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-5 mk2",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-5-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6 mk2",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-es-6-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-4CV",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-esx-4cv"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8CV CV Expander",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-esx-8cv-cv-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT Gate Expander",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-esx-8gt-gate-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk2 Gate Expander",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-esx-8gt-mk2-gate-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD (mk1)",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-esx-8md-mk1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-1 'faderHost'",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-fh-1-faderhost"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FHX-1 Output Expander for FH-1",
+      "category": "MIDI",
+      "is_available": "discontinued",
+      "slug": "expert-sleepers-fhx-1-output-expander-for-fh-1"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC101 .WAV Player",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "addac-system-addac101-wav-player"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC102 VC FM Radio",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac102-vc-fm-radio"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200-multiples"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200PI",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200pi"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200s-size-matter-black"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC203 CV Mapping",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac203-cv-mapping"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC204 VC CV Mapping",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac204-vc-cv-mapping"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC205 Dual Oscilloscope & AWG",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac205-dual-oscilloscope-awg"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "addac-system-addac207"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207 Intuitive Quantizer (black)",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "addac-system-addac207-intuitive-quantizer-black"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac213b"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC215",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac215"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC216",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac216"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC306",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac306"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501 Complex Random",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac501-complex-random"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501B Complex Random Expansion",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac501b-complex-random-expansion"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC503 Marble Physics",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac503-marble-physics"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC601 VC Fixed Filterbank",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "addac-system-addac601-vc-fixed-filterbank"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac602-passive-ring-modulator"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC801 Simple Mixer",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "addac-system-addac801-simple-mixer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "addac-system-addac802-vc-mixer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC803",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "addac-system-addac803"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC804 AUDIO iNTEGRATOR",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "addac-system-addac804-audio-integrator"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC001 VCC (Voltage Controlled Computer)",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac001-vcc-voltage-controlled-computer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC003 VCC Manual Inputs",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac003-vcc-manual-inputs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC005 VCC Gate Outputs",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac005-vcc-gate-outputs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC302 Nchunk Control",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac302-nchunk-control"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC502 Ultra Lissajous",
+      "category": "LFO",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac502-ultra-lissajous"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "ABC",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "bastl-instruments-abc"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Blind Panel",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-blind-panel"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "CV TRINITY",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "bastl-instruments-cv-trinity"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "CV Trinity Expander",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-cv-trinity-expander"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Ciao!",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "bastl-instruments-ciao"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Cinnamon",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "bastl-instruments-cinnamon"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Clutch",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-clutch"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "DC MOTOR",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-dc-motor"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Dark Matter",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-dark-matter"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "GrandPa",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "bastl-instruments-grandpa"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Ikarie",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-ikarie"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "bastl-instruments-knit-rider"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider Expander",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-knit-rider-expander"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Little Nerd",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "bastl-instruments-little-nerd"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Multiple",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-multiple"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Neo Trinity",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-neo-trinity"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Noise Square",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "bastl-instruments-noise-square"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Pizza",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-pizza"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Propust",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "bastl-instruments-propust"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Quattro Figaro",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "bastl-instruments-quattro-figaro"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SERVO",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-servo"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SOLENOID",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-solenoid"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SPA",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-spa"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Sense",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-sense"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Skis",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "bastl-instruments-skis"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Solenoid CV Velocity Expander",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-solenoid-cv-velocity-expander"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Spaghetti",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "bastl-instruments-spaghetti"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Tea Kick",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-tea-kick"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Wackel Kontakt",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-wackel-kontakt"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Waver",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "bastl-instruments-waver"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-2",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-4"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-5",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-5"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-6",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-101-6"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-102",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-102"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-103",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-103"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-104",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-104"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-106-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-5 SEM",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-106-5-sem"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-6",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-106-6"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-108",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-108"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-110",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-110"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-5",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-111-5"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-112",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "doepfer-a-112"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-113",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "doepfer-a-113"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-114",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-114"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-115",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-115"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-118-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-118-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-119",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-119"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-124 SE",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "doepfer-a-124-se"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-138m",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "doepfer-a-138m"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-141-4",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "doepfer-a-141-4"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-151",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-151"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-155",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-155"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-156",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-156"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-160-2",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-160-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-161",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-161"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-162",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "doepfer-a-162"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-163",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-163"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-1",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "doepfer-a-170-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-2",
+      "category": "MIDI",
+      "is_available": "available",
+      "slug": "doepfer-a-170-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-2-multiples"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-3",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-180-3"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-182-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-182-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-183-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-183-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-184-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-184-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-1",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-185-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "doepfer-a-185-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-105",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-105"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-107",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-107"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-109 (Discontinued)",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-109-discontinued"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-1",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-111-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-116",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-116"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-117",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-117"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-181",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "doepfer-a-181"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ataxia",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-ataxia"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Delta",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "dreadbox-delta"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Epsilon",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-epsilon"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Eudemonia",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-eudemonia"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hysteria 1.0",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-hysteria-1-0"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-milky-way-1u-silver"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Nostalgia 1.0",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-nostalgia-1-0"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Taff2 Scientific Tremolo",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-taff2-scientific-tremolo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Theta",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "dreadbox-theta"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-two-of-cups-black"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Utopia",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "dreadbox-utopia"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Alpha",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-alpha"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Drips",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-drips"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Gamma",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-gamma"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hades",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-hades"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Lamda",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-lamda"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Omikron",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-omikron"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Splash",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-splash"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Attenuator",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-attenuator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Divider",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-divider"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Drive",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-drive"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Dual VCA",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-dual-vca"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Echo",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-echo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Envelope",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-envelope"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Filter",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-filter"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL LFO",
+      "category": "LFO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-lfo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Mixer",
+      "category": "MIX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-mixer"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Modulator",
+      "category": "ENV",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-modulator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Multiple",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-multiple"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Murmux Filter",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-murmux-filter"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Oscillator",
+      "category": "VCO",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-oscillator"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Phaser",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-phaser"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Random",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-random"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Reflector",
+      "category": "FX",
+      "is_available": "discontinued",
+      "slug": "dreadbox-wl-reflector"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "category": "VCA",
+      "is_available": "discontinued",
+      "slug": "dreadbox-ypsilon"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ADSR-VC2",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-adsr-vc2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AI-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-ai-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-ap-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ATT-4",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-att-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "BLD",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-bld"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CRV-24",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-crv-24"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CTG-VC",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-ctg-vc"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "D-LFO",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "cwejman-d-lfo"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "FSH-1",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-fsh-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "INS-2MX",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-ins-2mx"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-2",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-6",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MX-4S",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "cwejman-mx-4s"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "NS-4 Noise and S&H",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "cwejman-ns-4-noise-and-s-h"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "PH-4",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "cwejman-ph-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RES-4",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-res-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RG-6",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "cwejman-rg-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RM-2S",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-rm-2s"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "SPH-2",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-sph-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FC Forward Compressor",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-vc-fc-forward-compressor"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-vc-fcs-stereo-forward-compressor"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-2P",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "cwejman-vca-2p"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-4MX",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "cwejman-vca-4mx"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCEQ-3",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-vceq-3"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-2RM",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vco-2rm"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-6",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vco-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VM-1",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vm-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "cwejman-dmf-2"
+    }
+  ]
+}
