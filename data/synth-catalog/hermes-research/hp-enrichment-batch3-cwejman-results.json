@@ -1,0 +1,302 @@
+{
+  "batch": 3,
+  "generated_by": "hermes-direct-http-pipeline",
+  "results": [
+    {
+      "brand": "Cwejman",
+      "name": "ADSR-VC2",
+      "slug": "cwejman-adsr-vc2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AI-2",
+      "slug": "cwejman-ai-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "slug": "cwejman-ap-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ATT-4",
+      "slug": "cwejman-att-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "BLD",
+      "slug": "cwejman-bld",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CRV-24",
+      "slug": "cwejman-crv-24",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CTG-VC",
+      "slug": "cwejman-ctg-vc",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "D-LFO",
+      "slug": "cwejman-d-lfo",
+      "hp": 12,
+      "source_url": "https://www.cwejmanmusic.com/d-lfo",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "FSH-1",
+      "slug": "cwejman-fsh-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "INS-2MX",
+      "slug": "cwejman-ins-2mx",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-1",
+      "slug": "cwejman-mmf-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-2",
+      "slug": "cwejman-mmf-2",
+      "hp": 26,
+      "source_url": "https://www.cwejmanmusic.com/mmf-2",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-6",
+      "slug": "cwejman-mmf-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MX-4S",
+      "slug": "cwejman-mx-4s",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "NS-4 Noise and S&H",
+      "slug": "cwejman-ns-4-noise-and-s-h",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "PH-4",
+      "slug": "cwejman-ph-4",
+      "hp": 10,
+      "source_url": "https://www.cwejmanmusic.com/ph-4",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RES-4",
+      "slug": "cwejman-res-4",
+      "hp": 24,
+      "source_url": "https://www.cwejmanmusic.com/res-4",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RG-6",
+      "slug": "cwejman-rg-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RM-2S",
+      "slug": "cwejman-rm-2s",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "SPH-2",
+      "slug": "cwejman-sph-2",
+      "hp": 14,
+      "source_url": "https://www.cwejmanmusic.com/sph-2",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FC Forward Compressor",
+      "slug": "cwejman-vc-fc-forward-compressor",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "slug": "cwejman-vc-fcs-stereo-forward-compressor",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-2P",
+      "slug": "cwejman-vca-2p",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-4MX",
+      "slug": "cwejman-vca-4mx",
+      "hp": 20,
+      "source_url": "https://www.cwejmanmusic.com/vca-4mx",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCEQ-3",
+      "slug": "cwejman-vceq-3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-2RM",
+      "slug": "cwejman-vco-2rm",
+      "hp": 20,
+      "source_url": "https://www.cwejmanmusic.com/vco-2rm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-6",
+      "slug": "cwejman-vco-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VM-1",
+      "slug": "cwejman-vm-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "slug": "cwejman-dmf-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    }
+  ],
+  "summary": {
+    "targets": 29,
+    "processed": 29,
+    "found": 7,
+    "not_found": 22
+  }
+}

@@ -1,0 +1,203 @@
+{
+  "batch": 3,
+  "brand": "ADDAC System",
+  "target_count": 28,
+  "targets": [
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC101 .WAV Player",
+      "category": "SAMP",
+      "is_available": "available",
+      "slug": "addac-system-addac101-wav-player"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC102 VC FM Radio",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac102-vc-fm-radio"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200-multiples"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200PI",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200pi"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac200s-size-matter-black"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC203 CV Mapping",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac203-cv-mapping"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC204 VC CV Mapping",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac204-vc-cv-mapping"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC205 Dual Oscilloscope & AWG",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac205-dual-oscilloscope-awg"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "addac-system-addac207"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207 Intuitive Quantizer (black)",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "addac-system-addac207-intuitive-quantizer-black"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac213b"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC215",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac215"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC216",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac216"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC306",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac306"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501 Complex Random",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac501-complex-random"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501B Complex Random Expansion",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac501b-complex-random-expansion"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC503 Marble Physics",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac503-marble-physics"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC601 VC Fixed Filterbank",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "addac-system-addac601-vc-fixed-filterbank"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "addac-system-addac602-passive-ring-modulator"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC801 Simple Mixer",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "addac-system-addac801-simple-mixer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "addac-system-addac802-vc-mixer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC803",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "addac-system-addac803"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC804 AUDIO iNTEGRATOR",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "addac-system-addac804-audio-integrator"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC001 VCC (Voltage Controlled Computer)",
+      "category": "SEQ",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac001-vcc-voltage-controlled-computer"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC003 VCC Manual Inputs",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac003-vcc-manual-inputs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC005 VCC Gate Outputs",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac005-vcc-gate-outputs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC302 Nchunk Control",
+      "category": "UTIL",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac302-nchunk-control"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC502 Ultra Lissajous",
+      "category": "LFO",
+      "is_available": "discontinued",
+      "slug": "addac-system-addac502-ultra-lissajous"
+    }
+  ]
+}

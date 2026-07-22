@@ -1,0 +1,797 @@
+{
+  "batch": 3,
+  "generated_by": "hermes-direct-http-sharded",
+  "filter": "hp_1_42",
+  "results": [
+    {
+      "brand": "Doepfer",
+      "name": "A-101-1",
+      "slug": "doepfer-a-101-1",
+      "hp": 16,
+      "source_url": "https://doepfer.de/a1011.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-2",
+      "slug": "doepfer-a-101-2",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1012.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "slug": "doepfer-a-101-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1014.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-6",
+      "slug": "doepfer-a-101-6",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1016.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-102",
+      "slug": "doepfer-a-102",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a102.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-103",
+      "slug": "doepfer-a-103",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a103.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-104",
+      "slug": "doepfer-a-104",
+      "hp": 20,
+      "source_url": "https://doepfer.de/a104.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-1",
+      "slug": "doepfer-a-106-1",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1061.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-5 SEM",
+      "slug": "doepfer-a-106-5-sem",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1065.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-6",
+      "slug": "doepfer-a-106-6",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a1066.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-108",
+      "slug": "doepfer-a-108",
+      "hp": 12,
+      "source_url": "https://doepfer.de/a108.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-110",
+      "slug": "doepfer-a-110",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a110.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-5",
+      "slug": "doepfer-a-111-5",
+      "hp": 24,
+      "source_url": "https://doepfer.de/a1115.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-112",
+      "slug": "doepfer-a-112",
+      "hp": 10,
+      "source_url": "https://doepfer.de/a112.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-113",
+      "slug": "doepfer-a-113",
+      "hp": 26,
+      "source_url": "https://doepfer.de/a113.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-114",
+      "slug": "doepfer-a-114",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a114.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-115",
+      "slug": "doepfer-a-115",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a115.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-119",
+      "slug": "doepfer-a-119",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a119.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-124 SE",
+      "slug": "doepfer-a-124-se",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a124.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-138m",
+      "slug": "doepfer-a-138m",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a138.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-141-4",
+      "slug": "doepfer-a-141-4",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a1414.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-151",
+      "slug": "doepfer-a-151",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a151.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-155",
+      "slug": "doepfer-a-155",
+      "hp": 4,
+      "source_url": "https://www.thomann.de/intl/doepfer_a_155.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-156",
+      "slug": "doepfer-a-156",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a156.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-160-2",
+      "slug": "doepfer-a-160-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1602.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-161",
+      "slug": "doepfer-a-161",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a161.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-162",
+      "slug": "doepfer-a-162",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a162.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-163",
+      "slug": "doepfer-a-163",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a163.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "slug": "doepfer-a-180-2-multiples",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/doepfer-a180-2.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-3",
+      "slug": "doepfer-a-180-3",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1803.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "slug": "doepfer-a-182-1",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/doepfer-a-182-1.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "slug": "doepfer-a-182-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1822.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "slug": "doepfer-a-183-1",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1831.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-2",
+      "slug": "doepfer-a-183-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1832.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-1",
+      "slug": "doepfer-a-184-1",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1841.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-2",
+      "slug": "doepfer-a-184-2",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a1842.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-2",
+      "slug": "doepfer-a-185-2",
+      "hp": 6,
+      "source_url": "https://doepfer.de/a1852.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-105",
+      "slug": "doepfer-a-105",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a105.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-107",
+      "slug": "doepfer-a-107",
+      "hp": 26,
+      "source_url": "https://doepfer.de/a107.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-109 (Discontinued)",
+      "slug": "doepfer-a-109-discontinued",
+      "hp": 20,
+      "source_url": "https://doepfer.de/a109.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-1",
+      "slug": "doepfer-a-111-1",
+      "hp": 14,
+      "source_url": "https://doepfer.de/a1111.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-116",
+      "slug": "doepfer-a-116",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a116.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-117",
+      "slug": "doepfer-a-117",
+      "hp": 8,
+      "source_url": "https://doepfer.de/a117.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-181",
+      "slug": "doepfer-a-181",
+      "hp": 4,
+      "source_url": "https://doepfer.de/a181.htm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC101 .WAV Player",
+      "slug": "addac-system-addac101-wav-player",
+      "hp": 11,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac100-series/addac101",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC102 VC FM Radio",
+      "slug": "addac-system-addac102-vc-fm-radio",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac100-series/addac102",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "slug": "addac-system-addac200-multiples",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200PI",
+      "slug": "addac-system-addac200pi",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "slug": "addac-system-addac200s-size-matter-black",
+      "hp": 2,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac200",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC203 CV Mapping",
+      "slug": "addac-system-addac203-cv-mapping",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac203",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC204 VC CV Mapping",
+      "slug": "addac-system-addac204-vc-cv-mapping",
+      "hp": 6,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac204",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC205 Dual Oscilloscope & AWG",
+      "slug": "addac-system-addac205-dual-oscilloscope-awg",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac205",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207",
+      "slug": "addac-system-addac207",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac207",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207 Intuitive Quantizer (black)",
+      "slug": "addac-system-addac207-intuitive-quantizer-black",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac207",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC215",
+      "slug": "addac-system-addac215",
+      "hp": 6,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac200-series/addac215",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC306",
+      "slug": "addac-system-addac306",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac300-series/addac306",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501 Complex Random",
+      "slug": "addac-system-addac501-complex-random",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac501",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501B Complex Random Expansion",
+      "slug": "addac-system-addac501b-complex-random-expansion",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac501",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC503 Marble Physics",
+      "slug": "addac-system-addac503-marble-physics",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac503",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC601 VC Fixed Filterbank",
+      "slug": "addac-system-addac601-vc-fixed-filterbank",
+      "hp": 20,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac600-series/addac601",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "slug": "addac-system-addac602-passive-ring-modulator",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac600-series/addac602",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC801 Simple Mixer",
+      "slug": "addac-system-addac801-simple-mixer",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac801",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "slug": "addac-system-addac802-vc-mixer",
+      "hp": 12,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac802",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC803",
+      "slug": "addac-system-addac803",
+      "hp": 14,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac803",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC804 AUDIO iNTEGRATOR",
+      "slug": "addac-system-addac804-audio-integrator",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac800-series/addac804",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC001 VCC (Voltage Controlled Computer)",
+      "slug": "addac-system-addac001-vcc-voltage-controlled-computer",
+      "hp": 12,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac001",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC003 VCC Manual Inputs",
+      "slug": "addac-system-addac003-vcc-manual-inputs",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac003",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC005 VCC Gate Outputs",
+      "slug": "addac-system-addac005-vcc-gate-outputs",
+      "hp": 4,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac000-series/addac005",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC302 Nchunk Control",
+      "slug": "addac-system-addac302-nchunk-control",
+      "hp": 8,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac300-series/addac302",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC502 Ultra Lissajous",
+      "slug": "addac-system-addac502-ultra-lissajous",
+      "hp": 10,
+      "source_url": "https://www.addacsystem.com/en/products/modules/addac500-series/addac502",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "D-LFO",
+      "slug": "cwejman-d-lfo",
+      "hp": 12,
+      "source_url": "https://www.cwejmanmusic.com/d-lfo",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-2",
+      "slug": "cwejman-mmf-2",
+      "hp": 26,
+      "source_url": "https://www.cwejmanmusic.com/mmf-2",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "PH-4",
+      "slug": "cwejman-ph-4",
+      "hp": 10,
+      "source_url": "https://www.cwejmanmusic.com/ph-4",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RES-4",
+      "slug": "cwejman-res-4",
+      "hp": 24,
+      "source_url": "https://www.cwejmanmusic.com/res-4",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "SPH-2",
+      "slug": "cwejman-sph-2",
+      "hp": 14,
+      "source_url": "https://www.cwejmanmusic.com/sph-2",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-4MX",
+      "slug": "cwejman-vca-4mx",
+      "hp": 20,
+      "source_url": "https://www.cwejmanmusic.com/vca-4mx",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-2RM",
+      "slug": "cwejman-vco-2rm",
+      "hp": 20,
+      "source_url": "https://www.cwejmanmusic.com/vco-2rm",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official;method=direct_http"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Utopia",
+      "slug": "dreadbox-utopia",
+      "hp": 10,
+      "source_url": "https://www.perfectcircuit.com/dreadbox-utopia.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    }
+  ],
+  "summary": {
+    "shards": [
+      "doepfer",
+      "addac-system",
+      "cwejman",
+      "dreadbox"
+    ],
+    "found": 78,
+    "raw_results": 142
+  }
+}

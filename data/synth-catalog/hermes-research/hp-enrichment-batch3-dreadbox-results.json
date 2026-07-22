@@ -1,0 +1,362 @@
+{
+  "batch": 3,
+  "generated_by": "hermes-direct-http-pipeline",
+  "results": [
+    {
+      "brand": "Dreadbox",
+      "name": "Ataxia",
+      "slug": "dreadbox-ataxia",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Delta",
+      "slug": "dreadbox-delta",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Epsilon",
+      "slug": "dreadbox-epsilon",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Eudemonia",
+      "slug": "dreadbox-eudemonia",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hysteria 1.0",
+      "slug": "dreadbox-hysteria-1-0",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "slug": "dreadbox-milky-way-1u-silver",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Nostalgia 1.0",
+      "slug": "dreadbox-nostalgia-1-0",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Taff2 Scientific Tremolo",
+      "slug": "dreadbox-taff2-scientific-tremolo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Theta",
+      "slug": "dreadbox-theta",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "slug": "dreadbox-two-of-cups-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Utopia",
+      "slug": "dreadbox-utopia",
+      "hp": 10,
+      "source_url": "https://www.perfectcircuit.com/dreadbox-utopia.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer;method=direct_http"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Alpha",
+      "slug": "dreadbox-alpha",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Drips",
+      "slug": "dreadbox-drips",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Gamma",
+      "slug": "dreadbox-gamma",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hades",
+      "slug": "dreadbox-hades",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Lamda",
+      "slug": "dreadbox-lamda",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Omikron",
+      "slug": "dreadbox-omikron",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Splash",
+      "slug": "dreadbox-splash",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Attenuator",
+      "slug": "dreadbox-wl-attenuator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Divider",
+      "slug": "dreadbox-wl-divider",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Drive",
+      "slug": "dreadbox-wl-drive",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Dual VCA",
+      "slug": "dreadbox-wl-dual-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Echo",
+      "slug": "dreadbox-wl-echo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Envelope",
+      "slug": "dreadbox-wl-envelope",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Filter",
+      "slug": "dreadbox-wl-filter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL LFO",
+      "slug": "dreadbox-wl-lfo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Mixer",
+      "slug": "dreadbox-wl-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Modulator",
+      "slug": "dreadbox-wl-modulator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Multiple",
+      "slug": "dreadbox-wl-multiple",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Murmux Filter",
+      "slug": "dreadbox-wl-murmux-filter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Oscillator",
+      "slug": "dreadbox-wl-oscillator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Phaser",
+      "slug": "dreadbox-wl-phaser",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Random",
+      "slug": "dreadbox-wl-random",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Reflector",
+      "slug": "dreadbox-wl-reflector",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "slug": "dreadbox-ypsilon",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP via direct HTTP candidates"
+    }
+  ],
+  "summary": {
+    "targets": 35,
+    "processed": 35,
+    "found": 1,
+    "not_found": 34
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "batch": 3,
+  "brand": "Cwejman",
+  "target_count": 29,
+  "targets": [
+    {
+      "brand": "Cwejman",
+      "name": "ADSR-VC2",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-adsr-vc2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AI-2",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-ai-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-ap-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ATT-4",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-att-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "BLD",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-bld"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CRV-24",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-crv-24"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CTG-VC",
+      "category": "ENV",
+      "is_available": "available",
+      "slug": "cwejman-ctg-vc"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "D-LFO",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "cwejman-d-lfo"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "FSH-1",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-fsh-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "INS-2MX",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-ins-2mx"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-1",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-2",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-6",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-mmf-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MX-4S",
+      "category": "MIX",
+      "is_available": "available",
+      "slug": "cwejman-mx-4s"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "NS-4 Noise and S&H",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "cwejman-ns-4-noise-and-s-h"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "PH-4",
+      "category": "LFO",
+      "is_available": "available",
+      "slug": "cwejman-ph-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RES-4",
+      "category": "VCF",
+      "is_available": "available",
+      "slug": "cwejman-res-4"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RG-6",
+      "category": "SEQ",
+      "is_available": "available",
+      "slug": "cwejman-rg-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RM-2S",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-rm-2s"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "SPH-2",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-sph-2"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FC Forward Compressor",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-vc-fc-forward-compressor"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "category": "UTIL",
+      "is_available": "available",
+      "slug": "cwejman-vc-fcs-stereo-forward-compressor"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-2P",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "cwejman-vca-2p"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-4MX",
+      "category": "VCA",
+      "is_available": "available",
+      "slug": "cwejman-vca-4mx"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCEQ-3",
+      "category": "FX",
+      "is_available": "available",
+      "slug": "cwejman-vceq-3"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-2RM",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vco-2rm"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-6",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vco-6"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VM-1",
+      "category": "VCO",
+      "is_available": "available",
+      "slug": "cwejman-vm-1"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "category": "VCF",
+      "is_available": "discontinued",
+      "slug": "cwejman-dmf-2"
+    }
+  ]
+}
