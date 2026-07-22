@@ -4,8 +4,8 @@
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { moduleApi } from '@/lib/api';
-import type { CatalogModule, CatalogModuleStats } from '@/types/api';
+import { moduleApi, rackApi } from '@/lib/api';
+import type { CatalogModule, CatalogModuleStats, Rack } from '@/types/api';
 
 type LoadState = 'loading' | 'ready' | 'empty' | 'error';
 type SortKey = 'brand' | 'name' | 'hp' | 'category';
@@ -59,6 +59,9 @@ export default function ModulesPage() {
     name: string;
     moduleId: number;
   } | null>(null);
+  const [existingRacks, setExistingRacks] = useState<Rack[]>([]);
+  const [pickRackId, setPickRackId] = useState<number | null>(null);
+  const [pickerOpen, setPickerOpen] = useState(false);
 
   // Keep URL in sync so filters are shareable / back-button friendly
   useEffect(() => {
@@ -216,25 +219,32 @@ export default function ModulesPage() {
 
   const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
+  const materializeRow = async (row: CatalogModule) => {
+    if (row.hp == null) {
+      setActionMsg(
+        `${row.brand} ${row.name}: HP unknown — cannot place until manufacturer width is confirmed.`,
+      );
+      return null;
+    }
+    const res = await moduleApi.materializeCatalog(row.slug);
+    const mid = res.data.module_id;
+    setLastPrepared({ brand: res.data.module.brand, name: res.data.module.name, moduleId: mid });
+    return { mid, status: res.data.status, brand: res.data.module.brand, name: res.data.module.name };
+  };
+
+  /** Primary path: materialize → create-rig flow with module preselected. */
   const placeFromCatalog = async (row: CatalogModule) => {
     setBusySlug(row.slug);
     setActionMsg('');
     setLastPrepared(null);
+    setPickerOpen(false);
     try {
-      if (row.hp == null) {
-        setActionMsg(
-          `${row.brand} ${row.name}: HP unknown — cannot place until manufacturer width is confirmed.`,
-        );
-        return;
-      }
-      const res = await moduleApi.materializeCatalog(row.slug);
-      const mid = res.data.module_id;
-      setLastPrepared({ brand: res.data.module.brand, name: res.data.module.name, moduleId: mid });
+      const prep = await materializeRow(row);
+      if (!prep) return;
       setActionMsg(
-        `${res.data.module.brand} ${res.data.module.name} ready (module #${mid}, ${res.data.status}). Opening rack builder…`,
+        `${prep.brand} ${prep.name} ready (module #${prep.mid}, ${prep.status}). Opening rack builder…`,
       );
-      // Deep-link create flow with module preselected after materialize
-      navigate(`/racks/new?module_id=${mid}`);
+      navigate(`/racks/new?module_id=${prep.mid}`);
     } catch {
       setActionMsg(
         `${row.brand} ${row.name}: materialize failed (needs known HP or API error).`,
@@ -242,6 +252,37 @@ export default function ModulesPage() {
     } finally {
       setBusySlug(null);
     }
+  };
+
+  /** Secondary path: materialize → pick an existing rig for placement. */
+  const prepareForExistingRig = async (row: CatalogModule) => {
+    setBusySlug(row.slug);
+    setActionMsg('');
+    setLastPrepared(null);
+    try {
+      const prep = await materializeRow(row);
+      if (!prep) return;
+      const racksRes = await rackApi.list({ limit: 50 });
+      const rows = racksRes.data.racks ?? [];
+      setExistingRacks(rows);
+      setPickRackId(rows[0]?.id ?? null);
+      setPickerOpen(true);
+      setActionMsg(
+        `${prep.brand} ${prep.name} ready (module #${prep.mid}). Choose a rig to open placement.`,
+      );
+    } catch {
+      setActionMsg(
+        `${row.brand} ${row.name}: materialize or rig list failed.`,
+      );
+      setPickerOpen(false);
+    } finally {
+      setBusySlug(null);
+    }
+  };
+
+  const goToPickedRig = () => {
+    if (lastPrepared == null || pickRackId == null) return;
+    navigate(`/racks/${pickRackId}/edit?module_id=${lastPrepared.moduleId}`);
   };
 
   return (
@@ -323,11 +364,50 @@ export default function ModulesPage() {
           <p className="status" style={{ margin: 0 }}>
             {actionMsg}
           </p>
-          {lastPrepared ? (
+          {lastPrepared && !pickerOpen ? (
             <p className="muted" style={{ margin: 'var(--space-2) 0 0' }}>
               Next: pick a case → create rig → module #{lastPrepared.moduleId} is preselected for
               placement.
             </p>
+          ) : null}
+          {pickerOpen && lastPrepared ? (
+            <div className="toolbar" style={{ marginTop: 'var(--space-3)' }}>
+              <label className="field" style={{ flex: '1 1 14rem' }}>
+                Existing rig
+                <select
+                  value={pickRackId ?? ''}
+                  aria-label="Select existing rig"
+                  onChange={(e) =>
+                    setPickRackId(e.target.value ? Number(e.target.value) : null)
+                  }
+                >
+                  {existingRacks.length === 0 ? (
+                    <option value="">No rigs yet — create one</option>
+                  ) : (
+                    existingRacks.map((r) => (
+                      <option key={r.id} value={r.id}>
+                        #{r.id} · {r.name}
+                        {r.case_id != null ? ` · case #${r.case_id}` : ''}
+                      </option>
+                    ))
+                  )}
+                </select>
+              </label>
+              <button
+                type="button"
+                className="button button-primary"
+                disabled={pickRackId == null}
+                onClick={goToPickedRig}
+              >
+                Open placement
+              </button>
+              <Link
+                className="button button-secondary"
+                to={`/racks/new?module_id=${lastPrepared.moduleId}`}
+              >
+                Or create new rig
+              </Link>
+            </div>
           ) : null}
         </div>
       ) : null}
@@ -574,6 +654,15 @@ export default function ModulesPage() {
                           : module.hp == null
                             ? 'Needs HP'
                             : 'Prepare for rig'}
+                      </button>
+                      <button
+                        className="button button-secondary"
+                        type="button"
+                        disabled={busySlug === module.slug || module.hp == null}
+                        title="Materialize and choose an existing rig for placement"
+                        onClick={() => void prepareForExistingRig(module)}
+                      >
+                        Add to existing
                       </button>
                       <Link className="button button-quiet" to="/racks">
                         Open rigs

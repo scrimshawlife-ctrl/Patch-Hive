@@ -2,11 +2,12 @@
  * Cases catalog — normalized case_catalog browse + materialize into Rack Builder.
  */
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { caseCatalogApi } from '@/lib/api';
 import type { CatalogCaseListItem, CatalogStatsResponse } from '@/types/api';
 
 type LoadState = 'loading' | 'ready' | 'empty' | 'error';
+type PoweredFilter = 'all' | 'yes' | 'no';
 
 const FORMAT_OPTIONS: { value: string; label: string }[] = [
   { value: '', label: 'All formats' },
@@ -54,21 +55,42 @@ function formatDisplay(family: string): string {
   return FORMAT_OPTIONS.find((o) => o.value === family)?.label || family;
 }
 
+function parsePowered(raw: string | null): PoweredFilter {
+  if (raw === 'yes' || raw === 'true' || raw === '1') return 'yes';
+  if (raw === 'no' || raw === 'false' || raw === '0') return 'no';
+  return 'all';
+}
+
 export default function CasesPage() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [cases, setCases] = useState<CatalogCaseListItem[]>([]);
   const [total, setTotal] = useState(0);
   const [stats, setStats] = useState<CatalogStatsResponse | null>(null);
   const [state, setState] = useState<LoadState>('loading');
   const [error, setError] = useState('');
-  const [q, setQ] = useState('');
-  const [formatFamilyFilter, setFormatFamilyFilter] = useState('eurorack');
-  const [poweredFilter, setPoweredFilter] = useState<'all' | 'yes' | 'no'>('all');
-  const [minCapacity, setMinCapacity] = useState('');
+  const [q, setQ] = useState(() => searchParams.get('q') || searchParams.get('search') || '');
+  const [formatFamilyFilter, setFormatFamilyFilter] = useState(
+    () => searchParams.get('format') ?? 'eurorack',
+  );
+  const [poweredFilter, setPoweredFilter] = useState<PoweredFilter>(() =>
+    parsePowered(searchParams.get('powered')),
+  );
+  const [minCapacity, setMinCapacity] = useState(() => searchParams.get('min_capacity') || '');
   const [materializing, setMaterializing] = useState<string | null>(null);
   const [actionError, setActionError] = useState('');
   const [batchNote, setBatchNote] = useState('');
   const [batchBusy, setBatchBusy] = useState(false);
+
+  useEffect(() => {
+    const next = new URLSearchParams();
+    if (q.trim()) next.set('q', q.trim());
+    if (formatFamilyFilter) next.set('format', formatFamilyFilter);
+    if (poweredFilter === 'yes') next.set('powered', 'yes');
+    if (poweredFilter === 'no') next.set('powered', 'no');
+    if (minCapacity.trim()) next.set('min_capacity', minCapacity.trim());
+    setSearchParams(next, { replace: true });
+  }, [q, formatFamilyFilter, poweredFilter, minCapacity, setSearchParams]);
 
   const load = async () => {
     setState('loading');
@@ -110,6 +132,16 @@ export default function CasesPage() {
     const set = new Set(cases.map((c) => c.manufacturer));
     return Array.from(set).sort();
   }, [cases]);
+
+  const filtersActive =
+    q.trim() || formatFamilyFilter !== 'eurorack' || poweredFilter !== 'all' || minCapacity.trim();
+
+  const clearFilters = () => {
+    setQ('');
+    setFormatFamilyFilter('eurorack');
+    setPoweredFilter('all');
+    setMinCapacity('');
+  };
 
   const materializeAllEurorack = async () => {
     setBatchBusy(true);
@@ -182,63 +214,109 @@ export default function CasesPage() {
       ) : null}
 
       {stats ? (
-        <p className="muted" style={{ marginBottom: 'var(--space-4)' }} role="status">
-          Catalog: {stats.case_count} cases · {stats.manufacturer_count} manufacturers ·{' '}
-          {stats.with_power_rails} with rail data · {stats.with_depth} with depth ·{' '}
-          {stats.source_packet_count} source packets
-        </p>
+        <div className="panel" style={{ marginBottom: 'var(--space-4)' }} aria-label="Case catalog stats">
+          <p className="muted" style={{ margin: 0 }} role="status">
+            Catalog: {stats.case_count} cases · {stats.manufacturer_count} manufacturers ·{' '}
+            {stats.with_power_rails} with rail data · {stats.with_depth} with depth ·{' '}
+            {stats.source_packet_count} source packets
+          </p>
+          <div className="gate-chip-row" style={{ marginTop: 'var(--space-3)' }}>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${formatFamilyFilter === 'eurorack' ? ' status-chip--success' : ''}`}
+              onClick={() => setFormatFamilyFilter('eurorack')}
+            >
+              Eurorack (placeable)
+            </button>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${formatFamilyFilter === '' ? ' is-active' : ''}`}
+              onClick={() => setFormatFamilyFilter('')}
+            >
+              All formats
+            </button>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${poweredFilter === 'yes' ? ' status-chip--success' : ''}`}
+              onClick={() => setPoweredFilter('yes')}
+            >
+              Powered
+            </button>
+            <button
+              type="button"
+              className={`status-chip status-chip--interactive${poweredFilter === 'no' ? ' status-chip--warning' : ''}`}
+              onClick={() => setPoweredFilter('no')}
+            >
+              Unpowered
+            </button>
+          </div>
+        </div>
       ) : null}
 
-      <div className="panel toolbar" style={{ marginBottom: 'var(--space-4)' }} aria-label="Case filters">
-        <label className="field" style={{ flex: '1 1 12rem' }}>
-          Search
-          <input
-            type="search"
-            value={q}
-            placeholder="Manufacturer, model, or slug…"
-            onChange={(e) => setQ(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') void load();
-            }}
-          />
-        </label>
-        <label className="inline-field">
-          Format
-          <select
-            value={formatFamilyFilter}
-            onChange={(e) => setFormatFamilyFilter(e.target.value)}
-          >
-            {FORMAT_OPTIONS.map((opt) => (
-              <option key={opt.label} value={opt.value}>
-                {opt.label}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="inline-field">
-          Powered
-          <select
-            value={poweredFilter}
-            onChange={(e) => setPoweredFilter(e.target.value as 'all' | 'yes' | 'no')}
-          >
-            <option value="all">Any</option>
-            <option value="yes">Powered</option>
-            <option value="no">Unpowered</option>
-          </select>
-        </label>
-        <label className="inline-field">
-          Min capacity
-          <input
-            type="number"
-            min={0}
-            value={minCapacity}
-            onChange={(e) => setMinCapacity(e.target.value)}
-            style={{ width: '6rem' }}
-          />
-        </label>
-        <button className="button button-secondary" type="button" onClick={() => void load()}>
-          Apply
-        </button>
+      <div className="panel" style={{ marginBottom: 'var(--space-4)' }} aria-label="Case filters">
+        <div className="toolbar">
+          <label className="field" style={{ flex: '1 1 12rem' }}>
+            Search cases
+            <input
+              type="search"
+              value={q}
+              placeholder="Manufacturer, model, or slug…"
+              aria-label="Search cases"
+              onChange={(e) => setQ(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') void load();
+              }}
+            />
+          </label>
+          <label className="inline-field">
+            Format
+            <select
+              value={formatFamilyFilter}
+              onChange={(e) => setFormatFamilyFilter(e.target.value)}
+            >
+              {FORMAT_OPTIONS.map((opt) => (
+                <option key={opt.label} value={opt.value}>
+                  {opt.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="inline-field">
+            Powered
+            <select
+              value={poweredFilter}
+              onChange={(e) => setPoweredFilter(e.target.value as PoweredFilter)}
+            >
+              <option value="all">Any</option>
+              <option value="yes">Powered</option>
+              <option value="no">Unpowered</option>
+            </select>
+          </label>
+          <label className="inline-field">
+            Min capacity
+            <input
+              type="number"
+              min={0}
+              value={minCapacity}
+              onChange={(e) => setMinCapacity(e.target.value)}
+              style={{ width: '6rem' }}
+            />
+          </label>
+          <button className="button button-secondary" type="button" onClick={() => void load()}>
+            Apply
+          </button>
+          {filtersActive ? (
+            <button
+              className="button button-quiet"
+              type="button"
+              onClick={() => {
+                clearFilters();
+              }}
+            >
+              Clear filters
+            </button>
+          ) : null}
+        </div>
       </div>
 
       {actionError ? (
@@ -280,8 +358,9 @@ export default function CasesPage() {
           <p className="muted" role="status" style={{ marginBottom: 'var(--space-4)' }}>
             Showing {cases.length} of {total} catalog cases
             {manufacturers.length ? ` · ${manufacturers.length} manufacturers in view` : ''}
+            {filtersActive ? ' (filtered)' : ''}
           </p>
-          <div className="catalog-grid">
+          <div className="catalog-grid" aria-label="Case catalog results">
             {cases.map((item) => {
               const placeable = canPlace(item);
               const busy = materializing === item.slug;
@@ -296,12 +375,30 @@ export default function CasesPage() {
                   <p className="catalog-card-meta">{capacityLabel(item)}</p>
                   <p className="catalog-card-meta">{depthLabel(item)}</p>
                   <p className="catalog-card-meta">{powerLabel(item)}</p>
+                  <div className="gate-chip-row" aria-label="Case status">
+                    {placeable ? (
+                      <span className="status-chip status-chip--success">placeable</span>
+                    ) : (
+                      <span className="status-chip status-chip--warning">catalog only</span>
+                    )}
+                    {item.powered === true ? (
+                      <span className="status-chip status-chip--success">powered</span>
+                    ) : item.powered === false ? (
+                      <span className="status-chip status-chip--warning">unpowered</span>
+                    ) : (
+                      <span className="status-chip status-chip--neutral">power unknown</span>
+                    )}
+                    <span className="status-chip status-chip--neutral">
+                      {formatDisplay(item.format_family)}
+                    </span>
+                  </div>
                   <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-                    {formatDisplay(item.format_family)}
                     {item.primary_revision?.confidence
-                      ? ` · confidence ${item.primary_revision.confidence}`
+                      ? `confidence ${item.primary_revision.confidence}`
                       : ''}
-                    {item.production_status ? ` · ${item.production_status}` : ''}
+                    {item.production_status
+                      ? `${item.primary_revision?.confidence ? ' · ' : ''}${item.production_status}`
+                      : ''}
                   </p>
                   <div className="page-hero-actions">
                     <Link className="button button-secondary" to={`/cases/${encodeURIComponent(item.slug)}`}>

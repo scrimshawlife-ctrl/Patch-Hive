@@ -1116,12 +1116,48 @@ export default function RackBuilderPage() {
                   row.capacity > 0 ? Math.min(100, Math.round((row.used / row.capacity) * 100)) : 0;
                 const tone =
                   pct >= 100 ? 'danger' : pct >= 85 ? 'warning' : pct > 0 ? 'success' : 'neutral';
+                const blocks = placementModules
+                  .map((spec, index) => {
+                    if (spec.row_index !== row.row) return null;
+                    const hp = resolveModuleHp(spec.module_id) ?? 0;
+                    if (hp <= 0 || row.capacity <= 0) return null;
+                    const mod =
+                      liveRack?.modules?.find(
+                        (m) =>
+                          m.module_id === spec.module_id &&
+                          m.row_index === spec.row_index &&
+                          m.start_hp === spec.start_hp,
+                      )?.module ?? galleryModules.find((m) => m.id === spec.module_id);
+                    const leftPct = (spec.start_hp / row.capacity) * 100;
+                    const widthPct = Math.max(1.5, (hp / row.capacity) * 100);
+                    const powerKnown = mod?.power_12v_ma != null;
+                    return {
+                      key: `${spec.module_id}-${spec.start_hp}-${index}`,
+                      index,
+                      leftPct,
+                      widthPct,
+                      label: mod ? `${mod.brand} ${mod.name}` : `#${spec.module_id}`,
+                      short: mod?.name || `#${spec.module_id}`,
+                      hp,
+                      start: spec.start_hp,
+                      powerKnown,
+                    };
+                  })
+                  .filter(Boolean) as {
+                  key: string;
+                  index: number;
+                  leftPct: number;
+                  widthPct: number;
+                  label: string;
+                  short: string;
+                  hp: number;
+                  start: number;
+                  powerKnown: boolean;
+                }[];
                 return (
                   <div key={row.row} className="hp-usage__row">
                     <div className="hp-usage__meta">
-                      <span>
-                        Row {row.row}
-                      </span>
+                      <span>Row {row.row}</span>
                       <span className="muted">
                         {row.used}/{row.capacity}HP used · {row.free} free
                       </span>
@@ -1138,6 +1174,45 @@ export default function RackBuilderPage() {
                         className={`usage-bar__fill usage-bar__fill--${tone}`}
                         style={{ width: `${pct}%` }}
                       />
+                    </div>
+                    <div
+                      className="rack-row-map"
+                      role="img"
+                      aria-label={`Row ${row.row} layout, ${row.capacity} HP`}
+                      onClick={(e) => {
+                        // Click empty track → set start HP + row for next placement
+                        const track = e.currentTarget.querySelector('.rack-row-map__track');
+                        if (!track || e.target !== track) return;
+                        const rect = (track as HTMLElement).getBoundingClientRect();
+                        const frac = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                        setAddRow(row.row);
+                        setAddStartHp(Math.floor(frac * row.capacity));
+                      }}
+                    >
+                      <div className="rack-row-map__track">
+                        {blocks.map((b) => (
+                          <button
+                            key={b.key}
+                            type="button"
+                            className={`rack-row-map__block${b.powerKnown ? '' : ' rack-row-map__block--unknown-power'}`}
+                            style={{ left: `${b.leftPct}%`, width: `${b.widthPct}%` }}
+                            title={`${b.label} · HP ${b.start}–${b.start + b.hp - 1}${b.powerKnown ? '' : ' · power unknown'}`}
+                            onClick={(ev) => {
+                              ev.stopPropagation();
+                              setAddRow(row.row);
+                              setAddStartHp(b.start);
+                            }}
+                          >
+                            <span className="rack-row-map__block-label">{b.short}</span>
+                            <span className="rack-row-map__block-hp">{b.hp}H</span>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="rack-row-map__scale" aria-hidden="true">
+                        <span>0</span>
+                        <span>{Math.floor(row.capacity / 2)}</span>
+                        <span>{row.capacity}HP</span>
+                      </div>
                     </div>
                   </div>
                 );

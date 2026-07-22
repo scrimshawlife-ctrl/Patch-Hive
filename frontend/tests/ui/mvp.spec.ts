@@ -547,6 +547,9 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText('Place modules').first()).toBeVisible();
     await expect(page.getByLabel('Row HP usage')).toBeVisible();
     await expect(page.getByText(/18\/84HP used/i)).toBeVisible();
+    await expect(page.getByLabel(/Row 0 layout/i)).toBeVisible();
+    await expect(page.getByTitle(/Alpha.*HP 0–9/i)).toBeVisible();
+    await expect(page.getByTitle(/Beta.*power unknown/i)).toBeVisible();
     await expect(page.getByText(/Placement power/i)).toBeVisible();
     await expect(page.getByText(/1 modules with \+12 known/i)).toBeVisible();
     await expect(page.getByText(/1 unknown/i)).toBeVisible();
@@ -639,6 +642,138 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText('HP known').first()).toBeVisible();
     await expect(page.getByText('placeable').first()).toBeVisible();
     await expect(page).toHaveURL(/hp=known/);
+    await expect(page.getByRole('button', { name: 'Add to existing' }).first()).toBeVisible();
+  });
+
+  test('module add-to-existing opens rig picker after materialize', async ({ page }) => {
+    await page.route('**/api/modules/**', async (route) => {
+      const path = new URL(route.request().url()).pathname;
+      if (path.endsWith('/catalog/stats')) {
+        await route.fulfill({
+          json: {
+            total_modules: 1,
+            total_brands: 1,
+            total_categories: 1,
+            hp_stats: { average: 8, min: 8, max: 8, known: 1, unknown: 0, coverage_pct: 100 },
+            availability: { available: 1 },
+            by_source: { ModuleCatalog: 1 },
+          },
+        });
+        return;
+      }
+      if (path.endsWith('/catalog/brands')) {
+        await route.fulfill({ json: { total: 1, brands: [{ name: 'OtherBrand', module_count: 1 }] } });
+        return;
+      }
+      if (path.endsWith('/catalog/categories')) {
+        await route.fulfill({ json: { total: 1, categories: [{ name: 'VCF', module_count: 1 }] } });
+        return;
+      }
+      if (path.includes('/materialize')) {
+        await route.fulfill({
+          json: {
+            status: 'exists',
+            catalog_slug: 'otherbrand-filter-z',
+            module_id: 42,
+            module: { id: 42, brand: 'OtherBrand', name: 'Filter Z', hp: 8, module_type: 'VCF' },
+          },
+        });
+        return;
+      }
+      if (path.includes('/catalog')) {
+        await route.fulfill({
+          json: {
+            total: 1,
+            skip: 0,
+            limit: 48,
+            modules: [
+              {
+                id: 2,
+                slug: 'otherbrand-filter-z',
+                brand: 'OtherBrand',
+                name: 'Filter Z',
+                hp: 8,
+                category: 'VCF',
+                source: 'ModuleCatalog',
+                is_available: 'available',
+              },
+            ],
+          },
+        });
+        return;
+      }
+      await route.continue();
+    });
+    await page.route('**/api/racks/**', async (route) => {
+      if (route.request().method() === 'GET') {
+        await route.fulfill({
+          json: {
+            total: 1,
+            racks: [{ id: 7, name: 'Sim rack', case_id: 10, user_id: 1, modules: [] }],
+          },
+        });
+        return;
+      }
+      await route.continue();
+    });
+
+    await page.goto('/modules?hp=known');
+    await page.getByRole('button', { name: 'Add to existing' }).first().click();
+    await expect(page.getByLabel('Select existing rig')).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: 'Open placement' })).toBeEnabled();
+    await page.getByRole('button', { name: 'Open placement' }).click();
+    await page.waitForURL(/\/racks\/7\/edit\?module_id=42/);
+  });
+
+  test('cases catalog shows placeable chips and URL format filter', async ({ page }) => {
+    await page.route('**/api/cases/**', async (route) => {
+      const url = new URL(route.request().url());
+      const path = url.pathname;
+      if (path.includes('/stats') || path.endsWith('/catalog/stats')) {
+        await route.fulfill({
+          json: {
+            case_count: 1,
+            manufacturer_count: 1,
+            with_power_rails: 1,
+            with_depth: 1,
+            source_packet_count: 1,
+          },
+        });
+        return;
+      }
+      // case catalog list
+      await route.fulfill({
+        json: {
+          total: 1,
+          skip: 0,
+          limit: 200,
+          cases: [
+            {
+              slug: 'sim-co-sim-84',
+              manufacturer: 'Sim Co',
+              model: 'Sim 84',
+              format_family: 'eurorack',
+              production_status: 'current',
+              powered: true,
+              primary_revision: {
+                revision_key: 'default',
+                capacity_value: 84,
+                capacity_unit: 'hp',
+                row_count: 1,
+                confidence: 'observed',
+              },
+            },
+          ],
+        },
+      });
+    });
+
+    await page.goto('/cases?format=eurorack');
+    await expect(page.getByRole('heading', { name: 'Cases' })).toBeVisible();
+    await expect(page.getByLabel('Case filters')).toBeVisible({ timeout: 15000 });
+    await expect(page.getByText('placeable').first()).toBeVisible();
+    await expect(page.getByText('powered').first()).toBeVisible();
+    await expect(page).toHaveURL(/format=eurorack/);
   });
 
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
