@@ -304,9 +304,12 @@ def name_patch_v2(
 
 
 def hash_string_to_seed(input_str: str) -> int:
-    """Convert a string to a deterministic integer seed."""
-    return int.from_bytes(hashlib.sha256(input_str.encode()).digest()[:4], "big")
+    """Convert a string to a deterministic non-negative 31-bit integer seed.
 
+    Postgres ``INTEGER`` is signed 32-bit; raw 4-byte big-endian digests can
+    overflow (``NumericValueOutOfRange``) when written to ``racks.generation_seed``.
+    """
+    return int.from_bytes(hashlib.sha256(input_str.encode()).digest()[:4], "big") & 0x7FFFFFFF
 
 def build_patch_feature_vector(
     modules_by_id: Dict[int, Any],
