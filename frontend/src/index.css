@@ -795,3 +795,77 @@ code { padding: 0.15rem 0.35rem; border-radius: var(--radius-sm); background: va
   border-color: color-mix(in srgb, var(--action) 45%, var(--border));
   background: color-mix(in srgb, var(--action) 8%, var(--surface-panel));
 }
+
+/* Visual Eurorack row map */
+.rack-row-map {
+  margin-top: var(--space-2);
+}
+.rack-row-map__track {
+  position: relative;
+  height: 2.75rem;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent calc(100% / 12 - 1px),
+      color-mix(in srgb, var(--border) 70%, transparent) calc(100% / 12 - 1px),
+      color-mix(in srgb, var(--border) 70%, transparent) calc(100% / 12)
+    ),
+    var(--surface-inset);
+  cursor: crosshair;
+}
+.rack-row-map__block {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 0.1rem;
+  min-width: 0;
+  padding: 0 0.35rem;
+  border: 1px solid color-mix(in srgb, var(--info) 50%, var(--border));
+  border-radius: 3px;
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--info) 22%, var(--surface-raised));
+  font: inherit;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: left;
+}
+.rack-row-map__block:hover,
+.rack-row-map__block:focus-visible {
+  border-color: var(--action);
+  z-index: 1;
+}
+.rack-row-map__block--unknown-power {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--warning) 55%, var(--border));
+  background: color-mix(in srgb, var(--warning) 14%, var(--surface-raised));
+}
+.rack-row-map__block-label {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.rack-row-map__block-hp {
+  font-size: 0.65rem;
+  font-weight: 650;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+.rack-row-map__scale {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.2rem;
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
