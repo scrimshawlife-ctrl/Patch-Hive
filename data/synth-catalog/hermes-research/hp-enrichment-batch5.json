@@ -1,0 +1,691 @@
+{
+  "batch": 5,
+  "scope": "residual null-HP all brands",
+  "targets": [
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "slug": "addac-system-addac213b"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC216",
+      "slug": "addac-system-addac216"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "slug": "acid-rain-technology-3u-to-1u-panel"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "slug": "acid-rain-technology-splitwave"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "slug": "acid-rain-technology-trellis"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Blind Panel",
+      "slug": "bastl-instruments-blind-panel"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "CV Trinity Expander",
+      "slug": "bastl-instruments-cv-trinity-expander"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Solenoid CV Velocity Expander",
+      "slug": "bastl-instruments-solenoid-cv-velocity-expander"
+    },
+    {
+      "brand": "Befaco",
+      "name": "ADSR",
+      "slug": "befaco-adsr"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BEFACO SLICER V3",
+      "slug": "befaco-befaco-slicer-v3"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BF20 VCF",
+      "slug": "befaco-bf20-vcf"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Hexa VCA",
+      "slug": "befaco-hexa-vca"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Input/Output",
+      "slug": "befaco-input-output"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface",
+      "slug": "befaco-instrument-interface"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface v2",
+      "slug": "befaco-instrument-interface-v2"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Noise & Lag",
+      "slug": "befaco-noise-lag"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Output module with headphones out.",
+      "slug": "befaco-output-module-with-headphones-out"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Filter",
+      "slug": "befaco-pip-filter"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip LFO",
+      "slug": "befaco-pip-lfo"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Slope",
+      "slug": "befaco-pip-slope"
+    },
+    {
+      "brand": "Befaco",
+      "name": "QUAD VCA",
+      "slug": "befaco-quad-vca"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Quad VCA V2",
+      "slug": "befaco-quad-vca-v2"
+    },
+    {
+      "brand": "Befaco",
+      "name": "RING MOD",
+      "slug": "befaco-ring-mod"
+    },
+    {
+      "brand": "Befaco",
+      "name": "S&H + Lag",
+      "slug": "befaco-s-h-lag"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Sallen Key Filter BF-22",
+      "slug": "befaco-sallen-key-filter-bf-22"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slicer V3",
+      "slug": "befaco-slicer-v3"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slope Gen 282",
+      "slug": "befaco-slope-gen-282"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Tube Distortion VCA",
+      "slug": "befaco-tube-distortion-vca"
+    },
+    {
+      "brand": "Befaco",
+      "name": "VCO III",
+      "slug": "befaco-vco-iii"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-5",
+      "slug": "doepfer-a-101-5"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-118-1",
+      "slug": "doepfer-a-118-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-1",
+      "slug": "doepfer-a-170-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-2",
+      "slug": "doepfer-a-170-2"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "slug": "doepfer-a-180-1"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-1",
+      "slug": "doepfer-a-185-1"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Epsilon",
+      "slug": "dreadbox-epsilon"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Gamma",
+      "slug": "dreadbox-gamma"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "slug": "dreadbox-milky-way-1u-silver"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Taff2 Scientific Tremolo",
+      "slug": "dreadbox-taff2-scientific-tremolo"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "slug": "dreadbox-two-of-cups-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Autopilot (golden)",
+      "slug": "endorphin-es-autopilot-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Blck_Noir (black)",
+      "slug": "endorphin-es-blck-noir-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Cockpit (golden)",
+      "slug": "endorphin-es-cockpit-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (black)",
+      "slug": "endorphin-es-furthrrrr-generator-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (golden)",
+      "slug": "endorphin-es-furthrrrr-generator-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (black)",
+      "slug": "endorphin-es-gateway-terminal-expansion-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (golden)",
+      "slug": "endorphin-es-gateway-terminal-expansion-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (black)",
+      "slug": "endorphin-es-grand-terminal-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (golden)",
+      "slug": "endorphin-es-grand-terminal-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Milky Way 1U (silver)",
+      "slug": "endorphin-es-milky-way-1u-silver"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (black)",
+      "slug": "endorphin-es-shuttle-control-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (golden)",
+      "slug": "endorphin-es-shuttle-control-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (black)",
+      "slug": "endorphin-es-shuttle-mate-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (golden)",
+      "slug": "endorphin-es-shuttle-mate-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (black)",
+      "slug": "endorphin-es-shuttle-system-black"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (golden)",
+      "slug": "endorphin-es-shuttle-system-golden"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Terminal",
+      "slug": "endorphin-es-terminal"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Two Of Cups (black)",
+      "slug": "endorphin-es-two-of-cups-black"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Input",
+      "slug": "erica-synths-black-input"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 1",
+      "slug": "erica-synths-black-varishape-vco-1"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 2",
+      "slug": "erica-synths-black-varishape-vco-2"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Dtech VCF",
+      "slug": "erica-synths-dtech-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion VCF",
+      "slug": "erica-synths-erica-fusion-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion analogue Chorus/Delay",
+      "slug": "erica-synths-erica-fusion-analogue-chorus-delay"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion Ring modulator",
+      "slug": "erica-synths-fusion-ring-modulator"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion VCA",
+      "slug": "erica-synths-fusion-vca"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Matrix Mixer",
+      "slug": "erica-synths-matrix-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mixer/Splitter",
+      "slug": "erica-synths-mixer-splitter"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Moog Parametric Equalizer",
+      "slug": "erica-synths-moog-parametric-equalizer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mutant Brain",
+      "slug": "erica-synths-mutant-brain"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico VC EG",
+      "slug": "erica-synths-pico-vc-eg"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Mixer",
+      "slug": "erica-synths-polivoks-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator",
+      "slug": "erica-synths-polivoks-modulator"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator (Custom Panel)",
+      "slug": "erica-synths-polivoks-modulator-custom-panel"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCA",
+      "slug": "erica-synths-polivoks-vca"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF",
+      "slug": "erica-synths-polivoks-vcf"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF (Custom Panel)",
+      "slug": "erica-synths-polivoks-vcf-custom-panel"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO1",
+      "slug": "erica-synths-polivoks-vco1"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO2",
+      "slug": "erica-synths-polivoks-vco2"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks(ish) ADSR EG DIY kit",
+      "slug": "erica-synths-polivoks-ish-adsr-eg-diy-kit"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Sequential Switch",
+      "slug": "erica-synths-sequential-switch"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Synth Voice",
+      "slug": "erica-synths-synth-voice"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "VCO signal Mixer",
+      "slug": "erica-synths-vco-signal-mixer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Wogglebug",
+      "slug": "erica-synths-wogglebug"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "wogglebug DIY",
+      "slug": "erica-synths-wogglebug-diy"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk1",
+      "slug": "expert-sleepers-disting-mk1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk3",
+      "slug": "expert-sleepers-disting-mk3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1",
+      "slug": "expert-sleepers-es-1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1 (DB25 version)",
+      "slug": "expert-sleepers-es-1-db25-version"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-2-2",
+      "slug": "expert-sleepers-es-2-2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3",
+      "slug": "expert-sleepers-es-3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 MK3",
+      "slug": "expert-sleepers-es-3-mk3"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk2",
+      "slug": "expert-sleepers-es-3-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk4",
+      "slug": "expert-sleepers-es-3-mk4"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-4 SPDIF/CV Interface",
+      "slug": "expert-sleepers-es-4-spdif-cv-interface"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-40 SPDIF Interface",
+      "slug": "expert-sleepers-es-40-spdif-interface"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-5 mk2",
+      "slug": "expert-sleepers-es-5-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6",
+      "slug": "expert-sleepers-es-6"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6 mk2",
+      "slug": "expert-sleepers-es-6-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-7 CV Input Expander",
+      "slug": "expert-sleepers-es-7-cv-input-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-4CV",
+      "slug": "expert-sleepers-esx-4cv"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8CV CV Expander",
+      "slug": "expert-sleepers-esx-8cv-cv-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT Gate Expander",
+      "slug": "expert-sleepers-esx-8gt-gate-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk2 Gate Expander",
+      "slug": "expert-sleepers-esx-8gt-mk2-gate-expander"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD (mk1)",
+      "slug": "expert-sleepers-esx-8md-mk1"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD mk2",
+      "slug": "expert-sleepers-esx-8md-mk2"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-1 'faderHost'",
+      "slug": "expert-sleepers-fh-1-faderhost"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-2 'factotum'",
+      "slug": "expert-sleepers-fh-2-factotum"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FHX-1 Output Expander for FH-1",
+      "slug": "expert-sleepers-fhx-1-output-expander-for-fh-1"
+    },
+    {
+      "brand": "Instruo",
+      "name": "Seashell",
+      "slug": "instruo-seashell"
+    },
+    {
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "slug": "instruo-c-is-2"
+    },
+    {
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "slug": "instruo-glo-c"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Audio Interface",
+      "slug": "intellijel-audio-interface"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "slug": "intellijel-aux-mix"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Azimuth",
+      "slug": "intellijel-azimuth"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Corgasmatron",
+      "slug": "intellijel-corgasmatron"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Cylonix - Cyclebox II",
+      "slug": "intellijel-cylonix-cyclebox-ii"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie",
+      "slug": "intellijel-dixie"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dr. Octature",
+      "slug": "intellijel-dr-octature"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Hex VCA",
+      "slug": "intellijel-hex-vca"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Planar",
+      "slug": "intellijel-planar"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "slug": "intellijel-pulse-tornado"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra",
+      "slug": "intellijel-quadra"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Rubicon",
+      "slug": "intellijel-rubicon"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Spock",
+      "slug": "intellijel-spock"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo Line Out 1U",
+      "slug": "intellijel-stereo-line-out-1u"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "\u00b5VCF",
+      "slug": "intellijel-vcf"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Analogue Memory",
+      "slug": "make-noise-analogue-memory"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "slug": "make-noise-din-power"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "slug": "make-noise-format-jumbler"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Rene (Limited Edition White)",
+      "slug": "make-noise-rene-limited-edition-white"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Richter Wogglebug 2014",
+      "slug": "make-noise-richter-wogglebug-2014"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Strega",
+      "slug": "make-noise-strega"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "slug": "make-noise-moddemod"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Anushri (Eurorack)",
+      "slug": "mutable-instruments-anushri-eurorack"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "Braids (old version)",
+      "slug": "mutable-instruments-braids-old-version"
+    },
+    {
+      "brand": "Mutable Instruments",
+      "name": "anushri exp",
+      "slug": "mutable-instruments-anushri-exp"
+    }
+  ]
+}
