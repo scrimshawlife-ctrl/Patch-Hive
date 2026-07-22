@@ -110,10 +110,18 @@ def extract_power_depth(html: str) -> dict[str, Any]:
     return out
 
 
-def candidate_urls(brand: str, name: str, catalog_slug: str | None = None) -> list[str]:
+def candidate_urls(
+    brand: str,
+    name: str,
+    catalog_slug: str | None = None,
+    alt_slugs: list[str] | None = None,
+) -> list[str]:
     n = slugify(name)
     mb = mg_brand_slug(brand)
     urls: list[str] = []
+    for s in alt_slugs or []:
+        if s:
+            urls.append(f"https://modulargrid.net/e/{s}")
     if catalog_slug:
         urls.append(f"https://modulargrid.net/e/{catalog_slug}")
     urls.append(f"https://modulargrid.net/e/{mb}-{n}")
@@ -147,7 +155,8 @@ def process_one(target: dict[str, Any], sleep_s: float) -> dict[str, Any]:
     mid = target.get("module_id")
     print(f"→ [{mid}] {brand} / {name}", flush=True)
 
-    for url in candidate_urls(brand, name, catalog_slug=slug)[:6]:
+    alts = target.get("alt_slugs") or []
+    for url in candidate_urls(brand, name, catalog_slug=slug, alt_slugs=alts)[:10]:
         html = fetch(url)
         time.sleep(sleep_s)
         if not html or len(html) < 300:

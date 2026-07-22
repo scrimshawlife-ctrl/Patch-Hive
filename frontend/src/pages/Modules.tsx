@@ -139,6 +139,11 @@ export default function ModulesPage() {
             brands · HP known <strong>{stats.hp_stats.known}</strong> (
             {stats.hp_stats.coverage_pct}%) · unknown <strong>{stats.hp_stats.unknown}</strong> ·
             available <strong>{stats.availability.available}</strong>
+            {stats.by_source
+              ? ` · sources ${Object.entries(stats.by_source)
+                  .map(([k, n]) => `${k || 'unknown'}=${n}`)
+                  .join(', ')}`
+              : ''}
           </p>
         </div>
       ) : null}
@@ -291,7 +296,18 @@ export default function ModulesPage() {
                     </h2>
                     <p className="catalog-card-meta">
                       {module.category ?? 'UTIL'} ·{' '}
-                      {module.hp != null ? `${module.hp}HP` : 'HP unknown'}
+                      {module.hp != null ? (
+                        <span title="Manufacturer-confirmed width">{module.hp}HP</span>
+                      ) : (
+                        <span title="Width not confirmed — not placeable">HP unknown</span>
+                      )}
+                      {module.hp != null ? (
+                        <span className="muted" title="Catalog width is known">
+                          {' '}
+                          · placeable
+                        </span>
+                      ) : null}
+                      {module.source ? ` · ${module.source}` : ''}
                       {module.is_available && module.is_available !== 'available'
                         ? ` · ${module.is_available}`
                         : ''}

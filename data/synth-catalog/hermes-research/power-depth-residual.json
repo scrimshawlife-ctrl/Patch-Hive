@@ -1,0 +1,568 @@
+{
+  "batch": "power-depth-residual",
+  "targets": [
+    {
+      "module_id": 31,
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "hp": 2,
+      "catalog_slug": "addac-system-addac200-multiples"
+    },
+    {
+      "module_id": 33,
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "hp": 2,
+      "catalog_slug": "addac-system-addac200s-size-matter-black"
+    },
+    {
+      "module_id": 39,
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "hp": 3,
+      "catalog_slug": "addac-system-addac213b"
+    },
+    {
+      "module_id": 49,
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "hp": 4,
+      "catalog_slug": "addac-system-addac602-passive-ring-modulator"
+    },
+    {
+      "module_id": 51,
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "hp": 12,
+      "catalog_slug": "addac-system-addac802-vc-mixer"
+    },
+    {
+      "module_id": 55,
+      "brand": "ALM Busy Circuits",
+      "name": "Pamela's NEW Workout",
+      "hp": 8,
+      "catalog_slug": "alm-busy-circuits-pamela-s-new-workout",
+      "alt_slugs": [
+        "alm-busy-circuits-pamelas-new-workout",
+        "alm-busy-circuits-pamela-s-new-workout"
+      ]
+    },
+    {
+      "module_id": 56,
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "hp": 26,
+      "catalog_slug": "acid-rain-technology-3u-to-1u-panel"
+    },
+    {
+      "module_id": 63,
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "hp": 6,
+      "catalog_slug": "acid-rain-technology-splitwave"
+    },
+    {
+      "module_id": 65,
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "hp": 22,
+      "catalog_slug": "acid-rain-technology-trellis"
+    },
+    {
+      "module_id": 68,
+      "brand": "Bastl Instruments",
+      "name": "Blind Panel",
+      "hp": 1,
+      "catalog_slug": "bastl-instruments-blind-panel"
+    },
+    {
+      "module_id": 70,
+      "brand": "Bastl Instruments",
+      "name": "CV Trinity Expander",
+      "hp": 2,
+      "catalog_slug": "bastl-instruments-cv-trinity-expander"
+    },
+    {
+      "module_id": 79,
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider Expander",
+      "hp": 2,
+      "catalog_slug": "bastl-instruments-knit-rider-expander"
+    },
+    {
+      "module_id": 81,
+      "brand": "Bastl Instruments",
+      "name": "Multiple",
+      "hp": 2,
+      "catalog_slug": "bastl-instruments-multiple"
+    },
+    {
+      "module_id": 85,
+      "brand": "Bastl Instruments",
+      "name": "Propust",
+      "hp": 2,
+      "catalog_slug": "bastl-instruments-propust"
+    },
+    {
+      "module_id": 92,
+      "brand": "Bastl Instruments",
+      "name": "Solenoid CV Velocity Expander",
+      "hp": 2,
+      "catalog_slug": "bastl-instruments-solenoid-cv-velocity-expander"
+    },
+    {
+      "module_id": 95,
+      "brand": "Bastl Instruments",
+      "name": "Wackel Kontakt",
+      "hp": 1,
+      "catalog_slug": "bastl-instruments-wackel-kontakt"
+    },
+    {
+      "module_id": 98,
+      "brand": "Befaco",
+      "name": "BEFACO SLICER V3",
+      "hp": 20,
+      "catalog_slug": "befaco-befaco-slicer-v3"
+    },
+    {
+      "module_id": 99,
+      "brand": "Befaco",
+      "name": "BF20 VCF",
+      "hp": 11,
+      "catalog_slug": "befaco-bf20-vcf"
+    },
+    {
+      "module_id": 107,
+      "brand": "Befaco",
+      "name": "Input/Output",
+      "hp": 11,
+      "catalog_slug": "befaco-input-output"
+    },
+    {
+      "module_id": 113,
+      "brand": "Befaco",
+      "name": "Noise & Lag",
+      "hp": 11,
+      "catalog_slug": "befaco-noise-lag"
+    },
+    {
+      "module_id": 116,
+      "brand": "Befaco",
+      "name": "Out",
+      "hp": 4,
+      "catalog_slug": "befaco-out"
+    },
+    {
+      "module_id": 118,
+      "brand": "Befaco",
+      "name": "Pip Filter",
+      "hp": 4,
+      "catalog_slug": "befaco-pip-filter",
+      "alt_slugs": [
+        "alm-busy-circuits-pip-filter"
+      ]
+    },
+    {
+      "module_id": 119,
+      "brand": "Befaco",
+      "name": "Pip LFO",
+      "hp": 4,
+      "catalog_slug": "befaco-pip-lfo",
+      "alt_slugs": [
+        "alm-busy-circuits-pip-lfo"
+      ]
+    },
+    {
+      "module_id": 120,
+      "brand": "Befaco",
+      "name": "Pip Slope",
+      "hp": 4,
+      "catalog_slug": "befaco-pip-slope",
+      "alt_slugs": [
+        "alm-busy-circuits-pip-slope"
+      ]
+    },
+    {
+      "module_id": 121,
+      "brand": "Befaco",
+      "name": "QUAD VCA",
+      "hp": 11,
+      "catalog_slug": "befaco-quad-vca"
+    },
+    {
+      "module_id": 123,
+      "brand": "Befaco",
+      "name": "RING MOD",
+      "hp": 11,
+      "catalog_slug": "befaco-ring-mod"
+    },
+    {
+      "module_id": 125,
+      "brand": "Befaco",
+      "name": "S&H + Lag",
+      "hp": 11,
+      "catalog_slug": "befaco-s-h-lag"
+    },
+    {
+      "module_id": 126,
+      "brand": "Befaco",
+      "name": "STmix",
+      "hp": 6,
+      "catalog_slug": "befaco-stmix"
+    },
+    {
+      "module_id": 129,
+      "brand": "Befaco",
+      "name": "Slicer V3",
+      "hp": 20,
+      "catalog_slug": "befaco-slicer-v3",
+      "alt_slugs": [
+        "befaco-befaco-slicer-v3"
+      ]
+    },
+    {
+      "module_id": 131,
+      "brand": "Befaco",
+      "name": "Tube Distortion VCA",
+      "hp": 11,
+      "catalog_slug": "befaco-tube-distortion-vca"
+    },
+    {
+      "module_id": 132,
+      "brand": "Befaco",
+      "name": "VCO III",
+      "hp": 11,
+      "catalog_slug": "befaco-vco-iii"
+    },
+    {
+      "module_id": 135,
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "hp": 18,
+      "catalog_slug": "cwejman-ap-1"
+    },
+    {
+      "module_id": 141,
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "hp": 16,
+      "catalog_slug": "cwejman-dmf-2"
+    },
+    {
+      "module_id": 155,
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "hp": 18,
+      "catalog_slug": "cwejman-vc-fcs-stereo-forward-compressor"
+    },
+    {
+      "module_id": 165,
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "hp": 8,
+      "catalog_slug": "doepfer-a-101-4"
+    },
+    {
+      "module_id": 204,
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "hp": 4,
+      "catalog_slug": "doepfer-a-180-1"
+    },
+    {
+      "module_id": 205,
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "hp": 2,
+      "catalog_slug": "doepfer-a-180-2-multiples"
+    },
+    {
+      "module_id": 207,
+      "brand": "Doepfer",
+      "name": "A-181",
+      "hp": 4,
+      "catalog_slug": "doepfer-a-181"
+    },
+    {
+      "module_id": 208,
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "hp": 6,
+      "catalog_slug": "doepfer-a-182-1"
+    },
+    {
+      "module_id": 209,
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "hp": 4,
+      "catalog_slug": "doepfer-a-182-2"
+    },
+    {
+      "module_id": 210,
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "hp": 4,
+      "catalog_slug": "doepfer-a-183-1"
+    },
+    {
+      "module_id": 225,
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "hp": 22,
+      "catalog_slug": "dreadbox-milky-way-1u-silver",
+      "alt_slugs": [
+        "endorphin-es-milky-way-1u"
+      ]
+    },
+    {
+      "module_id": 230,
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "hp": 6,
+      "catalog_slug": "dreadbox-two-of-cups-black",
+      "alt_slugs": [
+        "endorphin-es-two-of-cups"
+      ]
+    },
+    {
+      "module_id": 232,
+      "brand": "Dreadbox",
+      "name": "WL Attenuator",
+      "hp": 2,
+      "catalog_slug": "dreadbox-wl-attenuator"
+    },
+    {
+      "module_id": 242,
+      "brand": "Dreadbox",
+      "name": "WL Multiple",
+      "hp": 2,
+      "catalog_slug": "dreadbox-wl-multiple"
+    },
+    {
+      "module_id": 248,
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "hp": 22,
+      "catalog_slug": "dreadbox-ypsilon"
+    },
+    {
+      "module_id": 262,
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (black)",
+      "hp": 6,
+      "catalog_slug": "endorphin-es-shuttle-mate-black"
+    },
+    {
+      "module_id": 263,
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (golden)",
+      "hp": 6,
+      "catalog_slug": "endorphin-es-shuttle-mate-golden"
+    },
+    {
+      "module_id": 268,
+      "brand": "Erica Synths",
+      "name": "Black Input",
+      "hp": 12,
+      "catalog_slug": "erica-synths-black-input"
+    },
+    {
+      "module_id": 280,
+      "brand": "Erica Synths",
+      "name": "Matrix Mixer",
+      "hp": 29,
+      "catalog_slug": "erica-synths-matrix-mixer"
+    },
+    {
+      "module_id": 291,
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator (Custom Panel)",
+      "hp": 8,
+      "catalog_slug": "erica-synths-polivoks-modulator-custom-panel"
+    },
+    {
+      "module_id": 326,
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk2 Gate Expander",
+      "hp": 4,
+      "catalog_slug": "expert-sleepers-esx-8gt-mk2-gate-expander"
+    },
+    {
+      "module_id": 334,
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "hp": 20,
+      "catalog_slug": "instruo-l-badh",
+      "alt_slugs": [
+        "instruo-lubadh"
+      ]
+    },
+    {
+      "module_id": 335,
+      "brand": "Instruo",
+      "name": "c\u00e8is[2]",
+      "hp": 8,
+      "catalog_slug": "instruo-c-is-2",
+      "alt_slugs": [
+        "instruo-ceis-2"
+      ]
+    },
+    {
+      "module_id": 336,
+      "brand": "Instruo",
+      "name": "dh\u00e0",
+      "hp": 4,
+      "catalog_slug": "instruo-dh",
+      "alt_slugs": [
+        "instruo-dha"
+      ]
+    },
+    {
+      "module_id": 337,
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "hp": 4,
+      "catalog_slug": "instruo-d-il",
+      "alt_slugs": [
+        "instruo-dail"
+      ]
+    },
+    {
+      "module_id": 338,
+      "brand": "Instruo",
+      "name": "glo\u0304c",
+      "hp": 4,
+      "catalog_slug": "instruo-glo-c",
+      "alt_slugs": [
+        "instruo-gloc"
+      ]
+    },
+    {
+      "module_id": 339,
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "hp": 8,
+      "catalog_slug": "instruo-re",
+      "alt_slugs": [
+        "instruo-ire"
+      ]
+    },
+    {
+      "module_id": 340,
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "hp": 4,
+      "catalog_slug": "instruo-chd",
+      "alt_slugs": [
+        "instruo-ochd"
+      ]
+    },
+    {
+      "module_id": 342,
+      "brand": "Intellijel",
+      "name": "Aux Mix",
+      "hp": 32,
+      "catalog_slug": "intellijel-aux-mix",
+      "alt_slugs": [
+        "intellijel-aux-mix-1u"
+      ]
+    },
+    {
+      "module_id": 353,
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "hp": 34,
+      "catalog_slug": "intellijel-metropolis"
+    },
+    {
+      "module_id": 357,
+      "brand": "Intellijel",
+      "name": "Pulse Tornado",
+      "hp": 18,
+      "catalog_slug": "intellijel-pulse-tornado"
+    },
+    {
+      "module_id": 361,
+      "brand": "Intellijel",
+      "name": "Quadrax",
+      "hp": 12,
+      "catalog_slug": "intellijel-quadrax"
+    },
+    {
+      "module_id": 363,
+      "brand": "Intellijel",
+      "name": "Rubicon 2",
+      "hp": 14,
+      "catalog_slug": "intellijel-rubicon-2"
+    },
+    {
+      "module_id": 370,
+      "brand": "Intellijel",
+      "name": "\u03bcAtt",
+      "hp": 6,
+      "catalog_slug": "intellijel-att",
+      "alt_slugs": [
+        "intellijel-uatt",
+        "intellijel-att",
+        "intellijel-%C2%B5att"
+      ]
+    },
+    {
+      "module_id": 371,
+      "brand": "Joranalogue",
+      "name": "Filter 8",
+      "hp": 12,
+      "catalog_slug": "joranalogue-filter-8"
+    },
+    {
+      "module_id": 372,
+      "brand": "Joranalogue",
+      "name": "Generate 3",
+      "hp": 16,
+      "catalog_slug": "joranalogue-generate-3"
+    },
+    {
+      "module_id": 374,
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "hp": 6,
+      "catalog_slug": "make-noise-6hp-blank"
+    },
+    {
+      "module_id": 376,
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "hp": 4,
+      "catalog_slug": "make-noise-blank-4hp"
+    },
+    {
+      "module_id": 379,
+      "brand": "Make Noise",
+      "name": "Din Power",
+      "hp": 4,
+      "catalog_slug": "make-noise-din-power"
+    },
+    {
+      "module_id": 383,
+      "brand": "Make Noise",
+      "name": "Format Jumbler",
+      "hp": 12,
+      "catalog_slug": "make-noise-format-jumbler"
+    },
+    {
+      "module_id": 392,
+      "brand": "Make Noise",
+      "name": "Rene 2",
+      "hp": 34,
+      "catalog_slug": "make-noise-rene-2"
+    },
+    {
+      "module_id": 398,
+      "brand": "Make Noise",
+      "name": "modDemod",
+      "hp": 4,
+      "catalog_slug": "make-noise-moddemod"
+    }
+  ],
+  "count": 73
+}
