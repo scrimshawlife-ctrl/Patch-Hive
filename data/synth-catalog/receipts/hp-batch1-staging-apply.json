@@ -1,0 +1,161 @@
+{
+  "status": "success",
+  "dry_run": false,
+  "results_path": "data/synth-catalog/hermes-research/hp-enrichment-batch1-results.filtered.json",
+  "input_results": 31,
+  "updated_hp": 31,
+  "skipped": 0,
+  "missing_catalog": 0,
+  "samples": [
+    {
+      "slug": "mutable-instruments-frames",
+      "hp": 18,
+      "source_url": "https://mutable-instruments.net/modules/frames/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "mutable-instruments-edges",
+      "hp": 20,
+      "source_url": "https://mutable-instruments.net/modules/edges/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "mutable-instruments-grids",
+      "hp": 16,
+      "source_url": "https://mutable-instruments.net/modules/grids/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "mutable-instruments-links",
+      "hp": 4,
+      "source_url": "https://mutable-instruments.net/modules/links/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "mutable-instruments-tides-2014-version",
+      "hp": 14,
+      "source_url": "https://mutable-instruments.net/modules/tides/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "mutable-instruments-yarns",
+      "hp": 12,
+      "source_url": "https://mutable-instruments.net/modules/yarns/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-echophon",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/echophon",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-erbe-verb",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/erbe-verb",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-fxdf",
+      "hp": 4,
+      "source_url": "https://www.makenoisemusic.com/modules/fxdf",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-mimeophon",
+      "hp": 16,
+      "source_url": "https://www.makenoisemusic.com/modules/mimeophon",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-optomix",
+      "hp": 8,
+      "source_url": "https://www.makenoisemusic.com/modules/optomix",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-pressure-points",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/pressure-points",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-rxmx",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/rxmx",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-brains",
+      "hp": 4,
+      "source_url": "https://www.makenoisemusic.com/modules/brains",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-function",
+      "hp": 8,
+      "source_url": "https://www.makenoisemusic.com/modules/function",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-phonogene",
+      "hp": 20,
+      "source_url": "https://www.makenoisemusic.com/modules/phonogene",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-qmmg",
+      "hp": 24,
+      "source_url": "https://www.makenoisemusic.com/modules/qmmg",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-rene",
+      "hp": 34,
+      "source_url": "https://www.makenoisemusic.com/modules/rene",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-wogglebug",
+      "hp": 10,
+      "source_url": "https://www.makenoisemusic.com/modules/wogglebug",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "make-noise-moddemix",
+      "hp": 6,
+      "source_url": "https://www.makenoisemusic.com/modules/moddemix",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-buff-mult",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/buff-mult/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-buff-mult-1u",
+      "hp": 14,
+      "source_url": "https://intellijel.com/shop/eurorack/buff-mult-1u/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-mems-mic",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/mems-mic/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-mems-mic-1u",
+      "hp": 2,
+      "source_url": "https://intellijel.com/shop/eurorack/mems-mic-1u/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "intellijel-multigrain",
+      "hp": 20,
+      "source_url": "https://intellijel.com/shop/eurorack/multigrain/",
+      "provenance": "OBSERVED"
+    }
+  ]
+}
