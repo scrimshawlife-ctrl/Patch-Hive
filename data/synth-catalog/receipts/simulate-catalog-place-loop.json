@@ -1,0 +1,108 @@
+{
+  "status": "success",
+  "api": "http://localhost:8000",
+  "steps": [
+    {
+      "step": "health",
+      "code": 200,
+      "body": {
+        "status": "healthy",
+        "app": "PatchHive",
+        "version": "0.3.0-alpha.1",
+        "abx_core_version": "1.2"
+      }
+    },
+    {
+      "step": "catalog_stats",
+      "code": 200,
+      "body": {
+        "total_modules": 408,
+        "total_brands": 19,
+        "total_categories": 14,
+        "hp_stats": {
+          "average": 11.6,
+          "min": 1,
+          "max": 84,
+          "known": 404,
+          "unknown": 4,
+          "coverage_pct": 99.0
+        },
+        "by_source": {
+          "SynthCatalogResearch": 408
+        },
+        "availability": {
+          "available": 281,
+          "discontinued": 127
+        }
+      }
+    },
+    {
+      "step": "materialize_batch",
+      "code": 200,
+      "body": {
+        "status": "success",
+        "scanned": 404,
+        "created": 0,
+        "exists": 404,
+        "failed": 0
+      }
+    },
+    {
+      "step": "pack_plan",
+      "module_count": 12,
+      "hp_used": 28
+    },
+    {
+      "step": "create_rack",
+      "code": 201,
+      "rack_id": 9
+    },
+    {
+      "step": "compatibility",
+      "code": 200,
+      "overall_status": "incomplete",
+      "physical_fit": "PHYSICAL_FIT_INCOMPLETE",
+      "power_headroom": [
+        {
+          "rail": "+12V",
+          "status": "verified",
+          "draw_ma": 177,
+          "capacity_ma": 2000,
+          "headroom_ma": 1823
+        },
+        {
+          "rail": "-12V",
+          "status": "verified",
+          "draw_ma": 87,
+          "capacity_ma": 1200,
+          "headroom_ma": 1113
+        },
+        {
+          "rail": "+5V",
+          "status": "verified",
+          "draw_ma": 0,
+          "capacity_ma": 4000,
+          "headroom_ma": 4000
+        }
+      ],
+      "warning_codes": [
+        "DEPTH_MODULE_UNKNOWN"
+      ]
+    },
+    {
+      "step": "overflow_probe",
+      "code": 400,
+      "expect_hard_fail": true,
+      "detail_message": "Rack validation failed"
+    }
+  ],
+  "case_name": "A-100LC3",
+  "case_id": 10,
+  "validation": {
+    "health_ok": true,
+    "materialize_ok": true,
+    "place_ok": true,
+    "overflow_hard_fail_ok": true,
+    "all_ok": true
+  }
+}
