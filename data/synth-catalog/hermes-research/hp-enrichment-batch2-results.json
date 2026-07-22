@@ -1,0 +1,3022 @@
+{
+  "batch": 2,
+  "generated_by": "hermes-firecrawl-scrape-pipeline",
+  "results": [
+    {
+      "brand": "Erica Synths",
+      "name": "Black Input",
+      "slug": "erica-synths-black-input",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black VC EG Expander",
+      "slug": "erica-synths-black-vc-eg-expander",
+      "hp": 5,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/black-vc-eg-expander/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 1",
+      "slug": "erica-synths-black-varishape-vco-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black Varishape VCO 2",
+      "slug": "erica-synths-black-varishape-vco-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Black XFade",
+      "slug": "erica-synths-black-xfade",
+      "hp": 10,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/black-xfade/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Dtech VCF",
+      "slug": "erica-synths-dtech-vcf",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion VCF",
+      "slug": "erica-synths-erica-fusion-vcf",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Erica Fusion analogue Chorus/Delay",
+      "slug": "erica-synths-erica-fusion-analogue-chorus-delay",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion Ring modulator",
+      "slug": "erica-synths-fusion-ring-modulator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Graphic VCO",
+      "slug": "erica-synths-graphic-vco",
+      "hp": 16,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/graphic-vco/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Matrix Mixer",
+      "slug": "erica-synths-matrix-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Midi to Clock V2",
+      "slug": "erica-synths-midi-to-clock-v2",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/erica-synths-midi-to-clock-v2.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mixer/Splitter",
+      "slug": "erica-synths-mixer-splitter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Modulator",
+      "slug": "erica-synths-modulator",
+      "hp": 10,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/modulator/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Mutant Brain",
+      "slug": "erica-synths-mutant-brain",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico DRUMS",
+      "slug": "erica-synths-pico-drums",
+      "hp": 3,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/pico-drums/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico OUT",
+      "slug": "erica-synths-pico-out",
+      "hp": 3,
+      "source_url": "https://www.perfectcircuit.com/erica-synths-pico-out.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Pico VC EG",
+      "slug": "erica-synths-pico-vc-eg",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Mixer",
+      "slug": "erica-synths-polivoks-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator",
+      "slug": "erica-synths-polivoks-modulator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks Modulator (Custom Panel)",
+      "slug": "erica-synths-polivoks-modulator-custom-panel",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCA",
+      "slug": "erica-synths-polivoks-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF",
+      "slug": "erica-synths-polivoks-vcf",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCF (Custom Panel)",
+      "slug": "erica-synths-polivoks-vcf-custom-panel",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO1",
+      "slug": "erica-synths-polivoks-vco1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks VCO2",
+      "slug": "erica-synths-polivoks-vco2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Polivoks(ish) ADSR EG DIY kit",
+      "slug": "erica-synths-polivoks-ish-adsr-eg-diy-kit",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Sample Drum",
+      "slug": "erica-synths-sample-drum",
+      "hp": 14,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/sample-drum/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Sequential Switch",
+      "slug": "erica-synths-sequential-switch",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Synth Voice",
+      "slug": "erica-synths-synth-voice",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "TOMS",
+      "slug": "erica-synths-toms",
+      "hp": 16,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/toms/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "VCO signal Mixer",
+      "slug": "erica-synths-vco-signal-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Fusion VCA",
+      "slug": "erica-synths-fusion-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Moog Parametric Equalizer",
+      "slug": "erica-synths-moog-parametric-equalizer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "Wogglebug",
+      "slug": "erica-synths-wogglebug",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Erica Synths",
+      "name": "wogglebug DIY",
+      "slug": "erica-synths-wogglebug-diy",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BEFACO SLICER V3",
+      "slug": "befaco-befaco-slicer-v3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Bandit",
+      "slug": "befaco-bandit",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/bandit/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Chopping Kinky",
+      "slug": "befaco-chopping-kinky",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/chopping-kinky/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Input/Output",
+      "slug": "befaco-input-output",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface v2",
+      "slug": "befaco-instrument-interface-v2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Lich",
+      "slug": "befaco-lich",
+      "hp": 12,
+      "source_url": "https://www.befaco.org/en/lich/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "MIDI Thing V2",
+      "slug": "befaco-midi-thing-v2",
+      "hp": 6,
+      "source_url": "https://www.befaco.org/en/midi-thing-v2/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Muxlicer",
+      "slug": "befaco-muxlicer",
+      "hp": 16,
+      "source_url": "https://www.befaco.org/en/muxlicer/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Noise & Lag",
+      "slug": "befaco-noise-lag",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Noise Plethora",
+      "slug": "befaco-noise-plethora",
+      "hp": 14,
+      "source_url": "https://www.befaco.org/en/noise-plethora/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Octaves VCO",
+      "slug": "befaco-octaves-vco",
+      "hp": 12,
+      "source_url": "https://www.befaco.org/en/octaves-vco/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Filter",
+      "slug": "befaco-pip-filter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip LFO",
+      "slug": "befaco-pip-lfo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Pip Slope",
+      "slug": "befaco-pip-slope",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "S&H + Lag",
+      "slug": "befaco-s-h-lag",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "STmix",
+      "slug": "befaco-stmix",
+      "hp": 6,
+      "source_url": "https://www.befaco.org/en/stmix/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Sallen Key Filter BF-22",
+      "slug": "befaco-sallen-key-filter-bf-22",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slew",
+      "slug": "befaco-slew",
+      "hp": 4,
+      "source_url": "https://www.befaco.org/en/slew/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slicer V3",
+      "slug": "befaco-slicer-v3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Slope Gen 282",
+      "slug": "befaco-slope-gen-282",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "VCO III",
+      "slug": "befaco-vco-iii",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "ADSR",
+      "slug": "befaco-adsr",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "BF20 VCF",
+      "slug": "befaco-bf20-vcf",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Crush Delay",
+      "slug": "befaco-crush-delay",
+      "hp": 11,
+      "source_url": "https://www.befaco.org/en/crush-delay/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Dual Atenuverter",
+      "slug": "befaco-dual-atenuverter",
+      "hp": 5,
+      "source_url": "https://www.befaco.org/en/dual-atenuverter/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Even VCO",
+      "slug": "befaco-even-vco",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/even-vco/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Hexa VCA",
+      "slug": "befaco-hexa-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Instrument Interface",
+      "slug": "befaco-instrument-interface",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Mixer",
+      "slug": "befaco-mixer",
+      "hp": 5,
+      "source_url": "https://www.befaco.org/en/mixer/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Out",
+      "slug": "befaco-out",
+      "hp": 4,
+      "source_url": "https://www.befaco.org/en/out/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Output module with headphones out.",
+      "slug": "befaco-output-module-with-headphones-out",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "QUAD VCA",
+      "slug": "befaco-quad-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Quad VCA V2",
+      "slug": "befaco-quad-vca-v2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "RING MOD",
+      "slug": "befaco-ring-mod",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Befaco",
+      "name": "Tube Distortion VCA",
+      "slug": "befaco-tube-distortion-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "ABC",
+      "slug": "bastl-instruments-abc",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/abc",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Blind Panel",
+      "slug": "bastl-instruments-blind-panel",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "CV TRINITY",
+      "slug": "bastl-instruments-cv-trinity",
+      "hp": 14,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/cv-trinity",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "CV Trinity Expander",
+      "slug": "bastl-instruments-cv-trinity-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Ciao!",
+      "slug": "bastl-instruments-ciao",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/ciao",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Cinnamon",
+      "slug": "bastl-instruments-cinnamon",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/cinnamon",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Clutch",
+      "slug": "bastl-instruments-clutch",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/clutch",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "DC MOTOR",
+      "slug": "bastl-instruments-dc-motor",
+      "hp": 6,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/dc-motor",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Dark Matter",
+      "slug": "bastl-instruments-dark-matter",
+      "hp": 13,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/dark-matter",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "GrandPa",
+      "slug": "bastl-instruments-grandpa",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/grandpa",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Ikarie",
+      "slug": "bastl-instruments-ikarie",
+      "hp": 8,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/ikarie",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider",
+      "slug": "bastl-instruments-knit-rider",
+      "hp": 2,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/knit-rider",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Knit Rider Expander",
+      "slug": "bastl-instruments-knit-rider-expander",
+      "hp": 2,
+      "source_url": "https://www.perfectcircuit.com/bastl-knit-rider-expander.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Little Nerd",
+      "slug": "bastl-instruments-little-nerd",
+      "hp": 6,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/little-nerd",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Multiple",
+      "slug": "bastl-instruments-multiple",
+      "hp": 2,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/multiple",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Neo Trinity",
+      "slug": "bastl-instruments-neo-trinity",
+      "hp": 8,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/neo-trinity",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Noise Square",
+      "slug": "bastl-instruments-noise-square",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/noise-square",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Pizza",
+      "slug": "bastl-instruments-pizza",
+      "hp": 8,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/pizza",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Propust",
+      "slug": "bastl-instruments-propust",
+      "hp": 2,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/propust",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Quattro Figaro",
+      "slug": "bastl-instruments-quattro-figaro",
+      "hp": 10,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/quattro-figaro",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SERVO",
+      "slug": "bastl-instruments-servo",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/servo",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SOLENOID",
+      "slug": "bastl-instruments-solenoid",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/solenoid",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "SPA",
+      "slug": "bastl-instruments-spa",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/spa",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Sense",
+      "slug": "bastl-instruments-sense",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/sense",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Skis",
+      "slug": "bastl-instruments-skis",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/skis",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Solenoid CV Velocity Expander",
+      "slug": "bastl-instruments-solenoid-cv-velocity-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Spaghetti",
+      "slug": "bastl-instruments-spaghetti",
+      "hp": 4,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/spaghetti",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Tea Kick",
+      "slug": "bastl-instruments-tea-kick",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/tea-kick",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Wackel Kontakt",
+      "slug": "bastl-instruments-wackel-kontakt",
+      "hp": 1,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/wackel-kontakt",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Bastl Instruments",
+      "name": "Waver",
+      "slug": "bastl-instruments-waver",
+      "hp": 8,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/waver",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC101 .WAV Player",
+      "slug": "addac-system-addac101-wav-player",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC102 VC FM Radio",
+      "slug": "addac-system-addac102-vc-fm-radio",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200 Multiples",
+      "slug": "addac-system-addac200-multiples",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200PI",
+      "slug": "addac-system-addac200pi",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC200S Size Matter black",
+      "slug": "addac-system-addac200s-size-matter-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC203 CV Mapping",
+      "slug": "addac-system-addac203-cv-mapping",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC204 VC CV Mapping",
+      "slug": "addac-system-addac204-vc-cv-mapping",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC205 Dual Oscilloscope & AWG",
+      "slug": "addac-system-addac205-dual-oscilloscope-awg",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207",
+      "slug": "addac-system-addac207",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC207 Intuitive Quantizer (black)",
+      "slug": "addac-system-addac207-intuitive-quantizer-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC213B",
+      "slug": "addac-system-addac213b",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC215",
+      "slug": "addac-system-addac215",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC216",
+      "slug": "addac-system-addac216",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC306",
+      "slug": "addac-system-addac306",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501 Complex Random",
+      "slug": "addac-system-addac501-complex-random",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC501B Complex Random Expansion",
+      "slug": "addac-system-addac501b-complex-random-expansion",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC503 Marble Physics",
+      "slug": "addac-system-addac503-marble-physics",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC601 VC Fixed Filterbank",
+      "slug": "addac-system-addac601-vc-fixed-filterbank",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC602 Passive Ring Modulator",
+      "slug": "addac-system-addac602-passive-ring-modulator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC801 Simple Mixer",
+      "slug": "addac-system-addac801-simple-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC802 VC Mixer",
+      "slug": "addac-system-addac802-vc-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC803",
+      "slug": "addac-system-addac803",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC804 AUDIO iNTEGRATOR",
+      "slug": "addac-system-addac804-audio-integrator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC001 VCC (Voltage Controlled Computer)",
+      "slug": "addac-system-addac001-vcc-voltage-controlled-computer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC003 VCC Manual Inputs",
+      "slug": "addac-system-addac003-vcc-manual-inputs",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC005 VCC Gate Outputs",
+      "slug": "addac-system-addac005-vcc-gate-outputs",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC302 Nchunk Control",
+      "slug": "addac-system-addac302-nchunk-control",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "ADDAC System",
+      "name": "ADDAC502 Ultra Lissajous",
+      "slug": "addac-system-addac502-ultra-lissajous",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk4",
+      "slug": "expert-sleepers-disting-mk4",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/expert-sleepers-disting-mk4.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk4",
+      "slug": "expert-sleepers-es-3-mk4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-4 SPDIF/CV Interface",
+      "slug": "expert-sleepers-es-4-spdif-cv-interface",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-40 SPDIF Interface",
+      "slug": "expert-sleepers-es-40-spdif-interface",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6",
+      "slug": "expert-sleepers-es-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-7 CV Input Expander",
+      "slug": "expert-sleepers-es-7-cv-input-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-8",
+      "slug": "expert-sleepers-es-8",
+      "hp": 8,
+      "source_url": "https://www.perfectcircuit.com/expert-sleepers-es-8.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-9",
+      "slug": "expert-sleepers-es-9",
+      "hp": 16,
+      "source_url": "https://www.perfectcircuit.com/expert-sleepers-es-9.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk3",
+      "slug": "expert-sleepers-esx-8gt-mk3",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/expert-sleepers-esx-8gt-mk3.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD mk2",
+      "slug": "expert-sleepers-esx-8md-mk2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-2 'factotum'",
+      "slug": "expert-sleepers-fh-2-factotum",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "disting EX",
+      "slug": "expert-sleepers-disting-ex",
+      "hp": 8,
+      "source_url": "https://www.expert-sleepers.co.uk/distingEX.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk1",
+      "slug": "expert-sleepers-disting-mk1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "Disting mk3",
+      "slug": "expert-sleepers-disting-mk3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1",
+      "slug": "expert-sleepers-es-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-1 (DB25 version)",
+      "slug": "expert-sleepers-es-1-db25-version",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-2-2",
+      "slug": "expert-sleepers-es-2-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3",
+      "slug": "expert-sleepers-es-3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 MK3",
+      "slug": "expert-sleepers-es-3-mk3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-3 mk2",
+      "slug": "expert-sleepers-es-3-mk2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-5 mk2",
+      "slug": "expert-sleepers-es-5-mk2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ES-6 mk2",
+      "slug": "expert-sleepers-es-6-mk2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-4CV",
+      "slug": "expert-sleepers-esx-4cv",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8CV CV Expander",
+      "slug": "expert-sleepers-esx-8cv-cv-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT Gate Expander",
+      "slug": "expert-sleepers-esx-8gt-gate-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8GT mk2 Gate Expander",
+      "slug": "expert-sleepers-esx-8gt-mk2-gate-expander",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "ESX-8MD (mk1)",
+      "slug": "expert-sleepers-esx-8md-mk1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FH-1 'faderHost'",
+      "slug": "expert-sleepers-fh-1-faderhost",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Expert Sleepers",
+      "name": "FHX-1 Output Expander for FH-1",
+      "slug": "expert-sleepers-fhx-1-output-expander-for-fh-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Autopilot (golden)",
+      "slug": "endorphin-es-autopilot-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Blck_Noir (black)",
+      "slug": "endorphin-es-blck-noir-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Cockpit (black)",
+      "slug": "endorphin-es-cockpit-black",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/endorphin-es-cockpit-black.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (black)",
+      "slug": "endorphin-es-furthrrrr-generator-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Furthrrrr Generator (golden)",
+      "slug": "endorphin-es-furthrrrr-generator-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (black)",
+      "slug": "endorphin-es-grand-terminal-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Grand Terminal (golden)",
+      "slug": "endorphin-es-grand-terminal-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Milky Way 1U (silver)",
+      "slug": "endorphin-es-milky-way-1u-silver",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (black)",
+      "slug": "endorphin-es-shuttle-control-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Control (golden)",
+      "slug": "endorphin-es-shuttle-control-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (black)",
+      "slug": "endorphin-es-shuttle-mate-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle Mate (golden)",
+      "slug": "endorphin-es-shuttle-mate-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (black)",
+      "slug": "endorphin-es-shuttle-system-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Shuttle System (golden)",
+      "slug": "endorphin-es-shuttle-system-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Two Of Cups (black)",
+      "slug": "endorphin-es-two-of-cups-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Cockpit (golden)",
+      "slug": "endorphin-es-cockpit-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (black)",
+      "slug": "endorphin-es-gateway-terminal-expansion-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Gateway Terminal Expansion (golden)",
+      "slug": "endorphin-es-gateway-terminal-expansion-golden",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Endorphin.es",
+      "name": "Terminal",
+      "slug": "endorphin-es-terminal",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-1",
+      "slug": "doepfer-a-101-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-2",
+      "slug": "doepfer-a-101-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-4",
+      "slug": "doepfer-a-101-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-5",
+      "slug": "doepfer-a-101-5",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-101-6",
+      "slug": "doepfer-a-101-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-102",
+      "slug": "doepfer-a-102",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-103",
+      "slug": "doepfer-a-103",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-104",
+      "slug": "doepfer-a-104",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-1",
+      "slug": "doepfer-a-106-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-5 SEM",
+      "slug": "doepfer-a-106-5-sem",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-106-6",
+      "slug": "doepfer-a-106-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-108",
+      "slug": "doepfer-a-108",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-110",
+      "slug": "doepfer-a-110",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-5",
+      "slug": "doepfer-a-111-5",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-112",
+      "slug": "doepfer-a-112",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-113",
+      "slug": "doepfer-a-113",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-114",
+      "slug": "doepfer-a-114",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-115",
+      "slug": "doepfer-a-115",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-118-1",
+      "slug": "doepfer-a-118-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-119",
+      "slug": "doepfer-a-119",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-124 SE",
+      "slug": "doepfer-a-124-se",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-138m",
+      "slug": "doepfer-a-138m",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-141-4",
+      "slug": "doepfer-a-141-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-151",
+      "slug": "doepfer-a-151",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-155",
+      "slug": "doepfer-a-155",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-156",
+      "slug": "doepfer-a-156",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-160-2",
+      "slug": "doepfer-a-160-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-161",
+      "slug": "doepfer-a-161",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-162",
+      "slug": "doepfer-a-162",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-163",
+      "slug": "doepfer-a-163",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-1",
+      "slug": "doepfer-a-170-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-170-2",
+      "slug": "doepfer-a-170-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-1",
+      "slug": "doepfer-a-180-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-2 Multiples",
+      "slug": "doepfer-a-180-2-multiples",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-180-3",
+      "slug": "doepfer-a-180-3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-1",
+      "slug": "doepfer-a-182-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-182-2",
+      "slug": "doepfer-a-182-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-1",
+      "slug": "doepfer-a-183-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-183-2",
+      "slug": "doepfer-a-183-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-1",
+      "slug": "doepfer-a-184-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-184-2",
+      "slug": "doepfer-a-184-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-1",
+      "slug": "doepfer-a-185-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-185-2",
+      "slug": "doepfer-a-185-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-105",
+      "slug": "doepfer-a-105",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-107",
+      "slug": "doepfer-a-107",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-109 (Discontinued)",
+      "slug": "doepfer-a-109-discontinued",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-111-1",
+      "slug": "doepfer-a-111-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-116",
+      "slug": "doepfer-a-116",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-117",
+      "slug": "doepfer-a-117",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Doepfer",
+      "name": "A-181",
+      "slug": "doepfer-a-181",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ataxia",
+      "slug": "dreadbox-ataxia",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Delta",
+      "slug": "dreadbox-delta",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Epsilon",
+      "slug": "dreadbox-epsilon",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Eudemonia",
+      "slug": "dreadbox-eudemonia",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hysteria 1.0",
+      "slug": "dreadbox-hysteria-1-0",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Milky Way 1U (silver)",
+      "slug": "dreadbox-milky-way-1u-silver",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Nostalgia 1.0",
+      "slug": "dreadbox-nostalgia-1-0",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Taff2 Scientific Tremolo",
+      "slug": "dreadbox-taff2-scientific-tremolo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Theta",
+      "slug": "dreadbox-theta",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Two Of Cups (black)",
+      "slug": "dreadbox-two-of-cups-black",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Utopia",
+      "slug": "dreadbox-utopia",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Alpha",
+      "slug": "dreadbox-alpha",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Drips",
+      "slug": "dreadbox-drips",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Gamma",
+      "slug": "dreadbox-gamma",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Hades",
+      "slug": "dreadbox-hades",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Lamda",
+      "slug": "dreadbox-lamda",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Omikron",
+      "slug": "dreadbox-omikron",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Splash",
+      "slug": "dreadbox-splash",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Attenuator",
+      "slug": "dreadbox-wl-attenuator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Divider",
+      "slug": "dreadbox-wl-divider",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Drive",
+      "slug": "dreadbox-wl-drive",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Dual VCA",
+      "slug": "dreadbox-wl-dual-vca",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Echo",
+      "slug": "dreadbox-wl-echo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Envelope",
+      "slug": "dreadbox-wl-envelope",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Filter",
+      "slug": "dreadbox-wl-filter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL LFO",
+      "slug": "dreadbox-wl-lfo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Mixer",
+      "slug": "dreadbox-wl-mixer",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Modulator",
+      "slug": "dreadbox-wl-modulator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Multiple",
+      "slug": "dreadbox-wl-multiple",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Murmux Filter",
+      "slug": "dreadbox-wl-murmux-filter",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Oscillator",
+      "slug": "dreadbox-wl-oscillator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Phaser",
+      "slug": "dreadbox-wl-phaser",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Random",
+      "slug": "dreadbox-wl-random",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "WL Reflector",
+      "slug": "dreadbox-wl-reflector",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Dreadbox",
+      "name": "Ypsilon",
+      "slug": "dreadbox-ypsilon",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ADSR-VC2",
+      "slug": "cwejman-adsr-vc2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AI-2",
+      "slug": "cwejman-ai-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "AP-1",
+      "slug": "cwejman-ap-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "ATT-4",
+      "slug": "cwejman-att-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "BLD",
+      "slug": "cwejman-bld",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CRV-24",
+      "slug": "cwejman-crv-24",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "CTG-VC",
+      "slug": "cwejman-ctg-vc",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "D-LFO",
+      "slug": "cwejman-d-lfo",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "FSH-1",
+      "slug": "cwejman-fsh-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "INS-2MX",
+      "slug": "cwejman-ins-2mx",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-1",
+      "slug": "cwejman-mmf-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-2",
+      "slug": "cwejman-mmf-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MMF-6",
+      "slug": "cwejman-mmf-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "MX-4S",
+      "slug": "cwejman-mx-4s",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "NS-4 Noise and S&H",
+      "slug": "cwejman-ns-4-noise-and-s-h",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "PH-4",
+      "slug": "cwejman-ph-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RES-4",
+      "slug": "cwejman-res-4",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RG-6",
+      "slug": "cwejman-rg-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "RM-2S",
+      "slug": "cwejman-rm-2s",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "SPH-2",
+      "slug": "cwejman-sph-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FC Forward Compressor",
+      "slug": "cwejman-vc-fc-forward-compressor",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VC-FCS Stereo Forward Compressor",
+      "slug": "cwejman-vc-fcs-stereo-forward-compressor",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-2P",
+      "slug": "cwejman-vca-2p",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCA-4MX",
+      "slug": "cwejman-vca-4mx",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCEQ-3",
+      "slug": "cwejman-vceq-3",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-2RM",
+      "slug": "cwejman-vco-2rm",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VCO-6",
+      "slug": "cwejman-vco-6",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "VM-1",
+      "slug": "cwejman-vm-1",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Cwejman",
+      "name": "DMF-2",
+      "slug": "cwejman-dmf-2",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "3U to 1U Panel",
+      "slug": "acid-rain-technology-3u-to-1u-panel",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "slug": "acid-rain-technology-constellation",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "slug": "acid-rain-technology-maestro",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "slug": "acid-rain-technology-navigator",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "slug": "acid-rain-technology-ripsaw",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Splitwave",
+      "slug": "acid-rain-technology-splitwave",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Trellis",
+      "slug": "acid-rain-technology-trellis",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "slug": "acid-rain-technology-ziggurat",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "slug": "acid-rain-technology-chainsaw",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "slug": "acid-rain-technology-switchblade",
+      "hp": null,
+      "source_url": null,
+      "provenance": "NOT_COMPUTABLE",
+      "status": "not_found",
+      "notes": "no HP on candidate official/retailer URLs"
+    }
+  ],
+  "summary": {
+    "targets": 301,
+    "processed": 301,
+    "found": 56,
+    "not_found": 245
+  }
+}

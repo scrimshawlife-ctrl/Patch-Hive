@@ -78,14 +78,17 @@ def slugify(name: str) -> str:
 
 
 def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
-    """Return (url, provenance_class) candidates. provenance_class: official|retailer."""
+    """Return (url, provenance_class) candidates. provenance_class: official|retailer.
+
+    Never use search-result pages (they mis-extract HP). Prefer official product pages,
+    then Perfect Circuit / Thomann product detail URL patterns only.
+    """
     n = slugify(name)
     urls: list[tuple[str, str]] = []
 
     if brand == "Make Noise":
         urls.append((f"https://www.makenoisemusic.com/modules/{n}", "official"))
     elif brand == "Mutable Instruments":
-        # strip version suffixes for URL
         base = re.sub(r"-\d{4}.*$", "", n)
         base = base.replace("tides-2014-version", "tides")
         urls.append((f"https://mutable-instruments.net/modules/{base}/", "official"))
@@ -93,48 +96,134 @@ def candidate_urls(brand: str, name: str) -> list[tuple[str, str]]:
     elif brand == "Intellijel":
         urls.append((f"https://intellijel.com/shop/eurorack/{n}/", "official"))
         urls.append((f"https://intellijel.com/shop/1u/{n}/", "official"))
+        # strip trailing 1u from path variants
+        if n.endswith("-1u"):
+            urls.append((f"https://intellijel.com/shop/1u/{n[:-3]}/", "official"))
     elif brand == "Acid Rain Technology":
         urls.append((f"https://acidraintechnology.com/products/{n}", "official"))
     elif brand == "Instruo":
-        # Instruo uses unicode names; try ascii-ish slugs
+        # Unicode-heavy names → try common product slugs
+        ascii_map = {
+            "lubadh": "lubadh",
+            "lúbadh": "lubadh",
+            "dha": "dha",
+            "dhà": "dha",
+            "dail": "dail",
+            "dàil": "dail",
+            "ceis-2": "ceis",
+            "cèis-2": "ceis",
+            "ochd": "ochd",
+            "øchd": "ochd",
+            "gloc": "gloc",
+            "ire": "ire",
+            "íre": "ire",
+            "arbhar": "arbhar",
+            "seashell": "seashell",
+        }
+        for key, slug in ascii_map.items():
+            if key in name.lower() or key in n:
+                urls.append((f"https://www.instruomodular.com/product/{slug}/", "official"))
         urls.append((f"https://www.instruomodular.com/product/{n}/", "official"))
-        urls.append((f"https://www.instruomodular.com/{n}/", "official"))
     elif brand == "Noise Engineering":
         urls.append((f"https://noiseengineering.us/products/{n}", "official"))
     elif brand == "Erica Synths":
         urls.append((f"https://www.ericasynths.lv/shop/eurorack-modules/{n}/", "official"))
+        urls.append((f"https://www.ericasynths.lv/shop/desktop-devices/{n}/", "official"))
+        # black / pico series often under path without full slug
+        short = n.replace("black-", "").replace("pico-", "pico-")
+        urls.append((f"https://www.ericasynths.lv/shop/eurorack-modules/{short}/", "official"))
     elif brand == "Befaco":
         urls.append((f"https://www.befaco.org/en/{n}/", "official"))
+        urls.append((f"https://www.befaco.org/{n}/", "official"))
+        urls.append((f"https://www.befaco.org/en/{n.replace('-', '')}/", "official"))
     elif brand == "Doepfer":
-        # A-140 -> a-140
-        urls.append((f"https://doepfer.de/a{n.replace('a-','')}.htm", "official"))
+        # A-110-1 -> a1101 / a110_1 / a110
+        raw = name.strip().upper()
+        m = re.match(r"A-?(\d+)(?:-(\d+))?", raw)
+        if m:
+            a, b = m.group(1), m.group(2)
+            if b:
+                urls.append((f"https://doepfer.de/a{a}{b}.htm", "official"))
+                urls.append((f"https://doepfer.de/a{a}_{b}.htm", "official"))
+            urls.append((f"https://doepfer.de/a{a}.htm", "official"))
+            urls.append((f"https://doepfer.de/a{a}.htm", "official"))
         urls.append((f"https://doepfer.de/{n}.htm", "official"))
+        urls.append((f"https://doepfer.de/{n.replace('-', '')}.htm", "official"))
     elif brand == "Expert Sleepers":
         urls.append((f"https://www.expert-sleepers.co.uk/{n}.html", "official"))
+        urls.append((f"https://expert-sleepers.co.uk/{n}.html", "official"))
+        # Disting / FH often camel
+        urls.append((f"https://www.expert-sleepers.co.uk/{name.replace(' ', '')}.html", "official"))
     elif brand == "ALM Busy Circuits":
         urls.append((f"https://busycircuits.com/{n}/", "official"))
+        urls.append((f"https://busycircuits.com/alm{n}/", "official"))
     elif brand == "Xaoc Devices":
+        urls.append((f"https://xaocdevices.com/main/modules/{n}/", "official"))
         urls.append((f"https://xaocdevices.com/products/{n}", "official"))
     elif brand == "ADDAC System":
+        # ADDAC101 .WAV Player -> addac101
+        m = re.search(r"addac\s*(\d+)", name, re.I)
+        if m:
+            code = f"addac{m.group(1)}"
+            urls.append((f"https://www.addacsystem.com/en/products/{code}", "official"))
+            urls.append((f"https://www.addacsystem.com/product/{code}", "official"))
         urls.append((f"https://www.addacsystem.com/en/products/{n}", "official"))
     elif brand == "Bastl Instruments":
+        urls.append((f"https://bastl-instruments.com/eurorack/modules/{n}", "official"))
         urls.append((f"https://bastl-instruments.com/eurorack/{n}", "official"))
     elif brand == "Endorphin.es":
         urls.append((f"https://www.endorphin.es/modules/{n}", "official"))
+        urls.append((f"https://www.endorphin.es/products/{n}", "official"))
     elif brand == "Dreadbox":
         urls.append((f"https://www.dreadbox-fx.com/product/{n}/", "official"))
+        urls.append((f"https://www.dreadbox-fx.com/{n}/", "official"))
+    elif brand == "Cwejman":
+        urls.append((f"https://cwejman.net/{n}/", "official"))
+        urls.append((f"https://www.cwejman.com/{n}", "official"))
 
-    # Retailer fallbacks (search-ish product URLs)
-    q = urllib.parse.quote(f"{brand} {name}")
-    urls.append((f"https://www.perfectcircuit.com/catalogsearch/result/?q={q}", "retailer"))
-    # Thomann search
-    urls.append(
-        (
-            f"https://www.thomann.de/intl/search_dir.html?sw={urllib.parse.quote(brand + ' ' + name)}",
-            "retailer",
-        )
-    )
-    return urls
+    # Perfect Circuit product detail patterns only (no catalogsearch)
+    brand_slug = slugify(brand)
+    # common PC patterns
+    urls.append((f"https://www.perfectcircuit.com/{brand_slug}-{n}.html", "retailer"))
+    urls.append((f"https://www.perfectcircuit.com/{n}.html", "retailer"))
+    if brand == "Make Noise":
+        urls.append((f"https://www.perfectcircuit.com/make-noise-{n}.html", "retailer"))
+    if brand == "Intellijel":
+        urls.append((f"https://www.perfectcircuit.com/intellijel-{n}.html", "retailer"))
+    if brand == "Erica Synths":
+        urls.append((f"https://www.perfectcircuit.com/erica-synths-{n}.html", "retailer"))
+    if brand == "Doepfer":
+        urls.append((f"https://www.perfectcircuit.com/doepfer-{n}.html", "retailer"))
+    if brand == "Bastl Instruments":
+        urls.append((f"https://www.perfectcircuit.com/bastl-{n}.html", "retailer"))
+    if brand == "Befaco":
+        urls.append((f"https://www.perfectcircuit.com/befaco-{n}.html", "retailer"))
+    if brand == "ADDAC System":
+        m = re.search(r"addac\s*(\d+)", name, re.I)
+        if m:
+            urls.append(
+                (f"https://www.perfectcircuit.com/addac-system-addac{m.group(1)}.html", "retailer")
+            )
+    if brand == "Expert Sleepers":
+        urls.append((f"https://www.perfectcircuit.com/expert-sleepers-{n}.html", "retailer"))
+    if brand == "Endorphin.es":
+        urls.append((f"https://www.perfectcircuit.com/endorphin-es-{n}.html", "retailer"))
+    if brand == "Dreadbox":
+        urls.append((f"https://www.perfectcircuit.com/dreadbox-{n}.html", "retailer"))
+    if brand == "Acid Rain Technology":
+        urls.append((f"https://www.perfectcircuit.com/acid-rain-{n}.html", "retailer"))
+    if brand == "Instruo":
+        urls.append((f"https://www.perfectcircuit.com/instruo-{n}.html", "retailer"))
+
+    # de-dupe preserve order
+    seen: set[str] = set()
+    out: list[tuple[str, str]] = []
+    for url, kind in urls:
+        if url in seen:
+            continue
+        seen.add(url)
+        out.append((url, kind))
+    return out
 
 
 def process_one(target: dict, sleep_s: float) -> dict:
@@ -143,17 +232,27 @@ def process_one(target: dict, sleep_s: float) -> dict:
     slug = target["slug"]
     print(f"→ {brand} / {name}", flush=True)
 
-    for url, kind in candidate_urls(brand, name):
+    # Cap attempts so long batches finish (official first, then retailer product pages)
+    for url, kind in candidate_urls(brand, name)[:6]:
         md = scrape_markdown(url)
         time.sleep(sleep_s)
         if not md or len(md) < 80:
             continue
-        # retailer search pages may list wrong modules — require name mention
-        if kind == "retailer":
-            if name.split()[0].lower() not in md.lower() and name.lower() not in md.lower():
+        # Reject search pages if any slip through
+        if "catalogsearch" in url or "search_dir.html" in url or "/search?" in url:
+            continue
+        # Product pages should mention the module (or brand for single-product pages)
+        token = re.sub(r"[^a-z0-9]+", "", name.lower())[:8]
+        md_norm = re.sub(r"[^a-z0-9]+", "", md.lower())
+        if token and token not in md_norm and slugify(name).replace("-", "")[:8] not in md_norm:
+            # still allow short official pages that use different spelling
+            if kind == "retailer":
                 continue
         hp = extract_hp(md)
         if hp is None:
+            continue
+        # Fail-closed module width band (1U tiles can be 2–28; 3U modules rarely >42)
+        if hp < 1 or hp > 42:
             continue
         return {
             "brand": brand,

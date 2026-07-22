@@ -1,0 +1,210 @@
+{
+  "batch": "1-retry",
+  "filter": "product_pages_hp_1_42",
+  "results": [
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Constellation",
+      "slug": "acid-rain-technology-constellation",
+      "hp": 28,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-constellation.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Maestro",
+      "slug": "acid-rain-technology-maestro",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-maestro.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Navigator",
+      "slug": "acid-rain-technology-navigator",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-navigator.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ripsaw",
+      "slug": "acid-rain-technology-ripsaw",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ripsaw.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Ziggurat",
+      "slug": "acid-rain-technology-ziggurat",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-ziggurat.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Chainsaw",
+      "slug": "acid-rain-technology-chainsaw",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-chainsaw.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Acid Rain Technology",
+      "name": "Switchblade",
+      "slug": "acid-rain-technology-switchblade",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/acid-rain-technology-switchblade.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "1hp Blank",
+      "slug": "make-noise-1hp-blank",
+      "hp": 1,
+      "source_url": "https://www.perfectcircuit.com/make-noise-1hp-blank.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "6hp Blank",
+      "slug": "make-noise-6hp-blank",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/make-noise-6hp-blank.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Blank 4hp",
+      "slug": "make-noise-blank-4hp",
+      "hp": 4,
+      "source_url": "https://www.perfectcircuit.com/make-noise-blank-4hp.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Make Noise",
+      "name": "Mysteron",
+      "slug": "make-noise-mysteron",
+      "hp": 14,
+      "source_url": "https://www.perfectcircuit.com/make-noise-mysteron.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Quadra Expander",
+      "slug": "intellijel-quadra-expander",
+      "hp": 12,
+      "source_url": "https://www.perfectcircuit.com/intellijel-quadra-expander.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Stereo I/O 1U",
+      "slug": "intellijel-stereo-i-o-1u",
+      "hp": 20,
+      "source_url": "https://www.perfectcircuit.com/intellijel-stereo-i-o-1u.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Dixie II",
+      "slug": "intellijel-dixie-ii",
+      "hp": 8,
+      "source_url": "https://www.perfectcircuit.com/intellijel-dixie-ii.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Metropolis",
+      "slug": "intellijel-metropolis",
+      "hp": 34,
+      "source_url": "https://www.perfectcircuit.com/intellijel-metropolis.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Intellijel",
+      "name": "Mutamix",
+      "slug": "intellijel-mutamix",
+      "hp": 18,
+      "source_url": "https://www.perfectcircuit.com/intellijel-mutamix.html",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=retailer"
+    },
+    {
+      "brand": "Instruo",
+      "name": "L\u00fabadh",
+      "slug": "instruo-l-badh",
+      "hp": 20,
+      "source_url": "https://www.instruomodular.com/product/lubadh/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "d\u00e0il",
+      "slug": "instruo-d-il",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/dail/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00edre",
+      "slug": "instruo-re",
+      "hp": 8,
+      "source_url": "https://www.instruomodular.com/product/ire/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    },
+    {
+      "brand": "Instruo",
+      "name": "\u00f8chd",
+      "slug": "instruo-chd",
+      "hp": 4,
+      "source_url": "https://www.instruomodular.com/product/ochd/",
+      "provenance": "OBSERVED",
+      "status": "found",
+      "notes": "source_class=official"
+    }
+  ],
+  "summary": {
+    "kept": 20,
+    "raw_found": 20
+  }
+}

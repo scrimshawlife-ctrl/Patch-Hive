@@ -1,0 +1,161 @@
+{
+  "status": "success",
+  "dry_run": false,
+  "results_path": "../data/synth-catalog/hermes-research/hp-enrichment-batch2-results.filtered.json",
+  "input_results": 56,
+  "updated_hp": 56,
+  "skipped": 0,
+  "missing_catalog": 0,
+  "samples": [
+    {
+      "slug": "erica-synths-black-vc-eg-expander",
+      "hp": 5,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/black-vc-eg-expander/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-black-xfade",
+      "hp": 10,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/black-xfade/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-graphic-vco",
+      "hp": 16,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/graphic-vco/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-midi-to-clock-v2",
+      "hp": 6,
+      "source_url": "https://www.perfectcircuit.com/erica-synths-midi-to-clock-v2.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-modulator",
+      "hp": 10,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/modulator/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-pico-drums",
+      "hp": 3,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/pico-drums/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-pico-out",
+      "hp": 3,
+      "source_url": "https://www.perfectcircuit.com/erica-synths-pico-out.html",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-sample-drum",
+      "hp": 14,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/sample-drum/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "erica-synths-toms",
+      "hp": 16,
+      "source_url": "https://www.ericasynths.lv/shop/eurorack-modules/toms/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-bandit",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/bandit/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-chopping-kinky",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/chopping-kinky/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-lich",
+      "hp": 12,
+      "source_url": "https://www.befaco.org/en/lich/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-midi-thing-v2",
+      "hp": 6,
+      "source_url": "https://www.befaco.org/en/midi-thing-v2/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-muxlicer",
+      "hp": 16,
+      "source_url": "https://www.befaco.org/en/muxlicer/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-noise-plethora",
+      "hp": 14,
+      "source_url": "https://www.befaco.org/en/noise-plethora/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-octaves-vco",
+      "hp": 12,
+      "source_url": "https://www.befaco.org/en/octaves-vco/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-stmix",
+      "hp": 6,
+      "source_url": "https://www.befaco.org/en/stmix/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-slew",
+      "hp": 4,
+      "source_url": "https://www.befaco.org/en/slew/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-crush-delay",
+      "hp": 11,
+      "source_url": "https://www.befaco.org/en/crush-delay/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-dual-atenuverter",
+      "hp": 5,
+      "source_url": "https://www.befaco.org/en/dual-atenuverter/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-even-vco",
+      "hp": 8,
+      "source_url": "https://www.befaco.org/en/even-vco/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-mixer",
+      "hp": 5,
+      "source_url": "https://www.befaco.org/en/mixer/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "befaco-out",
+      "hp": 4,
+      "source_url": "https://www.befaco.org/en/out/",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "bastl-instruments-abc",
+      "hp": 5,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/abc",
+      "provenance": "OBSERVED"
+    },
+    {
+      "slug": "bastl-instruments-cv-trinity",
+      "hp": 14,
+      "source_url": "https://bastl-instruments.com/eurorack/modules/cv-trinity",
+      "provenance": "OBSERVED"
+    }
+  ]
+}
