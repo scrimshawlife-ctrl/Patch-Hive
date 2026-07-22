@@ -1,0 +1,31 @@
+{
+  "status": "success",
+  "rack_id": 4,
+  "case_id": 10,
+  "case_name": "Doepfer A-100LC3",
+  "module_count": 7,
+  "hp_used": 71,
+  "power_headroom": {
+    "+12V": {
+      "draw_ma": 369,
+      "capacity_ma": 2000,
+      "headroom_ma": 1631,
+      "status": "verified"
+    },
+    "-12V": {
+      "draw_ma": 131,
+      "capacity_ma": 1200,
+      "headroom_ma": 1069,
+      "status": "verified"
+    },
+    "+5V": {
+      "draw_ma": 0,
+      "capacity_ma": 4000,
+      "headroom_ma": 4000,
+      "status": "verified"
+    }
+  },
+  "module_missing_power_warnings": [],
+  "case_power_unspecified_warnings": [],
+  "notes": "After LC3 rail fill, catalog compatibility power rails are verified. overall_status may remain incomplete for connectors only."
+}

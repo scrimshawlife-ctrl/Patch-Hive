@@ -33,11 +33,15 @@ def browse_module_catalog(
     ),
     # Status
     is_available: Optional[str] = Query(None, description="available, discontinued, upcoming"),
+    # Provenance
+    source: Optional[str] = Query(
+        None, description="Filter by catalog admit source (e.g. SynthCatalogResearch)"
+    ),
     # Pagination
     skip: int = Query(0, ge=0),
     limit: int = Query(50, ge=1, le=500),
     # Sorting
-    sort_by: str = Query("brand", pattern="^(brand|name|hp|category|created_at)$"),
+    sort_by: str = Query("brand", pattern="^(brand|name|hp|category|created_at|source)$"),
     sort_order: str = Query("asc", pattern="^(asc|desc)$"),
 ):
     """
@@ -83,6 +87,9 @@ def browse_module_catalog(
 
     if is_available:
         filters.append(ModuleCatalog.is_available == is_available)
+
+    if source:
+        filters.append(ModuleCatalog.source == source)
 
     if filters:
         query = query.filter(and_(*filters))
@@ -167,6 +174,16 @@ def get_catalog_stats(db: Session = Depends(get_db)):
 
     coverage = round(100.0 * hp_known / total_modules, 1) if total_modules else 0.0
 
+    source_rows = (
+        db.query(ModuleCatalog.source, func.count(ModuleCatalog.id).label("count"))
+        .group_by(ModuleCatalog.source)
+        .order_by(func.count(ModuleCatalog.id).desc())
+        .all()
+    )
+    by_source = {
+        (src or "unknown"): count for src, count in source_rows
+    }
+
     return {
         "total_modules": total_modules,
         "total_brands": total_brands,
@@ -179,6 +196,7 @@ def get_catalog_stats(db: Session = Depends(get_db)):
             "unknown": hp_unknown,
             "coverage_pct": coverage,
         },
+        "by_source": by_source,
         "availability": {
             "available": available_count,
             "discontinued": max(total_modules - available_count, 0),
@@ -241,7 +259,10 @@ def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
         description=None,
         manufacturer_url=entry.manufacturer_url,
         source="ModuleCatalog",
-        source_reference=f"module_catalog:{slug}",
+        source_reference=(
+            f"module_catalog:{slug}"
+            + (f":source={entry.source}" if entry.source else "")
+        ),
     )
     db.add(module)
     db.commit()

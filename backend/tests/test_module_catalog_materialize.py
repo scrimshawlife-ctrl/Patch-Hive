@@ -72,3 +72,56 @@ def test_catalog_stats_hp_coverage(db_session: Session, client=None):
     assert stats["hp_stats"]["known"] == 1
     assert stats["hp_stats"]["unknown"] == 1
     assert stats["hp_stats"]["coverage_pct"] == 50.0
+
+
+def test_catalog_source_persisted_and_filterable(db_session: Session):
+    row = ModuleCatalog(
+        slug=ModuleCatalog.create_slug("TestCo", "Widget"),
+        brand="TestCo",
+        name="Widget",
+        hp=4,
+        category="UTIL",
+        is_available="available",
+        source="SynthCatalogResearch",
+    )
+    db_session.add(row)
+    db_session.commit()
+
+    assert row.to_dict()["source"] == "SynthCatalogResearch"
+
+    from modules.catalog_routes import browse_module_catalog
+
+    result = browse_module_catalog(
+        db=db_session,
+        search=None,
+        brand=None,
+        category=None,
+        hp_min=None,
+        hp_max=None,
+        hp_known=None,
+        is_available=None,
+        source="SynthCatalogResearch",
+        skip=0,
+        limit=50,
+        sort_by="brand",
+        sort_order="asc",
+    )
+    assert result["total"] >= 1
+    assert all(m.get("source") == "SynthCatalogResearch" for m in result["modules"])
+
+    empty = browse_module_catalog(
+        db=db_session,
+        search=None,
+        brand=None,
+        category=None,
+        hp_min=None,
+        hp_max=None,
+        hp_known=None,
+        is_available=None,
+        source="DoesNotExist",
+        skip=0,
+        limit=50,
+        sort_by="brand",
+        sort_order="asc",
+    )
+    assert empty["total"] == 0

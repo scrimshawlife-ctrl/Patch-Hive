@@ -55,6 +55,7 @@ def populate_catalog_from_curated_modules(db: Session) -> Dict[str, Any]:
             category=module_data["module_type"],
             manufacturer_url=module_data.get("manufacturer_url"),
             is_available="available",  # Assume available unless specified
+            source=module_data.get("source") or "ModularGrid",
         )
 
         db.add(catalog_entry)
@@ -123,6 +124,7 @@ def import_from_modulargrid_csv(db: Session, csv_path: str) -> Dict[str, Any]:
                         image_url=row.get("Image URL", "").strip() or None,
                         modulargrid_url=row.get("ModularGrid URL", "").strip() or None,
                         is_available="available",
+                        source="ModularGridCSV",
                     )
 
                     db.add(catalog_entry)

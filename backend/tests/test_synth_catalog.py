@@ -72,6 +72,14 @@ def test_import_catalog_idempotent(db_session: Session):
     count = db_session.query(ModuleCatalog).count()
     assert count == first["imported"]
 
+    # Provenance: research seed admits with SynthCatalogResearch source
+    sourced = (
+        db_session.query(ModuleCatalog)
+        .filter(ModuleCatalog.source == "SynthCatalogResearch")
+        .count()
+    )
+    assert sourced == first["imported"]
+
 
 def test_import_all_full_spec_and_skip_duplicate_brand_name(db_session: Session):
     # Pre-seed Make Noise Maths from another source — full-spec should skip

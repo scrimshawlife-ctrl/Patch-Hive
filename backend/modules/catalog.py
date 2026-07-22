@@ -53,6 +53,10 @@ class ModuleCatalog(Base):
         String(20), default="available", index=True
     )  # available, discontinued, upcoming
 
+    # Provenance (SEED): which pipeline admitted this lightweight row.
+    # e.g. SynthCatalogResearch, ModularGrid, Manual — null only pre-migration.
+    source = Column(String(50), nullable=True, index=True)
+
     # Metadata
     created_at = Column(String(50), default=lambda: datetime.utcnow().isoformat())
     updated_at = Column(
@@ -82,6 +86,7 @@ class ModuleCatalog(Base):
             "modulargrid_url": self.modulargrid_url,
             "manufacturer_url": self.manufacturer_url,
             "is_available": self.is_available,
+            "source": self.source,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
         }
