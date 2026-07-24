@@ -731,4 +731,17 @@ export const accountApi = {
   getReferrals: () => api.get<ReferralSummary>('/me/referrals'),
 };
 
+
+// Registry / PDB API (Phase 2)
+export const registryApi = {
+  listManufacturers: (params?: { limit?: number; skip?: number }) =>
+    api.get<RegistryManufacturerList>("/registry/manufacturers", { params }),
+  search: (q: string, limit = 20) =>
+    api.get<RegistrySearchResult>("/registry/search", { params: { q, limit } }),
+  getCoverage: () => api.get<RegistryCoverage>("/registry/coverage"),
+  getManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}`),
+  listModelsForManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}/models`),
+
+};
+
 export default api;

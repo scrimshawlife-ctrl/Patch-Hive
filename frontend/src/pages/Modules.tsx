@@ -608,19 +608,37 @@ export default function ModulesPage() {
               {modules.map((module) => (
                 <li key={module.slug}>
                   <article className="catalog-card" style={{ height: '100%' }}>
-                    <span className="feature-card-icon" aria-hidden="true">
-                      {module.hp != null ? `${module.hp}H` : '—'}
-                    </span>
-                    <h2>
-                      {module.brand} — {module.name}
-                    </h2>
+                    {(() => {
+                      const hp = module.hp ?? 0;
+                      const hpScale = Math.min(Math.max(hp / 42, 0.2), 1); // normalize to ~42HP max
+                      return (
+                        <div 
+                          className="module-mockup" 
+                          data-category={module.category || 'UTIL'}
+                          style={{ '--hp-scale': hpScale }}
+                          title={`${module.brand} — ${module.name} (${hp || '?'}HP)`}
+                          aria-label={`Module: ${module.brand} ${module.name}, ${hp} HP, ${module.category || 'UTIL'}`}
+                        >
+                          <div className="mockup-hp">
+                            <div className="hp-num">{hp || '—'}</div>
+                            <div className="hp-label">HP</div>
+                            {hp > 0 && <div className="hp-bar" />}
+                          </div>
+                          <div className="mockup-face">
+                            <div className="mockup-brand">{module.brand}</div>
+                            <div className="mockup-name">{module.name}</div>
+                            {module.registry_manufacturer_slug && (
+                              <div className="reg-badge" title="Linked to Registry">
+                                REG
+                              </div>
+                            )}
+                            <div className="mockup-ports" aria-hidden="true" />
+                          </div>
+                        </div>
+                      );
+                    })()}
                     <p className="catalog-card-meta">
-                      {module.category ?? 'UTIL'} ·{' '}
-                      {module.hp != null ? (
-                        <span title="Manufacturer-confirmed width">{module.hp}HP</span>
-                      ) : (
-                        <span title="Width not confirmed — not placeable">HP unknown</span>
-                      )}
+                      {module.category ?? 'UTIL'}
                     </p>
                     <div className="gate-chip-row" aria-label="Module status">
                       {module.hp != null ? (
@@ -630,6 +648,16 @@ export default function ModulesPage() {
                       )}
                       {module.source ? (
                         <span className="status-chip status-chip--neutral">{module.source}</span>
+                      ) : null}
+                      {module.registry_manufacturer_slug ? (
+                        <Link 
+                          to={`/products?query=${encodeURIComponent(module.registry_manufacturer_slug)}`}
+                          className="status-chip status-chip--neutral hover:bg-zinc-700 no-underline"
+                          title="View in Product Database (Registry)"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          reg:{module.registry_manufacturer_slug}{module.registry_device_slug ? `/${module.registry_device_slug.split("-").pop()}` : ""}
+                        </Link>
                       ) : null}
                       {module.is_available && module.is_available !== 'available' ? (
                         <span className="status-chip status-chip--warning">
