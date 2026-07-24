@@ -19,7 +19,7 @@ areas:
   visual_ingestion: PARTIAL  # secure prep + mock provider; no live model
   module_classification: PARTIAL  # gallery + mock candidates; never self-confirm
   confirmation_workflow: PARTIAL  # multi-photo fusion UI; user confirm only
-  device_registry: PARTIAL  # gallery models; completeness metrics missing
+  device_registry: ADVANCED  # full hierarchy (Manufacturer/Family/Model/Revision + Ports/Controls), seeding, public explorer, wiring (see PDB_PROD_READINESS_ADVANCE_20260723.md + PR #137)
   patch_compiler: PARTIAL  # deterministic compiler + native bridge IDs
   patch_validation: PASS  # unit coverage for graph + inventory gates
   patch_book_compiler: PARTIAL  # Design Engine on main; publication profile flag off

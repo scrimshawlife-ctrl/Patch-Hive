@@ -123,6 +123,13 @@ Development ──► Alpha ──► Beta ──► RC ──► GA
 
 ---
 
+
+## 2026-07-23 Update — PDB P0 Merge
+- Merged PR #137: full Device Registry + catalog + explorer.
+- device_registry gate advanced (see PDB_PROD_READINESS_ADVANCE_20260723.md).
+- Re-pin matrix + re-run full verification recommended.
+- Still late-alpha; no change to overall NOT_GRANTED.
+
 ## Continuity plan (ordered)
 
 ### Phase 0 — Stabilize main

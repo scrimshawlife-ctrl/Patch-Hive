@@ -80,3 +80,12 @@
 
 See docs/evidence/ for full receipts and CONTINUATION_PLAN_*.
 
+
+## 2026-07-23 Post-Merge towards Prod Readiness
+- Merged PR #137 into main (PDB P0 complete for registry/catalog/explorer).
+- Updated PRODUCTION_READINESS_MATRIX (device_registry: ADVANCED) and ASSESSMENT.
+- New receipt: docs/evidence/PDB_PROD_READINESS_ADVANCE_20260723.md.
+- API verified 200 for registry endpoints post-restart.
+- DB tables + code now aligned on main.
+- Old PDB task list items (models, ingester, services, API, evidence) satisfied.
+- Next: full re-pin of readiness docs, targeted regression, address pre-existing test collect error.
