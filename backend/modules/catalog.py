@@ -14,7 +14,6 @@ This allows:
 from datetime import datetime
 
 from sqlalchemy import Column, Index, Integer, String
-from sqlalchemy.orm import relationship
 
 from core.database import Base
 
@@ -47,6 +46,10 @@ class ModuleCatalog(Base):
     # Links
     modulargrid_url = Column(String(500), nullable=True)
     manufacturer_url = Column(String(500), nullable=True)
+
+    # Registry linkage (PDB)
+    registry_manufacturer_slug = Column(String(100), nullable=True, index=True)
+    registry_device_slug = Column(String(200), nullable=True, index=True)
 
     # Status
     is_available = Column(
@@ -85,6 +88,8 @@ class ModuleCatalog(Base):
             "image_url": self.image_url,
             "modulargrid_url": self.modulargrid_url,
             "manufacturer_url": self.manufacturer_url,
+            "registry_manufacturer_slug": self.registry_manufacturer_slug,
+            "registry_device_slug": self.registry_device_slug,
             "is_available": self.is_available,
             "source": self.source,
             "created_at": self.created_at,

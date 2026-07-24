@@ -1,0 +1,7744 @@
+{
+  "generated_at": "2026-07-23T22:20:57.916945Z",
+  "manufacturers": [
+    {
+      "aliases": [],
+      "canonical_name": "1010 Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "1010-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "1V/Oct",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "1v-oct",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "256klabs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "256klabs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "2hp",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "2hp",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "333modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "333modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "4ms Company",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "4ms-company",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "5540lab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "5540lab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "7 Dials",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "7-dials",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Abstract Data",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "abstract-data",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Abyss Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "abyss-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Acid Rain Technology",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "acid-rain-technology",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Acidlab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "acidlab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ACL",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "acl",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ACXSynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "acxsynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ADDAC System",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "addac-system",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Adventure Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "adventure-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Aemit",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "aemit",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "After Later Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "after-later-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Afterlife Laboratories",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "afterlife-laboratories",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AI Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ai-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Aion Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "aion-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Aircraft Designs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "aircraft-designs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AJH Synth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ajh-synth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Alfa Delta",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "alfa-delta",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ali Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ali-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Allen Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "allen-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ALM Busy Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "alm-busy-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Alright Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "alright-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Altered State Machines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "altered-state-machines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Alyseum",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "alyseum",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AMSynths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "amsynths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Analog Ordnance",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "analog-ordnance",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AnalogFX",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "analogfx",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AnalogRobotOrchestra",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "analogrobotorchestra",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Analogue Solutions",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "analogue-solutions",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Analogue Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "analogue-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Animal Factory Amplification",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "animal-factory-amplification",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AniModule",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "animodule",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Anti-Kulture",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "anti-kulture",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Antimatter Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "antimatter-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Antumbra",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "antumbra",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "apf.audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "apf-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Apollo View Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "apollo-view-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Apr\u00e8s le bip",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "apr-s-le-bip",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Aqa Elektrix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "aqa-elektrix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ARC",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arc",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Arcaico",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arcaico",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Arcane Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arcane-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Archaea",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "archaea",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Arcus Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arcus-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ARREL Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arrel-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Arturia",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "arturia",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AT1",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "at1",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Atomosynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "atomosynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Atonal Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "atonal-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AtoVproject",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "atovproject",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Audio Damage",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "audio-damage",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Audio Gear Obsession",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "audio-gear-obsession",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AudioScape",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "audioscape",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Audiospektri",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "audiospektri",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Audiothingies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "audiothingies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Auza",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "auza",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Avalon Harmonics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "avalon-harmonics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "AvonSynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "avonsynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Axis Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "axis-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "b:art instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "b-art-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bananalogue",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bananalogue",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Barcode Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "barcode-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bard",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bard",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bartola",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bartola",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Barton Musical Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "barton-musical-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Barullo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "barullo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bastl Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bastl-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BearModules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bearmodules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Beast-Tek",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "beast-tek",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BEB",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "beb",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BeepBoop Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "beepboop-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Beers",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "beers",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Befaco",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "befaco",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Before Void",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "before-void",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Behringer",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "behringer",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bela",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bela",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Big T Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "big-t-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BII Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bii-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Biopower Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "biopower-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "birdkids",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "birdkids",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BitByBit Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bitbybit-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bizarre Jezabel",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bizarre-jezabel",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bizmuth Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bizmuth-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Black Corporation",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "black-corporation",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Black Market Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "black-market-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Black Noise",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "black-noise",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "BlaknBlu",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "blaknblu",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Blind Monk Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "blind-monk-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Blood Cells Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "blood-cells-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Blue Lantern Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "blue-lantern-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bluka\u010d",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bluka",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Boredbrain Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "boredbrain-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bowl Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bowl-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Boye Toyes",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "boye-toyes",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bradshaw Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bradshaw-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "British Noise Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "british-noise-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Broken Silicon",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "broken-silicon",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "brownshoesonly",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "brownshoesonly",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bubblesound Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bubblesound-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Bvr-Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "bvr-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "B\u00c8SIA Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "b-sia-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "D&D Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "d-d-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "d:Machinery",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "d-machinery",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dave Jones Design",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dave-jones-design",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dave Smith Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dave-smith-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "David Haillant",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "david-haillant",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "DawnedInstruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dawnedinstruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Delptronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "delptronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Delta Sound Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "delta-sound-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Der Mann mit der Maschine",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "der-mann-mit-der-maschine",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Detroit Underground",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "detroit-underground",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "DIE Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "die-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dijkstar Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dijkstar-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "DinSync",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dinsync",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Divergent Waves",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "divergent-waves",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Division 6",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "division-6",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "DivKid",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "divkid",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Djupviks Elektronik",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "djupviks-elektronik",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dnipro modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dnipro-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Doboz",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "doboz",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Doepfer",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "doepfer",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "dotRed Audio Designs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dotred-audio-designs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dove Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dove-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dovemans",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dovemans",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "DPW Design",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dpw-design",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dr. Scientist",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dr-scientist",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dreadbox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dreadbox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dromedary",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dromedary",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "dsp.coffee",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dsp-coffee",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dwarfcraft Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dwarfcraft-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Dwyfor Tech",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "dwyfor-tech",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "E-RM",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "e-rm",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ear Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ear-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Earthlink Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "earthlink-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "EarthQuaker Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "earthquaker-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "EAS",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eas",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ebashi Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ebashi-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "eh2k",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eh2k",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Elby Designs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "elby-designs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Electro-Acoustic Research",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "electro-acoustic-research",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Electro-Faustus",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "electro-faustus",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Electrosmith",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "electrosmith",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Elektrofon",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "elektrofon",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Emblematic Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "emblematic-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Empress Effects",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "empress-effects",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Emute Lab Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "emute-lab-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "EMW",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "emw",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Encore Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "encore-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "End Times Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "end-times-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Endangered Audio Research",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "endangered-audio-research",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Endorphin.es",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "endorphin-es",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Enjoy Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "enjoy-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Entineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "entineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Entropic Loop",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "entropic-loop",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Eowave",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eowave",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Epicycloid Engineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "epicycloid-engineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Epoch Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "epoch-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Equinox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "equinox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Erd",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "erd",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Erica Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "erica-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Erogenous Tones",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "erogenous-tones",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Error Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "error-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Erthenvar",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "erthenvar",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ethereal Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ethereal-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "eurorack essentials",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eurorack-essentials",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Eurorack Hardware",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eurorack-hardware",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Euterpe",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "euterpe",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Evaton Technologies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "evaton-technologies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Eventide",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "eventide",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Exay-One",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "exay-one",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ExistentialElectronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "existentialelectronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Expert Sleepers",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "expert-sleepers",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Exploding Shed",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "exploding-shed",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Extralife Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "extralife-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Faded Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "faded-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Falafular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "falafular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fancyyyyy",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fancyyyyy",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Faselunare",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "faselunare",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Feed me Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "feed-me-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Feedback",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "feedback",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ferry Island Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ferry-island-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fieldtone",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fieldtone",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fitzgreyve Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fitzgreyve-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Five12",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "five12",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "FKMG Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fkmg-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Flame",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "flame",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "FlatSix Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "flatsix-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Flight of Harmony",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "flight-of-harmony",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Floating Knobs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "floating-knobs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Flora Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "flora-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Folktek",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "folktek",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fonitronik",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fonitronik",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Forge TME",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "forge-tme",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Found Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "found-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Foxing Hour",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "foxing-hour",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "FPB",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fpb",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Frap Tools",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "frap-tools",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Free Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "free-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Frequency Central",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "frequency-central",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fruku",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fruku",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Fully Wired Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "fully-wired-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Funkstill",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "funkstill",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Future Sound Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "future-sound-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Futureretro",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "futureretro",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "G-Storm Electro",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "g-storm-electro",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Gamechanger Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gamechanger-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ge0sync Synth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ge0sync-synth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Geeklapeeno",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "geeklapeeno",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Genki Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "genki-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "GenXnoise",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "genxnoise",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Gezeiten",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gezeiten",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ghost in Translation",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ghost-in-translation",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Gibbon Digital",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gibbon-digital",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Gieskes",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gieskes",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ginko Synthese",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ginko-synthese",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Glasgow Synth Guild",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "glasgow-synth-guild",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "GMSN!",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gmsn",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "God's Box",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "god-s-box",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Gotharman",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gotharman",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Grayscale",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "grayscale",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "GRB Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "grb-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "gregsbrain",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "gregsbrain",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ground Grown Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ground-grown-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Grove Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "grove-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Grp",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "grp",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Guru Gara Synth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "guru-gara-synth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hack Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hack-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "HackMe",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hackme",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hakai Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hakai-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Haken Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "haken-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "hale",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hale",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Half-Time Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "half-time-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hampshire Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hampshire-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Happy Nerding",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "happy-nerding",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Herbs and Stones",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "herbs-and-stones",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hermetic Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hermetic-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Herzlich Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "herzlich-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hexdevices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hexdevices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hexinverter \u00c9lectronique",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hexinverter-lectronique",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hieroglyphic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hieroglyphic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hikari Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hikari-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hinton Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hinton-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hissing Wombat",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hissing-wombat",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Hive Mind Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hive-mind-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Holocene Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "holocene-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "horstronic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "horstronic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "HR Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "hr-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Humble Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "humble-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "IC Alchemy",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ic-alchemy",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ieaskul F. Mobenthey",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ieaskul-f-mobenthey",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "In The Trees",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "in-the-trees",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Industrial Music Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "industrial-music-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Infinite Digits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "infinite-digits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Infinite Machinery",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "infinite-machinery",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Infrasonic Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "infrasonic-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Innerclock Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "innerclock-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Instruments of Things",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "instruments-of-things",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Instru\u014d",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "instru",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Intellijel",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "intellijel",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "IO Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "io-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "IOLabs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "iolabs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Iron Ether",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "iron-ether",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ishizeno",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ishizeno",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Isobar Industries",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "isobar-industries",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Isogrid",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "isogrid",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "itijik",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "itijik",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "J3RK",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "j3rk",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Jake's Custom Shop",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jake-s-custom-shop",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Jasmine & Olive Trees",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jasmine-olive-trees",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "joeSeggiola",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "joeseggiola",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Jolin",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jolin",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Jomox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jomox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Jonah Senzel",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jonah-senzel",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Joranalogue Audio Design",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "joranalogue-audio-design",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "JPSynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jpsynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "jroo music machines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "jroo-music-machines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "L-1",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "l-1",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "L-Fusion Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "l-fusion-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "LA 67",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "la-67",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "LA Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "la-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Laboratorio Elettronico Popolare",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "laboratorio-elettronico-popolare",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ladik",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ladik",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Laine Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "laine-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Larix Elektro",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "larix-elektro",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Lateral Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "lateral-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Laurentide SynthWorks",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "laurentide-synthworks",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "LeafAudio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "leafaudio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Liivatera",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "liivatera",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Likaon Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "likaon-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Limaflo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "limaflo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Liquid Sky d-vices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "liquid-sky-d-vices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Little Fish Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "little-fish-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Livestock Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "livestock-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Livewire Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "livewire-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Livid",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "livid",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Lorenz Neumann",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "lorenz-neumann",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Low-Gain Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "low-gain-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "LPZW.modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "lpzw-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Luna Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "luna-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "LZX Industries",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "lzx-industries",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "M.A.S.F.",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "m-a-s-f",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Macbeth Studio Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "macbeth-studio-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MachineRoom",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "machineroom",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Macro Machines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "macro-machines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mad Rooster Lab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mad-rooster-lab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Maffez",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "maffez",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Magerit",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "magerit",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Magnetic Freak",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "magnetic-freak",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Maikshift Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "maikshift-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Majella Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "majella-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Make Noise",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "make-noise",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Maker.ie",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "maker-ie",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Making Sound Machines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "making-sound-machines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Malekko Heavy Industry",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "malekko-heavy-industry",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Malstrom",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "malstrom",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Maneco Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "maneco-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Manhattan Analog",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "manhattan-analog",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Manifold Research Centre",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "manifold-research-centre",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Manikin Electronic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "manikin-electronic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Manikk",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "manikk",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mannequins",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mannequins",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Marion Systems Corporation",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "marion-systems-corporation",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mathesynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mathesynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mazzatron",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mazzatron",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Medic Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "medic-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MeeBilt",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "meebilt",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mega Modular Corp.",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mega-modular-corp",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mehr Music Machines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mehr-music-machines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Melawati Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "melawati-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Melted Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "melted-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MengQiMusic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mengqimusic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mental Noise",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mental-noise",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Metabolic Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "metabolic-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Metalbox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "metalbox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Metasonix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "metasonix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Metatronic Mods",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "metatronic-mods",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Metro Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "metro-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MFB",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mfb",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MFOS",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mfos",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MH Eurorack",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mh-eurorack",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Miau Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "miau-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MiaW",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "miaw",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Michigan Synth Works",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "michigan-synth-works",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Microbe Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "microbe-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Microdoze",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "microdoze",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MidCentury Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "midcentury-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "midiphy",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "midiphy",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Million Machine March",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "million-machine-march",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Miso Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "miso-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MLA Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mla-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MMI Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mmi-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "mnemonic devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mnemonic-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mobula Mobular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mobula-mobular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modal Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modal-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modbap Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modbap-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modcan",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modcan",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Moddict",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "moddict",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modor Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modor-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modulaire Maritime",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modulaire-maritime",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modular for the Masses",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modular-for-the-masses",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modular Maculata",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modular-maculata",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ModularPlug",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modularplug",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Modulove",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "modulove",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Monde Synthesizer",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "monde-synthesizer",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Monome",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "monome",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Moog Music Inc.",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "moog-music-inc",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mordax",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mordax",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Morph Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "morph-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Morphor",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "morphor",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mosaic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mosaic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Moseley Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "moseley-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Motley Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "motley-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Motovilo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "motovilo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "MRG Synthesizers",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mrg-synthesizers",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mungo Enterprises",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mungo-enterprises",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Music Thing Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "music-thing-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mutable instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mutable-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mutant Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mutant-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "mylar melodies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mylar-melodies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Mystic Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "mystic-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "M\u00f6rk Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "m-rk-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "M\u00f8ffenzeef M\u00f8dular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "m-ffenzeef-m-dular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "M\u017dOURACK",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "m-ourack",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nakedboards",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nakedboards",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NANO Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nano-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nanopolis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nanopolis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nekyia Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nekyia-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nervous Squirrel",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nervous-squirrel",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Neutral Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "neutral-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Neutron Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "neutron-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Neuzeit Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "neuzeit-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "New Systems Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "new-systems-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nexus Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nexus-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NIIO analog",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "niio-analog",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NO BPM",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "no-bpm",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nocturnis Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nocturnis-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NOH-modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noh-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Noise Engineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noise-engineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Noise Lab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noise-lab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Noise of Antimatter",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noise-of-antimatter",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Noise Reap",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noise-reap",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NoisyFruitsLab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noisyfruitslab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nonlinearcircuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nonlinearcircuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NONO Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nono-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "NoodleVolt",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "noodlevolt",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Norand",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "norand",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nordular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nordular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "North Coast Modular Collective",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "north-coast-modular-collective",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "North Coast Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "north-coast-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Northern Light Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "northern-light-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Nozo\u00efd",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nozo-d",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Numerical",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "numerical",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "nw2s",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "nw2s",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Oakley",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oakley",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Oficina de Sonido",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oficina-de-sonido",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "OhmForce",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ohmforce",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "OIIIAudio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oiiiaudio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "OK Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ok-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Okay Synthesizer",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "okay-synthesizer",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Olegtron",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "olegtron",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Olitronik_lab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "olitronik-lab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Olivella Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "olivella-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Olivia Artz Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "olivia-artz-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Omiindustriies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "omiindustriies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Omnitone",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "omnitone",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Oms In Serial",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oms-in-serial",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "omsonic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "omsonic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Optotronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "optotronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Orpho",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "orpho",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Orthogonal Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "orthogonal-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Oscillosaurus",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oscillosaurus",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Other/unknown",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "other-unknown",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Otter Mods",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "otter-mods",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Oxi Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "oxi-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "oZoe.fr",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ozoe-fr",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "P4L Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "p4l-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Panels4DIY",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "panels4diy",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Paratek",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "paratek",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Patch & Tweak",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "patch-tweak",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Patching Panda",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "patching-panda",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Percussa",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "percussa",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ph modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ph-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pharmasonic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pharmasonic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Phase Engineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "phase-engineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pindsvik Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pindsvik-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pittsburgh Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pittsburgh-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pladask Elektrisk",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pladask-elektrisk",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Plan B",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "plan-b",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Plankton Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "plankton-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Plum Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "plum-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "PMFoundations",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pmfoundations",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Polaxis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "polaxis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Poly Effects",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "poly-effects",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Polyend",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "polyend",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Polykit",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "polykit",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Praxis Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "praxis-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Prok Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "prok-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ProModular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "promodular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "PT Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pt-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pucktronix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pucktronix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pulp Logic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pulp-logic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Purrtronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "purrtronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Pusherman",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "pusherman",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Qosmo Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "qosmo-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Qu-Bit Electronix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "qu-bit-electronix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Quanalog Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "quanalog-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Quicco Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "quicco-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rabid Elephant",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rabid-elephant",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Radical Frequencies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "radical-frequencies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Radikal Technologies",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "radikal-technologies",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rain City Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rain-city-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Random Works",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "random-works",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Random*Source",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "random-source",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rare Waves",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rare-waves",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rat King Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rat-king-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Raw Analogue Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "raw-analogue-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "raw yaw media",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "raw-yaw-media",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Razmasynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "razmasynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ReBach",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rebach",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rebel Technology",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rebel-technology",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Reckless Experimentation Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "reckless-experimentation-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Recovery Effects and Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "recovery-effects-and-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Red Panel",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "red-panel",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Retro Mechanical Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "retro-mechanical-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Retroaktiv",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "retroaktiv",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Retrokits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "retrokits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Reverse Landfill",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "reverse-landfill",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rides in the Storm",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rides-in-the-storm",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ritual Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ritual-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "River",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "river",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Robaux",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "robaux",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Robots Are Red",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "robots-are-red",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Roland",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "roland",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Rossum Electro-Music",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "rossum-electro-music",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "RYK Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ryk-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "RYO",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ryo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "S3n0\u042f",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "s3n0",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sacrament Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sacrament-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "sbrk devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sbrk-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schenk.Work",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schenk-work",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schenktronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schenktronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schippmann",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schippmann",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schlappi Engineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schlappi-engineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schottkey Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schottkey-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Schreibmaschine Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "schreibmaschine-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Scopic Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "scopic-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Scrapcode Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "scrapcode-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sdkc Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sdkc-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SDS Digital",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sds-digital",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Seaside Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "seaside-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sebsongs Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sebsongs-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Seismic Industries",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "seismic-industries",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "selestium modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "selestium-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SEOK",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "seok",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sequentix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sequentix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Serendipity",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "serendipity",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Serpens Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "serpens-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SetonixSynth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "setonixsynth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sfeo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sfeo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Shakmat",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "shakmat",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Shift Line",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "shift-line",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "shkrjn",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "shkrjn",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Shock Electronix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "shock-electronix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Signs Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "signs-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "simpleCircuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "simplecircuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sismo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sismo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sitka Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sitka-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Skull & Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "skull-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sleepy Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sleepy-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Slow Nova",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "slow-nova",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Smoothie Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "smoothie-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Snazzy FX",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "snazzy-fx",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Snyderphonics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "snyderphonics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Softwire Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "softwire-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sognage",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sognage",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SOMA Laboratory",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "soma-laboratory",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Something Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "something-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sonic Potions",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sonic-potions",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sonicsmith",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sonicsmith",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sonoclast",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sonoclast",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sonocurrent",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sonocurrent",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Soulsby",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "soulsby",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SoundForce",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "soundforce",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Soundmachines",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "soundmachines",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sovage Engineering",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sovage-engineering",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Special Stage Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "special-stage-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Spinal Cat Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "spinal-cat-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sputnik Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sputnik-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Squarp Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "squarp-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SSSR Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sssr-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ST Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "st-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Starling",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "starling",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Steady State Fate",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "steady-state-fate",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Steffcorp",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "steffcorp",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Stem Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stem-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Stereoping",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stereoping",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "STG Soundlabs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stg-soundlabs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Stochastic Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stochastic-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Stoel Music Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stoel-music-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Strange Science Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "strange-science-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Strymon",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "strymon",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Studio Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "studio-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "StudioKAT",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "studiokat",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Stylophone",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "stylophone",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Subconscious Communications",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "subconscious-communications",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "subMatrix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "submatrix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Super Synthesis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "super-synthesis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Supercritical Synthesizers",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "supercritical-synthesizers",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Svarog",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "svarog",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Swamp Flux",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "swamp-flux",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Swizzle Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "swizzle-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Syinsi",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "syinsi",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Sylph Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "sylph-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synovatron",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synovatron",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SynQuaNon",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synquanon",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synso",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synso",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Syntax",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "syntax",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "SynTesla",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "syntesla",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "synthCube",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthcube",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthesis Technology",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthesis-technology",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthetic Sound Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthetic-sound-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthfox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthfox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthrotek",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthrotek",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthux Academy",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthux-academy",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Synthwerks",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "synthwerks",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Syntonie",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "syntonie",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "System80",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "system80",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "T-Rex",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "t-rex",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Takaab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "takaab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "taktaktak",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "taktaktak",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tall Dog",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tall-dog",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tangelo Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tangelo-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tasty Chips",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tasty-chips",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tear Apart Tapes",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tear-apart-tapes",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Techno Logic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "techno-logic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Teia",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "teia",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tembra",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tembra",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tenderfoot Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tenderfoot-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tesseract Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tesseract-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tetraktys",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tetraktys",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Thawney",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "thawney",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Therevox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "therevox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "This is Not Rocket Science",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "this-is-not-rocket-science",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Thonk",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "thonk",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Thonk Synth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "thonk-synth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Thorn Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "thorn-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ThreeTom Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "threetom-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Timo Rozendal",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "timo-rozendal",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tin Man Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tin-man-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tiptop Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tiptop-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "TLM Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tlm-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Toadstool Tech",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "toadstool-tech",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tobinski",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tobinski",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tokyo Tape Music Center",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tokyo-tape-music-center",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tom Evans Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tom-evans-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "TomaTek-Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tomatek-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Toolbox",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "toolbox",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Toppobrillo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "toppobrillo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "TouellSkouarn",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "touellskouarn",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Transient Modules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "transient-modules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Transistor Sounds Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "transistor-sounds-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "transistorkreis",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "transistorkreis",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tre Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tre-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tronix-Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tronix-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "trouby modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "trouby-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tsyklon Labs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tsyklon-labs",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tubbutec",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tubbutec",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "TubeOhm",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tubeohm",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Tunefish Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "tunefish-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Twang Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "twang-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Twisted Electrons",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "twisted-electrons",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "u-he",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "u-he",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "UFO Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ufo-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ult-Sound",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ult-sound",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Unknown Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "unknown-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vaemi",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vaemi",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vaski Embedded",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vaski-embedded",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VauxFlores",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vauxflores",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VAV Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vav-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VBrazil Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vbrazil-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Velectronic",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "velectronic",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Venus Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "venus-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Verbos Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "verbos-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vermona",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vermona",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VG-Line",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vg-line",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VH.S",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vh-s",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vinicius Electrik",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vinicius-electrik",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vintage Synth Lab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vintage-synth-lab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Visible Signals",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "visible-signals",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vita Synths",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vita-synths",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VoicAs",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "voicas",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "VOID Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "void-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Volt-a-tone",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "volt-a-tone",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Voltage Vibes",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "voltage-vibes",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vostok Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vostok-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Voxmachina",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "voxmachina",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "vpme.de",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vpme-de",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Vult",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "vult",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Wackylab",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wackylab",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Waldorf",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "waldorf",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Warm Star Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "warm-star-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Warped Circuits",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "warped-circuits",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Wavefonix",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wavefonix",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WaveLicker",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wavelicker",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WaveWrecker Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wavewrecker-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "West Oakland Music Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "west-oakland-music-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Westlicht",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "westlicht",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Weston Precision Audio",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "weston-precision-audio",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Wettmar Electric Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wettmar-electric-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WGD Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wgd-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Wildfire Laboratories",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wildfire-laboratories",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Wildsync",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wildsync",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WiloModules",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wilomodules",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Winter Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "winter-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Winter Plankton",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "winter-plankton",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Winterbloom",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "winterbloom",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WMD",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wmd",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WORNG Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "worng-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "WYWS",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "wyws",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "X Audio Systems",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "x-audio-systems",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "X-Fade Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "x-fade-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "x1l3",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "x1l3",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Xaoc Devices",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "xaoc-devices",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Xobo",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "xobo",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "XODES",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "xodes",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "XOR Electronics",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "xor-electronics",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "XOXO Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "xoxo-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "York Modular",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "york-modular",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "ZanySignals",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zanysignals",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zebra Synth",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zebra-synth",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zerosum Inertia",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zerosum-inertia",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zetaohm",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zetaohm",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Ziqal",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "ziqal",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zlosynth Instruments",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zlosynth-instruments",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zorx",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zorx",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Zvex",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "zvex",
+      "status": "active",
+      "website": null
+    },
+    {
+      "aliases": [],
+      "canonical_name": "Z\u0142ob",
+      "models": [],
+      "provenance": {
+        "source": "synth-catalog-phase2"
+      },
+      "slug": "z-ob",
+      "status": "active",
+      "website": null
+    }
+  ],
+  "schema_version": "registry-1.0",
+  "source_seeds": [
+    "seed-phase2-v1.json",
+    "seed-phase2-v1.sources.json",
+    "seed-phase2-v1.json"
+  ]
+}
