@@ -54,3 +54,12 @@
 | [docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) | Latest readiness narrative |
 | [docs/FEATURE_FLAGS.md](docs/FEATURE_FLAGS.md) | Flags |
 | [brand/README.md](brand/README.md) | Brand kit |
+
+## 2026-07-23 Post-Scope Debug Execution
+- Cleaned incidental unstaged test file changes.
+- Scoped to main (branch clean).
+- Drafted + executed systematic DEBUG_PLAN_PDB_P0_20260723.md (Phases 1-3 complete).
+- Key finding: PDB fully implemented in PR #137; main intentionally pre-PDB. DB tables drifted from volume persistence but code absent (expected).
+- Pre-existing test collect error (parse_cases_research) confirmed unrelated.
+- Recommendation: Merge PR #137 to advance PDB P0 on main.
+- Old task list items marked complete in the plan (satisfied by branch/PR work).
