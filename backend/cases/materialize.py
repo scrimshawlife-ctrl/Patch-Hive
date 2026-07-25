@@ -59,8 +59,12 @@ def _row_hp_layout(revision: CaseRevision, case: CaseCatalog) -> tuple[int, list
         layout[-1] += rem
         return count, layout
 
-    # Fail-closed minimum valid layout for identity-only records.
-    return 1, [1]
+    # Fail-closed: never invent HP capacity for identity-only revisions.
+    # Inventing a 1HP stub used to overwrite enriched legacy rows on rematerialize.
+    raise ValueError(
+        f"Catalog case {case.slug!r} revision {revision.revision_key!r} has no "
+        "row/capacity layout; refusing to materialize or overwrite legacy HP"
+    )
 
 
 def _primary_power(revision: CaseRevision) -> Optional[CasePowerSystem]:
@@ -187,9 +191,14 @@ def materialize_legacy_case(
     existing.capacity_unit = unit
     existing.powered = catalog.powered
     if power:
-        existing.power_12v_ma = power.current_pos12_ma
-        existing.power_neg12v_ma = power.current_neg12_ma
-        existing.power_5v_ma = power.current_pos5_ma
+        # Only known catalog rails overwrite. Null means unspecified — never wipe
+        # an enriched legacy value (wiping disables power-budget hard failures).
+        if power.current_pos12_ma is not None:
+            existing.power_12v_ma = power.current_pos12_ma
+        if power.current_neg12_ma is not None:
+            existing.power_neg12v_ma = power.current_neg12_ma
+        if power.current_pos5_ma is not None:
+            existing.power_5v_ma = power.current_pos5_ma
     existing.description = notes[:2000] if notes else existing.description
     existing.manufacturer_url = catalog.official_url or existing.manufacturer_url
     existing.meta = _meta_payload(
