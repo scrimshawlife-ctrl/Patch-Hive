@@ -55,11 +55,12 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 
 ```bash
 # Unified automation (preferred):
-#   bash scripts/test/run.sh ci          # unit + frontend + acceptance
-#   bash scripts/test/run.sh staging     # smoke + compose acceptance + design-engine
+#   bash scripts/test/run.sh ci            # unit + frontend + acceptance
+#   bash scripts/test/run.sh docker-suite  # full Docker path (preferred local staging)
+#   bash scripts/test/run.sh staging       # smoke + host-venv acceptance + design-engine
 # Windows:
 #   powershell -File scripts/test/run.ps1 ci
-#   powershell -File scripts/test/run.ps1 staging
+#   powershell -File scripts/test/run.ps1 docker-suite
 
 # Or individual staging scripts:
 # Automated readiness + alembic head + pg_dump/restore side-DB drill

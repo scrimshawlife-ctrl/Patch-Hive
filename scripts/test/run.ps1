@@ -9,13 +9,14 @@
 #   powershell -File scripts/test/run.ps1 smoke
 #   powershell -File scripts/test/run.ps1 design-engine
 #   powershell -File scripts/test/run.ps1 staging
+#   powershell -File scripts/test/run.ps1 docker-suite
 #   powershell -File scripts/test/run.ps1 all
 
 param(
     [Parameter(Position = 0)]
     [ValidateSet(
         "unit", "acceptance", "frontend", "e2e", "ci",
-        "smoke", "design-engine", "staging", "all", "help"
+        "smoke", "design-engine", "staging", "docker-suite", "all", "help"
     )]
     [string]$Suite = "help"
 )
@@ -141,6 +142,12 @@ function Invoke-StagingAcceptance {
     if ($LASTEXITCODE -ne 0) { throw "staging acceptance failed ($LASTEXITCODE)" }
 }
 
+function Invoke-DockerSuite {
+    Write-Host "=== suite: docker-suite (smoke + in-docker acceptance + design-engine) ==="
+    & powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $RepoRoot "scripts\staging\docker-suite.ps1")
+    if ($LASTEXITCODE -ne 0) { throw "docker-suite failed ($LASTEXITCODE)" }
+}
+
 switch ($Suite) {
     "unit" { Invoke-Unit }
     "acceptance" { Invoke-Acceptance }
@@ -158,6 +165,7 @@ switch ($Suite) {
         Invoke-StagingAcceptance
         Invoke-DesignEngine
     }
+    "docker-suite" { Invoke-DockerSuite }
     "all" {
         Invoke-Unit
         Invoke-Frontend

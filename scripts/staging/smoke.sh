@@ -62,6 +62,16 @@ echo "restored alembic_version: $ver"
 echo "$ver" | grep -q "20260726_module_registry_slugs" || exit 1
 compose exec -T db psql -U patchhive -d postgres -c "DROP DATABASE IF EXISTS patchhive_restore_smoke;"
 
+echo "=== F2 probe GET /api/canon/rigs ==="
+rigs_url="http://localhost:${API_PORT}/api/canon/rigs"
+rigs_body="$(curl -sf "$rigs_url")"
+echo "GET /api/canon/rigs -> $rigs_body"
+echo "$rigs_body" | grep -q '"total"' || {
+  echo "F2 probe failed" >&2
+  exit 1
+}
+
 echo "SMOKE PASS"
 echo "  Ready: $ready_url"
 echo "  Head:  20260726_module_registry_slugs"
+echo "  F2:    GET /api/canon/rigs OK"

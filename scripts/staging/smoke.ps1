@@ -137,6 +137,19 @@ if ($ver -notmatch "20260726_module_registry_slugs") {
 }
 cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -c `"DROP DATABASE IF EXISTS patchhive_restore_smoke;`""
 
+# F2 dual-path: canon rigs list must be mounted on the running image
+Write-Host "=== F2 probe GET /api/canon/rigs ==="
+$rigsUrl = "http://localhost:$ApiPort/api/canon/rigs"
+try {
+    $rigs = Invoke-WebRequest -Uri $rigsUrl -UseBasicParsing -TimeoutSec 10
+    if ($rigs.StatusCode -ne 200) { throw "status $($rigs.StatusCode)" }
+    $rigsBody = $rigs.Content
+    if ($rigsBody -notmatch '"total"') { throw "response missing total: $rigsBody" }
+    Write-Host "GET /api/canon/rigs -> $rigsBody"
+} catch {
+    throw "F2 probe failed at $rigsUrl : $_"
+}
+
 Write-Host ""
 Write-Host "SMOKE PASS"
 Write-Host "  API:  $liveUrl"
@@ -144,4 +157,5 @@ Write-Host "  Ready: $readyUrl"
 Write-Host "  FE:   http://localhost:$FePort"
 Write-Host "  Dump: $dumpFile"
 Write-Host "  Head: 20260726_module_registry_slugs"
+Write-Host "  F2:   GET /api/canon/rigs OK"
 Write-Host "Payments remain fail-closed (ALLOW_PRODUCTION_PAYMENTS=false)."

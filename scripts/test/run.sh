@@ -10,6 +10,7 @@
 #   bash scripts/test/run.sh smoke       # local compose staging smoke
 #   bash scripts/test/run.sh design-engine
 #   bash scripts/test/run.sh staging     # smoke + compose acceptance + design-engine
+#   bash scripts/test/run.sh docker-suite  # smoke + in-docker acceptance + design-engine
 #   bash scripts/test/run.sh all         # unit + frontend + acceptance + e2e
 #
 # Env:
@@ -123,6 +124,11 @@ run_staging_acceptance() {
   bash "$ROOT/scripts/staging/acceptance.sh"
 }
 
+run_docker_suite() {
+  echo "=== suite: docker-suite ==="
+  bash "$ROOT/scripts/staging/docker-suite.sh"
+}
+
 case "$SUITE" in
   unit)
     run_unit
@@ -152,6 +158,9 @@ case "$SUITE" in
     run_staging_acceptance
     run_design_engine
     ;;
+  docker-suite)
+    run_docker_suite
+    ;;
   all)
     run_unit
     run_frontend
@@ -160,7 +169,7 @@ case "$SUITE" in
     ;;
   *)
     echo "Unknown suite: $SUITE" >&2
-    echo "Use: unit|acceptance|frontend|e2e|ci|smoke|design-engine|staging|all" >&2
+    echo "Use: unit|acceptance|frontend|e2e|ci|smoke|design-engine|staging|docker-suite|all" >&2
     exit 2
     ;;
 esac
