@@ -85,7 +85,7 @@ Linux: use distro packages or the same tools from official releases.
 
 ## Future recommendations
 
-1. Pin **universal-ctags** in contributor docs (better TS support than Exuberant 5.8)
+1. ~~Pin **universal-ctags** in contributor docs~~ **DONE** — `docs/engineering/codebase-memory.md` + Contributing; `rebuild_indexes.sh` skips Emacs etags
 2. Optional **ast-grep** rules under `sgconfig.yml` for dual-path / self-confirm bans
 3. Add **semgrep** custom rules for `USER_CONFIRMED` / payment flags
 4. Wire **uv** lockfile for backend when ready for lockstep CI

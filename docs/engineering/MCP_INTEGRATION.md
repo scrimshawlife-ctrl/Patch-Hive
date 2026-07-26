@@ -17,16 +17,29 @@ config; merge entries carefully.
 | fetch | Public HTTP docs | Template |
 | git | Git operations | Optional; CLI `git`/`gh` often enough |
 
-## Local codebase-memory (not MCP)
+## Codebase memory MCP (DeusData)
 
-Persistent **semantic/structure indexes** for this repo:
+Primary structural index. Install `codebase-memory-mcp`, then:
+
+```bash
+codebase-memory-mcp install -y
+# or copy .cursor/mcp.json.example and set the absolute binary path
+codebase-memory-mcp cli index_repository \
+  --repo-path "$(git rev-parse --show-toplevel)" \
+  --mode full --name patch-hive-full --persistence true
+```
+
+Agent trigger: **"Index this project"** / skill `.agents/skills/codebase-memory/`.  
+Details: [codebase-memory.md](codebase-memory.md).
+
+## Lightweight local indexes (`just memory`)
 
 ```bash
 just memory
 ```
 
-Outputs under `.codebase-memory/` (gitignored). Agents should load
-`SYSTEM_CONTEXT.md` + graph JSON before deep exploration.
+Writes ctags/file-list summaries under `.codebase-memory/` (mostly gitignored;
+`graph.db.zst` + `artifact.json` are the shareable MCP artifact).
 
 ## sequential-thinking
 

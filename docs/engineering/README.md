@@ -10,7 +10,8 @@
 | [ReleaseChecklist.md](ReleaseChecklist.md) | Ship gates |
 | [DevelopmentWorkflow.md](DevelopmentWorkflow.md) | Day-to-day + just recipes |
 | [AI_AGENT_GUIDE.md](AI_AGENT_GUIDE.md) | How coding agents should work |
-| [codebase-memory.md](codebase-memory.md) | Local index layout |
+| [codebase-memory.md](codebase-memory.md) | MCP graph + local index layout |
+| [../.agents/skills/codebase-memory/SKILL.md](../../.agents/skills/codebase-memory/SKILL.md) | Agent skill: index/query via codebase-memory-mcp |
 | [MCP_INTEGRATION.md](MCP_INTEGRATION.md) | MCP server template notes |
 | [PATCHHIVE_IMPORT_TELEMETRY.md](PATCHHIVE_IMPORT_TELEMETRY.md) | Historical `patchhive` import map, quarantine, CI guard |
 

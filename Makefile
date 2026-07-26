@@ -40,6 +40,11 @@ index memory: ## Rebuild .codebase-memory indexes (ctags, graph, hashes)
 	bash scripts/ai/rebuild_indexes.sh
 	@echo "$(GREEN)✓ indexes refreshed$(NC)"
 
+index-mcp: ## Full DeusData codebase-memory-mcp graph (persistent)
+	@command -v codebase-memory-mcp >/dev/null || (echo "pip install codebase-memory-mcp" && exit 1)
+	codebase-memory-mcp cli index_repository --repo-path "$(CURDIR)" --mode full --name patch-hive-full --persistence true
+	@echo "$(GREEN)✓ codebase-memory-mcp artifact refreshed$(NC)"
+
 docs: ## List engineering + AI context docs
 	@ls -1 docs/engineering
 	@echo "AI_CONTEXT.md SYSTEM_CONTEXT.md ENGINEERING_SETUP_REPORT.md"

@@ -203,6 +203,23 @@ index:
 memory: index
 	@echo "codebase-memory indexes refreshed"
 
+# Full DeusData codebase-memory-mcp knowledge graph (persistent artifact)
+index-mcp:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	export PATH="${HOME}/.local/bin:${PATH}"
+	if ! command -v codebase-memory-mcp >/dev/null 2>&1; then
+		echo "install: pip install codebase-memory-mcp" >&2
+		exit 1
+	fi
+	codebase-memory-mcp cli index_repository \
+		--repo-path "{{root}}" \
+		--mode full \
+		--name patch-hive-full \
+		--persistence true
+	@echo "codebase-memory-mcp artifact → .codebase-memory/graph.db.zst"
+
 clean:
 	#!/usr/bin/env bash
 	set -euo pipefail

@@ -6,6 +6,10 @@
 # Host tools (macOS example)
 brew install ripgrep fd bat jq yq universal-ctags uv just hyperfine gitleaks semgrep ast-grep tree-sitter codespell
 
+# Debian/Ubuntu (minimum for just index)
+sudo apt install universal-ctags ripgrep fd-find
+# Note: package `ctags` alone may install Emacs etags — use universal-ctags.
+
 # Clone
 git clone https://github.com/scrimshawlife-ctrl/Patch-Hive.git
 cd Patch-Hive
@@ -17,7 +21,7 @@ uv pip install -e '.[dev]'
 # Frontend
 cd ../frontend && npm ci
 
-# Local indexes for agents
+# Local indexes for agents (needs Universal Ctags for symbols/)
 just index
 ```
 

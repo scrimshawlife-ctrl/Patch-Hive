@@ -6,24 +6,52 @@ cd "$ROOT"
 
 mkdir -p .codebase-memory/{indexes,embeddings,graph,symbols,summaries}
 
+# Prefer Universal Ctags; GNU Emacs etags shares the `ctags` name but rejects
+# --languages/--langmap and leaves symbols/tags missing under set -e.
+resolve_ctags() {
+  local candidate
+  for candidate in ctags-universal uctags ctags; do
+    if ! command -v "$candidate" >/dev/null 2>&1; then
+      continue
+    fi
+    # Universal / Exuberant advertise a usable --version; Emacs etags does not
+    # accept --languages and must be skipped.
+    if "$candidate" --help 2>&1 | grep -Eq -- '--languages'; then
+      echo "$candidate"
+      return 0
+    fi
+  done
+  return 1
+}
+
 echo "[index] ctags symbols..."
-if command -v ctags >/dev/null 2>&1; then
-  ctags -R \
+TAGS_FILE=".codebase-memory/symbols/tags"
+rm -f "$TAGS_FILE"
+if CTAGS_BIN="$(resolve_ctags)"; then
+  "$CTAGS_BIN" -R \
     --languages=Python,JavaScript \
     --langmap=JavaScript:+.ts.tsx \
     --exclude=node_modules --exclude=.git --exclude=dist --exclude=.venv \
     --exclude='*.zip' \
-    -f .codebase-memory/symbols/tags \
+    -f "$TAGS_FILE" \
     backend frontend 2>/dev/null || true
-  echo "[index] symbols: $(wc -l < .codebase-memory/symbols/tags | tr -d ' ') lines"
+  if [[ -f "$TAGS_FILE" ]]; then
+    echo "[index] symbols: $(wc -l < "$TAGS_FILE" | tr -d ' ') lines ($CTAGS_BIN)"
+  else
+    echo "[index] ctags ran but produced no tags file; skip symbols"
+  fi
 else
-  echo "[index] ctags not installed; skip symbols"
+  echo "[index] universal-ctags not installed; skip symbols"
+  echo "[index] tip: apt install universal-ctags  # or: brew install universal-ctags"
 fi
 
 echo "[index] file inventories..."
 if command -v fd >/dev/null 2>&1; then
   fd -t f -e py . backend > .codebase-memory/indexes/backend_py_files.txt || true
   fd -t f -e ts -e tsx . frontend/src > .codebase-memory/indexes/frontend_ts_files.txt || true
+elif command -v fdfind >/dev/null 2>&1; then
+  fdfind -t f -e py . backend > .codebase-memory/indexes/backend_py_files.txt || true
+  fdfind -t f -e ts -e tsx . frontend/src > .codebase-memory/indexes/frontend_ts_files.txt || true
 else
   find backend -name '*.py' > .codebase-memory/indexes/backend_py_files.txt || true
   find frontend/src \( -name '*.ts' -o -name '*.tsx' \) > .codebase-memory/indexes/frontend_ts_files.txt || true
