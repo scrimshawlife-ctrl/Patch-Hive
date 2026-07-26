@@ -39,7 +39,7 @@ Copy of [OPERATIONS.md](../OPERATIONS.md) release gates, plus:
 
 1. [ ] `alembic current` == `20260726_module_registry_slugs (head)` (re-check on SHA)  
 2. [ ] `GET /health` → liveness healthy; `GET /health/ready` → `database: ok`  
-3. [ ] Acceptance suite against staging Postgres: `pytest tests/acceptance -q`  
+3. [x] Acceptance suite against staging Postgres: `scripts/staging/acceptance.ps1` → [STAGING_ACCEPTANCE_RECEIPT_20260726.md](STAGING_ACCEPTANCE_RECEIPT_20260726.md) (local compose; re-run on named host)
 4. [ ] Ledger reconcile / no double-debit smoke  
 5. [ ] Manual a11y protocol ([ACCESSIBILITY.md](../ACCESSIBILITY.md))  
 6. [ ] Backup/restore drill of staging DB (record receipt) — local: `scripts/staging/smoke.ps1` / `smoke.sh`  
