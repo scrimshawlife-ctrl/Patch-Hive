@@ -71,7 +71,16 @@ echo "$rigs_body" | grep -q '"total"' || {
   exit 1
 }
 
+echo "=== Seed demo credentials ==="
+STAGING_DB_PORT="$DB_PORT" bash "$ROOT/scripts/staging/seed-demo.sh"
+
+echo "=== Login probe golden_demo / demo-pass ==="
+curl -sf -X POST "http://localhost:${API_PORT}/api/community/auth/login" \
+  -H "Content-Type: application/json" \
+  -d '{"username":"golden_demo","password":"demo-pass"}' | grep -q access_token
+
 echo "SMOKE PASS"
 echo "  Ready: $ready_url"
 echo "  Head:  20260726_module_registry_slugs"
 echo "  F2:    GET /api/canon/rigs OK"
+echo "  Auth:  golden_demo/demo-pass · admin/admin-pass"

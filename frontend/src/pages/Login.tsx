@@ -49,10 +49,18 @@ export default function LoginPage() {
     }
   };
 
-  const fillDemo = () => {
+  // Must match scripts/seed_golden_demo.py (Admin/Admin is NOT a real account).
+  const fillDemoUser = () => {
     setMode('signin');
-    setUsername('Admin');
-    setPassword('Admin');
+    setUsername('golden_demo');
+    setPassword('demo-pass');
+    setError('');
+  };
+
+  const fillDemoAdmin = () => {
+    setMode('signin');
+    setUsername('admin');
+    setPassword('admin-pass');
     setError('');
   };
 
@@ -201,14 +209,22 @@ export default function LoginPage() {
 
           <div className="auth-demo">
             <p className="muted">
-              Local demo credentials for development staging:
+              Local / Docker staging demo accounts (after golden seed):
             </p>
             <p>
-              <code>Admin</code> / <code>Admin</code>
+              User: <code>golden_demo</code> / <code>demo-pass</code>
             </p>
-            <button type="button" className="button button-secondary" onClick={fillDemo}>
-              Fill demo credentials
-            </button>
+            <p>
+              Admin: <code>admin</code> / <code>admin-pass</code>
+            </p>
+            <div className="auth-demo-actions">
+              <button type="button" className="button button-secondary" onClick={fillDemoUser}>
+                Fill demo user
+              </button>
+              <button type="button" className="button button-secondary" onClick={fillDemoAdmin}>
+                Fill demo admin
+              </button>
+            </div>
           </div>
 
           <p className="auth-back muted">

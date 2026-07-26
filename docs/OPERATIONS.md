@@ -87,6 +87,18 @@ docker compose -f docker-compose.staging.yml exec -T backend python -m alembic c
 Staging **must** keep `ALLOW_PRODUCTION_PAYMENTS=false` and `STRIPE_TEST_MODE=true`.  
 A public hostname requires an explicit operator host pick (Compose VPS / Render / Fly / Azure) — agents must not invent cloud accounts.
 
+### Demo credentials (local Docker staging)
+
+Restored by `scripts/staging/seed-demo.ps1` (also run at end of `smoke.ps1`):
+
+| Account | Username | Password | Role |
+|---------|----------|----------|------|
+| Demo user | `golden_demo` | `demo-pass` | User |
+| Admin | `admin` | `admin-pass` | Admin |
+| Admin (alias) | `admin_demo` | `admin-pass` | Admin |
+
+**Not valid:** `Admin` / `Admin` (old UI label only — fixed on Login page).
+
 ### Staging vs production
 
 | | Staging | Production |

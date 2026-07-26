@@ -150,6 +150,23 @@ try {
     throw "F2 probe failed at $rigsUrl : $_"
 }
 
+# Restore known login accounts (Login page must match these).
+Write-Host "=== Seed demo credentials ==="
+& powershell -NoProfile -ExecutionPolicy Bypass -File (Join-Path $RepoRoot "scripts\staging\seed-demo.ps1") -DbPort $DbPort
+if ($LASTEXITCODE -ne 0) { throw "seed-demo failed ($LASTEXITCODE)" }
+
+Write-Host "=== Login probe golden_demo / demo-pass ==="
+$loginBody = '{"username":"golden_demo","password":"demo-pass"}'
+try {
+    $login = Invoke-WebRequest -Uri "http://localhost:$ApiPort/api/community/auth/login" `
+        -Method POST -Body $loginBody -ContentType "application/json" -UseBasicParsing -TimeoutSec 10
+    if ($login.StatusCode -ne 200) { throw "status $($login.StatusCode)" }
+    if ($login.Content -notmatch "access_token") { throw "no access_token" }
+    Write-Host "Login demo user OK"
+} catch {
+    throw "Demo login probe failed: $_"
+}
+
 Write-Host ""
 Write-Host "SMOKE PASS"
 Write-Host "  API:  $liveUrl"
@@ -158,4 +175,5 @@ Write-Host "  FE:   http://localhost:$FePort"
 Write-Host "  Dump: $dumpFile"
 Write-Host "  Head: 20260726_module_registry_slugs"
 Write-Host "  F2:   GET /api/canon/rigs OK"
+Write-Host "  Auth: golden_demo/demo-pass · admin/admin-pass"
 Write-Host "Payments remain fail-closed (ALLOW_PRODUCTION_PAYMENTS=false)."
