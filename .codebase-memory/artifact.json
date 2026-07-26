@@ -1,11 +1,11 @@
 {
     "schema_version": 2,
-    "commit": "1f80c96a8d5f48354bcb1a0e49afc0e074d60b5f",
-    "indexed_at": "2026-07-26T03:30:09Z",
+    "commit": "095b715ecbab5541ba73987cc617b9c53f5f20be",
+    "indexed_at": "2026-07-26T03:30:18Z",
     "project": "patch-hive-full",
     "nodes": 9934,
-    "edges": 35441,
+    "edges": 35456,
     "original_size": 22151168,
-    "compressed_size": 4596853,
+    "compressed_size": 4599117,
     "compression_level": 3
 }
