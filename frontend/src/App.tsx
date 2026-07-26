@@ -19,6 +19,7 @@ import RackBuilderPage from '@/pages/RackBuilder';
 import RacksPage from '@/pages/Racks';
 import RigDetailPage from '@/pages/RigDetail';
 import PatchBookStyleStudioPage from '@/pages/PatchBookStyleStudio';
+import RegistryPage from '@/pages/Registry';
 
 type Theme = 'dark' | 'light';
 
@@ -41,6 +42,7 @@ function App() {
           <nav className="primary-nav" aria-label="Primary navigation">
             <NavLink to="/racks">Rigs</NavLink>
             <NavLink to="/modules">Module gallery</NavLink>
+            <NavLink to="/products">Products</NavLink>
             <NavLink to="/cases">Cases</NavLink>
             <NavLink to="/patches">Patches</NavLink>
             {isAuthenticated() && <NavLink to="/account">Credits & account</NavLink>}
@@ -77,6 +79,7 @@ function App() {
             <Route path="/rigs/:rigId" element={<RigDetailPage />} />
             <Route path="/rigs/:rigId/patchbook-studio" element={<PatchBookStyleStudioPage />} />
             <Route path="/patches" element={<PatchesPage />} />
+            <Route path="/products" element={<RegistryPage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/account" element={<AccountPage />} />
             <Route path="/admin" element={<AdminDashboard />} />

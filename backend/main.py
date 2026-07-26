@@ -38,6 +38,15 @@ from patches.models import Patch  # noqa: F401
 from publishing.models import Publication, PublicationReport  # noqa: F401
 from racks.models import Rack, RackModule  # noqa: F401
 from runs.models import Run  # noqa: F401
+from registry.models import (  # noqa: F401
+    Capability,
+    Control,
+    DeviceFamily,
+    DeviceModel,
+    DeviceRevision,
+    Manufacturer,
+    Port,
+)
 
 
 @asynccontextmanager
@@ -121,6 +130,7 @@ from runs.routes import router as runs_router  # noqa: E402
 from canon.routes import router as canon_router  # noqa: E402
 from community.auth_routes import router as auth_router  # noqa: E402
 from evidence.routes import router as evidence_router  # noqa: E402
+from registry.routes import router as registry_router  # noqa: E402
 
 app.include_router(catalog_router, prefix="/api/modules", tags=["catalog"])
 app.include_router(modules_router, prefix="/api/modules", tags=["modules"])
@@ -134,6 +144,7 @@ app.include_router(runs_router, prefix="/api/runs", tags=["runs"])
 app.include_router(export_router, prefix="/api/export", tags=["export"])
 app.include_router(canon_router, prefix="/api/canon", tags=["canon"])
 app.include_router(evidence_router, prefix="/api", tags=["evidence"])
+app.include_router(registry_router, prefix="/api/registry", tags=["registry"])
 app.include_router(integrations_router, prefix="/api", tags=["integrations"])
 app.include_router(synth_catalog_router, prefix="/api", tags=["synth-catalog"])
 app.include_router(monetization_router, prefix="/api/monetization", tags=["monetization"])

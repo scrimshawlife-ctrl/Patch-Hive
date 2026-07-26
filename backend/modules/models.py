@@ -43,6 +43,10 @@ class Module(Base):
     tags = Column(JSON, nullable=False, default=list)  # ["analog", "digital", "west-coast", etc.]
     description = Column(Text, nullable=True)
     manufacturer_url = Column(String(500), nullable=True)
+    # Registry linkage (PDB wiring)
+    registry_manufacturer_slug = Column(String(100), nullable=True, index=True)
+    registry_device_slug = Column(String(200), nullable=True, index=True)
+
     status = Column(String(20), nullable=False, default="active", index=True)
     replacement_module_id = Column(Integer, ForeignKey("modules.id"), nullable=True)
     deprecated_at = Column(DateTime, nullable=True)

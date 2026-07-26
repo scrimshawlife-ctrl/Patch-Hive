@@ -233,6 +233,13 @@ def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
                 "hp": existing.hp,
                 "module_type": existing.module_type,
                 "source": existing.source,
+                "power_12v_ma": getattr(existing, "power_12v_ma", None),
+                "power_neg12v_ma": getattr(existing, "power_neg12v_ma", None),
+                "io_ports": getattr(existing, "io_ports", []),
+                "tags": getattr(existing, "tags", []),
+                "description": getattr(existing, "description", None),
+                "registry_manufacturer_slug": getattr(existing, "registry_manufacturer_slug", None),
+                "registry_device_slug": getattr(existing, "registry_device_slug", None),
             },
         }
 
@@ -258,6 +265,8 @@ def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
         tags=[],
         description=None,
         manufacturer_url=entry.manufacturer_url,
+        registry_manufacturer_slug=entry.registry_manufacturer_slug,
+        registry_device_slug=entry.registry_device_slug,
         source="ModuleCatalog",
         source_reference=(
             f"module_catalog:{slug}"
@@ -279,6 +288,8 @@ def materialize_catalog_entry(db: Session, slug: str) -> Dict[str, Any]:
             "hp": module.hp,
             "module_type": module.module_type,
             "source": module.source,
+            "registry_manufacturer_slug": module.registry_manufacturer_slug,
+            "registry_device_slug": module.registry_device_slug,
         },
     }
 
