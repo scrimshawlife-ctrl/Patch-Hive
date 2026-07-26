@@ -38,11 +38,12 @@
 ## Immediate continuation priorities
 
 1. Operator: pick named staging host; optional domain cutover ([DOMAIN_CUTOVER_CHECKLIST.md](docs/evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
-2. Design Engine staging enablement walkthrough (test payments only) — [PATCHBOOK_STAGING_ENABLEMENT.md](docs/design/PATCHBOOK_STAGING_ENABLEMENT.md).
+2. Operator: named staging host + optional domain cutover.
 3. Dual-path thinning (F2+), P1/P2 hygiene per CONTINUATION.
 4. #96 UI polish when CI green.
 
-**Local staging automation:** `scripts/staging/smoke.ps1` + `scripts/staging/acceptance.ps1` (11 acceptance tests PASS against compose Postgres).
+**Local staging automation:**  
+`smoke.ps1` · `acceptance.ps1` (11 PASS) · `design-engine.ps1` (Design Engine preview+export PASS)
 
 ## Authority boundary
 
