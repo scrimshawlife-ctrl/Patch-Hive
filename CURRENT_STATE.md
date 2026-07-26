@@ -1,8 +1,8 @@
 # CURRENT_STATE
 
-**Authoritative as of:** 2026-07-23  
+**Authoritative as of:** 2026-07-26  
 **Branch pin:** `origin/main`  
-**HEAD:** `3d86ee1e5c20909f005c3688f70afd0f66256aa3` — feat(ui): multi-module batch place with contiguous HP pack (#136)  
+**HEAD:** `923e709e645d604b70df4465dff24cb373ebe47d` — base for FE/seed type-safety PR; includes #137 PDB explorer, #138 materialize rails fix, #139 codebase-memory
 **Recent work:** PDB-01 catalog inventory receipt (see docs/evidence/CATALOG_INVENTORY_RECEIPT_20260723.md); active ModuleCatalog + /catalog/* + materialize (HP fail-closed) + Modules UI + batch place integration; GalleryRevision append-only.  
 **Open issues:** #68 P0 Product Database/Device Registry/Explorer (inventory step complete); #58 P1 residual + P2 hygiene.  
 
@@ -39,6 +39,8 @@
 | Production readiness | **Not ready** — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) |
 
 ## Immediate continuation priorities
+
+0. Land shadow FE/seed type-safety + seed-script syntax repairs so main matches compile-ready local state.
 
 1. PDB-01/02: follow catalog inventory (712 brands scanned) — implement Device Registry hierarchy models (Manufacturer etc.), adapters from gallery/catalog, coverage/snapshot endpoints + receipts (Issue #68).
 2. Align any demo creds; land pending UI polish.

@@ -101,7 +101,7 @@ export interface CatalogMaterializeResponse {
     source: string;
     power_12v_ma?: number;
     power_neg12v_ma?: number;
-    io_ports?: any[];
+    io_ports?: IOPort[];
     tags?: string[];
     description?: string;
     registry_manufacturer_slug?: string | null;
@@ -558,7 +558,7 @@ export interface GalleryResponse {
 // Registry / Product Database types (Phase 2)
 export interface Manufacturer {
   id: number;
-  canonical_name: string;
+  name: string;
   slug: string;
   aliases?: string[];
   website?: string | null;
@@ -567,9 +567,10 @@ export interface Manufacturer {
 
 export interface DeviceModel {
   id: number;
-  canonical_name: string;
+  name: string;
   slug: string;
-  manufacturer_id: number;
+  brand?: string;
+  manufacturer_id?: number;
   hp?: number | null;
   device_type?: string | null;
 }
@@ -581,21 +582,13 @@ export interface RegistryManufacturerList {
 
 export interface RegistrySearchResult {
   results: DeviceModel[];
-  total: number;
+  total?: number;
 }
 
 export interface RegistryCoverage {
   total_manufacturers: number;
   total_models: number;
-  hp_known: number;
-  hp_unknown: number;
-  hp_coverage_pct: number;
-}
-
-
-// Catalog now carries registry links (after seed)
-export interface CatalogModule {
-  // ... existing
-  registry_manufacturer_slug?: string;
-  registry_device_slug?: string;
+  hp_known?: number;
+  hp_unknown?: number;
+  hp_coverage_pct?: number;
 }

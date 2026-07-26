@@ -29,6 +29,11 @@ import type {
   User,
   CanonicalExportRecord,
   ReferralSummary,
+  RegistryCoverage,
+  RegistryManufacturerList,
+  RegistrySearchResult,
+  Manufacturer,
+  DeviceModel,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -734,13 +739,14 @@ export const accountApi = {
 
 // Registry / PDB API (Phase 2)
 export const registryApi = {
-  listManufacturers: (params?: { limit?: number; skip?: number }) =>
+  listManufacturers: (params?: { limit?: number; offset?: number }) =>
     api.get<RegistryManufacturerList>("/registry/manufacturers", { params }),
   search: (q: string, limit = 20) =>
     api.get<RegistrySearchResult>("/registry/search", { params: { q, limit } }),
   getCoverage: () => api.get<RegistryCoverage>("/registry/coverage"),
-  getManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}`),
-  listModelsForManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}/models`),
+  getManufacturer: (slug: string) => api.get<Manufacturer>(`/registry/manufacturers/${slug}`),
+  listModelsForManufacturer: (slug: string) =>
+    api.get<{ models: DeviceModel[] }>(`/registry/manufacturers/${slug}/models`),
 
 };
 
