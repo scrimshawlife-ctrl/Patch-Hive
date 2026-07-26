@@ -44,10 +44,10 @@ docker compose -f docker-compose.staging.yml exec -T backend python -m alembic c
 
 1. First bind of host `:8000` failed (`port is already allocated` / WSL `wslrelay` PID); smoke used **`STAGING_API_PORT=18000`**.
 2. Docker Desktop on this host intermittently drops the `dockerDesktopLinuxEngine` named pipe mid-session; containers stayed up and HTTP probes remained valid when the engine pipe flaked.
-3. On cold start, one migration attempt raced DB recovery (`Consistent recovery state has not been yet reached`); entrypoint retry / restart applied head successfully (idempotent upgrade).
+3. On cold start (pre-fix), one migration attempt raced DB recovery (`Consistent recovery state has not been yet reached`); container restart applied head. **Fixed** by entrypoint wait-on-`DATABASE_URL` + alembic retries (`fix/entrypoint-wait-for-db`).
 
 ## Code path verified
 
-- `backend/docker-entrypoint.sh` → `python -m alembic upgrade head`
+- `backend/docker-entrypoint.sh` → wait for DB via psycopg2 → `python -m alembic upgrade head` (retries)
 - No `create_all` / `init_db` on staging boot
 - Readiness includes DB `SELECT 1` via `/health/ready`
