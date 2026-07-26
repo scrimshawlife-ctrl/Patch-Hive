@@ -61,6 +61,9 @@ powershell -File scripts/staging/smoke.ps1   # Windows (PowerShell 5+)
 # Acceptance suite against compose Postgres (dedicated patchhive_acceptance DB):
 powershell -File scripts/staging/acceptance.ps1
 
+# Design Engine flags + preview/export walkthrough (test payments only):
+powershell -File scripts/staging/design-engine.ps1
+
 # Manual:
 export STAGING_SECRET_KEY="$(openssl rand -base64 32)"
 export STAGING_DB_PASSWORD="$(openssl rand -base64 18)"

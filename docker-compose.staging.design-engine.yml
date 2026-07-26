@@ -1,0 +1,28 @@
+# Overlay: enable PatchBook Design Engine on local staging (test payments only).
+# Usage:
+#   docker compose -f docker-compose.staging.yml -f docker-compose.staging.design-engine.yml up -d --build backend
+#   powershell -File scripts/staging/design-engine.ps1
+#
+# Never set ALLOW_PRODUCTION_PAYMENTS=true here.
+
+services:
+  backend:
+    environment:
+      ENABLE_PATCHBOOK_DESIGN_ENGINE: "true"
+      ENABLE_CANON_EXPORT_FULFILLMENT: "true"
+      ENABLE_INLINE_EXPORT_FULFILLMENT: "true"
+      ENABLE_PATCHBOOK_PUBLICATION_PROFILE: "false"
+      REQUIRE_SEALED_GENERATED_PATCHES: "false"
+      DESIGN_ENGINE_DEFAULT_TIER: core
+      PREVIEW_RATE_LIMIT_PER_MINUTE: "60"
+      EXPORT_STORE_ROOT: /app/exports
+      EXPORT_DIR: /app/exports
+      # Keep payments fail-closed
+      STRIPE_TEST_MODE: "true"
+      ALLOW_PRODUCTION_PAYMENTS: "false"
+    volumes:
+      - staging_exports:/app/exports
+
+volumes:
+  staging_exports:
+    driver: local

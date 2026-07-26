@@ -7,9 +7,19 @@
 
 Turn on Design Engine export fulfillment and Style Studio against **local Docker staging** without enabling production payments.
 
+## Automated walkthrough (recommended)
+
+```powershell
+# Flags via overlay + seed + preview + export (test payments only)
+powershell -File scripts/staging/design-engine.ps1
+```
+
+Compose overlay: `docker-compose.staging.design-engine.yml`  
+Receipt: [../evidence/DESIGN_ENGINE_STAGING_ENABLEMENT_RECEIPT_20260726.md](../evidence/DESIGN_ENGINE_STAGING_ENABLEMENT_RECEIPT_20260726.md)
+
 ## Required flags (backend)
 
-Add to `.env.staging.local` (or compose `environment:`):
+Add to `.env.staging.local` (or compose `environment:` / design-engine overlay):
 
 ```bash
 ENABLE_PATCHBOOK_DESIGN_ENGINE=true
