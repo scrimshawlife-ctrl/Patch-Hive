@@ -411,8 +411,7 @@ def get_canon_rig(rig_id: int, db: Session = Depends(get_db)) -> CanonRigDetail:
     summary = _canon_rig_summary_from_rack(db, rack)
     full = build_rack_response(db, rack)
     modules = [
-        m.model_dump() if hasattr(m, "model_dump") else dict(m)
-        for m in (full.modules or [])
+        m.model_dump() if hasattr(m, "model_dump") else dict(m) for m in (full.modules or [])
     ]
     return CanonRigDetail(
         **summary.model_dump(),
