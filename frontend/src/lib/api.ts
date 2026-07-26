@@ -332,6 +332,10 @@ export interface InventoryRevisionListResponse {
   revisions: InventoryRevisionSummary[];
 }
 
+/** F4: evidence under canon prefix (rig_id ≡ rack_id). Legacy /racks/.../evidence still works. */
+const evidencePath = (rigId: number, suffix: string) =>
+  `/canon/rigs/${rigId}/evidence/${suffix}`;
+
 export const evidenceApi = {
   uploadImages: (
     rackId: number,
@@ -350,15 +354,15 @@ export const evidenceApi = {
       String(options?.consent_provider_processing ?? false),
     );
     form.append('run_vision_mock', String(options?.run_vision_mock ?? true));
-    return api.post<MultiImageUploadResponse>(`/racks/${rackId}/evidence/images`, form, {
+    return api.post<MultiImageUploadResponse>(evidencePath(rackId, 'images'), form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
-  listImages: (rackId: number) => api.get(`/racks/${rackId}/evidence/images`),
+  listImages: (rackId: number) => api.get(evidencePath(rackId, 'images')),
 
   listCandidates: (rackId: number) =>
-    api.get<EvidenceCandidateListResponse>(`/racks/${rackId}/evidence/candidates`),
+    api.get<EvidenceCandidateListResponse>(evidencePath(rackId, 'candidates')),
 
   reconcile: (rackId: number) =>
     api.get<{
@@ -383,7 +387,7 @@ export const evidenceApi = {
       conflict_count: number;
       status: string;
       note: string;
-    }>(`/racks/${rackId}/evidence/reconcile`),
+    }>(evidencePath(rackId, 'reconcile')),
 
   confirm: (
     rackId: number,
@@ -396,10 +400,10 @@ export const evidenceApi = {
         notes?: string | null;
       }>;
     },
-  ) => api.post<ConfirmationBatchResponse>(`/racks/${rackId}/evidence/confirmations`, body),
+  ) => api.post<ConfirmationBatchResponse>(evidencePath(rackId, 'confirmations'), body),
 
   listInventory: (rackId: number) =>
-    api.get<InventoryRevisionListResponse>(`/racks/${rackId}/evidence/inventory`),
+    api.get<InventoryRevisionListResponse>(evidencePath(rackId, 'inventory')),
 };
 
 // Run API — list prefers canon alias; patches still legacy until dual-written.

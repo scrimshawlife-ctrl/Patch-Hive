@@ -98,6 +98,12 @@ def _asset_response(
     response_model=MultiImageUploadResponse,
     status_code=201,
 )
+@router.post(
+    "/canon/rigs/{rack_id}/evidence/images",
+    response_model=MultiImageUploadResponse,
+    status_code=201,
+    name="upload_canon_rig_evidence_images",
+)
 async def upload_rack_evidence_images(
     rack_id: int,
     files: list[UploadFile] = File(...),
@@ -222,6 +228,11 @@ async def upload_rack_evidence_images(
 
 
 @router.get("/racks/{rack_id}/evidence/images", response_model=ImageAssetListResponse)
+@router.get(
+    "/canon/rigs/{rack_id}/evidence/images",
+    response_model=ImageAssetListResponse,
+    name="list_canon_rig_evidence_images",
+)
 def list_rack_evidence_images(
     rack_id: int,
     include_deleted: bool = False,
@@ -241,6 +252,11 @@ def list_rack_evidence_images(
 
 
 @router.delete("/racks/{rack_id}/evidence/images/{asset_id}", status_code=200)
+@router.delete(
+    "/canon/rigs/{rack_id}/evidence/images/{asset_id}",
+    status_code=200,
+    name="delete_canon_rig_evidence_image",
+)
 def delete_rack_evidence_image(
     rack_id: int,
     asset_id: str,
@@ -375,6 +391,11 @@ def _load_candidates_for_rack(db: Session, rack_id: int) -> list[dict]:
 
 
 @router.get("/racks/{rack_id}/evidence/candidates", response_model=CandidateListResponse)
+@router.get(
+    "/canon/rigs/{rack_id}/evidence/candidates",
+    response_model=CandidateListResponse,
+    name="list_canon_rig_evidence_candidates",
+)
 def list_rack_evidence_candidates(
     rack_id: int, db: Session = Depends(get_db)
 ) -> CandidateListResponse:
@@ -402,6 +423,11 @@ class ReconciliationResponse(BaseModel):
 @router.get(
     "/racks/{rack_id}/evidence/reconcile",
     response_model=ReconciliationResponse,
+)
+@router.get(
+    "/canon/rigs/{rack_id}/evidence/reconcile",
+    response_model=ReconciliationResponse,
+    name="reconcile_canon_rig_evidence",
 )
 def reconcile_rack_evidence(rack_id: int, db: Session = Depends(get_db)) -> ReconciliationResponse:
     """Multi-photo fusion of untrusted candidates for one rack.
@@ -439,6 +465,11 @@ class InventoryRevisionListResponse(BaseModel):
 @router.get(
     "/racks/{rack_id}/evidence/inventory",
     response_model=InventoryRevisionListResponse,
+)
+@router.get(
+    "/canon/rigs/{rack_id}/evidence/inventory",
+    response_model=InventoryRevisionListResponse,
+    name="list_canon_rig_evidence_inventory",
 )
 def list_rack_inventory_revisions(
     rack_id: int, db: Session = Depends(get_db)
@@ -494,6 +525,12 @@ def list_rack_inventory_revisions(
     "/racks/{rack_id}/evidence/confirmations",
     response_model=ConfirmationBatchResponse,
     status_code=201,
+)
+@router.post(
+    "/canon/rigs/{rack_id}/evidence/confirmations",
+    response_model=ConfirmationBatchResponse,
+    status_code=201,
+    name="confirm_canon_rig_evidence_candidates",
 )
 def confirm_rack_evidence_candidates(
     rack_id: int,
