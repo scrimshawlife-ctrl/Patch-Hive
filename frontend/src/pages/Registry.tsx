@@ -1,14 +1,14 @@
 /**
  * Public Product Database Explorer (PDB)
- * Manufacturer directory + search + basic detail.
+ * Manufacturer directory + search + detail — PatchHive workspace chrome.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { registryApi } from '@/lib/api';
 import type { Manufacturer, RegistryCoverage } from '@/types/api';
 
 interface SelectedMan extends Manufacturer {
-  models?: any[];
+  models?: Array<{ name?: string; hp?: number | null }>;
 }
 
 export default function RegistryPage() {
@@ -18,135 +18,180 @@ export default function RegistryPage() {
   const [query, setQuery] = useState(() => searchParams.get('query') || searchParams.get('q') || '');
   const [selected, setSelected] = useState<SelectedMan | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<
+    Array<{ brand?: string; name?: string; hp?: number | null }>
+  >([]);
 
   useEffect(() => {
-    Promise.all([
-      registryApi.listManufacturers({ limit: 200 }),
-      registryApi.getCoverage(),
-    ])
+    Promise.all([registryApi.listManufacturers({ limit: 200 }), registryApi.getCoverage()])
       .then(([mans, cov]) => {
         const items = (mans.data.items || mans.data || []).slice(0, 200);
         setManufacturers(items);
         setCoverage(cov.data);
       })
-      .catch(console.error)
-      .finally(() => {
-        setLoading(false);
-        const initialQ = searchParams.get('query') || searchParams.get('q');
-        if (initialQ) {
-          // filter will pick it up; optionally auto-select first match later
-        }
-      });
+      .catch(() => {
+        /* registry unavailable — empty directory */
+      })
+      .finally(() => setLoading(false));
   }, []);
 
-  const filtered = manufacturers.filter(m =>
-    !query || m.name?.toLowerCase().includes(query.toLowerCase()) || m.slug?.toLowerCase().includes(query.toLowerCase())
-  );
+  const manLabel = (m: Manufacturer) => m.name || m.canonical_name || m.slug;
+
+  const filtered = manufacturers.filter((m) => {
+    const label = manLabel(m).toLowerCase();
+    return (
+      !query ||
+      label.includes(query.toLowerCase()) ||
+      m.slug?.toLowerCase().includes(query.toLowerCase())
+    );
+  });
 
   const onSearch = async (q: string) => {
-    if (!q) { setSearchResults([]); return; }
+    if (!q) {
+      setSearchResults([]);
+      return;
+    }
     try {
-      const res = await registryApi.search(q, 8);  // assume updated
+      const res = await registryApi.search(q, 8);
       setSearchResults(res.data.results || []);
-    } catch (e) {
+    } catch {
       setSearchResults([]);
     }
   };
 
-  const selectMan = async (m: any) => {
+  const selectMan = async (m: Manufacturer) => {
     try {
       const res = await fetch(`/api/registry/manufacturers/${m.slug}`);
       const detail = await res.json();
       const modelsRes = await fetch(`/api/registry/manufacturers/${m.slug}/models`);
       const modelsData = await modelsRes.json();
       setSelected({ ...detail, models: modelsData.models || [] });
-    } catch (e) {
+    } catch {
       setSelected({ ...m, models: [] });
     }
   };
 
-  if (loading) return <div className="p-8">Loading Product Database…</div>;
+  if (loading) {
+    return (
+      <div className="panel">
+        <p className="status">Loading Product Database…</p>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="flex items-baseline justify-between mb-6">
+    <div className="registry-page">
+      <header className="workspace-header">
         <div>
-          <h1 className="text-3xl font-bold">Product Database</h1>
-          <p className="text-sm text-gray-400">Live from registry • {coverage?.total_manufacturers || manufacturers.length} manufacturers • {coverage?.total_models || 0} models</p>
+          <p className="eyebrow">Catalog</p>
+          <h1>Product Database</h1>
+          <p className="muted">
+            Live registry · {coverage?.total_manufacturers || manufacturers.length} manufacturers ·{' '}
+            {coverage?.total_models || 0} models
+          </p>
         </div>
-        <input
-          className="input w-72"
-          placeholder="Search manufacturers or models…"
-          value={query}
-          onChange={e => {
-            setQuery(e.target.value);
-            onSearch(e.target.value);
-          }}
-        />
-      </div>
+        <label className="field" style={{ minWidth: 'min(18rem, 100%)' }}>
+          <span className="visually-hidden">Search manufacturers or models</span>
+          <input
+            className="input"
+            placeholder="Search manufacturers or models…"
+            value={query}
+            onChange={(e) => {
+              setQuery(e.target.value);
+              void onSearch(e.target.value);
+            }}
+          />
+        </label>
+      </header>
 
-      {searchResults.length > 0 && (
-        <div className="mb-6 p-4 bg-zinc-900 rounded">
-          <div className="text-xs uppercase tracking-widest mb-2 text-gray-400">Model search results</div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+      {searchResults.length > 0 ? (
+        <div className="panel" style={{ marginBottom: 'var(--space-5)' }}>
+          <p className="eyebrow">Model search</p>
+          <ul className="registry-search-list">
             {searchResults.map((r, i) => (
-              <div key={i} className="text-sm border border-zinc-800 p-2 rounded">{r.brand} — {r.name} {r.hp ? `(${r.hp}hp)` : ''}</div>
+              <li key={`${r.brand}-${r.name}-${i}`}>
+                <span>
+                  {r.brand} — {r.name}
+                </span>
+                {r.hp != null ? <code>{r.hp} HP</code> : null}
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
-      )}
+      ) : null}
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Directory */}
-        <div className="lg:col-span-2">
-          <div className="text-xs uppercase mb-2 tracking-widest text-gray-400">Manufacturers</div>
-          <div className="border border-zinc-800 rounded divide-y divide-zinc-800 max-h-[520px] overflow-auto">
-            {filtered.length === 0 && <div className="p-4 text-gray-400">No matches.</div>}
-            {filtered.map(m => (
-              <button
-                key={m.slug || m.id}
-                onClick={() => selectMan(m)}
-                className="w-full text-left p-3 hover:bg-zinc-900 flex justify-between items-center"
-              >
-                <span className="font-medium">{m.name}</span>
-                <span className="text-xs text-gray-500 font-mono">{m.slug}</span>
-              </button>
-            ))}
+      <div className="split-workspace registry-split">
+        <aside className="split-aside" aria-label="Manufacturers">
+          <div className="split-aside-head">
+            <h2>Manufacturers</h2>
+            <span className="muted" style={{ fontSize: '0.8rem' }}>
+              {filtered.length}/{manufacturers.length}
+            </span>
           </div>
-          <div className="text-[10px] mt-2 text-gray-500">Showing {filtered.length} of {manufacturers.length}. Full search &amp; details coming.</div>
-        </div>
+          <div className="side-list">
+            {filtered.length === 0 ? (
+              <p className="muted">No matches.</p>
+            ) : (
+              filtered.map((m) => (
+                <button
+                  key={m.slug || m.id}
+                  type="button"
+                  className={`side-item${selected?.slug === m.slug ? ' is-selected' : ''}`}
+                  onClick={() => void selectMan(m)}
+                  aria-current={selected?.slug === m.slug ? 'true' : undefined}
+                >
+                  <span className="side-item-title">{manLabel(m)}</span>
+                  <span className="side-item-meta">{m.slug}</span>
+                </button>
+              ))
+            )}
+          </div>
+        </aside>
 
-        {/* Detail */}
-        <div className="border border-zinc-800 rounded p-4 min-h-[200px]">
+        <section className="panel" aria-live="polite">
           {!selected ? (
-            <div className="text-gray-400 text-sm">Select a manufacturer to see details (live DB data).</div>
+            <p className="muted">Select a manufacturer to inspect registry detail.</p>
           ) : (
             <>
-              <div className="text-xl font-semibold mb-1">{selected.name}</div>
-              <div className="text-xs text-gray-500 mb-4 font-mono">{selected.slug}</div>
-
-              <div className="text-sm space-y-1">
-                <div>Status: <span className="font-mono">{selected.status || 'active'}</span></div>
-                {selected.website && <div>Website: <a href={selected.website} className="underline" target="_blank" rel="noreferrer">{selected.website}</a></div>}
-              </div>
-
-              <div className="mt-4 space-y-3">
+              <p className="eyebrow">Manufacturer</p>
+              <h2 style={{ marginTop: 0 }}>{manLabel(selected)}</h2>
+              <p className="catalog-card-meta">{selected.slug}</p>
+              <dl className="registry-detail">
                 <div>
-                  <div className="text-xs uppercase tracking-widest text-gray-400 mb-1">Registry Link</div>
-                  <div className="text-sm font-mono">{selected.slug} {selected.id ? `(id ${selected.id})` : ""}</div>
+                  <dt>Status</dt>
+                  <dd>
+                    <code>{selected.status || 'active'}</code>
+                  </dd>
                 </div>
-                <div>
-                  <div className="text-xs uppercase tracking-widest text-gray-400 mb-1">Models (sample)</div>
-                  {(selected.models || []).slice(0,5).map((mod: any, i: number) => (
-                    <div key={i} className="text-xs py-0.5">{mod.name} {mod.hp ? `(${mod.hp}hp)` : ''}</div>
+                {selected.website ? (
+                  <div>
+                    <dt>Website</dt>
+                    <dd>
+                      <a href={selected.website} target="_blank" rel="noreferrer">
+                        {selected.website}
+                      </a>
+                    </dd>
+                  </div>
+                ) : null}
+              </dl>
+              <p className="eyebrow" style={{ marginTop: 'var(--space-5)' }}>
+                Models (sample)
+              </p>
+              {(selected.models || []).length === 0 ? (
+                <p className="muted">No models loaded for this manufacturer yet.</p>
+              ) : (
+                <ul className="registry-model-list">
+                  {(selected.models || []).slice(0, 8).map((mod, i) => (
+                    <li key={`${mod.name}-${i}`}>
+                      <span>{mod.name}</span>
+                      {mod.hp != null ? <code>{mod.hp} HP</code> : null}
+                    </li>
                   ))}
-                  {(!selected.models || selected.models.length === 0) && <div className="text-xs text-gray-500">No models loaded for this man yet.</div>}
-                </div>
-              </div>
+                </ul>
+              )}
             </>
           )}
-        </div>
+        </section>
       </div>
     </div>
   );

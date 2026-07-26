@@ -101,7 +101,7 @@ export interface CatalogMaterializeResponse {
     source: string;
     power_12v_ma?: number;
     power_neg12v_ma?: number;
-    io_ports?: any[];
+    io_ports?: Array<Record<string, unknown>>;
     tags?: string[];
     description?: string;
     registry_manufacturer_slug?: string | null;
@@ -559,6 +559,8 @@ export interface GalleryResponse {
 export interface Manufacturer {
   id: number;
   canonical_name: string;
+  /** List/detail serializers often alias canonical_name → name */
+  name?: string;
   slug: string;
   aliases?: string[];
   website?: string | null;
@@ -590,12 +592,4 @@ export interface RegistryCoverage {
   hp_known: number;
   hp_unknown: number;
   hp_coverage_pct: number;
-}
-
-
-// Catalog now carries registry links (after seed)
-export interface CatalogModule {
-  // ... existing
-  registry_manufacturer_slug?: string;
-  registry_device_slug?: string;
 }

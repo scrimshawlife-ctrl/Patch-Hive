@@ -366,9 +366,6 @@ export default function CasesPage() {
               const busy = materializing === item.slug;
               return (
                 <article key={item.slug} className="catalog-card">
-                  <span className="feature-card-icon" aria-hidden="true">
-                    {formatDisplay(item.format_family).slice(0, 2).toUpperCase()}
-                  </span>
                   <h2>
                     {item.manufacturer} — {item.model}
                   </h2>

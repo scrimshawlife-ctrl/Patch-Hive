@@ -114,9 +114,6 @@ export default function PatchesPage() {
           <div className="catalog-grid">
             {patches.map((patch) => (
               <article key={patch.id} className="catalog-card">
-                <span className="feature-card-icon" aria-hidden="true">
-                  PX
-                </span>
                 <h2>{patch.name_override || patch.suggested_name || patch.name}</h2>
                 <p className="catalog-card-meta">
                   {patch.category}

@@ -12,20 +12,6 @@ const tabs: { key: TabKey; label: string }[] = [
   { key: 'modules', label: 'Module Gallery' },
 ];
 
-const difficultyFromConnections = (patch: Patch) => {
-  const count = patch.connections?.length || 0;
-  if (count <= 4) return 'Beginner';
-  if (count <= 8) return 'Intermediate';
-  return 'Advanced';
-};
-
-const weirdnessFromConnections = (patch: Patch) => {
-  const modulationEdges = patch.connections.filter((c) =>
-    ['cv', 'gate', 'clock'].includes(c.cable_type),
-  ).length;
-  return Math.min(100, modulationEdges * 8);
-};
-
 function gateTone(status?: string | null): 'success' | 'warning' | 'danger' | 'neutral' {
   if (!status) return 'neutral';
   const s = status.toLowerCase();
@@ -47,8 +33,7 @@ export default function RacksPage() {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState({
     category: 'All',
-    difficulty: 'All',
-    weirdness: 'Any',
+    connections: 'All',
   });
   const [compat, setCompat] = useState<{
     bridge_status: string;
@@ -185,12 +170,10 @@ export default function RacksPage() {
 
   const filteredPatches = patches.filter((patch) => {
     if (filters.category !== 'All' && patch.category !== filters.category) return false;
-    const difficulty = difficultyFromConnections(patch);
-    if (filters.difficulty !== 'All' && difficulty !== filters.difficulty) return false;
-    const weirdness = weirdnessFromConnections(patch);
-    if (filters.weirdness === 'Low' && weirdness > 25) return false;
-    if (filters.weirdness === 'Medium' && (weirdness < 25 || weirdness > 60)) return false;
-    if (filters.weirdness === 'High' && weirdness < 60) return false;
+    const count = patch.connections?.length || 0;
+    if (filters.connections === '1-4' && !(count >= 1 && count <= 4)) return false;
+    if (filters.connections === '5-8' && !(count >= 5 && count <= 8)) return false;
+    if (filters.connections === '9+' && count < 9) return false;
     return true;
   });
 
@@ -573,31 +556,17 @@ export default function RacksPage() {
                     </select>
                   </label>
                   <label className="inline-field">
-                    Difficulty
+                    Connections
                     <select
-                      value={filters.difficulty}
+                      value={filters.connections}
                       onChange={(event) =>
-                        setFilters((prev) => ({ ...prev, difficulty: event.target.value }))
+                        setFilters((prev) => ({ ...prev, connections: event.target.value }))
                       }
                     >
-                      <option>All</option>
-                      <option>Beginner</option>
-                      <option>Intermediate</option>
-                      <option>Advanced</option>
-                    </select>
-                  </label>
-                  <label className="inline-field">
-                    Weirdness
-                    <select
-                      value={filters.weirdness}
-                      onChange={(event) =>
-                        setFilters((prev) => ({ ...prev, weirdness: event.target.value }))
-                      }
-                    >
-                      <option>Any</option>
-                      <option>Low</option>
-                      <option>Medium</option>
-                      <option>High</option>
+                      <option value="All">All</option>
+                      <option value="1-4">1–4</option>
+                      <option value="5-8">5–8</option>
+                      <option value="9+">9+</option>
                     </select>
                   </label>
                   <label className="inline-field">
@@ -624,8 +593,7 @@ export default function RacksPage() {
                         {patch.suggested_name || 'Suggested name missing'}
                       </p>
                       <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-                        {patch.category} · {difficultyFromConnections(patch)} · weirdness{' '}
-                        {weirdnessFromConnections(patch)}
+                        {patch.category} · {patch.connections?.length || 0} connections
                       </p>
                       <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                         {patch.description || 'No description yet.'}

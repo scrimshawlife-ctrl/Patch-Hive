@@ -7,9 +7,11 @@ export function AdminGuard({ children }: { children: React.ReactNode }) {
 
   if (!user || !READ_ROLES.has(user.role)) {
     return (
-      <div style={{ padding: '2rem', border: '1px solid #333' }}>
-        <h2 style={{ color: '#ff6666' }}>Admin access required</h2>
-        <p>Contact an administrator to request access.</p>
+      <div className="panel">
+        <h2 className="status status-danger" style={{ marginTop: 0 }}>
+          Admin access required
+        </h2>
+        <p className="muted">Contact an administrator to request access.</p>
       </div>
     );
   }

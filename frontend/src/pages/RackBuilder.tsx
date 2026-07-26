@@ -938,7 +938,7 @@ export default function RackBuilderPage() {
               aria-current={state === 'current' ? 'step' : undefined}
             >
               <span className="step-progress__num" aria-hidden="true">
-                {state === 'done' ? '✓' : step.n}
+                {step.n}
               </span>
               <span className="step-progress__label">{step.label}</span>
             </div>

@@ -45,7 +45,7 @@ describe('LoadingSpinner', () => {
       const hexFrame = container.querySelector('.spinner-hex');
       expect(hexFrame).toBeInTheDocument();
       expect(hexFrame).toHaveAttribute('fill', 'none');
-      expect(hexFrame).toHaveAttribute('stroke', '#f5a623');
+      expect(hexFrame).toHaveAttribute('stroke', 'currentColor');
     });
 
     it('renders inner hexagon', () => {
@@ -69,10 +69,10 @@ describe('LoadingSpinner', () => {
       expect(dots).toHaveLength(6);
     });
 
-    it('has glow filter defined', () => {
+    it('does not use glow blur filters', () => {
       const { container } = render(<LoadingSpinner />);
-      const filter = container.querySelector('#spinner-glow');
-      expect(filter).toBeInTheDocument();
+      expect(container.querySelector('#spinner-glow')).toBeNull();
+      expect(container.querySelector('feGaussianBlur')).toBeNull();
     });
   });
 

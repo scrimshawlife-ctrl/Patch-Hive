@@ -612,10 +612,10 @@ export default function ModulesPage() {
                       const hp = module.hp ?? 0;
                       const hpScale = Math.min(Math.max(hp / 42, 0.2), 1); // normalize to ~42HP max
                       return (
-                        <div 
-                          className="module-mockup" 
+                        <div
+                          className="module-mockup"
                           data-category={module.category || 'UTIL'}
-                          style={{ '--hp-scale': hpScale }}
+                          style={{ ['--hp-scale' as string]: String(hpScale) }}
                           title={`${module.brand} — ${module.name} (${hp || '?'}HP)`}
                           aria-label={`Module: ${module.brand} ${module.name}, ${hp} HP, ${module.category || 'UTIL'}`}
                         >
@@ -652,7 +652,7 @@ export default function ModulesPage() {
                       {module.registry_manufacturer_slug ? (
                         <Link 
                           to={`/products?query=${encodeURIComponent(module.registry_manufacturer_slug)}`}
-                          className="status-chip status-chip--neutral hover:bg-zinc-700 no-underline"
+                          className="status-chip status-chip--neutral"
                           title="View in Product Database (Registry)"
                           onClick={e => e.stopPropagation()}
                         >

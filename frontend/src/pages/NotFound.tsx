@@ -17,38 +17,28 @@ export default function NotFound() {
           aria-hidden="true"
         >
           <defs>
-            <filter id="error-glow">
-              <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-              <feMerge>
-                <feMergeNode in="coloredBlur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
             <linearGradient id="cable-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#f5a623" />
-              <stop offset="50%" stopColor="#3ddcff" />
-              <stop offset="100%" stopColor="#f5a623" />
+              <stop offset="0%" stopColor="var(--ph-amber, #f5a623)" />
+              <stop offset="100%" stopColor="var(--ph-cyan, #3ddcff)" />
             </linearGradient>
           </defs>
 
           <path
             d="M 200,40 L 330,110 L 330,180"
             fill="none"
-            stroke="#e23d4a"
+            stroke="var(--ph-danger, #e23d4a)"
             strokeWidth="3"
-            filter="url(#error-glow)"
           />
           <path
             d="M 330,220 L 330,250 L 200,320 L 70,250 L 70,110 L 130,75"
             fill="none"
-            stroke="#e23d4a"
+            stroke="var(--ph-danger, #e23d4a)"
             strokeWidth="3"
-            filter="url(#error-glow)"
           />
           <path
             d="M 330,180 L 340,185 L 335,195 L 330,220"
             fill="none"
-            stroke="#e23d4a"
+            stroke="var(--ph-danger, #e23d4a)"
             strokeWidth="2"
             strokeDasharray="3,3"
             opacity="0.6"
@@ -62,8 +52,8 @@ export default function NotFound() {
             strokeLinecap="round"
             className="cable-left"
           />
-          <circle cx="100" cy="150" r="8" fill="#f5a623" filter="url(#error-glow)" />
-          <circle cx="100" cy="150" r="4" fill="#08090b" />
+          <circle cx="100" cy="150" r="8" fill="var(--ph-amber, #f5a623)" />
+          <circle cx="100" cy="150" r="4" fill="var(--zs-carbon, #08090b)" />
 
           <path
             d="M 300,150 Q 280,170 250,180 T 220,190"
@@ -73,23 +63,17 @@ export default function NotFound() {
             strokeLinecap="round"
             className="cable-right"
           />
-          <circle cx="300" cy="150" r="8" fill="#3ddcff" filter="url(#error-glow)" />
-          <circle cx="300" cy="150" r="4" fill="#08090b" />
-
-          <circle cx="185" cy="188" r="3" fill="#e23d4a" className="spark spark-1" />
-          <circle cx="190" cy="195" r="2" fill="#ff8a3d" className="spark spark-2" />
-          <circle cx="210" cy="192" r="2.5" fill="#e23d4a" className="spark spark-3" />
-          <circle cx="215" cy="188" r="3" fill="#ff8a3d" className="spark spark-4" />
+          <circle cx="300" cy="150" r="8" fill="var(--ph-cyan, #3ddcff)" />
+          <circle cx="300" cy="150" r="4" fill="var(--zs-carbon, #08090b)" />
 
           <text
             x="200"
             y="280"
-            fill="#f5a623"
-            fontFamily="ui-monospace, monospace"
+            fill="var(--ph-amber, #f5a623)"
+            fontFamily="var(--font-mono, ui-monospace, monospace)"
             fontSize="72"
             fontWeight="bold"
             textAnchor="middle"
-            filter="url(#error-glow)"
           >
             404
           </text>

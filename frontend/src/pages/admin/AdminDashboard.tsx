@@ -4,37 +4,31 @@ import { AdminNav } from './AdminNav';
 
 const areas = [
   {
-    code: 'USR',
     title: 'Users',
     description: 'Roles, credit grants, and profile maintenance. Mutations are audited.',
     to: '/admin/users',
   },
   {
-    code: 'MOD',
     title: 'Modules',
     description: 'Deprecate, tombstone, or merge catalog modules. No hard deletes.',
     to: '/admin/modules',
   },
   {
-    code: 'GAL',
     title: 'Gallery',
     description: 'Inspect gallery revisions and inventory evidence state.',
     to: '/admin/gallery',
   },
   {
-    code: 'RUN',
     title: 'Runs',
     description: 'Browse generation runs bound to rig revisions and seeds.',
     to: '/admin/runs',
   },
   {
-    code: 'EXP',
     title: 'Exports',
     description: 'Canonical export ledger and fulfillment status.',
     to: '/admin/exports',
   },
   {
-    code: 'LDR',
     title: 'Leaderboards',
     description: 'Community ranking surfaces when feature flags allow.',
     to: '/admin/leaderboards',
@@ -64,20 +58,19 @@ export default function AdminDashboard() {
             <li>Modules are deprecated or tombstoned (no hard deletes)</li>
           </ul>
         </div>
-        <div className="feature-grid">
+        <ul className="ops-link-list">
           {areas.map((area) => (
-            <article key={area.code} className="feature-card">
-              <span className="feature-card-icon" aria-hidden="true">
-                {area.code}
-              </span>
-              <h2>{area.title}</h2>
-              <p>{area.description}</p>
+            <li key={area.to}>
+              <div>
+                <h2>{area.title}</h2>
+                <p>{area.description}</p>
+              </div>
               <Link className="button button-secondary" to={area.to}>
                 Open
               </Link>
-            </article>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </AdminGuard>
   );

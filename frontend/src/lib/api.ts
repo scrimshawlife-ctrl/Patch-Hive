@@ -29,6 +29,9 @@ import type {
   User,
   CanonicalExportRecord,
   ReferralSummary,
+  RegistryCoverage,
+  RegistryManufacturerList,
+  RegistrySearchResult,
 } from '@/types/api';
 import type {
   AdminUserList,

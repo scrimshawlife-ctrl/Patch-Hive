@@ -61,7 +61,10 @@ export default function LoginPage() {
       <div className="auth-shell">
         <aside className="auth-brand panel" aria-label="Product identity">
           <div className="auth-brand-grid" aria-hidden="true" />
-          <p className="eyebrow">PatchHive</p>
+          <div className="auth-brand-photo" aria-hidden="true" />
+          <p className="home-brand" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
+            PatchHive
+          </p>
           <h1 id={`${formId}-title`} className="auth-brand-title">
             Enter the hive
           </h1>
@@ -82,9 +85,7 @@ export default function LoginPage() {
 
         <div className="auth-card panel">
           <div className="auth-card-head">
-            <div className="auth-mark" aria-hidden="true">
-              PH
-            </div>
+            <div className="auth-mark" aria-hidden="true" />
             <div>
               <p className="eyebrow">Access</p>
               <h2 className="auth-card-title">
