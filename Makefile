@@ -1,4 +1,4 @@
-.PHONY: help dev prod up down restart logs shell test clean build setup setup-dev lint validate-local index memory docs coverage test-ci test-staging test-unit
+.PHONY: help dev prod up down restart logs shell test clean build setup setup-dev lint validate-local index memory docs coverage test-ci test-staging test-unit test-docker
 
 # Colors for output
 BLUE := \033[0;34m
@@ -42,6 +42,9 @@ test-ci: ## CI parity: unit + frontend + acceptance
 
 test-staging: ## Local compose: smoke + acceptance DB + design-engine
 	bash scripts/test/run.sh staging
+
+test-docker: ## Full Docker staging suite (in-network acceptance)
+	bash scripts/test/run.sh docker-suite
 
 coverage: ## Backend coverage (excludes acceptance)
 	cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance --cov -q

@@ -66,6 +66,13 @@ test-staging:
 	cd "{{root}}"
 	bash scripts/test/run.sh staging
 
+# Full Docker staging suite (smoke + in-docker acceptance + design-engine)
+test-docker:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/test/run.sh docker-suite
+
 # Quarantined historical package corpus (not default CI unit path)
 test-historical:
 	#!/usr/bin/env bash
