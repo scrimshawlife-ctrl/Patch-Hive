@@ -47,16 +47,13 @@ if ($ps -notmatch "db") {
     Start-Sleep -Seconds 5
 }
 
-Write-Host "=== Ensure acceptance database '$AcceptanceDb' ==="
-cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -v ON_ERROR_STOP=1 -c `"SELECT 1 FROM pg_database WHERE datname='$AcceptanceDb'`"" | Out-Null
-$exists = cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -t -A -c `"SELECT 1 FROM pg_database WHERE datname='$AcceptanceDb';`""
-if (($exists | Out-String).Trim() -ne "1") {
-    cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -v ON_ERROR_STOP=1 -c `"CREATE DATABASE $AcceptanceDb;`""
-    if ($LASTEXITCODE -ne 0) { throw "CREATE DATABASE failed" }
-    Write-Host "Created $AcceptanceDb"
-} else {
-    Write-Host "Database $AcceptanceDb already exists"
-}
+# Fresh DB each run so alembic upgrade head is deterministic (no half-migrated residue).
+Write-Host "=== Recreate acceptance database '$AcceptanceDb' ==="
+cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -v ON_ERROR_STOP=1 -c `"SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='$AcceptanceDb' AND pid <> pg_backend_pid();`""
+cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -v ON_ERROR_STOP=1 -c `"DROP DATABASE IF EXISTS $AcceptanceDb;`""
+cmd /c "docker compose -f $ComposeFile exec -T db psql -U patchhive -d postgres -v ON_ERROR_STOP=1 -c `"CREATE DATABASE $AcceptanceDb;`""
+if ($LASTEXITCODE -ne 0) { throw "CREATE DATABASE failed" }
+Write-Host "Created clean $AcceptanceDb"
 
 $acceptUrl = "postgresql://patchhive:${DbPassword}@localhost:${DbPort}/${AcceptanceDb}"
 Write-Host "ACCEPTANCE_DATABASE_URL=$acceptUrl"

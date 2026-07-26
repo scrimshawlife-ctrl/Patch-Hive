@@ -1,4 +1,4 @@
-.PHONY: help dev prod up down restart logs shell test clean build setup setup-dev lint validate-local index memory docs coverage
+.PHONY: help dev prod up down restart logs shell test clean build setup setup-dev lint validate-local index memory docs coverage test-ci test-staging test-unit
 
 # Colors for output
 BLUE := \033[0;34m
@@ -29,9 +29,19 @@ lint: ## Run backend ruff + frontend eslint/tsc
 	cd frontend && npm run lint && npm run type-check
 
 validate-local: ## Lint + unit tests without Docker Compose
-	cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q
-	cd frontend && npm test -- --run && npm run type-check
+	bash scripts/test/run.sh unit
+	bash scripts/test/run.sh frontend
+	cd frontend && npm run type-check
 	@echo "$(GREEN)✓ validate-local complete$(NC)"
+
+test-unit: ## Backend unit/api only (host)
+	bash scripts/test/run.sh unit
+
+test-ci: ## CI parity: unit + frontend + acceptance
+	bash scripts/test/run.sh ci
+
+test-staging: ## Local compose: smoke + acceptance DB + design-engine
+	bash scripts/test/run.sh staging
 
 coverage: ## Backend coverage (excludes acceptance)
 	cd backend && env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance --cov -q
@@ -131,11 +141,8 @@ test-backend-cov: ## Run backend tests with coverage
 test-frontend: ## Run frontend tests
 	docker compose exec frontend-dev sh -c "npm test -- --run"
 
-test-acceptance: ## Run acceptance tests (backend + UI)
-	@echo "$(BLUE)Running backend acceptance tests...$(NC)"
-	cd backend && python -m pytest tests/acceptance -q
-	@echo "$(BLUE)Running frontend Playwright tests...$(NC)"
-	cd frontend && npm run test:e2e
+test-acceptance: ## Backend acceptance (Testcontainers or ACCEPTANCE_DATABASE_URL)
+	bash scripts/test/run.sh acceptance
 
 # Database
 db-migrate: ## Run database migrations

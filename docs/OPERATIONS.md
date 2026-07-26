@@ -54,15 +54,25 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 ### Staging-like Compose (image-built backend, no --reload)
 
 ```bash
-# Automated (preferred): readiness + alembic head + pg_dump/restore side-DB drill
+# Unified automation (preferred):
+#   bash scripts/test/run.sh ci          # unit + frontend + acceptance
+#   bash scripts/test/run.sh staging     # smoke + compose acceptance + design-engine
+# Windows:
+#   powershell -File scripts/test/run.ps1 ci
+#   powershell -File scripts/test/run.ps1 staging
+
+# Or individual staging scripts:
+# Automated readiness + alembic head + pg_dump/restore side-DB drill
 powershell -File scripts/staging/smoke.ps1   # Windows (PowerShell 5+)
 # bash scripts/staging/smoke.sh              # Linux/macOS
 
 # Acceptance suite against compose Postgres (dedicated patchhive_acceptance DB):
 powershell -File scripts/staging/acceptance.ps1
+# bash scripts/staging/acceptance.sh
 
 # Design Engine flags + preview/export walkthrough (test payments only):
 powershell -File scripts/staging/design-engine.ps1
+# bash scripts/staging/design-engine.sh
 
 # Manual:
 export STAGING_SECRET_KEY="$(openssl rand -base64 32)"

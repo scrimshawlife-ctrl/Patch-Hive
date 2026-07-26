@@ -41,12 +41,12 @@ jobs:
         env:
           DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
         run: python -m alembic upgrade head
-      - name: Run backend suite
+      - name: Run backend suite (unit/api; acceptance is acceptance-tests.yml)
         working-directory: backend
         env:
           DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
           PYTHONPATH: .
-        run: python -m pytest -q --cov=. --cov-report=xml
+        run: python -m pytest tests --ignore=tests/acceptance -q --cov=. --cov-report=xml
       - uses: codecov/codecov-action@v4
         with:
           files: backend/coverage.xml
