@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "codebase-memory-mcp": {
+      "command": "/absolute/path/to/codebase-memory-mcp",
+      "args": []
+    }
+  }
+}

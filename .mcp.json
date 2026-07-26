@@ -27,10 +27,15 @@
       "command": "npx",
       "args": ["-y", "@cyanheads/git-mcp-server"],
       "description": "Optional git MCP (install may vary; use gh/git CLI if unavailable)"
+    },
+    "codebase-memory-mcp": {
+      "command": "codebase-memory-mcp",
+      "args": [],
+      "description": "DeusData knowledge-graph indexes (.codebase-memory/graph.db.zst). Install: pip install codebase-memory-mcp"
     }
   },
   "_notes": {
-    "codebase-memory": "Local indexes live in .codebase-memory/ (just memory). Not an npm MCP package.",
+    "codebase-memory": "Primary: codebase-memory-mcp (graph.db.zst). Lightweight: just memory (ctags/lists). See docs/engineering/codebase-memory.md and .cursor/mcp.json.example.",
     "sequential-thinking": "Enable in host agent if available; not vendored here.",
     "security": "Do not commit real tokens. Map secrets via environment only."
   }

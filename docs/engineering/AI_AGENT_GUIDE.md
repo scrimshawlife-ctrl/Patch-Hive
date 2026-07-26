@@ -45,10 +45,17 @@ cd frontend && npm test -- --run && npm run type-check
 
 ## Indexes
 
-Regenerate after large refactors:
+Prefer **codebase-memory-mcp** for structural queries (skill: `.agents/skills/codebase-memory/`):
+
+```bash
+just index-mcp
+# or: codebase-memory-mcp cli index_repository --repo-path "$PWD" --mode full --name patch-hive-full --persistence true
+```
+
+Lightweight ctags/lists after small refactors:
 
 ```bash
 just memory
 ```
 
-Do not commit `.codebase-memory/` binary/index noise (gitignored). Commit docs and scripts that *generate* indexes.
+Commit the shareable MCP artifact (`.codebase-memory/graph.db.zst` + `artifact.json`). Do not commit regenerable ctags/list noise under `.codebase-memory/indexes|symbols|…`.
