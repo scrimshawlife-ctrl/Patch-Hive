@@ -2,8 +2,8 @@
 
 **Authoritative as of:** 2026-07-26  
 **Branch pin:** `origin/main`  
-**HEAD:** `9114aae08d368058b2bbe9cfde5c0e6e8e790f60` — #141 FE/seed type-safety + registry slug migration; pending ops beta-staging (Alembic entrypoint + `/health/ready`)  
-**Recent work:** PDB explorer + catalog place-loop; #141 CI green-path; beta-staging ops slice (migrations-on-deploy, readiness probe, evidence re-pin).  
+**HEAD:** `07340d92fff608c70f224e1de0d7f2d8301c6340` — #144 entrypoint wait-for-DB; includes #141–#143 beta staging ops  
+**Recent work:** Alembic-on-deploy, `/health/ready`, compose smoke, DB-wait entrypoint; staging smoke scripts + backup/restore drill.  
 **Open issues:** #68 P0 Product Database residual; #58 P1 residual + P2 hygiene; #96 UI pages (**open**).  
 
 **Alpha tag lineage:** `v0.3.0-alpha` (late alpha — **not** production)
@@ -12,10 +12,10 @@
 
 | PR | Result |
 |----|--------|
-| [#137](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/137) | Device Registry + catalog seed + `/products` explorer |
-| [#138](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/138) | Case rematerialize power-rail preservation |
-| [#139](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/139) | codebase-memory index |
 | [#141](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/141) | FE/seed type-safety + registry slug Alembic + CI green-path |
+| [#142](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/142) | Alembic-on-deploy + `/health/ready` + evidence re-pin |
+| [#143](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/143) | Local staging compose smoke receipt |
+| [#144](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/144) | Entrypoint wait on DATABASE_URL before alembic |
 | [#96](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/96) | Full product pages visual upgrade (**open**) |
 
 **Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
@@ -27,21 +27,20 @@
 | Product identity | Deterministic Eurorack **rig + patch documentation** |
 | Canonical domain | `backend/canon/` (+ design recipes, export fulfillment) |
 | Design Engine flags | **Default off** — see [PATCHBOOK_STAGING_ENABLEMENT.md](docs/design/PATCHBOOK_STAGING_ENABLEMENT.md) |
-| Alembic | Single head through `20260726_module_registry_slugs`; deploy via entrypoint `alembic upgrade head` |
+| Alembic | Single head through `20260726_module_registry_slugs`; entrypoint waits for DB then upgrades |
 | Health | `/health` liveness; `/health/ready` includes DB |
-| Local Compose staging | `docker-compose.staging.yml` + receipts under `docs/evidence/STAGING_*` |
+| Local Compose staging | `docker-compose.staging.yml` + `scripts/staging/smoke.ps1` / `smoke.sh` |
 | Named staging host | Plan only — **NOT_PERFORMED** |
 | Payments | Test-mode only |
 | Production deploy | **Not performed** |
-| Production readiness | **Not ready** (beta-staging engineering in progress) — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) · [delta](docs/evidence/PRODUCTION_READINESS_DELTA_2026-07-26.md) |
+| Production readiness | **Not ready** (beta-staging engineering) — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) · [delta](docs/evidence/PRODUCTION_READINESS_DELTA_2026-07-26.md) |
 
 ## Immediate continuation priorities
 
-1. Land Alembic-on-deploy + `/health/ready` ops PR; re-pin matrix to merge SHA.
-2. Operator: pick named staging host; optional domain cutover ([DOMAIN_CUTOVER_CHECKLIST.md](docs/evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
-3. Staging acceptance + Design Engine walkthrough (test payments only).
-4. Dual-path thinning (F2+), P1/P2 hygiene per CONTINUATION.
-5. #96 UI polish when CI green.
+1. Operator: pick named staging host; optional domain cutover ([DOMAIN_CUTOVER_CHECKLIST.md](docs/evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
+2. Staging acceptance suite against compose Postgres + Design Engine walkthrough (test payments only).
+3. Dual-path thinning (F2+), P1/P2 hygiene per CONTINUATION.
+4. #96 UI polish when CI green.
 
 ## Authority boundary
 
