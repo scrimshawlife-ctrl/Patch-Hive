@@ -41,7 +41,9 @@ jobs:
         working-directory: frontend
         run: |
           npm ci
-          npm audit --audit-level=high
+          # Production graph only: brace-expansion highs are ESLint/dev-toolchain and break
+          # eslint@8 when force-overridden to 5.x. Runtime deps still gated at high.
+          npm audit --audit-level=high --omit=dev
       - name: Generate SBOMs
         run: |
           mkdir -p security-artifacts
