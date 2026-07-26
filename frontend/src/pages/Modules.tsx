@@ -3,6 +3,7 @@
  * with optional materialize into full-spec inventory for rack placement.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { moduleApi, rackApi } from '@/lib/api';
 import type { CatalogModule, CatalogModuleStats, Rack } from '@/types/api';
@@ -615,7 +616,7 @@ export default function ModulesPage() {
                         <div 
                           className="module-mockup" 
                           data-category={module.category || 'UTIL'}
-                          style={{ '--hp-scale': hpScale }}
+                          style={{ '--hp-scale': hpScale } as CSSProperties}
                           title={`${module.brand} — ${module.name} (${hp || '?'}HP)`}
                           aria-label={`Module: ${module.brand} ${module.name}, ${hp} HP, ${module.category || 'UTIL'}`}
                         >

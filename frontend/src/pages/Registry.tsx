@@ -2,13 +2,13 @@
  * Public Product Database Explorer (PDB)
  * Manufacturer directory + search + basic detail.
  */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { registryApi } from '@/lib/api';
-import type { Manufacturer, RegistryCoverage } from '@/types/api';
+import type { DeviceModel, Manufacturer, RegistryCoverage } from '@/types/api';
 
 interface SelectedMan extends Manufacturer {
-  models?: any[];
+  models?: DeviceModel[];
 }
 
 export default function RegistryPage() {
@@ -18,7 +18,7 @@ export default function RegistryPage() {
   const [query, setQuery] = useState(() => searchParams.get('query') || searchParams.get('q') || '');
   const [selected, setSelected] = useState<SelectedMan | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<DeviceModel[]>([]);
 
   useEffect(() => {
     Promise.all([
@@ -26,19 +26,12 @@ export default function RegistryPage() {
       registryApi.getCoverage(),
     ])
       .then(([mans, cov]) => {
-        const items = (mans.data.items || mans.data || []).slice(0, 200);
-        setManufacturers(items);
+        setManufacturers(mans.data.items.slice(0, 200));
         setCoverage(cov.data);
       })
-      .catch(console.error)
-      .finally(() => {
-        setLoading(false);
-        const initialQ = searchParams.get('query') || searchParams.get('q');
-        if (initialQ) {
-          // filter will pick it up; optionally auto-select first match later
-        }
-      });
-  }, []);
+      .catch(() => undefined)
+      .finally(() => setLoading(false));
+  }, [searchParams]);
 
   const filtered = manufacturers.filter(m =>
     !query || m.name?.toLowerCase().includes(query.toLowerCase()) || m.slug?.toLowerCase().includes(query.toLowerCase())
@@ -49,19 +42,19 @@ export default function RegistryPage() {
     try {
       const res = await registryApi.search(q, 8);  // assume updated
       setSearchResults(res.data.results || []);
-    } catch (e) {
+    } catch {
       setSearchResults([]);
     }
   };
 
-  const selectMan = async (m: any) => {
+  const selectMan = async (m: Manufacturer) => {
     try {
-      const res = await fetch(`/api/registry/manufacturers/${m.slug}`);
-      const detail = await res.json();
-      const modelsRes = await fetch(`/api/registry/manufacturers/${m.slug}/models`);
-      const modelsData = await modelsRes.json();
-      setSelected({ ...detail, models: modelsData.models || [] });
-    } catch (e) {
+      const [detail, models] = await Promise.all([
+        registryApi.getManufacturer(m.slug),
+        registryApi.listModelsForManufacturer(m.slug),
+      ]);
+      setSelected({ ...detail.data, models: models.data.models });
+    } catch {
       setSelected({ ...m, models: [] });
     }
   };
@@ -138,8 +131,8 @@ export default function RegistryPage() {
                 </div>
                 <div>
                   <div className="text-xs uppercase tracking-widest text-gray-400 mb-1">Models (sample)</div>
-                  {(selected.models || []).slice(0,5).map((mod: any, i: number) => (
-                    <div key={i} className="text-xs py-0.5">{mod.name} {mod.hp ? `(${mod.hp}hp)` : ''}</div>
+                  {(selected.models || []).slice(0,5).map((model) => (
+                    <div key={model.id} className="text-xs py-0.5">{model.name} {model.hp ? `(${model.hp}hp)` : ''}</div>
                   ))}
                   {(!selected.models || selected.models.length === 0) && <div className="text-xs text-gray-500">No models loaded for this man yet.</div>}
                 </div>

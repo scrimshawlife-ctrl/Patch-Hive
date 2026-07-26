@@ -16,6 +16,16 @@ permissions:
 jobs:
   engineering:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15.13
+        env:
+          POSTGRES_USER: patchhive
+          POSTGRES_PASSWORD: patchhive_test
+          POSTGRES_DB: patchhive_test
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v4
         with:
@@ -38,8 +48,16 @@ jobs:
         working-directory: backend
         run: python -m black --check canon evidence
 
+      - name: Apply migrations
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
+        run: python -m alembic upgrade head
+
       - name: Backend unit tests + coverage gate
         working-directory: backend
+        env:
+          DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
         run: |
           env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q --cov=canon --cov=evidence --cov-report=term-missing
 
