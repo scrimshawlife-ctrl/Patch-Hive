@@ -5,8 +5,13 @@ Main FastAPI application entry point.
 
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI
+from typing import Annotated
+
+from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from sqlalchemy import text
+from sqlalchemy.orm import Session
 
 from account.models import CreditLedgerEntry, ExportRecord  # noqa: F401
 from admin.models import AdminAuditLog, PendingFunction  # noqa: F401
@@ -27,7 +32,7 @@ from canon.models import (  # noqa: F401
     UserPatchAnnotationRecord,
 )
 from community.models import Comment, User, Vote  # noqa: F401
-from core import init_db, settings
+from core import get_db, init_db, settings
 from gallery.models import GalleryRevision  # noqa: F401
 from modules.catalog import ModuleCatalog  # noqa: F401
 
@@ -58,7 +63,10 @@ async def lifespan(app: FastAPI):
     validate_payment_startup_policy(settings)
     print(f"Starting {settings.app_name} v{settings.app_version}")
     print(f"ABX-Core version: {settings.abx_core_version}")
-    init_db()
+    # Schema: alembic upgrade head (entrypoint / release job). create_all only if explicitly allowed.
+    if settings.allow_create_all:
+        print("ALLOW_CREATE_ALL=true — calling init_db() (dev/test escape hatch only)")
+        init_db()
     yield
     # Shutdown
     print(f"Shutting down {settings.app_name}")
@@ -82,16 +90,36 @@ app.add_middleware(
 )
 
 
-# Health check endpoint
+# Health check endpoints
 @app.get("/health")
 async def health_check():
-    """Health check endpoint."""
+    """Liveness: process is up (no dependency probe)."""
     return {
         "status": "healthy",
         "app": settings.app_name,
         "version": settings.app_version,
         "abx_core_version": settings.abx_core_version,
     }
+
+
+@app.get("/health/ready")
+async def health_ready(db: Annotated[Session, Depends(get_db)]):
+    """Readiness: process + database connectivity (uses get_db for test overrides)."""
+    payload = {
+        "status": "healthy",
+        "app": settings.app_name,
+        "version": settings.app_version,
+        "abx_core_version": settings.abx_core_version,
+        "database": "ok",
+    }
+    try:
+        db.execute(text("SELECT 1"))
+    except Exception as exc:  # noqa: BLE001 — surface any DB connectivity failure
+        payload["status"] = "unavailable"
+        payload["database"] = "error"
+        payload["detail"] = type(exc).__name__
+        return JSONResponse(status_code=503, content=payload)
+    return payload
 
 
 # Root endpoint

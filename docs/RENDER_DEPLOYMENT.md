@@ -156,11 +156,15 @@ After frontend deployment, update backend CORS:
 
 ### 3. Initialize Database
 
-The database schema is created automatically on first backend startup via `init_db()` in `main.py`.
+The backend Docker image runs **`alembic upgrade head`** via `docker-entrypoint.sh` before Uvicorn starts (`RUN_MIGRATIONS=true` by default). Do **not** rely on `create_all()` / `init_db()` for deploy.
 
-**To manually run migrations** (if needed):
-1. Connect to your database via Render's shell
-2. Or use a migration tool like Alembic
+**Manual migrations** (shell):
+```bash
+cd /app && python -m alembic upgrade head
+python -m alembic current
+```
+
+**Readiness probe:** `GET /health/ready` (DB connectivity). Liveness-only: `GET /health`.
 
 ---
 

@@ -8,8 +8,8 @@ PatchHive remains a modular monolith. Apply the single Alembic head before appli
 
 1. Install exactly from `backend/pyproject.toml` / `backend/requirements.txt` and `frontend/package-lock.json`.
 2. Run backend, frontend, property/contract, security, and accessibility automation (or rely on green PR CI).
-3. Run `alembic heads` and require a **single head**. As of cases C1, head includes `20260721_case_format_columns` (after Design Engine / style recipes). Re-check on the release SHA; do not trust this note alone.
-4. Run PostgreSQL integration and migration tests (`alembic upgrade head` against Postgres 15).
+3. Run `alembic heads` and require a **single head**. As of 2026-07-26, head includes `20260726_module_registry_slugs` (after device registry + PDB wiring). Re-check on the release SHA; do not trust this note alone.
+4. Run PostgreSQL integration and migration tests (`alembic upgrade head` against Postgres 15). Deploy/staging containers must apply Alembic via `docker-entrypoint.sh` (`RUN_MIGRATIONS=true`); never use `init_db()`/`create_all()` as the production schema path.
 5. Generate and retain Python/npm CycloneDX SBOMs and build provenance (Security workflow artifacts).
 6. Run ledger reconciliation (`reconcile_ledger` or equivalent admin path) and require no anomalies.
 7. Verify all legacy feature flags are false (`ENABLE_LEGACY_SOCIAL`, `ENABLE_LEGACY_PUBLISHING`, `ENABLE_LEGACY_LEADERBOARDS`, `ENABLE_LEGACY_REFERRALS`).
@@ -57,9 +57,9 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 export STAGING_SECRET_KEY="$(openssl rand -base64 32)"
 export STAGING_DB_PASSWORD="$(openssl rand -base64 18)"
 docker compose -f docker-compose.staging.yml up -d --build
-curl -sf http://localhost:8000/health
+curl -sf http://localhost:8000/health/ready
 docker compose -f docker-compose.staging.yml exec -T backend alembic current
-# expect: 20240930_patch_user_overlays (head)
+# expect: 20260726_module_registry_slugs (head as of 2026-07-26; re-check on SHA)
 ```
 
 Staging **must** keep `ALLOW_PRODUCTION_PAYMENTS=false` and `STRIPE_TEST_MODE=true`.  

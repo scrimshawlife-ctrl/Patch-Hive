@@ -2,14 +2,9 @@
 
 **Authoritative as of:** 2026-07-26  
 **Branch pin:** `origin/main`  
-**HEAD:** `923e709e645d604b70df4465dff24cb373ebe47d` — base for FE/seed type-safety PR; includes #137 PDB explorer, #138 materialize rails fix, #139 codebase-memory
-**Recent work:** PDB-01 catalog inventory receipt (see docs/evidence/CATALOG_INVENTORY_RECEIPT_20260723.md); active ModuleCatalog + /catalog/* + materialize (HP fail-closed) + Modules UI + batch place integration; GalleryRevision append-only.  
-**Open issues:** #68 P0 Product Database/Device Registry/Explorer (inventory step complete); #58 P1 residual + P2 hygiene.  
-
-**PDB Progress (this session):** Phase 1 complete — full registry models, seed ingestion (704 brands / 376 models), services, route stubs, snapshot artifacts, and new evidence receipt (PDB_P0_PHASE1_REGISTRY_FOUNDATION_20260723.md).
-
-
-**PDB Phase 2 (this session):** Registry wired into main.py, Alembic migration created, tests added, ingestion re-run, local verification green (ruff + pytest). See PDB_P0_PHASE2_INTEGRATION_20260723.md
+**HEAD:** `9114aae08d368058b2bbe9cfde5c0e6e8e790f60` — #141 FE/seed type-safety + registry slug migration; pending ops beta-staging (Alembic entrypoint + `/health/ready`)  
+**Recent work:** PDB explorer + catalog place-loop; #141 CI green-path; beta-staging ops slice (migrations-on-deploy, readiness probe, evidence re-pin).  
+**Open issues:** #68 P0 Product Database residual; #58 P1 residual + P2 hygiene; #96 UI pages (**open**).  
 
 **Alpha tag lineage:** `v0.3.0-alpha` (late alpha — **not** production)
 
@@ -17,9 +12,10 @@
 
 | PR | Result |
 |----|--------|
-| [#86](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/86)–[#88](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/88) | F3 dual-write audit; local staging receipt; Cyber Hive brand kit |
-| [#89](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/89)–[#94](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/94) | Design system + Design Engine foundation → pack download |
-| [#95](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/95) | Login Cyber Hive auth gate |
+| [#137](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/137) | Device Registry + catalog seed + `/products` explorer |
+| [#138](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/138) | Case rematerialize power-rail preservation |
+| [#139](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/139) | codebase-memory index |
+| [#141](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/141) | FE/seed type-safety + registry slug Alembic + CI green-path |
 | [#96](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/96) | Full product pages visual upgrade (**open**) |
 
 **Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
@@ -31,23 +27,21 @@
 | Product identity | Deterministic Eurorack **rig + patch documentation** |
 | Canonical domain | `backend/canon/` (+ design recipes, export fulfillment) |
 | Design Engine flags | **Default off** — see [PATCHBOOK_STAGING_ENABLEMENT.md](docs/design/PATCHBOOK_STAGING_ENABLEMENT.md) |
-| Alembic | Chain includes `20260721_design_engine_export_columns` + `20260721_user_style_recipes` |
-| Local Compose staging | Receipts under `docs/evidence/STAGING_*` |
+| Alembic | Single head through `20260726_module_registry_slugs`; deploy via entrypoint `alembic upgrade head` |
+| Health | `/health` liveness; `/health/ready` includes DB |
+| Local Compose staging | `docker-compose.staging.yml` + receipts under `docs/evidence/STAGING_*` |
 | Named staging host | Plan only — **NOT_PERFORMED** |
 | Payments | Test-mode only |
 | Production deploy | **Not performed** |
-| Production readiness | **Not ready** — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) |
+| Production readiness | **Not ready** (beta-staging engineering in progress) — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) · [delta](docs/evidence/PRODUCTION_READINESS_DELTA_2026-07-26.md) |
 
 ## Immediate continuation priorities
 
-0. Land shadow FE/seed type-safety + seed-script syntax repairs so main matches compile-ready local state.
-
-1. PDB-01/02: follow catalog inventory (712 brands scanned) — implement Device Registry hierarchy models (Manufacturer etc.), adapters from gallery/catalog, coverage/snapshot endpoints + receipts (Issue #68).
-2. Align any demo creds; land pending UI polish.
-3. Staging host + Design Engine full walkthrough receipt (test payments).
+1. Land Alembic-on-deploy + `/health/ready` ops PR; re-pin matrix to merge SHA.
+2. Operator: pick named staging host; optional domain cutover ([DOMAIN_CUTOVER_CHECKLIST.md](docs/evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
+3. Staging acceptance + Design Engine walkthrough (test payments only).
 4. Dual-path thinning (F2+), P1/P2 hygiene per CONTINUATION.
-5. Validate + re-pin readiness docs/matrix to current SHA.
-6. Public Product Explorer navigation + pages per spec.  
+5. #96 UI polish when CI green.
 
 ## Authority boundary
 
