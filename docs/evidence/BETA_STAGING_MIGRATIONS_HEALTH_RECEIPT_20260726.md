@@ -2,35 +2,52 @@
 
 ```yaml
 date: "2026-07-26"
-base_sha: 9114aae08d368058b2bbe9cfde5c0e6e8e790f60
-branch: ops/beta-staging-migrations-health
+source_sha: 102e7c5e50ff871d3149bd6fa3f1b61db445782c  # #142 merge
+compose_file: docker-compose.staging.yml
+host: local Windows + Docker Desktop 4.81 / Engine 29.6.1
+ports:
+  api: 18000   # 8000 occupied by unrelated wslrelay
+  db: 5433
+  fe: 15173
 payments:
   ALLOW_PRODUCTION_PAYMENTS: false
   STRIPE_TEST_MODE: true
+result: PASS
 ```
 
-## Code changes (OBSERVED)
+## Commands
 
-| Item | Status |
-|------|--------|
-| `docker-entrypoint.sh` runs `python -m alembic upgrade head` | Implemented |
-| `backend/Dockerfile` + `Dockerfile.backend` ENTRYPOINT | Implemented |
-| `main.py` lifespan no longer always `init_db()` | Implemented (`ALLOW_CREATE_ALL` default false) |
-| `GET /health` liveness | Kept process-only |
-| `GET /health/ready` DB `SELECT 1` | Implemented; 503 on failure |
-| Compose/Render/Fly health → `/health/ready` | Updated |
-| API test for ready | `test_health_ready` |
+```bash
+export STAGING_SECRET_KEY=… STAGING_DB_PASSWORD=…
+export STAGING_API_PORT=18000 STAGING_DB_PORT=5433 STAGING_FE_PORT=15173
+docker compose -f docker-compose.staging.yml up -d --build
+curl -sf http://localhost:18000/health
+curl -sf http://localhost:18000/health/ready
+docker compose -f docker-compose.staging.yml exec -T backend python -m alembic current
+```
 
-## Staging compose smoke
+## OBSERVED results
 
-| Step | Result |
-|------|--------|
-| `docker compose -f docker-compose.staging.yml up -d --build` | **NOT_PERFORMED** in agent session (Docker availability not assumed) |
-| `curl /health/ready` | **NOT_PERFORMED** (compose not run) |
-| `alembic current` → `20260726_module_registry_slugs` | **NOT_PERFORMED** (compose not run); CI backend-tests apply Alembic against Postgres |
+| Check | Result |
+|-------|--------|
+| Image build `patch-hive-pr-backend` | PASS |
+| Postgres healthy | PASS (`postgres:15-alpine`) |
+| Backend container healthy | PASS (Docker healthcheck → `/health/ready`) |
+| `GET /health` | **200** `{"status":"healthy",…,"version":"0.3.0-alpha.1"}` |
+| `GET /health/ready` | **200** `{"status":"healthy","database":"ok",…}` |
+| Entrypoint migrations | PASS — full chain `legacy_foundation` → `20260726_module_registry_slugs` then `Migrations applied.` |
+| `alembic current` | **`20260726_module_registry_slugs (head)`** |
+| `alembic heads` | single head `20260726_module_registry_slugs` |
+| Payments flags in compose | `ALLOW_PRODUCTION_PAYMENTS=false`, `STRIPE_TEST_MODE=true` |
 
-Operators: run compose smoke from [OPERATIONS.md](../OPERATIONS.md) and append a dated note here when complete.
+## Notes
 
-## CI
+1. First bind of host `:8000` failed (`port is already allocated` / WSL `wslrelay` PID); smoke used **`STAGING_API_PORT=18000`**.
+2. Docker Desktop on this host intermittently drops the `dockerDesktopLinuxEngine` named pipe mid-session; containers stayed up and HTTP probes remained valid when the engine pipe flaked.
+3. On cold start, one migration attempt raced DB recovery (`Consistent recovery state has not been yet reached`); entrypoint retry / restart applied head successfully (idempotent upgrade).
 
-Re-validate on the merge PR: backend-tests, code-quality, engineering, security.
+## Code path verified
+
+- `backend/docker-entrypoint.sh` → `python -m alembic upgrade head`
+- No `create_all` / `init_db` on staging boot
+- Readiness includes DB `SELECT 1` via `/health/ready`
