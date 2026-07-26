@@ -22,6 +22,11 @@ assessment:
 | App no longer calls `create_all` on every start | `main.py` lifespan + `ALLOW_CREATE_ALL` default false |
 | DB readiness probe | `GET /health/ready` (503 if DB down) |
 | CI green on type-safety + migration head | #141 CI |
+| Compose smoke + backup/restore drill | #145 |
+| Acceptance suite on compose Postgres | #146 · 11 PASS |
+| Design Engine staging walkthrough | #147 · export `status=succeeded` |
+| Unified test runner + CI acceptance gate | #148 · `acceptance-tests.yml` |
+| Dual-path F2 thin `GET /api/canon/rigs` | F2_CANON_RIGS_READ_ADAPTER.md |
 
 ## Still blocking GA / public domain
 
@@ -29,7 +34,7 @@ assessment:
 |------|--------|
 | Named public staging host | NOT_PERFORMED |
 | Domain / TLS / CORS cutover | Template only (`DOMAIN_CUTOVER_CHECKLIST.md`) |
-| Backup/restore on durable env | NOT_COMPUTABLE |
+| Backup/restore on durable env | NOT_COMPUTABLE (local compose drill PASS only) |
 | Observability / on-call / support | FAIL |
 | Live payments | Forbidden without separate review |
 
@@ -38,6 +43,7 @@ assessment:
 1. Operator picks host (Compose VPS / Render paid / Fly / Azure)  
 2. Optional domain cutover credentials  
 3. Staging acceptance walkthrough receipt on that host  
-4. Design Engine flag enablement only on staging with test payments  
+4. ~~Design Engine flag enablement on local staging~~ **DONE** (#147; named host still open)  
+5. Dual-path F4/F5 when FE capacity  
 
 **Hard rule:** `ALLOW_PRODUCTION_PAYMENTS=false`, `STRIPE_TEST_MODE=true`.

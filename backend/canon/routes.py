@@ -315,6 +315,114 @@ def list_canonical_runs(
     return payload
 
 
+# --- F2: thin inventory rig read adapter (rack_id ≡ rig_id) -------------------
+
+
+class CanonRigSummary(BaseModel):
+    """Read-only inventory rig. ``rig_id`` is the stable external key (≡ rack.id)."""
+
+    rig_id: int
+    rack_id: int
+    user_id: int
+    case_id: int
+    name: str | None = None
+    name_suggested: str | None = None
+    description: str | None = None
+    tags: list[str] = Field(default_factory=list)
+    is_public: bool = False
+    module_count: int = 0
+    created_at: datetime
+    updated_at: datetime
+
+
+class CanonRigListResponse(BaseModel):
+    total: int
+    rigs: list[CanonRigSummary]
+
+
+class CanonRigDetail(CanonRigSummary):
+    """Single-rig detail with placements (same inventory source as GET /api/racks/{id})."""
+
+    generation_seed: int | None = None
+    modules: list[dict[str, Any]] = Field(default_factory=list)
+    case: dict[str, Any] | None = None
+    vote_count: int = 0
+
+
+def _canon_rig_summary_from_rack(db: Session, rack: Any) -> CanonRigSummary:
+    from racks.models import RackModule
+
+    module_count = db.query(RackModule).filter(RackModule.rack_id == rack.id).count()
+    return CanonRigSummary(
+        rig_id=int(rack.id),
+        rack_id=int(rack.id),
+        user_id=int(rack.user_id),
+        case_id=int(rack.case_id),
+        name=rack.name,
+        name_suggested=rack.name_suggested,
+        description=rack.description,
+        tags=list(rack.tags or []),
+        is_public=bool(rack.is_public),
+        module_count=int(module_count),
+        created_at=rack.created_at,
+        updated_at=rack.updated_at,
+    )
+
+
+@router.get("/rigs", response_model=CanonRigListResponse)
+def list_canon_rigs(
+    skip: int = Query(0, ge=0),
+    limit: int = Query(100, ge=1, le=1000),
+    is_public: bool | None = None,
+    user_id: int | None = Query(default=None, ge=1),
+    db: Session = Depends(get_db),
+) -> CanonRigListResponse:
+    """F2 thin read adapter: list inventory rigs over the racks table.
+
+    Does not replace POST/PATCH ``/api/racks``; new clients should prefer this
+    list path. ``rig_id`` and ``rack_id`` are always equal (MVP honesty).
+    """
+    from racks.models import Rack
+
+    query = db.query(Rack)
+    if is_public is not None:
+        query = query.filter(Rack.is_public == is_public)
+    if user_id is not None:
+        query = query.filter(Rack.user_id == user_id)
+
+    total = query.count()
+    racks = query.order_by(Rack.id.desc()).offset(skip).limit(limit).all()
+    return CanonRigListResponse(
+        total=total,
+        rigs=[_canon_rig_summary_from_rack(db, rack) for rack in racks],
+    )
+
+
+@router.get("/rigs/{rig_id}", response_model=CanonRigDetail)
+def get_canon_rig(rig_id: int, db: Session = Depends(get_db)) -> CanonRigDetail:
+    """F2 thin read adapter: single inventory rig (≡ GET /api/racks/{rig_id})."""
+    from racks.models import Rack
+    from racks.routes import build_rack_response
+
+    rack = db.query(Rack).filter(Rack.id == rig_id).first()
+    if not rack:
+        raise HTTPException(status_code=404, detail="Rig not found")
+
+    summary = _canon_rig_summary_from_rack(db, rack)
+    full = build_rack_response(db, rack)
+    modules = [
+        m.model_dump() if hasattr(m, "model_dump") else dict(m)
+        for m in (full.modules or [])
+    ]
+    return CanonRigDetail(
+        **summary.model_dump(),
+        generation_seed=full.generation_seed,
+        modules=modules,
+        case=full.case,
+        vote_count=int(full.vote_count or 0),
+    )
+
+
 class RigRevisionSummary(BaseModel):
     rig_revision_id: str
     content_hash: str | None = None

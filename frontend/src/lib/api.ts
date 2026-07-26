@@ -591,6 +591,59 @@ export const canonApi = {
       updated_at: string;
     }>(`/canon/style-recipes/shared/${encodeURIComponent(recipeId)}`),
 
+  /** F2: list inventory rigs via canon prefix (rig_id ≡ rack_id). Optional FE cutover. */
+  listRigs: (params?: {
+    skip?: number;
+    limit?: number;
+    is_public?: boolean;
+    user_id?: number;
+  }) => {
+    const q = new URLSearchParams();
+    if (params?.skip != null) q.set('skip', String(params.skip));
+    if (params?.limit != null) q.set('limit', String(params.limit));
+    if (params?.is_public != null) q.set('is_public', String(params.is_public));
+    if (params?.user_id != null) q.set('user_id', String(params.user_id));
+    const qs = q.toString();
+    return api.get<{
+      total: number;
+      rigs: Array<{
+        rig_id: number;
+        rack_id: number;
+        user_id: number;
+        case_id: number;
+        name: string | null;
+        name_suggested: string | null;
+        description: string | null;
+        tags: string[];
+        is_public: boolean;
+        module_count: number;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }>(`/canon/rigs${qs ? `?${qs}` : ''}`);
+  },
+
+  /** F2: single inventory rig (≡ GET /api/racks/{id}). */
+  getRig: (rigId: number) =>
+    api.get<{
+      rig_id: number;
+      rack_id: number;
+      user_id: number;
+      case_id: number;
+      name: string | null;
+      name_suggested: string | null;
+      description: string | null;
+      tags: string[];
+      is_public: boolean;
+      module_count: number;
+      created_at: string;
+      updated_at: string;
+      generation_seed: number | null;
+      modules: Array<Record<string, unknown>>;
+      case: Record<string, unknown> | null;
+      vote_count: number;
+    }>(`/canon/rigs/${rigId}`),
+
   listRevisions: (rigId: number) =>
     api.get<{
       total: number;
