@@ -2,7 +2,7 @@
 
 ```yaml
 assessment:
-  source_sha: 9114aae08d368058b2bbe9cfde5c0e6e8e790f60  # re-pin after ops/beta-staging PR merges
+  source_sha: d0bbcd072a9026538ce7403bed73337d6a6a4676  # #148; re-pin after F2 merge
   branch: main
   environment: local developer host + CI + local Docker staging (named host NOT_PERFORMED)
   date: "2026-07-26"
@@ -13,8 +13,8 @@ assessment:
   delta: PRODUCTION_READINESS_DELTA_2026-07-26.md
 
 areas:
-  product_scope: PARTIAL  # canon MVP + Design Engine (flags off); dual-path residual
-  architecture: PARTIAL  # modular monolith; dual inventory HTTP
+  product_scope: PARTIAL  # canon MVP + Design Engine (flags off); dual-path F2 done, F4/F5 residual
+  architecture: PARTIAL  # modular monolith; inventory write still /api/racks; read alias /api/canon/rigs
   data_model: PARTIAL  # canon + VSI + design engine + device registry + registry slugs
   visual_ingestion: PARTIAL  # secure prep + mock provider; no live model
   module_classification: PARTIAL  # gallery + mock candidates; never self-confirm
@@ -23,16 +23,16 @@ areas:
   patch_compiler: PARTIAL  # deterministic compiler + native bridge IDs
   patch_validation: PASS  # unit coverage for graph + inventory gates
   patch_book_compiler: PARTIAL  # Design Engine on main; publication profile flag off
-  design_engine: PARTIAL  # default flags false; staging enablement documented
+  design_engine: PARTIAL  # default flags false; staging walkthrough PASS (#147)
   exports: PARTIAL  # canon exports + pack download; fulfillment flag gated
   frontend: PARTIAL  # MVP routes + PDB explorer + type-safety #141; full page upgrade #96 open
   accessibility: PARTIAL  # graph pair + preflight; WCAG protocol not fully evidenced
   security: PARTIAL  # CI security workflow; prod-only npm high audit; no prod threat sign-off
   privacy: PARTIAL  # EXIF strip; retention policy incomplete
-  testing: PARTIAL  # unit/api/CI/e2e; acceptance on Postgres in CI
+  testing: PASS  # unit/api/CI/e2e + acceptance-tests.yml + unified scripts/test/run
   migrations: PASS  # single head through 20260726_module_registry_slugs; deploy uses alembic
   deployment: NOT_COMPUTABLE  # no production access; entrypoint fixed for staging path
-  backup_and_restore: NOT_COMPUTABLE
+  backup_and_restore: PARTIAL  # local compose pg_dump/restore drill PASS (#145); durable env NOT_PERFORMED
   observability: FAIL  # no production SLOs/dashboards evidenced; /health/ready only
   billing: PARTIAL  # test-mode only; live activation forbidden
   support: FAIL  # no support channel evidence
@@ -50,6 +50,7 @@ summary:
     - patch_validation_unit_gates
     - payment_fail_closed_defaults
     - alembic_deploy_entrypoint
+    - automated_acceptance_ci
   partial:
     - product_scope
     - design_engine
@@ -59,12 +60,13 @@ summary:
     - frontend
     - security_privacy
     - device_registry
+    - local_compose_backup_restore
   fail:
     - observability
     - support
   not_computable:
     - deployment_named_host
-    - backup_restore
+    - durable_env_backup_restore
     - vision_accuracy_metrics
     - multi_tenant_load
   out_of_scope:

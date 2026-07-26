@@ -149,7 +149,7 @@ See [VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.md](VISUAL_SYSTEM_INTELLIGENCE_ROADMAP.m
 26. Optional: cut `v0.3.0-alpha.1` release tag after this docs/ops PR
 27. ~~Dual-path F3 generate dual-write audit~~ **DONE** ([F3_GENERATE_DUAL_WRITE_AUDIT.md](evidence/F3_GENERATE_DUAL_WRITE_AUDIT.md))
 28. ~~RigDetail inventory→generate UX loop~~ **DONE** (PR #85)
-29. Next dual-path: F2 thin `GET /api/canon/rigs` (optional) or operator staging host
+29. ~~Next dual-path: F2 thin `GET /api/canon/rigs`~~ **DONE** — next: F4 evidence alias / F5 FE cutover, or operator staging host
 
 ### P5 — Explicitly deferred
 
