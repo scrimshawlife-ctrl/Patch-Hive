@@ -358,9 +358,10 @@ test.describe('PatchHive canonical workspace', () => {
     await page.getByRole('searchbox', { name: 'Search modules' }).fill('Filter');
     await expect(page.getByText(/Showing 1 of 1 catalog modules \(filtered\)/)).toBeVisible();
     // Catalog cards use separate brand/name mockup faces (not a single "Brand — Name" string).
-    await expect(page.getByLabel('Module: OtherBrand Filter Z, 8 HP, VCF')).toBeVisible();
-    await expect(page.getByText('OtherBrand', { exact: true })).toBeVisible();
-    await expect(page.getByText('Filter Z', { exact: true })).toBeVisible();
+    const filteredCard = page.getByLabel('Module: OtherBrand Filter Z, 8 HP, VCF');
+    await expect(filteredCard).toBeVisible();
+    await expect(filteredCard.getByText('OtherBrand', { exact: true })).toBeVisible();
+    await expect(filteredCard.getByText('Filter Z', { exact: true })).toBeVisible();
     await expect(page.getByText('Oscillator A')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Place on new rig' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Prepare for rig' }).first()).toBeVisible();
