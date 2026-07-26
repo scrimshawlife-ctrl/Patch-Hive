@@ -94,8 +94,7 @@ Restored by `scripts/staging/seed-demo.ps1` (also run at end of `smoke.ps1`):
 | Account | Username | Password | Role |
 |---------|----------|----------|------|
 | Demo user | `golden_demo` | `demo-pass` | User |
-| Admin | `admin` | `admin-pass` | Admin |
-| Admin (alias) | `admin_demo` | `admin-pass` | Admin |
+| Admin | `admin_demo` | `admin-pass` | Admin |
 
 **Not valid:** `Admin` / `Admin` (old UI label only — fixed on Login page).
 

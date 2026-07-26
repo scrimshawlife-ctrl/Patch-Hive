@@ -2,9 +2,8 @@
 # Restores known demo passwords (re-seed safe).
 #
 # Accounts:
-#   golden_demo / demo-pass  (User)
-#   admin / admin-pass       (Admin)
-#   admin_demo / admin-pass  (Admin, alias)
+#   golden_demo / demo-pass   (User)
+#   admin_demo / admin-pass   (Admin)
 #
 # Usage (repo root):
 #   powershell -File scripts/staging/seed-demo.ps1
@@ -49,4 +48,4 @@ if ($LASTEXITCODE -ne 0) { throw "seed_golden_demo failed ($LASTEXITCODE)" }
 
 Write-Host "DEMO SEED PASS"
 Write-Host "  User:  golden_demo / demo-pass"
-Write-Host "  Admin: admin / admin-pass"
+Write-Host "  Admin: admin_demo / admin-pass"

@@ -67,22 +67,22 @@ def main() -> int:
     seed = seed_mod.seed_golden_demo(db)
     print(f"  user={seed.username} run_id={seed.run_id} patches={seed.patch_count}")
 
-    admin = db.query(User).filter(User.username == "admin").first()
+    admin = db.query(User).filter(User.username == "admin_demo").first()
     if admin is None:
         admin = User(
-            username="admin",
-            email="admin@example.com",
+            username="admin_demo",
+            email="admin_demo@example.com",
             password_hash=get_password_hash("admin-pass"),
-            display_name="admin",
+            display_name="admin_demo",
             role="Admin",
-            referral_code="admin-ref",
+            referral_code="admin_demo-ref",
         )
         db.add(admin)
     else:
         admin.role = "Admin"
         admin.password_hash = get_password_hash("admin-pass")
     db.commit()
-    print("  admin ready (admin / admin-pass)")
+    print("  admin ready (admin_demo / admin-pass)")
 
     run = db.get(Run, seed.run_id)
     assert run is not None
@@ -142,7 +142,7 @@ def main() -> int:
         print(f"  WARN style-recipes {cr.status_code}: {cr.text[:200]}")
 
     print("=== Admin grant credits ===")
-    admin_token = login("admin", "admin-pass")
+    admin_token = login("admin_demo", "admin-pass")
     grant = client.post(
         f"/api/admin/users/{seed.user_id}/credits/grant",
         headers={"Authorization": f"Bearer {admin_token}"},

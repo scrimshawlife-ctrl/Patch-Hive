@@ -59,7 +59,7 @@ export default function LoginPage() {
 
   const fillDemoAdmin = () => {
     setMode('signin');
-    setUsername('admin');
+    setUsername('admin_demo');
     setPassword('admin-pass');
     setError('');
   };
@@ -215,7 +215,7 @@ export default function LoginPage() {
               User: <code>golden_demo</code> / <code>demo-pass</code>
             </p>
             <p>
-              Admin: <code>admin</code> / <code>admin-pass</code>
+              Admin: <code>admin_demo</code> / <code>admin-pass</code>
             </p>
             <div className="auth-demo-actions">
               <button type="button" className="button button-secondary" onClick={fillDemoUser}>

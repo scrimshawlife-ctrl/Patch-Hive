@@ -311,9 +311,8 @@ def seed_golden_demo(db: Session, fixture_path: Path = FIXTURE_PATH) -> SeedResu
     _ensure_modules(db, fixture["rig"]["modules"])
 
     user = _ensure_user(db, "golden_demo", "demo-pass", "User")
-    # admin_demo: historical seed name; admin: Login page + design-engine walkthrough.
+    # Canonical staging admin (avoid username "admin" — acceptance fixtures use that).
     _ensure_user(db, "admin_demo", "admin-pass", "Admin")
-    _ensure_user(db, "admin", "admin-pass", "Admin")
 
     existing_rack = db.query(Rack).filter(Rack.user_id == user.id).first()
     if existing_rack:
