@@ -54,11 +54,16 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 ### Staging-like Compose (image-built backend, no --reload)
 
 ```bash
+# Automated (preferred): readiness + alembic head + pg_dump/restore side-DB drill
+powershell -File scripts/staging/smoke.ps1   # Windows (PowerShell 5+)
+# bash scripts/staging/smoke.sh              # Linux/macOS
+
+# Manual:
 export STAGING_SECRET_KEY="$(openssl rand -base64 32)"
 export STAGING_DB_PASSWORD="$(openssl rand -base64 18)"
 docker compose -f docker-compose.staging.yml up -d --build
 curl -sf http://localhost:8000/health/ready
-docker compose -f docker-compose.staging.yml exec -T backend alembic current
+docker compose -f docker-compose.staging.yml exec -T backend python -m alembic current
 # expect: 20260726_module_registry_slugs (head as of 2026-07-26; re-check on SHA)
 ```
 

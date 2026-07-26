@@ -1,11 +1,18 @@
 # Staging-like local/VPS stack — not production.
-# - No source bind-mounts (image-built code)
-# - No --reload
+# - Backend image-built (no bind-mount); frontend-dev bind-mounts for iteration
+# - No --reload on backend
 # - Fail-closed flags; test payments only
 #
-# Usage:
+# Usage (defaults: API :8000, FE :5173, DB :5432):
 #   docker compose -f docker-compose.staging.yml up -d --build
-#   curl -sf http://localhost:8000/health
+#   curl -sf http://localhost:8000/health/ready
+#
+# Alternate ports (when host :8000 is busy):
+#   STAGING_API_PORT=18000 STAGING_FE_PORT=15173 STAGING_DB_PORT=5433 \
+#   STAGING_PUBLIC_API_URL=http://localhost:18000 \
+#   STAGING_CORS_ORIGINS=http://localhost:15173,http://localhost:5173 \
+#   docker compose -f docker-compose.staging.yml up -d --build
+#   # or: powershell -File scripts/staging/smoke.ps1
 
 services:
   db:
@@ -75,7 +82,8 @@ services:
     working_dir: /app
     restart: unless-stopped
     environment:
-      VITE_API_URL: ${STAGING_PUBLIC_API_URL:-http://localhost:8000}
+      # Must match frontend/src/lib/api.ts (VITE_API_BASE_URL includes /api suffix).
+      VITE_API_BASE_URL: ${STAGING_PUBLIC_API_URL:-http://localhost:8000}/api
     ports:
       - "${STAGING_FE_PORT:-5173}:5173"
     volumes:
