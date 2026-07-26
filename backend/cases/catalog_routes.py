@@ -284,6 +284,9 @@ def materialize_catalog_case(
         legacy, created = materialize_legacy_case(db, slug, revision_key=revision_key)
     except LookupError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        # Fail-closed: refuse inventing HP / wiping layout when catalog is incomplete.
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
     return {
         "created": created,
         "catalog_slug": slug,
