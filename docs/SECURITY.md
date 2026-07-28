@@ -27,6 +27,16 @@ User photographs may reveal home interiors, equipment, serial numbers, people, l
 
 Python and frontend direct dependencies are exact-version pinned. CI runs `pip-audit`, `npm audit`, Bandit at medium/high severity, a secret scan, and CycloneDX SBOM generation. Lockfile changes require review.
 
+### Temporary React Router advisory exception
+
+The frontend is pinned to `react-router-dom@7.18.1`, the newest version published to npm as of
+2026-07-28. The advisory declares `8.3.0` as the first fixed version, but that version is not
+available in the npm registry. `npm audit` reports GHSA-qwww-vcr4-c8h2 against experimental
+React Server Components action handling. PatchHive uses the client-only `BrowserRouter` API,
+does not enable RSC mode, and exposes no React Router server actions, so the vulnerable path is
+not reachable. CI runs `npm run audit`, which permits only this exact advisory and fails for every
+new or changed finding. Remove the exception as soon as a fixed upstream release is published.
+
 ## Deployment requirements
 
 - Replace `SECRET_KEY` with a high-entropy secret supplied by the platform.

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { canonApi, exportApi, patchApi, rackApi, runApi } from '@/lib/api';
 import type { CompatibilityResponse, Patch, Rack, Run } from '@/types/api';
+import { difficultyFromConnections, filterPatches, patchCategories, weirdnessFromConnections } from './racksPageUtils';
 
 type TabKey = 'overview' | 'patches' | 'exports' | 'modules';
 
@@ -11,20 +12,6 @@ const tabs: { key: TabKey; label: string }[] = [
   { key: 'exports', label: 'Exports' },
   { key: 'modules', label: 'Module Gallery' },
 ];
-
-const difficultyFromConnections = (patch: Patch) => {
-  const count = patch.connections?.length || 0;
-  if (count <= 4) return 'Beginner';
-  if (count <= 8) return 'Intermediate';
-  return 'Advanced';
-};
-
-const weirdnessFromConnections = (patch: Patch) => {
-  const modulationEdges = patch.connections.filter((c) =>
-    ['cv', 'gate', 'clock'].includes(c.cable_type),
-  ).length;
-  return Math.min(100, modulationEdges * 8);
-};
 
 function gateTone(status?: string | null): 'success' | 'warning' | 'danger' | 'neutral' {
   if (!status) return 'neutral';
@@ -183,16 +170,8 @@ export default function RacksPage() {
     }
   }, [selectedRunId]);
 
-  const filteredPatches = patches.filter((patch) => {
-    if (filters.category !== 'All' && patch.category !== filters.category) return false;
-    const difficulty = difficultyFromConnections(patch);
-    if (filters.difficulty !== 'All' && difficulty !== filters.difficulty) return false;
-    const weirdness = weirdnessFromConnections(patch);
-    if (filters.weirdness === 'Low' && weirdness > 25) return false;
-    if (filters.weirdness === 'Medium' && (weirdness < 25 || weirdness > 60)) return false;
-    if (filters.weirdness === 'High' && weirdness < 60) return false;
-    return true;
-  });
+  const categories = useMemo(() => patchCategories(patches), [patches]);
+  const filteredPatches = useMemo(() => filterPatches(patches, filters), [patches, filters]);
 
   return (
     <div className="split-workspace">
@@ -567,7 +546,7 @@ export default function RacksPage() {
                       }
                     >
                       <option>All</option>
-                      {[...new Set(patches.map((patch) => patch.category))].map((category) => (
+                      {categories.map((category) => (
                         <option key={category}>{category}</option>
                       ))}
                     </select>

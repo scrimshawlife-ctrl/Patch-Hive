@@ -384,7 +384,6 @@ export default function RackBuilderPage() {
     );
     setAddStartHp(next);
     // Only when selection changes — not every keystroke of start HP
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- intentional: module/row/placement driven
   }, [liveMode, addModuleId, addRow, placementModules, liveRack?.case, resolveModuleHp]);
 
   useEffect(() => {
@@ -541,7 +540,6 @@ export default function RackBuilderPage() {
         }
       })
       .catch(() => setGalleryModules([]));
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- load on rack route
   }, [liveMode, rackId, preselectedModuleId]);
 
   const savePlacements = async (next: RackModuleSpec[]) => {

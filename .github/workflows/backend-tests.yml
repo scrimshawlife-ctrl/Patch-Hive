@@ -41,6 +41,9 @@ jobs:
         env:
           DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
         run: python -m alembic upgrade head
+      - name: Verify duplicate-package quarantine
+        working-directory: backend
+        run: python -m pytest tests/unit/test_duplicate_package_quarantine.py -q
       - name: Run backend suite (unit/api; acceptance is acceptance-tests.yml)
         working-directory: backend
         env:
