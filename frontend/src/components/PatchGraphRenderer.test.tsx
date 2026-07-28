@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import axe from 'axe-core';
 import { describe, expect, it } from 'vitest';
@@ -33,7 +33,9 @@ describe('PatchGraphRenderer', () => {
     render(<PatchGraphRenderer graph={graph} />);
     expect(screen.getByRole('table', { name: /structured cable list/i })).toBeInTheDocument();
     expect(screen.getByText(/osc · out/i)).toBeInTheDocument();
-    await user.click(screen.getByLabelText('Diagnostic'));
+    await act(async () => {
+      await user.click(screen.getByLabelText('Diagnostic'));
+    });
     expect(screen.getByLabelText('Diagnostic')).toBeChecked();
   });
 
@@ -41,7 +43,9 @@ describe('PatchGraphRenderer', () => {
     const user = userEvent.setup();
     render(<PatchGraphRenderer graph={graph} />);
     const cable = screen.getByRole('button', { name: 'cable-1' });
-    await user.click(cable);
+    await act(async () => {
+      await user.click(cable);
+    });
     expect(cable).toHaveAttribute('aria-pressed', 'true');
     expect(screen.getByRole('button', { name: 'Zoom in' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Zoom out' })).toBeInTheDocument();
