@@ -11,6 +11,7 @@
     "test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage",
+    "audit": "node --test scripts/audit-dependencies.node-test.mjs && node scripts/audit-dependencies.mjs",
     "type-check": "tsc --noEmit",
     "test:e2e": "playwright test -c tests/ui/playwright.config.ts"
   },
