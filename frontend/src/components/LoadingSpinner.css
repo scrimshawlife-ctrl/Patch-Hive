@@ -9,10 +9,12 @@
   align-items: center;
   justify-content: center;
   gap: 1rem;
+  color: var(--action, #f5a623);
 }
 
 .loading-spinner {
   display: block;
+  color: inherit;
 }
 
 /* Hexagon rotation */
@@ -119,8 +121,8 @@
 
 /* Loading message */
 .loading-message {
-  color: #f5a623;
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  color: var(--action, #f5a623);
+  font-family: var(--font-mono, "JetBrains Mono", ui-monospace, monospace);
   font-size: 0.875rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;

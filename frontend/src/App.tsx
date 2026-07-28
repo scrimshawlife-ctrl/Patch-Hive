@@ -36,17 +36,17 @@ function App() {
         </a>
         <header className="app-header">
           <NavLink className="wordmark" to="/" aria-label="PatchHive home">
-            <span aria-hidden="true" className="wordmark-mark">PH</span>
+            <span aria-hidden="true" className="wordmark-mark" />
             <span>PatchHive</span>
           </NavLink>
           <nav className="primary-nav" aria-label="Primary navigation">
             <NavLink to="/racks">Rigs</NavLink>
-            <NavLink to="/modules">Module gallery</NavLink>
+            <NavLink to="/modules">Modules</NavLink>
             <NavLink to="/products">Products</NavLink>
             <NavLink to="/cases">Cases</NavLink>
             <NavLink to="/patches">Patches</NavLink>
-            {isAuthenticated() && <NavLink to="/account">Credits & account</NavLink>}
-            {canSeeAdmin ? <NavLink to="/admin">Diagnostics</NavLink> : null}
+            {isAuthenticated() && <NavLink to="/account">Account</NavLink>}
+            {canSeeAdmin ? <NavLink to="/admin">Ops</NavLink> : null}
           </nav>
           <div className="header-actions">
             <button

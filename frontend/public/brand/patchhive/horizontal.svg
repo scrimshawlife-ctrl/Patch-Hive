@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Horizontal hierarchy: PatchHive hero · from Zero State (understated) -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 72" role="img" aria-label="PatchHive, a Zero State product">
+  <title>PatchHive — A Zero State Product</title>
+  <!-- mark placeholder hex -->
+  <g transform="translate(8,12)" fill="none" stroke="currentColor" stroke-width="1.75">
+    <path d="M24 2l18 10v20L24 42 6 32V12L24 2z"/>
+    <path d="M24 12l9 5v10l-9 5-9-5V17l9-5z" opacity="0.85"/>
+    <circle cx="24" cy="22" r="2.5" fill="currentColor" stroke="none"/>
+  </g>
+  <text x="64" y="38" fill="currentColor" font-family="Space Grotesk, Inter, system-ui, sans-serif" font-size="28" font-weight="600" letter-spacing="-0.03em">PatchHive</text>
+  <text x="64" y="58" fill="currentColor" font-family="Inter, system-ui, sans-serif" font-size="11" font-weight="500" letter-spacing="0.14em" opacity="0.55">A ZERO STATE PRODUCT</text>
+</svg>

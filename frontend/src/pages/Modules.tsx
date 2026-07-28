@@ -613,8 +613,8 @@ export default function ModulesPage() {
                       const hp = module.hp ?? 0;
                       const hpScale = Math.min(Math.max(hp / 42, 0.2), 1); // normalize to ~42HP max
                       return (
-                        <div 
-                          className="module-mockup" 
+                        <div
+                          className="module-mockup"
                           data-category={module.category || 'UTIL'}
                           style={{ '--hp-scale': hpScale } as CSSProperties}
                           title={`${module.brand} — ${module.name} (${hp || '?'}HP)`}
