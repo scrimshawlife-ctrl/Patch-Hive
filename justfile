@@ -41,10 +41,37 @@ lint:
 test:
 	#!/usr/bin/env bash
 	set -euo pipefail
-	cd "{{root}}/backend"
-	env -u PYTHONPATH python -m pytest tests --ignore=tests/acceptance -q
-	cd "{{root}}/frontend"
-	npm test -- --run
+	cd "{{root}}"
+	bash scripts/test/run.sh unit
+	bash scripts/test/run.sh frontend
+
+# Backend golden-path acceptance (Testcontainers or ACCEPTANCE_DATABASE_URL)
+test-acceptance:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/test/run.sh acceptance
+
+# CI parity: unit + frontend + acceptance
+test-ci:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/test/run.sh ci
+
+# Local compose staging stack checks (smoke + acceptance + design-engine)
+test-staging:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/test/run.sh staging
+
+# Full Docker staging suite (smoke + in-docker acceptance + design-engine)
+test-docker:
+	#!/usr/bin/env bash
+	set -euo pipefail
+	cd "{{root}}"
+	bash scripts/test/run.sh docker-suite
 
 # Quarantined historical package corpus (not default CI unit path)
 test-historical:

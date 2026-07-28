@@ -129,7 +129,7 @@ test.describe('PatchHive canonical workspace', () => {
   });
 
   test('multi-photo fusion panel confirms representative and blocks conflict', async ({ page }) => {
-    await page.route('**/api/racks/1/evidence/images', async (route) => {
+    await page.route('**/api/**/evidence/images**', async (route) => {
       if (route.request().method() === 'POST') {
         await route.fulfill({
           status: 201,
@@ -145,7 +145,7 @@ test.describe('PatchHive canonical workspace', () => {
       }
       await route.fallback();
     });
-    await page.route('**/api/racks/1/evidence/candidates**', async (route) => {
+    await page.route('**/api/**/evidence/candidates**', async (route) => {
       await route.fulfill({
         json: {
           total: 2,
@@ -178,7 +178,7 @@ test.describe('PatchHive canonical workspace', () => {
         },
       });
     });
-    await page.route('**/api/racks/1/evidence/reconcile**', async (route) => {
+    await page.route('**/api/**/evidence/reconcile**', async (route) => {
       await route.fulfill({
         json: {
           image_asset_ids: ['img-a', 'img-b'],
@@ -357,7 +357,11 @@ test.describe('PatchHive canonical workspace', () => {
     await expect(page.getByText(/Showing 2 of 2 catalog modules/)).toBeVisible();
     await page.getByRole('searchbox', { name: 'Search modules' }).fill('Filter');
     await expect(page.getByText(/Showing 1 of 1 catalog modules \(filtered\)/)).toBeVisible();
-    await expect(page.getByText('OtherBrand — Filter Z')).toBeVisible();
+    // Catalog cards use separate brand/name mockup faces (not a single "Brand — Name" string).
+    const filteredCard = page.getByLabel('Module: OtherBrand Filter Z, 8 HP, VCF');
+    await expect(filteredCard).toBeVisible();
+    await expect(filteredCard.getByText('OtherBrand', { exact: true })).toBeVisible();
+    await expect(filteredCard.getByText('Filter Z', { exact: true })).toBeVisible();
     await expect(page.getByText('Oscillator A')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Place on new rig' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Prepare for rig' }).first()).toBeVisible();
@@ -940,7 +944,7 @@ test.describe('PatchHive canonical workspace', () => {
   });
 
   test('rig overview surfaces sealed inventory receipt', async ({ page }) => {
-    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+    await page.route('**/api/**/evidence/inventory**', async (route) => {
       await route.fulfill({
         json: {
           total: 1,
@@ -967,7 +971,7 @@ test.describe('PatchHive canonical workspace', () => {
   });
 
   test('inventory ready enables generate loop and surfaces generation receipt', async ({ page }) => {
-    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+    await page.route('**/api/**/evidence/inventory**', async (route) => {
       await route.fulfill({
         json: {
           total: 1,
@@ -1070,7 +1074,7 @@ test.describe('PatchHive canonical workspace', () => {
   });
 
   test('generate loop without ready inventory uses soft CTA label', async ({ page }) => {
-    await page.route('**/api/racks/1/evidence/inventory**', async (route) => {
+    await page.route('**/api/**/evidence/inventory**', async (route) => {
       await route.fulfill({
         json: { total: 0, latest: null, revisions: [] },
       });

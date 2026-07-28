@@ -1,0 +1,89 @@
+# One-shot acceptance suite on the staging Docker network (no host venv).
+# Creates a clean patchhive_acceptance DB on the compose Postgres, then runs pytest.
+#
+# Usage (from repo root; stack DB must be up or will start db):
+#   docker compose -f docker-compose.staging.yml -f docker-compose.staging.acceptance.yml \
+#     run --rm --build acceptance
+#   # or: powershell -File scripts/staging/acceptance-docker.ps1
+#
+# Payments remain fail-closed.
+
+services:
+  acceptance:
+    image: python:3.12-slim
+    container_name: patchhive-staging-acceptance
+    working_dir: /workspace/backend
+    volumes:
+      # Repo layout expected by tests/acceptance/conftest.py:
+      #   REPO_ROOT = parents[3] of conftest → /workspace
+      #   fixtures + scripts/seed_golden_demo.py live at repo root.
+      - ./backend:/workspace/backend
+      - ./fixtures:/workspace/fixtures:ro
+      - ./scripts:/workspace/scripts:ro
+      - ./tmp/acceptance-docker:/tmp/acceptance-exports
+      - staging_acceptance_pip:/root/.cache/pip
+    environment:
+      ACCEPTANCE_DATABASE_URL: postgresql://patchhive:${STAGING_DB_PASSWORD:-staging-smoke-db-pass-xx}@db:5432/patchhive_acceptance
+      ACCEPTANCE_EXPORT_DIR: /tmp/acceptance-exports
+      TEST_MODE: "true"
+      STRIPE_TEST_MODE: "true"
+      ALLOW_PRODUCTION_PAYMENTS: "false"
+      DATABASE_URL: postgresql://patchhive:${STAGING_DB_PASSWORD:-staging-smoke-db-pass-xx}@db:5432/patchhive_acceptance
+      # Align with smoke defaults when host uses remapped ports
+      PGPASSWORD: ${STAGING_DB_PASSWORD:-staging-smoke-db-pass-xx}
+    depends_on:
+      db:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "-lc"]
+    command:
+      - |
+        set -euo pipefail
+        apt-get update -qq
+        apt-get install -y -qq libpq5 gcc libpq-dev >/dev/null
+        python -m pip install -q -U pip
+        python -m pip install -q -e '.[dev]'
+        # Fresh acceptance DB each run (idempotent)
+        python - <<'PY'
+        import os
+        import time
+        import psycopg2
+        from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
+
+        url = os.environ["ACCEPTANCE_DATABASE_URL"]
+        # postgresql://user:pass@host:port/dbname
+        rest = url.split("://", 1)[1]
+        creds, hostpart = rest.rsplit("@", 1)
+        user, password = creds.split(":", 1)
+        hostport, dbname = hostpart.split("/", 1)
+        host, port = hostport.split(":")
+        for attempt in range(30):
+            try:
+                conn = psycopg2.connect(
+                    host=host, port=port, user=user, password=password, dbname="postgres"
+                )
+                break
+            except Exception as exc:
+                print(f"wait db {attempt}: {exc}")
+                time.sleep(2)
+        else:
+            raise SystemExit("postgres not ready")
+        conn.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT pg_terminate_backend(pid) FROM pg_stat_activity "
+            "WHERE datname = %s AND pid <> pg_backend_pid()",
+            (dbname,),
+        )
+        cur.execute(f'DROP DATABASE IF EXISTS "{dbname}"')
+        cur.execute(f'CREATE DATABASE "{dbname}"')
+        cur.close()
+        conn.close()
+        print(f"Created clean {dbname}")
+        PY
+        mkdir -p /tmp/acceptance-exports
+        env -u PYTHONPATH python -m pytest tests/acceptance -q --tb=short
+        echo "DOCKER ACCEPTANCE PASS"
+
+volumes:
+  staging_acceptance_pip:
+    driver: local

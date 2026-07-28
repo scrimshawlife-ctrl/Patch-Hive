@@ -20,10 +20,11 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install runtime dependencies only
+# Install runtime dependencies only (postgresql-client optional for ops shells)
 RUN apt-get update && apt-get install -y \
     libpq5 \
     curl \
+    postgresql-client \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy Python dependencies from builder
@@ -45,9 +46,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Expose port
 EXPOSE 8000
 
-# Health check
+# Health check (DB readiness)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
-    CMD curl -f http://localhost:8000/health || exit 1
+    CMD curl -f http://localhost:8000/health/ready || exit 1
 
-# Run uvicorn
+# Migrate then run uvicorn (RUN_MIGRATIONS defaults true in entrypoint)
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

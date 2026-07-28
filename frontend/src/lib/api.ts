@@ -32,6 +32,8 @@ import type {
   RegistryCoverage,
   RegistryManufacturerList,
   RegistrySearchResult,
+  Manufacturer,
+  DeviceModel,
 } from '@/types/api';
 import type {
   AdminUserList,
@@ -330,6 +332,10 @@ export interface InventoryRevisionListResponse {
   revisions: InventoryRevisionSummary[];
 }
 
+/** F4: evidence under canon prefix (rig_id ≡ rack_id). Legacy /racks/.../evidence still works. */
+const evidencePath = (rigId: number, suffix: string) =>
+  `/canon/rigs/${rigId}/evidence/${suffix}`;
+
 export const evidenceApi = {
   uploadImages: (
     rackId: number,
@@ -348,15 +354,15 @@ export const evidenceApi = {
       String(options?.consent_provider_processing ?? false),
     );
     form.append('run_vision_mock', String(options?.run_vision_mock ?? true));
-    return api.post<MultiImageUploadResponse>(`/racks/${rackId}/evidence/images`, form, {
+    return api.post<MultiImageUploadResponse>(evidencePath(rackId, 'images'), form, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
-  listImages: (rackId: number) => api.get(`/racks/${rackId}/evidence/images`),
+  listImages: (rackId: number) => api.get(evidencePath(rackId, 'images')),
 
   listCandidates: (rackId: number) =>
-    api.get<EvidenceCandidateListResponse>(`/racks/${rackId}/evidence/candidates`),
+    api.get<EvidenceCandidateListResponse>(evidencePath(rackId, 'candidates')),
 
   reconcile: (rackId: number) =>
     api.get<{
@@ -381,7 +387,7 @@ export const evidenceApi = {
       conflict_count: number;
       status: string;
       note: string;
-    }>(`/racks/${rackId}/evidence/reconcile`),
+    }>(evidencePath(rackId, 'reconcile')),
 
   confirm: (
     rackId: number,
@@ -394,10 +400,10 @@ export const evidenceApi = {
         notes?: string | null;
       }>;
     },
-  ) => api.post<ConfirmationBatchResponse>(`/racks/${rackId}/evidence/confirmations`, body),
+  ) => api.post<ConfirmationBatchResponse>(evidencePath(rackId, 'confirmations'), body),
 
   listInventory: (rackId: number) =>
-    api.get<InventoryRevisionListResponse>(`/racks/${rackId}/evidence/inventory`),
+    api.get<InventoryRevisionListResponse>(evidencePath(rackId, 'inventory')),
 };
 
 // Run API — list prefers canon alias; patches still legacy until dual-written.
@@ -589,6 +595,59 @@ export const canonApi = {
       updated_at: string;
     }>(`/canon/style-recipes/shared/${encodeURIComponent(recipeId)}`),
 
+  /** F2: list inventory rigs via canon prefix (rig_id ≡ rack_id). Optional FE cutover. */
+  listRigs: (params?: {
+    skip?: number;
+    limit?: number;
+    is_public?: boolean;
+    user_id?: number;
+  }) => {
+    const q = new URLSearchParams();
+    if (params?.skip != null) q.set('skip', String(params.skip));
+    if (params?.limit != null) q.set('limit', String(params.limit));
+    if (params?.is_public != null) q.set('is_public', String(params.is_public));
+    if (params?.user_id != null) q.set('user_id', String(params.user_id));
+    const qs = q.toString();
+    return api.get<{
+      total: number;
+      rigs: Array<{
+        rig_id: number;
+        rack_id: number;
+        user_id: number;
+        case_id: number;
+        name: string | null;
+        name_suggested: string | null;
+        description: string | null;
+        tags: string[];
+        is_public: boolean;
+        module_count: number;
+        created_at: string;
+        updated_at: string;
+      }>;
+    }>(`/canon/rigs${qs ? `?${qs}` : ''}`);
+  },
+
+  /** F2: single inventory rig (≡ GET /api/racks/{id}). */
+  getRig: (rigId: number) =>
+    api.get<{
+      rig_id: number;
+      rack_id: number;
+      user_id: number;
+      case_id: number;
+      name: string | null;
+      name_suggested: string | null;
+      description: string | null;
+      tags: string[];
+      is_public: boolean;
+      module_count: number;
+      created_at: string;
+      updated_at: string;
+      generation_seed: number | null;
+      modules: Array<Record<string, unknown>>;
+      case: Record<string, unknown> | null;
+      vote_count: number;
+    }>(`/canon/rigs/${rigId}`),
+
   listRevisions: (rigId: number) =>
     api.get<{
       total: number;
@@ -737,13 +796,14 @@ export const accountApi = {
 
 // Registry / PDB API (Phase 2)
 export const registryApi = {
-  listManufacturers: (params?: { limit?: number; skip?: number }) =>
+  listManufacturers: (params?: { limit?: number; offset?: number }) =>
     api.get<RegistryManufacturerList>("/registry/manufacturers", { params }),
   search: (q: string, limit = 20) =>
     api.get<RegistrySearchResult>("/registry/search", { params: { q, limit } }),
   getCoverage: () => api.get<RegistryCoverage>("/registry/coverage"),
-  getManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}`),
-  listModelsForManufacturer: (slug: string) => api.get(`/registry/manufacturers/${slug}/models`),
+  getManufacturer: (slug: string) => api.get<Manufacturer>(`/registry/manufacturers/${slug}`),
+  listModelsForManufacturer: (slug: string) =>
+    api.get<{ models: DeviceModel[] }>(`/registry/manufacturers/${slug}/models`),
 
 };
 

@@ -321,6 +321,13 @@ code { padding: 0.15rem 0.35rem; border-radius: var(--radius-sm); background: va
   border-radius: var(--radius-sm);
   background: color-mix(in srgb, var(--danger) 12%, var(--surface-inset));
 }
+.auth-demo-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
 .auth-demo {
   display: grid;
   gap: var(--space-3);

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { canonApi, exportApi, patchApi, rackApi, runApi } from '@/lib/api';
 import type { CompatibilityResponse, Patch, Rack, Run } from '@/types/api';
+import { difficultyFromConnections, filterPatches, patchCategories, weirdnessFromConnections } from './racksPageUtils';
 
 type TabKey = 'overview' | 'patches' | 'exports' | 'modules';
 
@@ -33,7 +34,8 @@ export default function RacksPage() {
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState({
     category: 'All',
-    connections: 'All',
+    difficulty: 'All',
+    weirdness: 'Any',
   });
   const [compat, setCompat] = useState<{
     bridge_status: string;
@@ -168,14 +170,8 @@ export default function RacksPage() {
     }
   }, [selectedRunId]);
 
-  const filteredPatches = patches.filter((patch) => {
-    if (filters.category !== 'All' && patch.category !== filters.category) return false;
-    const count = patch.connections?.length || 0;
-    if (filters.connections === '1-4' && !(count >= 1 && count <= 4)) return false;
-    if (filters.connections === '5-8' && !(count >= 5 && count <= 8)) return false;
-    if (filters.connections === '9+' && count < 9) return false;
-    return true;
-  });
+  const categories = useMemo(() => patchCategories(patches), [patches]);
+  const filteredPatches = useMemo(() => filterPatches(patches, filters), [patches, filters]);
 
   return (
     <div className="split-workspace">
@@ -550,23 +546,37 @@ export default function RacksPage() {
                       }
                     >
                       <option>All</option>
-                      {[...new Set(patches.map((patch) => patch.category))].map((category) => (
+                      {categories.map((category) => (
                         <option key={category}>{category}</option>
                       ))}
                     </select>
                   </label>
                   <label className="inline-field">
-                    Connections
+                    Difficulty
                     <select
-                      value={filters.connections}
+                      value={filters.difficulty}
                       onChange={(event) =>
-                        setFilters((prev) => ({ ...prev, connections: event.target.value }))
+                        setFilters((prev) => ({ ...prev, difficulty: event.target.value }))
                       }
                     >
-                      <option value="All">All</option>
-                      <option value="1-4">1–4</option>
-                      <option value="5-8">5–8</option>
-                      <option value="9+">9+</option>
+                      <option>All</option>
+                      <option>Beginner</option>
+                      <option>Intermediate</option>
+                      <option>Advanced</option>
+                    </select>
+                  </label>
+                  <label className="inline-field">
+                    Weirdness
+                    <select
+                      value={filters.weirdness}
+                      onChange={(event) =>
+                        setFilters((prev) => ({ ...prev, weirdness: event.target.value }))
+                      }
+                    >
+                      <option>Any</option>
+                      <option>Low</option>
+                      <option>Medium</option>
+                      <option>High</option>
                     </select>
                   </label>
                   <label className="inline-field">
@@ -593,7 +603,8 @@ export default function RacksPage() {
                         {patch.suggested_name || 'Suggested name missing'}
                       </p>
                       <p className="muted" style={{ margin: 0, fontSize: '0.85rem' }}>
-                        {patch.category} · {patch.connections?.length || 0} connections
+                        {patch.category} · {difficultyFromConnections(patch)} · weirdness{' '}
+                        {weirdnessFromConnections(patch)}
                       </p>
                       <p style={{ margin: 0, color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
                         {patch.description || 'No description yet.'}

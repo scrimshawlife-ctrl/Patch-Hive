@@ -26,6 +26,11 @@ from runs.models import Run
 from community.models import User
 from patches.engine import generate_patches_with_ir, PatchEngineConfig
 
+# Register SQLAlchemy relationship targets used by User / ledger / exports.
+from account.models import CreditLedgerEntry, ExportRecord  # noqa: E402, F401
+from canon.models import CanonicalCreditLedgerEntryRecord, CanonicalExportRecord  # noqa: E402, F401
+from monetization.models import CreditsLedger  # noqa: E402, F401
+
 FIXTURE_PATH = Path(__file__).resolve().parents[1] / "fixtures" / "golden_demo_seed.json"
 
 
@@ -257,8 +262,12 @@ def _ensure_modules(db: Session, modules: Iterable[dict[str, Any]]) -> list[Modu
 
 
 def _ensure_user(db: Session, username: str, password: str, role: str) -> User:
+    """Create or refresh demo account so re-seed always restores known passwords."""
     user = db.query(User).filter(User.username == username).first()
     if user:
+        user.password_hash = get_password_hash(password)
+        user.role = role
+        db.commit()
         return user
     user = User(
         username=username,
@@ -302,6 +311,7 @@ def seed_golden_demo(db: Session, fixture_path: Path = FIXTURE_PATH) -> SeedResu
     _ensure_modules(db, fixture["rig"]["modules"])
 
     user = _ensure_user(db, "golden_demo", "demo-pass", "User")
+    # Canonical staging admin (avoid username "admin" — acceptance fixtures use that).
     _ensure_user(db, "admin_demo", "admin-pass", "Admin")
 
     existing_rack = db.query(Rack).filter(Rack.user_id == user.id).first()

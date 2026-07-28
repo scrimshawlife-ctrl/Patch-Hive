@@ -1,17 +1,7 @@
 #!/usr/bin/env python3
-import main  # ensure all models are registered
-#!/usr/bin/env python3
-"""
-import main  # ensure models registered
-import json
-import sys
-from pathlib import Path
-from datetime import datetime
-from sqlalchemy.orm import Session
-from core.database import SessionLocal
-from modules.catalog import ModuleCatalog
-from registry.models import Manufacturer, DeviceModel, DeviceFamily
+"""Seed catalog rows and registry links from a SynthCatalog export."""
 
+import main  # ensure all models are registered
 import json
 import sys
 from pathlib import Path

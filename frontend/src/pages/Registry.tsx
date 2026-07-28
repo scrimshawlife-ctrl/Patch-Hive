@@ -5,10 +5,10 @@
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { registryApi } from '@/lib/api';
-import type { Manufacturer, RegistryCoverage } from '@/types/api';
+import type { DeviceModel, Manufacturer, RegistryCoverage } from '@/types/api';
 
 interface SelectedMan extends Manufacturer {
-  models?: Array<{ name?: string; hp?: number | null }>;
+  models?: DeviceModel[];
 }
 
 export default function RegistryPage() {
@@ -18,24 +18,19 @@ export default function RegistryPage() {
   const [query, setQuery] = useState(() => searchParams.get('query') || searchParams.get('q') || '');
   const [selected, setSelected] = useState<SelectedMan | null>(null);
   const [loading, setLoading] = useState(true);
-  const [searchResults, setSearchResults] = useState<
-    Array<{ brand?: string; name?: string; hp?: number | null }>
-  >([]);
+  const [searchResults, setSearchResults] = useState<DeviceModel[]>([]);
 
   useEffect(() => {
     Promise.all([registryApi.listManufacturers({ limit: 200 }), registryApi.getCoverage()])
       .then(([mans, cov]) => {
-        const items = (mans.data.items || mans.data || []).slice(0, 200);
-        setManufacturers(items);
+        setManufacturers(mans.data.items.slice(0, 200));
         setCoverage(cov.data);
       })
-      .catch(() => {
-        /* registry unavailable — empty directory */
-      })
+      .catch(() => undefined)
       .finally(() => setLoading(false));
   }, []);
 
-  const manLabel = (m: Manufacturer) => m.name || m.canonical_name || m.slug;
+  const manLabel = (m: Manufacturer) => m.name || m.slug;
 
   const filtered = manufacturers.filter((m) => {
     const label = manLabel(m).toLowerCase();
@@ -61,11 +56,11 @@ export default function RegistryPage() {
 
   const selectMan = async (m: Manufacturer) => {
     try {
-      const res = await fetch(`/api/registry/manufacturers/${m.slug}`);
-      const detail = await res.json();
-      const modelsRes = await fetch(`/api/registry/manufacturers/${m.slug}/models`);
-      const modelsData = await modelsRes.json();
-      setSelected({ ...detail, models: modelsData.models || [] });
+      const [detail, models] = await Promise.all([
+        registryApi.getManufacturer(m.slug),
+        registryApi.listModelsForManufacturer(m.slug),
+      ]);
+      setSelected({ ...detail.data, models: models.data.models });
     } catch {
       setSelected({ ...m, models: [] });
     }

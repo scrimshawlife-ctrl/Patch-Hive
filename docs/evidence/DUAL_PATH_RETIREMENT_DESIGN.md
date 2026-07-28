@@ -35,9 +35,9 @@ Inventory confirmation continues via evidence APIs; rack id may remain the exter
 |----|--------|--------|---------------|------|
 | **F0** | Document truth | This design + CONTINUATION pin | Merged design | low |
 | **F1** | Alias docs only | README/API: `rack_id ≡ rig_id` for MVP | Docs only | low |
-| **F2** | Thin `GET /api/canon/rigs` list | Read adapter over racks table / rig revisions | FE optional switch behind flag | med |
+| **F2** | Thin `GET /api/canon/rigs` list | Read adapter over racks table / rig revisions | **DONE** — `GET /api/canon/rigs` + `GET /api/canon/rigs/{id}`; FE `canonApi.listRigs/getRig` optional | med |
 | **F3** | Generate dual-write audit | Confirm every generate path writes bridge + inventory metrics | **DONE** — [F3_GENERATE_DUAL_WRITE_AUDIT.md](F3_GENERATE_DUAL_WRITE_AUDIT.md) | med |
-| **F4** | Evidence path on canon prefix | Optional ` /api/canon/rigs/{id}/evidence/*` alias | Same handlers; dual mount | med |
+| **F4** | Evidence path on canon prefix | Optional ` /api/canon/rigs/{id}/evidence/*` alias | **DONE** — dual mount + FE `evidenceApi` on canon paths | med |
 | **F5** | FE inventory reads prefer canon DTO | RigDetail/Racks consume bridge fields only | Playwright green | med |
 | **F6** | Deprecate unused patch list fields | Mark dual response keys | No caller | low |
 | **F7** | Quarantine dead rack-only admin paths | If any unused | rg zero callers | low |

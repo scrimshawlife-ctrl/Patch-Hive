@@ -8,8 +8,8 @@ PatchHive remains a modular monolith. Apply the single Alembic head before appli
 
 1. Install exactly from `backend/pyproject.toml` / `backend/requirements.txt` and `frontend/package-lock.json`.
 2. Run backend, frontend, property/contract, security, and accessibility automation (or rely on green PR CI).
-3. Run `alembic heads` and require a **single head**. As of cases C1, head includes `20260721_case_format_columns` (after Design Engine / style recipes). Re-check on the release SHA; do not trust this note alone.
-4. Run PostgreSQL integration and migration tests (`alembic upgrade head` against Postgres 15).
+3. Run `alembic heads` and require a **single head**. As of 2026-07-26, head includes `20260726_module_registry_slugs` (after device registry + PDB wiring). Re-check on the release SHA; do not trust this note alone.
+4. Run PostgreSQL integration and migration tests (`alembic upgrade head` against Postgres 15). Deploy/staging containers must apply Alembic via `docker-entrypoint.sh` (`RUN_MIGRATIONS=true`); never use `init_db()`/`create_all()` as the production schema path.
 5. Generate and retain Python/npm CycloneDX SBOMs and build provenance (Security workflow artifacts).
 6. Run ledger reconciliation (`reconcile_ledger` or equivalent admin path) and require no anomalies.
 7. Verify all legacy feature flags are false (`ENABLE_LEGACY_SOCIAL`, `ENABLE_LEGACY_PUBLISHING`, `ENABLE_LEGACY_LEADERBOARDS`, `ENABLE_LEGACY_REFERRALS`).
@@ -54,16 +54,49 @@ Environment template: repository root `.env.example`. Never commit real secrets.
 ### Staging-like Compose (image-built backend, no --reload)
 
 ```bash
+# Unified automation (preferred):
+#   bash scripts/test/run.sh ci            # unit + frontend + acceptance
+#   bash scripts/test/run.sh docker-suite  # full Docker path (preferred local staging)
+#   bash scripts/test/run.sh staging       # smoke + host-venv acceptance + design-engine
+# Windows:
+#   powershell -File scripts/test/run.ps1 ci
+#   powershell -File scripts/test/run.ps1 docker-suite
+
+# Or individual staging scripts:
+# Automated readiness + alembic head + pg_dump/restore side-DB drill
+powershell -File scripts/staging/smoke.ps1   # Windows (PowerShell 5+)
+# bash scripts/staging/smoke.sh              # Linux/macOS
+
+# Acceptance suite against compose Postgres (dedicated patchhive_acceptance DB):
+powershell -File scripts/staging/acceptance.ps1
+# bash scripts/staging/acceptance.sh
+
+# Design Engine flags + preview/export walkthrough (test payments only):
+powershell -File scripts/staging/design-engine.ps1
+# bash scripts/staging/design-engine.sh
+
+# Manual:
 export STAGING_SECRET_KEY="$(openssl rand -base64 32)"
 export STAGING_DB_PASSWORD="$(openssl rand -base64 18)"
 docker compose -f docker-compose.staging.yml up -d --build
-curl -sf http://localhost:8000/health
-docker compose -f docker-compose.staging.yml exec -T backend alembic current
-# expect: 20240930_patch_user_overlays (head)
+curl -sf http://localhost:8000/health/ready
+docker compose -f docker-compose.staging.yml exec -T backend python -m alembic current
+# expect: 20260726_module_registry_slugs (head as of 2026-07-26; re-check on SHA)
 ```
 
 Staging **must** keep `ALLOW_PRODUCTION_PAYMENTS=false` and `STRIPE_TEST_MODE=true`.  
 A public hostname requires an explicit operator host pick (Compose VPS / Render / Fly / Azure) — agents must not invent cloud accounts.
+
+### Demo credentials (local Docker staging)
+
+Restored by `scripts/staging/seed-demo.ps1` (also run at end of `smoke.ps1`):
+
+| Account | Username | Password | Role |
+|---------|----------|----------|------|
+| Demo user | `golden_demo` | `demo-pass` | User |
+| Admin | `admin_demo` | `admin-pass` | Admin |
+
+**Not valid:** `Admin` / `Admin` (old UI label only — fixed on Login page).
 
 ### Staging vs production
 

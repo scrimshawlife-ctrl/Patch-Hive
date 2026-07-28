@@ -313,10 +313,10 @@ class TestRacksAPI:
 
 
 class TestHealthEndpoint:
-    """Tests for health check endpoint."""
+    """Tests for health check endpoints."""
 
     def test_health_check(self, client: TestClient):
-        """Test health check endpoint."""
+        """Liveness probe — process up, no DB requirement."""
         response = client.get("/health")
 
         assert response.status_code == 200
@@ -325,6 +325,16 @@ class TestHealthEndpoint:
         assert "app" in data
         assert "version" in data
         assert "abx_core_version" in data
+
+    def test_health_ready(self, client: TestClient):
+        """Readiness probe — includes database connectivity."""
+        response = client.get("/health/ready")
+
+        assert response.status_code == 200
+        data = response.json()
+        assert data["status"] == "healthy"
+        assert data["database"] == "ok"
+        assert "app" in data
 
 
 class TestRootEndpoint:

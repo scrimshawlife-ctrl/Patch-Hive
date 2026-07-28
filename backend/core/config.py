@@ -30,6 +30,8 @@ class Settings(BaseSettings):
     # Database
     database_url: str = "postgresql://patchhive:***@localhost:5432/patchhive"
     database_echo: bool = False
+    # Dev/sqlite escape hatch only. Deploy/staging must use alembic upgrade head.
+    allow_create_all: bool = False
 
     # Security
     secret_key: str = "dev-secret-key-change-in-production"

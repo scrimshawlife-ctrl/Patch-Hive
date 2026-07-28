@@ -37,22 +37,28 @@ Define how to stand up a **named non-prod** environment (URL + secrets + Postgre
 
 Copy of [OPERATIONS.md](../OPERATIONS.md) release gates, plus:
 
-1. [ ] `alembic current` == `20240930_patch_user_overlays (head)`  
-2. [ ] `GET /health` → `status: healthy`  
-3. [ ] Acceptance suite against staging Postgres: `pytest tests/acceptance -q`  
+1. [ ] `alembic current` == `20260726_module_registry_slugs (head)` (re-check on SHA)  
+2. [ ] `GET /health` → liveness healthy; `GET /health/ready` → `database: ok`  
+3. [x] Acceptance suite against staging Postgres: `scripts/staging/acceptance.ps1` → [STAGING_ACCEPTANCE_RECEIPT_20260726.md](STAGING_ACCEPTANCE_RECEIPT_20260726.md) (local compose; re-run on named host)
 4. [ ] Ledger reconcile / no double-debit smoke  
 5. [ ] Manual a11y protocol ([ACCESSIBILITY.md](../ACCESSIBILITY.md))  
-6. [ ] Backup/restore drill of staging DB (record receipt)  
+6. [ ] Backup/restore drill of staging DB (record receipt) — local: `scripts/staging/smoke.ps1` / `smoke.sh`  
 7. [ ] No production payment keys present  
 
 ## Local staging-like Compose (this repo)
 
 ```bash
-# Production-like local stack (no code bind-mounts, no --reload)
+# Automated smoke (recommended): health + alembic head + pg_dump/restore drill
+powershell -File scripts/staging/smoke.ps1   # Windows
+# bash scripts/staging/smoke.sh              # Linux/macOS
+
+# Manual:
 docker compose -f docker-compose.staging.yml up -d --build
-curl -sf http://localhost:8000/health
-docker compose -f docker-compose.staging.yml exec -T backend alembic current
+curl -sf http://localhost:8000/health/ready
+docker compose -f docker-compose.staging.yml exec -T backend python -m alembic current
 ```
+
+If host `:8000` is busy, use `STAGING_API_PORT` / `STAGING_FE_PORT` / `STAGING_PUBLIC_API_URL` / `STAGING_CORS_ORIGINS` (smoke scripts default to 18000/15173).
 
 Class: **local OBSERVED** when run on a laptop — still **not** a named multi-tenant host.
 
@@ -60,9 +66,11 @@ Class: **local OBSERVED** when run on a laptop — still **not** a named multi-t
 
 | Claim | Status |
 |-------|--------|
-| Local Compose db+backend healthy | **PASS** (prior receipt) |
+| Local Compose db+backend healthy | **PASS** — [BETA_STAGING_MIGRATIONS_HEALTH_RECEIPT_20260726.md](BETA_STAGING_MIGRATIONS_HEALTH_RECEIPT_20260726.md) |
+| Alembic-on-deploy + DB wait entrypoint | **PASS** (#142, #144) |
 | `docker-compose.staging.yml` checked in | **DONE** |
-| Local Docker staging stack (db+backend+FE) | **PASS** — [STAGING_LOCAL_DOCKER_RECEIPT.md](STAGING_LOCAL_DOCKER_RECEIPT.md) |
+| Local Docker staging stack (db+backend+FE) | **PASS** — smoke scripts + prior receipts |
+| Backup/restore local drill | **PASS** when `scripts/staging/smoke.*` completes |
 | Operator-chosen public/private hostname | **NOT_PERFORMED** — see [DOMAIN_CUTOVER_CHECKLIST.md](DOMAIN_CUTOVER_CHECKLIST.md) |
 | Production deploy | **NOT_PERFORMED** |
 

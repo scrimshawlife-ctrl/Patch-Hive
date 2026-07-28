@@ -3,6 +3,7 @@
  * with optional materialize into full-spec inventory for rack placement.
  */
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { moduleApi, rackApi } from '@/lib/api';
 import type { CatalogModule, CatalogModuleStats, Rack } from '@/types/api';
@@ -615,7 +616,7 @@ export default function ModulesPage() {
                         <div
                           className="module-mockup"
                           data-category={module.category || 'UTIL'}
-                          style={{ ['--hp-scale' as string]: String(hpScale) }}
+                          style={{ '--hp-scale': hpScale } as CSSProperties}
                           title={`${module.brand} — ${module.name} (${hp || '?'}HP)`}
                           aria-label={`Module: ${module.brand} ${module.name}, ${hp} HP, ${module.category || 'UTIL'}`}
                         >
@@ -652,7 +653,7 @@ export default function ModulesPage() {
                       {module.registry_manufacturer_slug ? (
                         <Link 
                           to={`/products?query=${encodeURIComponent(module.registry_manufacturer_slug)}`}
-                          className="status-chip status-chip--neutral"
+                          className="status-chip status-chip--neutral hover:bg-zinc-700 no-underline"
                           title="View in Product Database (Registry)"
                           onClick={e => e.stopPropagation()}
                         >

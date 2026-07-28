@@ -1,15 +1,10 @@
 # CURRENT_STATE
 
-**Authoritative as of:** 2026-07-23  
+**Authoritative as of:** 2026-07-26  
 **Branch pin:** `origin/main`  
-**HEAD:** `3d86ee1e5c20909f005c3688f70afd0f66256aa3` — feat(ui): multi-module batch place with contiguous HP pack (#136)  
-**Recent work:** PDB-01 catalog inventory receipt (see docs/evidence/CATALOG_INVENTORY_RECEIPT_20260723.md); active ModuleCatalog + /catalog/* + materialize (HP fail-closed) + Modules UI + batch place integration; GalleryRevision append-only.  
-**Open issues:** #68 P0 Product Database/Device Registry/Explorer (inventory step complete); #58 P1 residual + P2 hygiene.  
-
-**PDB Progress (this session):** Phase 1 complete — full registry models, seed ingestion (704 brands / 376 models), services, route stubs, snapshot artifacts, and new evidence receipt (PDB_P0_PHASE1_REGISTRY_FOUNDATION_20260723.md).
-
-
-**PDB Phase 2 (this session):** Registry wired into main.py, Alembic migration created, tests added, ingestion re-run, local verification green (ruff + pytest). See PDB_P0_PHASE2_INTEGRATION_20260723.md
+**HEAD:** re-pin after merge of this campaign (see recent merges)  
+**Recent work:** beta staging ops train #141–#148; Design Engine staging walkthrough; unified test runner + CI acceptance; dual-path F2 canon rigs list.  
+**Open issues:** #68 P0 Product Database residual; #58 P1 residual + P2 hygiene; #96 UI pages (**open**).
 
 **Alpha tag lineage:** `v0.3.0-alpha` (late alpha — **not** production)
 
@@ -17,12 +12,17 @@
 
 | PR | Result |
 |----|--------|
-| [#86](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/86)–[#88](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/88) | F3 dual-write audit; local staging receipt; Cyber Hive brand kit |
-| [#89](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/89)–[#94](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/94) | Design system + Design Engine foundation → pack download |
-| [#95](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/95) | Login Cyber Hive auth gate |
+| [#141](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/141) | FE/seed type-safety + registry slug Alembic + CI green-path |
+| [#142](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/142) | Alembic-on-deploy + `/health/ready` + evidence re-pin |
+| [#143](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/143) | Local staging compose smoke receipt |
+| [#144](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/144) | Entrypoint wait on DATABASE_URL before alembic |
+| [#145](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/145) | Smoke scripts + backup/restore drill + FE API env fix |
+| [#146](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/146) | Acceptance suite against compose Postgres |
+| [#147](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/147) | Design Engine staging enablement + walkthrough |
+| [#148](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/148) | Unified test runner + CI acceptance gate |
 | [#96](https://github.com/scrimshawlife-ctrl/Patch-Hive/pull/96) | Full product pages visual upgrade (**open**) |
 
-**Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed  
+**Campaign issue lineage:** [#46](https://github.com/scrimshawlife-ctrl/Patch-Hive/issues/46) — closed
 
 ## OBSERVED product posture
 
@@ -30,22 +30,25 @@
 |------|--------|
 | Product identity | Deterministic Eurorack **rig + patch documentation** |
 | Canonical domain | `backend/canon/` (+ design recipes, export fulfillment) |
-| Design Engine flags | **Default off** — see [PATCHBOOK_STAGING_ENABLEMENT.md](docs/design/PATCHBOOK_STAGING_ENABLEMENT.md) |
-| Alembic | Chain includes `20260721_design_engine_export_columns` + `20260721_user_style_recipes` |
-| Local Compose staging | Receipts under `docs/evidence/STAGING_*` |
+| Design Engine flags | **Default off** — staging overlay + walkthrough PASS (#147) |
+| Alembic | Single head through `20260726_module_registry_slugs`; entrypoint waits for DB then upgrades |
+| Health | `/health` liveness; `/health/ready` includes DB |
+| Local Compose staging | `docker-compose.staging.yml` + `scripts/staging/*` + `scripts/test/run.*` |
+| Test automation | `scripts/test/run.sh\|ps1` · CI `acceptance-tests.yml` · 11 acceptance PASS |
+| Dual-path inventory | F0/F1/F3/F2 done; F4/F5 residual; Z deferred |
 | Named staging host | Plan only — **NOT_PERFORMED** |
 | Payments | Test-mode only |
 | Production deploy | **Not performed** |
-| Production readiness | **Not ready** — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) |
+| Production readiness | **Not ready** (beta-staging engineering) — [assessment](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) · [matrix](docs/evidence/PRODUCTION_READINESS_MATRIX.md) · [delta](docs/evidence/PRODUCTION_READINESS_DELTA_2026-07-26.md) |
 
 ## Immediate continuation priorities
 
-1. PDB-01/02: follow catalog inventory (712 brands scanned) — implement Device Registry hierarchy models (Manufacturer etc.), adapters from gallery/catalog, coverage/snapshot endpoints + receipts (Issue #68).
-2. Align any demo creds; land pending UI polish.
-3. Staging host + Design Engine full walkthrough receipt (test payments).
-4. Dual-path thinning (F2+), P1/P2 hygiene per CONTINUATION.
-5. Validate + re-pin readiness docs/matrix to current SHA.
-6. Public Product Explorer navigation + pages per spec.  
+1. Operator: pick named staging host; optional domain cutover ([DOMAIN_CUTOVER_CHECKLIST.md](docs/evidence/DOMAIN_CUTOVER_CHECKLIST.md)).
+2. Dual-path F4 (evidence alias) / F5 (FE inventory reads prefer canon DTO).
+3. P1/P2 hygiene per CONTINUATION; #96 UI polish when ready.
+
+**Local staging automation:**  
+`scripts/test/run.ps1 ci` · `staging` · smoke · acceptance (11 PASS) · design-engine (export succeeded)
 
 ## Authority boundary
 
@@ -61,7 +64,3 @@
 | [docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md](docs/evidence/PRODUCTION_READINESS_ASSESSMENT_2026-07-21.md) | Latest readiness narrative |
 | [docs/FEATURE_FLAGS.md](docs/FEATURE_FLAGS.md) | Flags |
 | [brand/README.md](brand/README.md) | Brand kit |
-
-**2026-07-23 continuation:** Registry tables migrated + 704 manufacturers + 39 models populated from snapshot. Services/routes now DB-backed. Live API verified. See docs/evidence/PDB_DB_SEED_20260723.md
-**2026-07-23 PDB continuation complete:** DB enriched (376 models + sample revisions/ports). Public Explorer built (directory, search, detail with live models). Registry slugs added to ModuleCatalog/Module for wiring. Basic admin POST /admin/manufacturers. Receipt: docs/evidence/PDB_EXPLORER_WIRING_20260723.md
-**2026-07-23 further continuation:** Wired registry slugs into materialize_catalog_entry (and returns). Improved seeder fuzzy matching + re-seeded. Added test_catalog_materialize_registry.py (passed). Enhanced Registry explorer detail to surface links. Catalog now 376 rows all wired; materialization carries links.

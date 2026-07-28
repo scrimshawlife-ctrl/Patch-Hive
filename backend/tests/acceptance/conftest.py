@@ -22,22 +22,56 @@ REPO_ROOT = Path(__file__).resolve().parents[3]
 FIXTURE_PATH = REPO_ROOT / "fixtures" / "golden_demo_seed.json"
 
 
+def _external_database_url() -> str | None:
+    """Optional: point acceptance at an existing Postgres (e.g. compose staging).
+
+    Set ACCEPTANCE_DATABASE_URL=postgresql://user:pass@host:port/dbname
+    When set, Testcontainers is skipped (CI and local still use containers by default).
+    """
+    url = (os.environ.get("ACCEPTANCE_DATABASE_URL") or os.environ.get("STAGING_DATABASE_URL") or "").strip()
+    return url or None
+
+
 @pytest.fixture(scope="session")
-def postgres_container() -> Generator[PostgresContainer, None, None]:
+def postgres_container() -> Generator[PostgresContainer | None, None, None]:
+    if _external_database_url():
+        yield None
+        return
     with PostgresContainer("postgres:15") as postgres:
         yield postgres
 
 
 @pytest.fixture(scope="session")
-def database_url(postgres_container: PostgresContainer) -> str:
+def database_url(postgres_container: PostgresContainer | None) -> str:
+    external = _external_database_url()
+    if external:
+        return external
+    assert postgres_container is not None
     return postgres_container.get_connection_url()
 
 
 @pytest.fixture(scope="session")
 def migrated_db(database_url: str, tmp_path_factory: pytest.TempPathFactory) -> sessionmaker:
+    # Normalize SQLAlchemy URL for psycopg2
+    if database_url.startswith("postgresql://"):
+        # keep as-is; create_engine accepts postgresql://
+        pass
     os.environ["DATABASE_URL"] = database_url
     os.environ["TEST_MODE"] = "true"
-    os.environ["EXPORT_DIR"] = str(tmp_path_factory.mktemp("exports"))
+    os.environ.setdefault("STRIPE_TEST_MODE", "true")
+    os.environ.setdefault("ALLOW_PRODUCTION_PAYMENTS", "false")
+    # Prefer explicit dir (Windows agents sometimes cannot write %TEMP%/pytest-of-*)
+    export_override = (os.environ.get("ACCEPTANCE_EXPORT_DIR") or "").strip()
+    if export_override:
+        export_path = Path(export_override)
+        export_path.mkdir(parents=True, exist_ok=True)
+    else:
+        try:
+            export_path = Path(tmp_path_factory.mktemp("exports"))
+        except OSError:
+            export_path = REPO_ROOT / "tmp" / "acceptance-exports"
+            export_path.mkdir(parents=True, exist_ok=True)
+    os.environ["EXPORT_DIR"] = str(export_path)
 
     import core
     import core.config

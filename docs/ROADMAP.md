@@ -167,8 +167,9 @@ Design: [evidence/DUAL_PATH_RETIREMENT_DESIGN.md](evidence/DUAL_PATH_RETIREMENT_
 |-------|--------|
 | F0 design | COMPLETE |
 | F3 generate dual-write audit | COMPLETE |
-| F2 thin `GET /api/canon/rigs` | PLANNED |
-| F4/F5 evidence + FE cutover | PLANNED |
+| F2 thin `GET /api/canon/rigs` | COMPLETE |
+| F4 evidence canon aliases | COMPLETE |
+| F5 FE inventory list cutover | PLANNED |
 | Z delete `backend/racks` | DEFERRED (operator-only campaign) |
 
 ## Near-term sequence (next 2 weeks)

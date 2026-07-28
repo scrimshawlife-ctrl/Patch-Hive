@@ -78,6 +78,8 @@ alembic/versions/__pycache__/
 *.tmp
 *.bak
 *.cache
+tmp/
+backend/.venv-acceptance/
 
 # Keep frontend source lib tracked (Python lib/ ignore is root-level intent)
 !frontend/src/lib/
