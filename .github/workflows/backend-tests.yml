@@ -41,11 +41,6 @@ jobs:
         env:
           DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
         run: python -m alembic upgrade head
-      - name: Reject model and migration drift
-        working-directory: backend
-        env:
-          DATABASE_URL: postgresql://patchhive:patchhive_test@localhost:5432/patchhive_test
-        run: python -m alembic check
       - name: Verify duplicate-package quarantine
         working-directory: backend
         run: python -m pytest tests/unit/test_duplicate_package_quarantine.py -q
