@@ -242,3 +242,13 @@ CI authoritative when local Docker/Postgres missing. Full `make test` requires D
 6. **Stretch (P1 complete):** acceptance + UI share one debit ledger path (canon)
 
 **Active engineering starts at P1 inventory dual-path plan / P2 dead-UI hygiene.**
+
+## 2026-07-23 Steps 1-6 Execution (from CONTINUATION_STEPS1-6_PDB_PROD_READINESS_20260723.md)
+- Step 1: Re-pinned readiness docs to 34dd7a2... ; noted #96 and #137 merges.
+- Step 2: Registry tests: 8 passed. API /registry/manufacturers 200, catalog 200. DB metrics: 705 mans / 376 models.
+- Step 3: parse_cases_research collection error fixed with lazy imports (research script, pre-existing, unrelated to PDB). 4 tests now collect cleanly. Overall collection 325 tests, 0 errors on that file.
+- Step 4: Coverage metrics receipt created (PDB_COVERAGE_METRICS_20260723.md) with live numbers.
+- Step 5: PR #96 confirmed MERGED.
+- Step 6: This entry + full evidence in steps plan. PDB P0 foundation complete on main.
+
+See also DEBUG_PLAN and PDB receipts.

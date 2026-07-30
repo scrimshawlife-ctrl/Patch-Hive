@@ -2,10 +2,10 @@
 
 ```yaml
 assessment:
-  date: "2026-07-21"
+  date: "2026-07-23"
   source_sha: de1fbcf31581de0d62b7584d00a632147b2abd4b  # origin/main at Login #95
   branch: main
-  open_product_pr: 96  # Cyber Hive UI pages (when merged, re-pin matrix)
+  open_product_pr: none  # #96 merged; PDB explorer (/products) landed in #137
   environment: local developer + CI + local Docker staging receipts
   authority_decision: NOT_GRANTED
   production_deployed: false
@@ -129,6 +129,14 @@ Development ──► Alpha ──► Beta ──► RC ──► GA
 - device_registry gate advanced (see PDB_PROD_READINESS_ADVANCE_20260723.md).
 - Re-pin matrix + re-run full verification recommended.
 - Still late-alpha; no change to overall NOT_GRANTED.
+
+
+## 2026-07-23 Re-pin + PDB Steps 1-6 Execution
+- SHA re-pinned to 34dd7a228828c96e60da595bce8815e68093589d
+- PR #96 (Cyber Hive UI) merged.
+- PR #137 (PDB) merged — device_registry advanced.
+- Continuation plan for steps 1-6 executed (see CONTINUATION_STEPS1-6_PDB_PROD_READINESS_20260723.md).
+- device_registry: ADVANCED (full models + explorer + metrics).
 
 ## Continuity plan (ordered)
 

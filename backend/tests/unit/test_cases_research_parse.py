@@ -9,9 +9,16 @@ from pathlib import Path
 import pytest
 
 REPO = Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(REPO / "scripts"))
 
-from parse_cases_research import build_fixture, parse_markdown  # noqa: E402
+def _get_parse_markdown():
+    sys.path.insert(0, str(REPO / "scripts"))
+    from parse_cases_research import parse_markdown
+    return parse_markdown
+
+def _get_build_fixture():
+    sys.path.insert(0, str(REPO / "scripts"))
+    from parse_cases_research import build_fixture
+    return build_fixture
 
 FIXTURE_MD = REPO / "fixtures" / "Cases4PatchHive.md"
 FIXTURE_JSON = REPO / "fixtures" / "cases_research_2026.json"
@@ -19,12 +26,14 @@ FIXTURE_JSON = REPO / "fixtures" / "cases_research_2026.json"
 
 @pytest.mark.skipif(not FIXTURE_MD.is_file(), reason="research markdown fixture missing")
 def test_parse_yields_fifty_cases():
+    parse_markdown = _get_parse_markdown()
     cases = parse_markdown(FIXTURE_MD.read_text(encoding="utf-8"))
     assert len(cases) == 50
 
 
 @pytest.mark.skipif(not FIXTURE_MD.is_file(), reason="research markdown fixture missing")
 def test_known_layouts_and_power():
+    parse_markdown = _get_parse_markdown()
     cases = parse_markdown(FIXTURE_MD.read_text(encoding="utf-8"))
     by_key = {(c["brand"], c["name"]): c for c in cases}
 
@@ -57,6 +66,7 @@ def test_case_create_schema_accepts_all():
     sys.path.insert(0, str(REPO / "backend"))
     from cases.schemas import CaseCreate
 
+    build_fixture = _get_build_fixture()
     fixture = build_fixture(FIXTURE_MD)
     for raw in fixture["cases"]:
         CaseCreate.model_validate(raw)
@@ -65,6 +75,7 @@ def test_case_create_schema_accepts_all():
 @pytest.mark.skipif(not FIXTURE_JSON.is_file(), reason="json fixture missing")
 def test_checked_in_json_matches_parser():
     disk = json.loads(FIXTURE_JSON.read_text(encoding="utf-8"))
+    build_fixture = _get_build_fixture()
     fresh = build_fixture(FIXTURE_MD)
     assert disk["case_count"] == fresh["case_count"] == 50
     assert {(c["brand"], c["name"]) for c in disk["cases"]} == {

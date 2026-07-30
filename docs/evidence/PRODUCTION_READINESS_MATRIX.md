@@ -4,9 +4,9 @@
 assessment:
   source_sha: de1fbcf31581de0d62b7584d00a632147b2abd4b
   branch: main
-  open_pr_pending_merge: 96  # Cyber Hive pages — re-pin after merge
+  open_pr_pending_merge: none (#96 + #137 merged)  # Cyber Hive pages — re-pin after merge
   environment: local developer host + CI + local Docker staging
-  date: "2026-07-21"
+  date: "2026-07-23"
   authority_decision: NOT_GRANTED
   production_deployed: false
   production_payments_enabled: false
