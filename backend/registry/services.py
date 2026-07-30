@@ -1,15 +1,26 @@
-"""
-Registry services — query layer for Product Database.
+"""Registry query services for the Product Database explorer.
 
-Provides pure functions over the registry snapshot or (later) DB session.
-Designed to be fast and deterministic for catalog/explorer use.
+HTTP callers provide a database session. Direct callers without a session use the
+versioned registry snapshot, which keeps scripts and tests deterministic and avoids
+opening an implicit production connection.
 """
 
-from typing import Optional
+from __future__ import annotations
+
 import json
 from pathlib import Path
+from typing import Optional
 
-SNAPSHOT_LATEST = Path(__file__).parent.parent.parent / "data" / "registry_snapshots" / "registry_latest.json"
+from sqlalchemy.orm import Session
+
+from registry.models import DeviceModel, Manufacturer
+
+SNAPSHOT_LATEST = (
+    Path(__file__).parent.parent.parent
+    / "data"
+    / "registry_snapshots"
+    / "registry_latest.json"
+)
 
 
 def load_latest_snapshot() -> dict:
@@ -18,82 +29,30 @@ def load_latest_snapshot() -> dict:
     return {"manufacturers": []}
 
 
-def list_manufacturers(limit: int = 100, offset: int = 0, db: "Session | None" = None) -> list[dict]:
-    # DB primary (enriched)
-    try:
-        from sqlalchemy.orm import Session
-        from core.database import SessionLocal
-        from registry.models import Manufacturer
-        if db is None:
-            db = SessionLocal()
-        rows = db.query(Manufacturer).order_by(Manufacturer.canonical_name).offset(offset).limit(limit).all()
-        return [
-            {
-                "id": r.id,
-                "slug": r.slug,
-                "name": r.canonical_name,
-                "model_count": 0,
-                "status": r.status or "active",
-            }
-            for r in rows
-        ]
-    except Exception:
-        # fallback
-        snap = load_latest_snapshot()
-        mans = snap.get("manufacturers", [])[offset:offset + limit]
-        return [
-            {
-                "slug": m.get("slug"),
-                "name": m.get("canonical_name"),
-                "model_count": len(m.get("models", [])),
-                "status": m.get("status"),
-            }
-            for m in mans
-        ]
+def _snapshot_manufacturers() -> list[dict]:
+    return load_latest_snapshot().get("manufacturers", [])
 
 
-def get_manufacturer(slug: str) -> Optional[dict]:
-    snap = load_latest_snapshot()
-    for m in snap.get("manufacturers", []):
-        if m.get("slug") == slug:
-            return m
-    return None
+def _manufacturer_summary(manufacturer: dict) -> dict:
+    return {
+        "slug": manufacturer.get("slug"),
+        "name": manufacturer.get("canonical_name"),
+        "model_count": len(manufacturer.get("models", [])),
+        "status": manufacturer.get("status"),
+    }
 
 
-def search_models(q: str = "", brand: Optional[str] = None, limit: int = 50) -> list[dict]:
-    snap = load_latest_snapshot()
-    q = q.lower()
-    results = []
-    for m in snap.get("manufacturers", []):
-        if brand and m.get("slug") != brand and m.get("canonical_name", "").lower() != brand.lower():
-            continue
-        for model in m.get("models", []):
-            name = model.get("canonical_name", "")
-            if not q or q in name.lower() or q in m.get("canonical_name", "").lower():
-                results.append({
-                    "brand": m.get("canonical_name"),
-                    "name": name,
-                    "slug": model.get("slug"),
-                    "hp": model.get("hp"),
-                    "device_type": model.get("device_type"),
-                })
-                if len(results) >= limit:
-                    return results
-    return results
-
-
-
-# --- DB-backed versions (Phase 2 continuation) ---
-from sqlalchemy.orm import Session
-from core.database import SessionLocal
-from registry.models import Manufacturer, DeviceModel
-
-def _get_db() -> Session:
-    return SessionLocal()
-
-def list_manufacturers(limit: int = 100, offset: int = 0, db: Session | None = None) -> list[dict]:
+def list_manufacturers(
+    limit: int = 100,
+    offset: int = 0,
+    db: Session | None = None,
+) -> list[dict]:
     if db is None:
-        db = _get_db()
+        return [
+            _manufacturer_summary(manufacturer)
+            for manufacturer in _snapshot_manufacturers()[offset : offset + limit]
+        ]
+
     rows = (
         db.query(Manufacturer)
         .order_by(Manufacturer.canonical_name)
@@ -103,57 +62,141 @@ def list_manufacturers(limit: int = 100, offset: int = 0, db: Session | None = N
     )
     return [
         {
-            "id": r.id,
-            "slug": r.slug,
-            "name": r.canonical_name,
-            "model_count": 0,  # could count later
-            "status": r.status or "active",
+            "id": row.id,
+            "slug": row.slug,
+            "name": row.canonical_name,
+            "model_count": db.query(DeviceModel)
+            .filter(DeviceModel.manufacturer_id == row.id)
+            .count(),
+            "status": row.status or "active",
         }
-        for r in rows
+        for row in rows
     ]
 
+
+def get_manufacturer(slug: str) -> Optional[dict]:
+    for manufacturer in _snapshot_manufacturers():
+        if manufacturer.get("slug") == slug:
+            return manufacturer
+    return None
+
+
+def search_models(q: str = "", brand: Optional[str] = None, limit: int = 50) -> list[dict]:
+    query = q.lower()
+    results = []
+    for manufacturer in _snapshot_manufacturers():
+        if (
+            brand
+            and manufacturer.get("slug") != brand
+            and manufacturer.get("canonical_name", "").lower() != brand.lower()
+        ):
+            continue
+        for model in manufacturer.get("models", []):
+            name = model.get("canonical_name", "")
+            if not query or query in name.lower() or query in manufacturer.get(
+                "canonical_name", ""
+            ).lower():
+                results.append(
+                    {
+                        "brand": manufacturer.get("canonical_name"),
+                        "name": name,
+                        "slug": model.get("slug"),
+                        "hp": model.get("hp"),
+                        "device_type": model.get("device_type"),
+                    }
+                )
+                if len(results) >= limit:
+                    return results
+    return results
+
+
 def get_coverage_report(db: Session | None = None) -> dict:
-    if db is None:
-        db = _get_db()
-    total_mans = db.query(Manufacturer).count()
-    total_models = db.query(DeviceModel).count()
+    if db is not None:
+        total_manufacturers = db.query(Manufacturer).count()
+        total_models = db.query(DeviceModel).count()
+        models_with_hp = db.query(DeviceModel).filter(DeviceModel.hp.is_not(None)).count()
+    else:
+        manufacturers = _snapshot_manufacturers()
+        models = [model for manufacturer in manufacturers for model in manufacturer.get("models", [])]
+        total_manufacturers = len(manufacturers)
+        total_models = len(models)
+        models_with_hp = sum(model.get("hp") is not None for model in models)
+
+    hp_coverage_pct = round((models_with_hp / total_models) * 100, 2) if total_models else 0
     return {
-        "total_manufacturers": total_mans,
+        "total_manufacturers": total_manufacturers,
         "total_models": total_models,
-        "hp_coverage_pct": 0,  # TODO: compute from models
+        "hp_coverage_pct": hp_coverage_pct,
     }
 
 
-def list_models_for_manufacturer(manufacturer_slug: str, limit: int = 50) -> list[dict]:
-    db = _get_db()
-    man = db.query(Manufacturer).filter_by(slug=manufacturer_slug).first()
-    if not man:
+def list_models_for_manufacturer(
+    manufacturer_slug: str,
+    limit: int = 50,
+    db: Session | None = None,
+) -> list[dict]:
+    if db is None:
+        manufacturer = get_manufacturer(manufacturer_slug)
+        if not manufacturer:
+            return []
+        return [
+            {
+                "slug": model.get("slug"),
+                "name": model.get("canonical_name"),
+                "hp": model.get("hp"),
+                "device_type": model.get("device_type"),
+                "format": model.get("format"),
+            }
+            for model in manufacturer.get("models", [])[:limit]
+        ]
+
+    manufacturer = db.query(Manufacturer).filter_by(slug=manufacturer_slug).first()
+    if not manufacturer:
         return []
-    models = db.query(DeviceModel).filter_by(manufacturer_id=man.id).limit(limit).all()
+    models = (
+        db.query(DeviceModel)
+        .filter_by(manufacturer_id=manufacturer.id)
+        .limit(limit)
+        .all()
+    )
     return [
         {
-            "id": m.id,
-            "slug": m.slug,
-            "name": m.canonical_name,
-            "hp": m.hp,
-            "device_type": m.device_type,
-            "format": m.format,
+            "id": model.id,
+            "slug": model.slug,
+            "name": model.canonical_name,
+            "hp": model.hp,
+            "device_type": model.device_type,
+            "format": model.format,
         }
-        for m in models
+        for model in models
     ]
 
-def get_manufacturer_detail(slug: str) -> Optional[dict]:
-    db = _get_db()
-    man = db.query(Manufacturer).filter_by(slug=slug).first()
-    if not man:
+
+def get_manufacturer_detail(slug: str, db: Session | None = None) -> Optional[dict]:
+    if db is None:
+        manufacturer = get_manufacturer(slug)
+        if not manufacturer:
+            return None
+        models = list_models_for_manufacturer(slug, limit=100)
+        return {
+            "slug": manufacturer.get("slug"),
+            "name": manufacturer.get("canonical_name"),
+            "website": manufacturer.get("website"),
+            "status": manufacturer.get("status"),
+            "model_count": len(models),
+            "models": models,
+        }
+
+    manufacturer = db.query(Manufacturer).filter_by(slug=slug).first()
+    if not manufacturer:
         return None
-    models = list_models_for_manufacturer(slug, limit=100)
+    models = list_models_for_manufacturer(slug, limit=100, db=db)
     return {
-        "id": man.id,
-        "slug": man.slug,
-        "name": man.canonical_name,
-        "website": man.website,
-        "status": man.status,
+        "id": manufacturer.id,
+        "slug": manufacturer.slug,
+        "name": manufacturer.canonical_name,
+        "website": manufacturer.website,
+        "status": manufacturer.status,
         "model_count": len(models),
         "models": models,
     }
