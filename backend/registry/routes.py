@@ -1,17 +1,13 @@
-"""
-Registry API routes (PDB-03 stubs).
-
-Mount under /registry or /products later.
-These are read-only for the public Product Database / Explorer.
-
-Example mounting (in main.py later):
-    from registry.routes import router as registry_router
-    app.include_router(registry_router, prefix="/registry", tags=["registry"])
-"""
+"""Read-only Product Database registry routes plus bounded admin curation."""
 
 from typing import Optional
 
-from fastapi import APIRouter, Query
+from fastapi import APIRouter, Depends, HTTPException, Query
+from pydantic import BaseModel, Field
+from sqlalchemy.orm import Session
+
+from core.database import get_db
+from registry.models import Manufacturer
 
 from . import services
 
@@ -22,23 +18,23 @@ router = APIRouter()
 def list_manufacturers(
     limit: int = Query(100, le=500),
     offset: int = Query(0, ge=0),
+    db: Session = Depends(get_db),
 ):
     return {
-        "total": len(services.list_manufacturers(limit=10000)),
-        "items": services.list_manufacturers(limit=limit, offset=offset),
+        "total": len(services.list_manufacturers(limit=10000, db=db)),
+        "items": services.list_manufacturers(limit=limit, offset=offset, db=db),
     }
 
 
 @router.get("/manufacturers/{slug}")
-def get_manufacturer(slug: str):
-    detail = services.get_manufacturer_detail(slug)
+def get_manufacturer(slug: str, db: Session = Depends(get_db)):
+    detail = services.get_manufacturer_detail(slug, db=db)
     if detail:
         return detail
-    m = services.get_manufacturer(slug)
-    if not m:
-        from fastapi import HTTPException
-        raise HTTPException(404, "Manufacturer not found")
-    return m
+    snapshot_manufacturer = services.get_manufacturer(slug)
+    if snapshot_manufacturer:
+        return snapshot_manufacturer
+    raise HTTPException(404, "Manufacturer not found")
 
 
 @router.get("/search")
@@ -51,30 +47,26 @@ def search(
 
 
 @router.get("/coverage")
-def coverage():
-    return services.get_coverage_report()
+def coverage(db: Session = Depends(get_db)):
+    return services.get_coverage_report(db=db)
 
-
-# --- Basic admin curation endpoints (Phase 2/3) ---
-from fastapi import HTTPException
-from pydantic import BaseModel
 
 class ManufacturerCreate(BaseModel):
     slug: str
     canonical_name: str
     website: str | None = None
-    aliases: list[str] = []
+    aliases: list[str] = Field(default_factory=list)
+
 
 @router.post("/admin/manufacturers", tags=["admin", "registry"])
-def create_manufacturer(payload: ManufacturerCreate):
-    # In real use, protect with admin dependency
-    from core.database import SessionLocal
-    from registry.models import Manufacturer
-    db = SessionLocal()
+def create_manufacturer(
+    payload: ManufacturerCreate,
+    db: Session = Depends(get_db),
+):
+    # TODO: protect with the canonical admin dependency before enabling curation UI.
     if db.query(Manufacturer).filter_by(slug=payload.slug).first():
-        db.close()
         raise HTTPException(400, "Slug already exists")
-    m = Manufacturer(
+    manufacturer = Manufacturer(
         slug=payload.slug,
         canonical_name=payload.canonical_name,
         website=payload.website,
@@ -82,13 +74,18 @@ def create_manufacturer(payload: ManufacturerCreate):
         status="active",
         provenance={"source": "admin-curation"},
     )
-    db.add(m)
+    db.add(manufacturer)
     db.commit()
-    db.refresh(m)
-    db.close()
-    return {"id": m.id, "slug": m.slug}
+    db.refresh(manufacturer)
+    return {"id": manufacturer.id, "slug": manufacturer.slug}
 
 
 @router.get("/manufacturers/{slug}/models")
-def models_for_manufacturer(slug: str, limit: int = 50):
-    return {"models": services.list_models_for_manufacturer(slug, limit=limit)}
+def models_for_manufacturer(
+    slug: str,
+    limit: int = Query(50, le=200),
+    db: Session = Depends(get_db),
+):
+    return {
+        "models": services.list_models_for_manufacturer(slug, limit=limit, db=db)
+    }
