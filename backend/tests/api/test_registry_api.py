@@ -4,6 +4,8 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
 
+from admin.dependencies import require_admin_mutate
+from community.auth import require_auth
 from core.database import get_db
 from main import app
 from registry.models import DeviceModel, Manufacturer
@@ -70,3 +72,49 @@ def test_registry_coverage_endpoint(client: TestClient):
         "total_models": 1,
         "hp_coverage_pct": 100.0,
     }
+
+
+def test_registry_admin_create_requires_authentication(client: TestClient):
+    response = client.post(
+        "/api/registry/admin/manufacturers",
+        json={"slug": "new-brand", "canonical_name": "New Brand"},
+    )
+
+    assert response.status_code == 401
+    assert response.json() == {"detail": "Authentication required"}
+
+
+def test_registry_admin_create_rejects_non_admin_role(client: TestClient):
+    class CommunityUser:
+        role = "User"
+
+    app.dependency_overrides[require_auth] = lambda: CommunityUser()
+    try:
+        response = client.post(
+            "/api/registry/admin/manufacturers",
+            json={"slug": "new-brand", "canonical_name": "New Brand"},
+        )
+    finally:
+        app.dependency_overrides.pop(require_auth, None)
+
+    assert response.status_code == 403
+    assert response.json() == {"detail": "Admin mutation access required"}
+
+
+def test_registry_admin_can_create_manufacturer(client: TestClient):
+    app.dependency_overrides[require_admin_mutate] = lambda: object()
+    payload = {
+        "slug": "new-brand",
+        "canonical_name": "New Brand",
+        "aliases": ["NewBrand"],
+    }
+    try:
+        response = client.post("/api/registry/admin/manufacturers", json=payload)
+        duplicate = client.post("/api/registry/admin/manufacturers", json=payload)
+    finally:
+        app.dependency_overrides.pop(require_admin_mutate, None)
+
+    assert response.status_code == 200
+    assert response.json()["slug"] == "new-brand"
+    assert duplicate.status_code == 400
+    assert duplicate.json() == {"detail": "Slug already exists"}

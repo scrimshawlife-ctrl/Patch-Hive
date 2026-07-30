@@ -6,6 +6,8 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
+from admin.dependencies import require_admin_mutate
+from community.models import User
 from core.database import get_db
 from registry.models import Manufacturer
 
@@ -62,8 +64,8 @@ class ManufacturerCreate(BaseModel):
 def create_manufacturer(
     payload: ManufacturerCreate,
     db: Session = Depends(get_db),
+    current_user: User = Depends(require_admin_mutate),
 ):
-    # TODO: protect with the canonical admin dependency before enabling curation UI.
     if db.query(Manufacturer).filter_by(slug=payload.slug).first():
         raise HTTPException(400, "Slug already exists")
     manufacturer = Manufacturer(
@@ -86,6 +88,4 @@ def models_for_manufacturer(
     limit: int = Query(50, le=200),
     db: Session = Depends(get_db),
 ):
-    return {
-        "models": services.list_models_for_manufacturer(slug, limit=limit, db=db)
-    }
+    return {"models": services.list_models_for_manufacturer(slug, limit=limit, db=db)}
