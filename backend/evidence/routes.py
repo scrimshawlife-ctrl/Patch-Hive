@@ -313,6 +313,7 @@ class CandidateResponse(BaseModel):
     image_asset_id: str | None = None
     gallery_revision_id: str | None = None
     gallery_module_id: str | None = None
+    decision_advisory: dict | None = None
 
 
 class CandidateListResponse(BaseModel):
@@ -404,9 +405,41 @@ def list_rack_evidence_candidates(
     if rack is None:
         raise HTTPException(status_code=404, detail="Rack not found")
     items = _load_candidates_for_rack(db, rack_id)
-    candidates = [
-        CandidateResponse(**{k: v for k, v in item.items() if k != "_raw"}) for item in items
-    ]
+    # Decision Intelligence is deliberately read-only here. We project the newest
+    # retained receipt for a candidate when one exists; no provider call occurs on GET,
+    # and this projection cannot confirm or mutate inventory.
+    from intelligence.models import DecisionReceiptRecord
+
+    candidate_ids = [item["candidate_id"] for item in items]
+    receipts_by_choice: dict[str, DecisionReceiptRecord] = {}
+    if candidate_ids:
+        receipt_rows = (
+            db.query(DecisionReceiptRecord)
+            .filter(
+                DecisionReceiptRecord.purpose == "module_identity",
+                DecisionReceiptRecord.selected_choice.in_(candidate_ids),
+            )
+            .order_by(DecisionReceiptRecord.created_at.desc())
+            .all()
+        )
+        for receipt in receipt_rows:
+            if receipt.selected_choice and receipt.selected_choice not in receipts_by_choice:
+                receipts_by_choice[receipt.selected_choice] = receipt
+
+    candidates = []
+    for item in items:
+        receipt = receipts_by_choice.get(item["candidate_id"])
+        advisory = None
+        if receipt is not None:
+            advisory = {
+                "disposition": receipt.disposition.lower(),
+                "provider": receipt.provider,
+                "confidence": receipt.confidence,
+                "reason_codes": list(receipt.reason_codes or []),
+            }
+        payload = {k: v for k, v in item.items() if k != "_raw"}
+        payload["decision_advisory"] = advisory
+        candidates.append(CandidateResponse(**payload))
     return CandidateListResponse(total=len(candidates), candidates=candidates)
 
 
