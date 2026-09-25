@@ -45,3 +45,34 @@ Do **not** invent release thresholds before baseline collection.
 6. Record operator approval and corpus SHA in a retained evaluation receipt.
 
 Until that receipt exists, `enable_decision_intelligence` remains false.
+
+
+## Existing corpus discovery — 2026-09-25
+
+A repository audit found an existing deterministic vision corpus at `fixtures/vision_eval/`
+(version `vision-eval.v1`). It is **synthetic internal fixtures only** and therefore valid
+for CI and plumbing validation, but not representative enough for production threshold selection.
+
+Notion's canonical **PatchHive — Computer Vision Evaluation Protocol** already defines the
+real-world corpus contract: image assets, scene conditions, rights/consent, ground-truth
+inventory/regions/ports/controls/connections, annotation status, reviewers, and partitions for
+development, validation, locked test, adversarial/degraded, and unknown/open-set cases.
+
+Therefore Decision Intelligence does not create a competing corpus. It extends the existing
+vision-evaluation corpus and protocol.
+
+### Admission mapping
+
+- `fixtures/vision_eval/` → deterministic CI/synthetic baseline.
+- representative licensed real-world cases → future retained evaluation corpus governed by the
+  Computer Vision Evaluation Protocol.
+- Device Registry / Product Database → candidate universe and canonical identity labels, not
+  evaluation ground truth by themselves.
+- Jev DecisionPackets → predictions retained against those labels.
+- locked test cases → never used for prompt, model, policy-threshold, or candidate-ranking tuning.
+
+### Current status
+
+- Synthetic CI corpus: **OBSERVED / AVAILABLE**.
+- Real-world representative corpus: **NOT_COMPUTABLE from current repo/Notion evidence**.
+- Production thresholds: **NOT_COMPUTABLE** until the representative corpus is admitted.
