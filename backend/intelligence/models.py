@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Column, DateTime, String, event
+from sqlalchemy import JSON, Column, DateTime, Float, String, event
 
 from core.database import Base
 
@@ -29,9 +29,9 @@ class DecisionReceiptRecord(Base):
     rubric_hash = Column(String(64), nullable=True)
     answer_type = Column(String(32), nullable=False)
     selected_choice = Column(String(255), nullable=True)
-    score = Column(String(64), nullable=True)
-    probability_yes = Column(String(64), nullable=True)
-    confidence = Column(String(64), nullable=True)
+    score = Column(Float, nullable=True)
+    probability_yes = Column(Float, nullable=True)
+    confidence = Column(Float, nullable=True)
     provider_status = Column(String(32), nullable=False)
     error_code = Column(String(100), nullable=True)
     policy_version = Column(String(100), nullable=False)
