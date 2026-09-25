@@ -9,7 +9,7 @@
 - [x] T020 Add append-only persistence migration.
 - [x] T021 Add telemetry without raw sensitive evidence.
 - [x] T030 Implement fixture DecisionProvider.
-- [ ] T031 Implement Jev adapter behind default-off feature flag.
+- [x] T031 Implement Jev adapter behind default-off feature flag.
 - [ ] T040 Implement module candidate ranking service.
 - [ ] T041 Implement hierarchical function/capability decisions.
 - [ ] T042 Implement port-semantic decisions.
