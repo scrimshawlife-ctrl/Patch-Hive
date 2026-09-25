@@ -36,6 +36,9 @@ class PolicyResult(BaseModel):
     policy_version: str
     disposition: DecisionDisposition
     reason_codes: tuple[str, ...]
+    # Populated only for probability decisions whose direction is sufficiently clear.
+    # Disposition expresses confidence/action; binary_conclusion preserves yes/no meaning.
+    binary_conclusion: bool | None = None
 
 
 class DecisionPolicy:
@@ -64,18 +67,26 @@ class DecisionPolicy:
             certainty = max(packet.probability_yes, 1.0 - packet.probability_yes)
             if certainty < 0.5 + self.thresholds.probability_margin:
                 return self._result(DecisionDisposition.UNRESOLVED, "PROBABILITY_AMBIGUOUS")
+            binary_conclusion = packet.probability_yes >= 0.5
 
         if certainty is None:
             return self._result(DecisionDisposition.UNRESOLVED, "NO_CONFIDENCE_SIGNAL")
         if certainty >= self.thresholds.auto_propose_at:
-            return self._result(DecisionDisposition.AUTO_PROPOSE, "CONFIDENCE_AUTO_PROPOSE")
+            return self._result(DecisionDisposition.AUTO_PROPOSE, "CONFIDENCE_AUTO_PROPOSE", binary_conclusion=locals().get("binary_conclusion"))
         if certainty >= self.thresholds.user_review_at:
-            return self._result(DecisionDisposition.USER_REVIEW, "CONFIDENCE_REVIEW")
-        return self._result(DecisionDisposition.UNRESOLVED, "CONFIDENCE_LOW")
+            return self._result(DecisionDisposition.USER_REVIEW, "CONFIDENCE_REVIEW", binary_conclusion=locals().get("binary_conclusion"))
+        return self._result(DecisionDisposition.UNRESOLVED, "CONFIDENCE_LOW", binary_conclusion=locals().get("binary_conclusion"))
 
-    def _result(self, disposition: DecisionDisposition, reason: str) -> PolicyResult:
+    def _result(
+        self,
+        disposition: DecisionDisposition,
+        reason: str,
+        *,
+        binary_conclusion: bool | None = None,
+    ) -> PolicyResult:
         return PolicyResult(
             policy_version=self.thresholds.policy_version,
             disposition=disposition,
             reason_codes=(reason,),
+            binary_conclusion=binary_conclusion,
         )
