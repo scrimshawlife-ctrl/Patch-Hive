@@ -7,10 +7,11 @@ It measures identity accuracy, abstention/review behavior, calibration, and safe
 from __future__ import annotations
 
 import json
-import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable
+
+import hashlib
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -98,3 +99,36 @@ def evaluate(cases: Iterable[EvaluationCase], policy: DecisionPolicy) -> Evaluat
 
 def metrics_json(metrics: EvaluationMetrics) -> str:
     return json.dumps(metrics.__dict__, sort_keys=True, separators=(",", ":"))
+
+
+def corpus_sha256(cases: Iterable[EvaluationCase]) -> str:
+    """Stable digest over validated evaluation cases, independent of JSONL formatting."""
+    rows = sorted(
+        (case.model_dump(mode="json") for case in cases),
+        key=lambda row: row["case_id"],
+    )
+    payload = json.dumps(rows, sort_keys=True, separators=(",", ":"), ensure_ascii=True)
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+
+
+def evaluation_receipt(
+    *,
+    cases: Iterable[EvaluationCase],
+    metrics: EvaluationMetrics,
+    policy: DecisionPolicy,
+    baseline_id: str,
+    provider_id: str,
+) -> dict[str, object]:
+    """Build an immutable-content receipt; operator approval is added outside this function."""
+    rows = tuple(cases)
+    return {
+        "schema_version": "patchhive.decision-eval-receipt.v1",
+        "corpus_sha256": corpus_sha256(rows),
+        "case_count": len(rows),
+        "baseline_id": baseline_id,
+        "provider_id": provider_id,
+        "policy_version": policy.thresholds.policy_version,
+        "metrics": metrics.__dict__,
+        "operator_approval": None,
+        "status": "MEASURED_NOT_APPROVED",
+    }
