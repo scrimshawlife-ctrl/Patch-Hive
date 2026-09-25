@@ -9,12 +9,15 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 from collections import Counter
 from pathlib import Path
 
 ALLOWED_PARTITIONS = {
     "development", "validation", "locked_test", "adversarial_degraded", "unknown_open_set"
 }
+SHA256_RE = re.compile(r"^sha256:[0-9a-f]{64}$")
+
 REQUIRED_COHORTS = {
     "clear_front_panel", "installed_rack", "partial_occlusion", "cable_obscured",
     "low_light_or_glare", "revision_or_panel_variant", "hard_negative", "unknown_open_set"
@@ -50,6 +53,8 @@ def validate(manifest: dict) -> dict:
         rights = case.get("rights_and_consent", {})
         if rights.get("rights_status") != "RIGHTS_CONFIRMED":
             errors.append(f"{cid}:rights_not_confirmed")
+        if not str(rights.get("source_url", "")).strip():
+            errors.append(f"{cid}:rights_source_url_missing")
         if case.get("annotation_status") != "REVIEWED":
             errors.append(f"{cid}:annotation_not_reviewed")
         if case.get("ground_truth_status") not in {"OPERATOR_VERIFIED", "TWO_SOURCE_VERIFIED"}:
@@ -63,6 +68,13 @@ def validate(manifest: dict) -> dict:
         hashes = case.get("image_asset_hashes", [])
         if not hashes:
             errors.append(f"{cid}:image_hash_missing")
+        elif any(not isinstance(value, str) or not SHA256_RE.fullmatch(value) for value in hashes):
+            errors.append(f"{cid}:invalid_image_hash")
+        if partition == "unknown_open_set" and case.get("expected_choice") != "none_of_above":
+            errors.append(f"{cid}:open_set_must_expect_none_of_above")
+        contamination = case.get("contamination")
+        if not isinstance(contamination, dict) or "used_for_tuning" not in contamination:
+            errors.append(f"{cid}:contamination_status_missing")
         identities.update(case.get("ground_truth_inventory", []))
         if partition == "locked_test" and case.get("contamination", {}).get("used_for_tuning"):
             errors.append(f"{cid}:locked_test_contaminated")
