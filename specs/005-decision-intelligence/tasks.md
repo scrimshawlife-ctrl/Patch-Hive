@@ -6,7 +6,7 @@
 - [x] T010 Implement DecisionProvider protocol and schemas.
 - [x] T011 Implement deterministic DecisionPolicy and reason codes.
 - [x] T012 Add contract/property tests for malformed and adversarial packets.
-- [ ] T020 Add append-only persistence migration.
+- [x] T020 Add append-only persistence migration.
 - [x] T021 Add telemetry without raw sensitive evidence.
 - [x] T030 Implement fixture DecisionProvider.
 - [ ] T031 Implement Jev adapter behind default-off feature flag.
