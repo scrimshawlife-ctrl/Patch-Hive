@@ -289,6 +289,13 @@ export interface EvidenceCandidate {
   image_asset_id?: string | null;
   gallery_revision_id?: string | null;
   gallery_module_id?: string | null;
+  /** Optional, non-authoritative Decision Intelligence projection. */
+  decision_advisory?: {
+    disposition: 'auto_propose' | 'user_review' | 'unresolved' | 'escalate' | 'reject';
+    provider?: string;
+    confidence?: number | null;
+    reason_codes?: string[];
+  } | null;
 }
 
 export interface EvidenceCandidateListResponse {
