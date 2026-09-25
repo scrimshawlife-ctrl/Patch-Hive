@@ -47,7 +47,7 @@ Public documentation verification proves protocol compatibility only. It does no
 
 Those remain empirical gates.
 
-## T070 preflight
+## Preflight command\n\nRun only with an authorized credential and an exact pinned model identifier:\n\n```bash\nTYPESAFE_API_KEY=... JEV_MODEL=<pinned-model> python scripts/jev_staging_preflight.py\n```\n\nThe script refuses moving aliases, sends only synthetic state, sends the documented idempotency header, never enables the feature flag, and emits a hashable receipt without the credential or provider payload.\n\n## T070 preflight
 
 Before controlled staging enablement:
 
