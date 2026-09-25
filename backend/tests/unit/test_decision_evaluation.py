@@ -51,6 +51,9 @@ def test_evaluation_reports_accuracy_calibration_and_abstention() -> None:
     assert metrics.top1_accuracy == 1.0
     assert metrics.abstention_rate == 0.5
     assert metrics.false_canonicalization_count == 0
+    assert metrics.topk_accuracy == 1.0
+    assert metrics.cohort_metrics["clear-panel"]["case_count"] == 1
+    assert metrics.cohort_metrics["unknown"]["abstention_rate"] == 1.0
     assert 0 <= metrics.brier_score <= 1
 
 
@@ -95,3 +98,23 @@ def test_receipt_is_measured_but_not_operator_approved() -> None:
     assert receipt["corpus_sha256"] == corpus_sha256(cases)
     assert receipt["status"] == "MEASURED_NOT_APPROVED"
     assert receipt["operator_approval"] is None
+
+
+def test_topk_can_recover_a_top1_miss() -> None:
+    policy = DecisionPolicy(PolicyThresholds(
+        policy_version="eval-v1", auto_propose_at=0.9,
+        user_review_at=0.65, probability_margin=0.1,
+    ))
+    case = EvaluationCase(
+        case_id="topk", cohort="hard_negative", expected_choice="mod-b",
+        licensed_source="synthetic-fixture",
+        packet=_packet(
+            "mod-a",
+            {"mod-a": 0.45, "mod-b": 0.35, "none_of_above": 0.20},
+            0.45,
+        ),
+    )
+    metrics = evaluate((case,), policy)
+    assert metrics.top1_accuracy == 0.0
+    assert metrics.topk_accuracy == 1.0
+    assert metrics.cohort_metrics["hard_negative"]["case_count"] == 1
