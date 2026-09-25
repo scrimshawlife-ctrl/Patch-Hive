@@ -13,7 +13,7 @@ from typing import Iterable
 
 import hashlib
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict
 
 from intelligence.contracts import DecisionPacket
 from intelligence.policy import DecisionDisposition, DecisionPolicy
@@ -38,6 +38,8 @@ class EvaluationMetrics:
     escalation_rate: float
     brier_score: float
     false_canonicalization_count: int
+    topk_accuracy: float
+    cohort_metrics: dict[str, dict[str, float | int]]
 
 
 def load_jsonl(path: Path) -> tuple[EvaluationCase, ...]:
@@ -64,17 +66,28 @@ def evaluate(cases: Iterable[EvaluationCase], policy: DecisionPolicy) -> Evaluat
         raise ValueError("evaluation corpus is empty")
 
     correct = abstained = review = escalated = 0
+    topk_correct = 0
     brier_total = 0.0
+    cohort_rows: dict[str, list[tuple[bool, bool, bool, bool]]] = {}
     for case in rows:
         packet = case.packet
         if packet.answer_type != "choice":
             raise ValueError("identity evaluation currently accepts choice packets only")
         selected = packet.selected_choice
-        correct += int(selected == case.expected_choice)
+        is_correct = selected == case.expected_choice
+        correct += int(is_correct)
+        ranked = sorted(packet.probabilities, key=packet.probabilities.get, reverse=True)
+        topk_correct += int(case.expected_choice in ranked[: min(3, len(ranked))])
         result = policy.evaluate(packet)
         abstained += int(result.disposition is DecisionDisposition.UNRESOLVED)
         review += int(result.disposition is DecisionDisposition.USER_REVIEW)
         escalated += int(result.disposition is DecisionDisposition.ESCALATE)
+        cohort_rows.setdefault(case.cohort, []).append((
+            is_correct,
+            result.disposition is DecisionDisposition.UNRESOLVED,
+            result.disposition is DecisionDisposition.USER_REVIEW,
+            result.disposition is DecisionDisposition.ESCALATE,
+        ))
 
         # Multiclass Brier score over the declared probability vector.
         labels = set(packet.probabilities) | {case.expected_choice}
@@ -84,6 +97,16 @@ def evaluate(cases: Iterable[EvaluationCase], policy: DecisionPolicy) -> Evaluat
         ) / max(1, len(labels))
 
     n = len(rows)
+    cohort_metrics = {
+        cohort: {
+            "case_count": len(values),
+            "top1_accuracy": sum(v[0] for v in values) / len(values),
+            "abstention_rate": sum(v[1] for v in values) / len(values),
+            "review_rate": sum(v[2] for v in values) / len(values),
+            "escalation_rate": sum(v[3] for v in values) / len(values),
+        }
+        for cohort, values in sorted(cohort_rows.items())
+    }
     return EvaluationMetrics(
         case_count=n,
         top1_accuracy=correct / n,
@@ -94,6 +117,8 @@ def evaluate(cases: Iterable[EvaluationCase], policy: DecisionPolicy) -> Evaluat
         # Canonicalization is structurally outside DecisionPolicy. This metric is
         # retained as an explicit release invariant rather than inferred from accuracy.
         false_canonicalization_count=0,
+        topk_accuracy=topk_correct / n,
+        cohort_metrics=cohort_metrics,
     )
 
 
