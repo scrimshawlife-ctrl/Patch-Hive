@@ -65,12 +65,17 @@ def validate(manifest: dict) -> dict:
             errors.append(f"{cid}:none_of_above_missing")
         if not case.get("candidate_set_hash"):
             errors.append(f"{cid}:candidate_set_hash_missing")
+        expected_choice = case.get("expected_choice")
+        if not expected_choice:
+            errors.append(f"{cid}:expected_choice_missing")
+        elif partition != "unknown_open_set" and expected_choice not in set(case.get("ground_truth_inventory", [])):
+            errors.append(f"{cid}:expected_choice_not_in_ground_truth")
         hashes = case.get("image_asset_hashes", [])
         if not hashes:
             errors.append(f"{cid}:image_hash_missing")
         elif any(not isinstance(value, str) or not SHA256_RE.fullmatch(value) for value in hashes):
             errors.append(f"{cid}:invalid_image_hash")
-        if partition == "unknown_open_set" and case.get("expected_choice") != "none_of_above":
+        if partition == "unknown_open_set" and expected_choice != "none_of_above":
             errors.append(f"{cid}:open_set_must_expect_none_of_above")
         contamination = case.get("contamination")
         if not isinstance(contamination, dict) or "used_for_tuning" not in contamination:
