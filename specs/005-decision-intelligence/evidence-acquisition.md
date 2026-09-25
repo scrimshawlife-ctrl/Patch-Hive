@@ -105,3 +105,8 @@ No destructive rewrite of historical research artifacts is required. New acquisi
 - Rights status is retained independently from factual provenance.
 - Unknown remains unknown.
 - Registry admission and physical-module confirmation remain distinct state transitions.
+
+
+## Provenance axis clarification
+
+Campaign 005 uses three independent axes: evidence epistemics, source authority, and resolution authority. See `docs/evidence/PROVENANCE_AXES.md`. `OBSERVED` never means `USER_CONFIRMED`, and source authority never substitutes for either epistemic or resolution status.
