@@ -15,7 +15,7 @@
 - [x] T042 Implement port-semantic decisions.
 - [x] T043 Implement evidence-conflict decisions.
 - [ ] T050 Integrate proposals into existing confirmation UI.
-- [ ] T060 Build labeled evaluation corpus and harness.
+- [x] T060 Build labeled evaluation corpus and harness.
 - [ ] T061 Define operator-approved thresholds from baseline results.
 - [ ] T062 Retain SHA-pinned evaluation receipt.
 - [ ] T070 Staging enablement only after gate passes.
