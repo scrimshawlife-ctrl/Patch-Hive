@@ -1,0 +1,21 @@
+# Tasks
+
+- [x] T001 Add PatchHive constitution.
+- [x] T002 Add SpecKit feature 005 specification chain.
+- [x] T003 Add specification authority/index documentation.
+- [x] T010 Implement DecisionProvider protocol and schemas.
+- [x] T011 Implement deterministic DecisionPolicy and reason codes.
+- [x] T012 Add contract/property tests for malformed and adversarial packets.
+- [x] T020 Add append-only persistence migration.
+- [x] T021 Add telemetry without raw sensitive evidence.
+- [x] T030 Implement fixture DecisionProvider.
+- [x] T031 Implement Jev adapter behind default-off feature flag.
+- [x] T040 Implement module candidate ranking service.
+- [x] T041 Implement hierarchical function/capability decisions.
+- [x] T042 Implement port-semantic decisions.
+- [x] T043 Implement evidence-conflict decisions.
+- [x] T050 Integrate proposals into existing confirmation UI.
+- [x] T060 Build labeled evaluation corpus and harness.
+- [ ] T061 Define operator-approved thresholds from baseline results.
+- [ ] T062 Retain SHA-pinned evaluation receipt.
+- [ ] T070 Staging enablement only after gate passes.

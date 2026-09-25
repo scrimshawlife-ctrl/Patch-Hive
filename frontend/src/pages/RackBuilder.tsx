@@ -21,6 +21,13 @@ import type {
 type EvidenceState = 'idle' | 'ready' | 'uploading' | 'review' | 'confirmed' | 'error';
 type CandidateStatus = 'inferred' | 'confirmed' | 'rejected' | 'deferred';
 
+interface DecisionAdvisory {
+  disposition: 'auto_propose' | 'user_review' | 'unresolved' | 'escalate' | 'reject';
+  provider?: string;
+  confidence?: number | null;
+  reasonCodes?: string[];
+}
+
 interface ReviewCandidate {
   id: string;
   label: string;
@@ -29,6 +36,7 @@ interface ReviewCandidate {
   alternatives: string[];
   status: CandidateStatus;
   moduleRevisionId: string;
+  decision?: DecisionAdvisory;
 }
 
 interface FusedEntityView {
@@ -77,6 +85,14 @@ function mapApiCandidates(rows: EvidenceCandidate[]): ReviewCandidate[] {
     moduleRevisionId:
       row.gallery_revision_id ||
       (row.gallery_module_id ? `gallery-${row.gallery_module_id}` : `catalog-${row.candidate_id}`),
+    decision: row.decision_advisory
+      ? {
+          disposition: row.decision_advisory.disposition,
+          provider: row.decision_advisory.provider,
+          confidence: row.decision_advisory.confidence,
+          reasonCodes: row.decision_advisory.reason_codes,
+        }
+      : undefined,
   }));
 }
 
@@ -1984,6 +2000,26 @@ export default function RackBuilderPage() {
                   >
                     Status: {candidate.status}
                   </p>
+                  {candidate.decision ? (
+                    <div className="status status-neutral" aria-label="Decision Intelligence advisory">
+                      <strong>Decision Intelligence: advisory only</strong>
+                      <span>
+                        {' '}· {candidate.decision.disposition.replace('_', ' ')}
+                        {candidate.decision.confidence != null
+                          ? ` · ${(candidate.decision.confidence * 100).toFixed(0)}%`
+                          : ''}
+                        {candidate.decision.provider ? ` · ${candidate.decision.provider}` : ''}
+                      </span>
+                      {candidate.decision.reasonCodes?.length ? (
+                        <span className="muted">
+                          {' '}· {candidate.decision.reasonCodes.join(', ')}
+                        </span>
+                      ) : null}
+                      <p className="muted" style={{ marginBottom: 0 }}>
+                        This suggestion cannot confirm hardware. Use Confirm match, Reject, or Defer below.
+                      </p>
+                    </div>
+                  ) : null}
                 </div>
                 <div className="detection-actions" aria-label={`Resolve ${candidate.label}`}>
                   <button

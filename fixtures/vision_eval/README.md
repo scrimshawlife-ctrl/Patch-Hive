@@ -28,3 +28,14 @@ manifest.json
 cd backend
 env -u PYTHONPATH python -m pytest tests/unit/test_vision_evaluation.py -q
 ```
+
+## Decision Intelligence extension
+
+Decision Intelligence reuses this corpus rather than creating a parallel dataset.
+
+- `corpus-contract.json` records the admission contract for representative real-world cases.
+- Existing samples remain synthetic CI fixtures only.
+- Real-world development, validation, locked-test, adversarial/degraded, and unknown/open-set partitions are not yet admitted.
+- Device Registry records may define candidate IDs, but operator-reviewed case labels remain the evaluation ground truth.
+- Exact identity candidate sets must preserve an explicit `none_of_above` path.
+- Production thresholds remain `NOT_COMPUTABLE` until a representative licensed corpus and SHA-pinned evaluation receipt exist.
