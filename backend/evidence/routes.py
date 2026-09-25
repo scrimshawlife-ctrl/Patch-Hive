@@ -417,6 +417,7 @@ def list_rack_evidence_candidates(
             db.query(DecisionReceiptRecord)
             .filter(
                 DecisionReceiptRecord.purpose == "module_identity",
+                DecisionReceiptRecord.provider_status == "succeeded",
                 DecisionReceiptRecord.selected_choice.in_(candidate_ids),
             )
             .order_by(DecisionReceiptRecord.created_at.desc())
