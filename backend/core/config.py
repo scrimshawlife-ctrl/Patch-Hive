@@ -54,6 +54,13 @@ class Settings(BaseSettings):
     enable_legacy_leaderboards: bool = False
     enable_legacy_referrals: bool = False
 
+    # Decision Intelligence. Provider integration remains fail-closed by default.
+    enable_decision_intelligence: bool = False
+    decision_provider: str = "fixture"
+    decision_auto_propose_at: float = 0.90
+    decision_user_review_at: float = 0.65
+    decision_probability_margin: float = 0.10
+
     # Patch Engine
     patch_engine_version: str = "1.0.0"
     # Compatibility alias used by some call sites / older tests.
