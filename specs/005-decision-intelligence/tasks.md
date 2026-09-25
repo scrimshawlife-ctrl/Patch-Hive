@@ -14,7 +14,7 @@
 - [x] T041 Implement hierarchical function/capability decisions.
 - [x] T042 Implement port-semantic decisions.
 - [x] T043 Implement evidence-conflict decisions.
-- [ ] T050 Integrate proposals into existing confirmation UI.
+- [x] T050 Integrate proposals into existing confirmation UI.
 - [x] T060 Build labeled evaluation corpus and harness.
 - [ ] T061 Define operator-approved thresholds from baseline results.
 - [ ] T062 Retain SHA-pinned evaluation receipt.
