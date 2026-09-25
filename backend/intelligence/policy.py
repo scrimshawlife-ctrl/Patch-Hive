@@ -52,8 +52,8 @@ class DecisionPolicy:
             return self._result(DecisionDisposition.ESCALATE, f"PROVIDER_{packet.provider_status.upper()}")
 
         if packet.answer_type == "choice":
-            if packet.selected_choice == "none_of_above":
-                return self._result(DecisionDisposition.UNRESOLVED, "NONE_OF_ABOVE")
+            if packet.selected_choice in {"none_of_above", "unknown"}:
+                return self._result(DecisionDisposition.UNRESOLVED, "ABSTAINED_UNKNOWN")
             certainty = packet.confidence
             if certainty is None and packet.selected_choice is not None:
                 certainty = packet.probabilities.get(packet.selected_choice)
