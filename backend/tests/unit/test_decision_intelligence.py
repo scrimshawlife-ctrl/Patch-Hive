@@ -112,6 +112,16 @@ def test_none_of_above_remains_unresolved_even_with_high_confidence() -> None:
     assert result.disposition is DecisionDisposition.UNRESOLVED
 
 
+def test_unknown_choice_is_an_abstention() -> None:
+    packet = DecisionPacket(
+        decision_id="decision-unknown", request_id="req", provider="fixture", provider_version="1",
+        evidence_hash="hash", answer_type="choice", selected_choice="unknown",
+        probabilities={"known": 0.01, "unknown": 0.99}, confidence=0.99,
+        candidate_set_hash="candidate-hash", created_at=datetime.now(timezone.utc),
+    )
+    assert _policy().evaluate(packet).disposition is DecisionDisposition.UNRESOLVED
+
+
 @pytest.mark.parametrize("status", ["failed", "timed_out"])
 def test_provider_failure_escalates_never_confirms(status: str) -> None:
     packet = failed_fixture(
