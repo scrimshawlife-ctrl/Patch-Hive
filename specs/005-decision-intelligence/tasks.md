@@ -10,10 +10,10 @@
 - [x] T021 Add telemetry without raw sensitive evidence.
 - [x] T030 Implement fixture DecisionProvider.
 - [x] T031 Implement Jev adapter behind default-off feature flag.
-- [ ] T040 Implement module candidate ranking service.
-- [ ] T041 Implement hierarchical function/capability decisions.
-- [ ] T042 Implement port-semantic decisions.
-- [ ] T043 Implement evidence-conflict decisions.
+- [x] T040 Implement module candidate ranking service.
+- [x] T041 Implement hierarchical function/capability decisions.
+- [x] T042 Implement port-semantic decisions.
+- [x] T043 Implement evidence-conflict decisions.
 - [ ] T050 Integrate proposals into existing confirmation UI.
 - [ ] T060 Build labeled evaluation corpus and harness.
 - [ ] T061 Define operator-approved thresholds from baseline results.
