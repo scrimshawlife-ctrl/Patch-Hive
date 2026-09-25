@@ -76,3 +76,14 @@ vision-evaluation corpus and protocol.
 - Synthetic CI corpus: **OBSERVED / AVAILABLE**.
 - Real-world representative corpus: **NOT_COMPUTABLE from current repo/Notion evidence**.
 - Production thresholds: **NOT_COMPUTABLE** until the representative corpus is admitted.
+
+
+## Research evidence versus evaluation ground truth
+
+The Hermes/Firecrawl collection under `data/synth-catalog/hermes-research/` is a valuable registry-enrichment evidence source, but it is not automatically an evaluation corpus.
+
+Research claims MUST preserve both epistemic status and source authority. In particular, a legacy record with `provenance: OBSERVED` sourced from a community catalog means only that the claim was observed at that source. It does not establish manufacturer verification.
+
+See `specs/005-decision-intelligence/evidence-acquisition.md` for the normative acquisition → registry-admission boundary.
+
+A registry-admitted module can supply candidate vocabulary for an evaluation case. The case still requires the corpus contract's independent image provenance/rights, scene conditions, ground-truth identity, annotation status, reviewers, and partition controls before it can contribute to T061/T062 calibration.
