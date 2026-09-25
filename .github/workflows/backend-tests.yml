@@ -3,7 +3,7 @@ name: Backend Tests
 on:
   push:
     branches: [main, develop, 'codex/**', 'feat/**', 'fix/**']
-    paths: ['backend/**', '.github/workflows/backend-tests.yml']
+    paths: ['backend/**', 'scripts/validate_vision_pilot.py', 'fixtures/vision_eval/**', '.github/workflows/backend-tests.yml']
   pull_request:
     branches: [main, develop]
     paths: ['backend/**', '.github/workflows/backend-tests.yml']
