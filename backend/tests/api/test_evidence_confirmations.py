@@ -100,3 +100,19 @@ def test_list_and_confirm_candidates(
     assert inv_body["latest"]["confirmed_count"] == 1
 
     app.dependency_overrides.clear()
+
+
+def test_candidate_list_decision_advisory_is_optional_and_non_authoritative(
+    client, db_session, sample_rack_basic
+) -> None:
+    """Candidate DTO may carry advisory metadata without changing confirmation authority."""
+    listed = client.get(f"/api/racks/{sample_rack_basic.id}/evidence/candidates")
+    assert listed.status_code == 200
+    for candidate in listed.json()["candidates"]:
+        assert "decision_advisory" in candidate
+        advisory = candidate["decision_advisory"]
+        if advisory is not None:
+            assert set(advisory) == {"disposition", "provider", "confidence", "reason_codes"}
+        # Canonical authority fields are never projected by Decision Intelligence.
+        assert "canonical_module_id" not in candidate
+        assert "confirmed" not in (advisory or {})
