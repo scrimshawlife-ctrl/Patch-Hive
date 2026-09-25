@@ -410,26 +410,33 @@ def list_rack_evidence_candidates(
     # and this projection cannot confirm or mutate inventory.
     from intelligence.models import DecisionReceiptRecord
 
+    # Bind advisories to the exact evidence packet as well as candidate identity.
+    # Candidate IDs can recur across racks/images; candidate-only lookup can leak a
+    # valid advisory from unrelated evidence into this rack's review surface.
     candidate_ids = [item["candidate_id"] for item in items]
-    receipts_by_choice: dict[str, DecisionReceiptRecord] = {}
-    if candidate_ids:
+    evidence_hashes = {str(item["evidence_id"]) for item in items}
+    receipts_by_binding: dict[tuple[str, str], DecisionReceiptRecord] = {}
+    if candidate_ids and evidence_hashes:
         receipt_rows = (
             db.query(DecisionReceiptRecord)
             .filter(
                 DecisionReceiptRecord.purpose == "module_identity",
                 DecisionReceiptRecord.provider_status == "succeeded",
                 DecisionReceiptRecord.selected_choice.in_(candidate_ids),
+                DecisionReceiptRecord.evidence_hash.in_(evidence_hashes),
             )
             .order_by(DecisionReceiptRecord.created_at.desc())
             .all()
         )
         for receipt in receipt_rows:
-            if receipt.selected_choice and receipt.selected_choice not in receipts_by_choice:
-                receipts_by_choice[receipt.selected_choice] = receipt
+            if receipt.selected_choice:
+                key = (receipt.selected_choice, receipt.evidence_hash)
+                if key not in receipts_by_binding:
+                    receipts_by_binding[key] = receipt
 
     candidates = []
     for item in items:
-        receipt = receipts_by_choice.get(item["candidate_id"])
+        receipt = receipts_by_binding.get((item["candidate_id"], str(item["evidence_id"])))
         advisory = None
         if receipt is not None:
             advisory = {
