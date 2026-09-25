@@ -157,6 +157,29 @@ def test_probability_uses_two_sided_certainty() -> None:
     )
     result = _policy().evaluate(packet)
     assert result.disposition is DecisionDisposition.AUTO_PROPOSE
+    assert result.binary_conclusion is False
+
+
+def test_probability_preserves_positive_direction() -> None:
+    packet = DecisionPacket(
+        decision_id="decision-prob-yes", request_id="req", provider="fixture", provider_version="1",
+        evidence_hash="hash", answer_type="probability", probability_yes=0.97,
+        created_at=datetime.now(timezone.utc),
+    )
+    result = _policy().evaluate(packet)
+    assert result.disposition is DecisionDisposition.AUTO_PROPOSE
+    assert result.binary_conclusion is True
+
+
+def test_probability_ambiguous_has_no_binary_conclusion() -> None:
+    packet = DecisionPacket(
+        decision_id="decision-prob-ambiguous", request_id="req", provider="fixture", provider_version="1",
+        evidence_hash="hash", answer_type="probability", probability_yes=0.5,
+        created_at=datetime.now(timezone.utc),
+    )
+    result = _policy().evaluate(packet)
+    assert result.disposition is DecisionDisposition.UNRESOLVED
+    assert result.binary_conclusion is None
 
 
 def test_failed_packet_cannot_smuggle_answer() -> None:
