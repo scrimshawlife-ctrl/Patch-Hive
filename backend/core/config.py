@@ -57,6 +57,9 @@ class Settings(BaseSettings):
     # Decision Intelligence. Provider integration remains fail-closed by default.
     enable_decision_intelligence: bool = False
     decision_provider: str = "fixture"
+    typesafe_api_key: str = ""
+    jev_base_url: str = "https://api.typesafe.ai"
+    jev_model: str = "jev-latest"
     decision_auto_propose_at: float = 0.90
     decision_user_review_at: float = 0.65
     decision_probability_margin: float = 0.10
