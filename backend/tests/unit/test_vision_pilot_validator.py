@@ -78,3 +78,10 @@ def test_manifest_digest_is_order_independent_for_object_keys() -> None:
     left = {"pilot_version": "test", "cases": [case]}
     right = {"cases": [case], "pilot_version": "test"}
     assert validate(left)["manifest_sha256"] == validate(right)["manifest_sha256"]
+
+
+def test_expected_choice_must_match_verified_ground_truth() -> None:
+    case = _case()
+    case["expected_choice"] = "different:module"
+    result = validate(_manifest(case))
+    assert "case-1:expected_choice_not_in_ground_truth" in result["errors"]
