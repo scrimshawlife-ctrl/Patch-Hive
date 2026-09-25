@@ -15,7 +15,12 @@
 - [x] T042 Implement port-semantic decisions.
 - [x] T043 Implement evidence-conflict decisions.
 - [x] T050 Integrate proposals into existing confirmation UI.
-- [x] T060 Build labeled evaluation corpus and harness.
-- [ ] T061 Define operator-approved thresholds from baseline results.\n  - [x] T061a Add governed real-world pilot intake/schema/validator.\n  - [x] T061b Add GrokBot/Firecrawl acquisition brief and coverage reporter.\n  - [ ] T061c Populate rights-cleared representative pilot and freeze corpus SHA.\n  - [ ] T061d Run baseline vs Jev-assisted evaluation and propose thresholds for operator approval.
+- [x] T060 Build evaluation harness and synthetic CI corpus contract.
+- [ ] T061 Define operator-approved thresholds from baseline results.
+  - [x] T061a Add governed real-world pilot intake/schema/validator.
+  - [x] T061b Add GrokBot/Firecrawl acquisition brief and coverage reporter.
+  - [x] T061b2 Define evidence-to-case promotion workflow and harden admission checks.
+  - [ ] T061c Promote rights-cleared evidence into a representative reviewed pilot and freeze corpus SHA.
+  - [ ] T061d Run baseline vs Jev-assisted evaluation and propose thresholds for operator approval.
 - [ ] T062 Retain SHA-pinned evaluation receipt.
 - [ ] T070 Staging enablement only after gate passes.
