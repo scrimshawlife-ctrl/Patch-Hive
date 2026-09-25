@@ -83,3 +83,14 @@ The evaluation harness reports:
 ## Acceptance summary
 
 The feature is not eligible for normal VSI traffic until all contracts, policy tests, failure tests, provenance tests, and evaluation gates in `acceptance.md` pass.
+
+
+## Evidence acquisition and registry admission
+
+Research-derived module facts are governed by [evidence-acquisition.md](evidence-acquisition.md).
+
+Acquisition provenance has two independent dimensions: epistemic status (for example `OBSERVED`) and source authority (for example `MANUFACTURER_PRIMARY` or `COMMUNITY_CATALOG`). `OBSERVED` MUST NOT be treated as a synonym for manufacturer-verified or canonical.
+
+Firecrawl/GrokBot/Hermes outputs are evidence inputs. They MAY improve the Device Registry candidate universe, but they MUST pass registry admission before becoming registry facts and MUST NOT directly confirm a physical module or mutate canonical inventory.
+
+The representative vision/Decision Intelligence evaluation corpus remains a separate governed artifact. Registry evidence is not evaluation ground truth by itself.
