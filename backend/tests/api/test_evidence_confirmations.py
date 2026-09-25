@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import io
 
+import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 from sqlalchemy.orm import Session
@@ -24,6 +25,14 @@ def _client(db_session: Session) -> TestClient:
 
     app.dependency_overrides[get_db] = override_get_db
     return TestClient(app)
+
+
+@pytest.fixture
+def client(db_session: Session):
+    """Bind the app to the in-memory session, matching the other API suites."""
+    test_client = _client(db_session)
+    yield test_client
+    app.dependency_overrides.clear()
 
 
 def _jpeg_bytes() -> bytes:
