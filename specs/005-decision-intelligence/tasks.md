@@ -5,9 +5,9 @@
 - [x] T003 Add specification authority/index documentation.
 - [x] T010 Implement DecisionProvider protocol and schemas.
 - [x] T011 Implement deterministic DecisionPolicy and reason codes.
-- [ ] T012 Add contract/property tests for malformed and adversarial packets.
+- [x] T012 Add contract/property tests for malformed and adversarial packets.
 - [ ] T020 Add append-only persistence migration.
-- [ ] T021 Add telemetry without raw sensitive evidence.
+- [x] T021 Add telemetry without raw sensitive evidence.
 - [x] T030 Implement fixture DecisionProvider.
 - [ ] T031 Implement Jev adapter behind default-off feature flag.
 - [ ] T040 Implement module candidate ranking service.
