@@ -35,7 +35,8 @@ def validate(manifest: dict) -> dict:
     seen: set[str] = set()
     partitions = Counter()
     cohorts = Counter()
-    identities: set[str] = set()\n    image_hash_partition: dict[str, str] = {}
+    identities: set[str] = set()
+    image_hash_partition: dict[str, str] = {}
 
     for case in cases:
         cid = case.get("case_id")
