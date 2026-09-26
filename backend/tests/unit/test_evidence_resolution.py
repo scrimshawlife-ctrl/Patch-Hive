@@ -4,7 +4,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-from canon.models import ClassificationEvidenceRecord, ImageAssetRecord
+from canon.models import ClassificationEvidenceRecord, ImageAssetRecord, SystemInventoryRevisionRecord
 from core.database import Base
 from intelligence.contracts import DecisionPacket
 from intelligence.evidence_resolution import (
@@ -110,3 +110,50 @@ def test_fixture_resolution_persists_advisory_only() -> None:
     assert receipt.evidence_hash == "ev-1"
     assert receipt.disposition == "AUTO_PROPOSE"
     # This orchestration module has no inventory model dependency/write path.
+
+
+def test_provider_failure_persists_escalation_without_canon_mutation() -> None:
+    from intelligence.fixture_provider import failed_fixture
+
+    db = _db()
+    _seed(db)
+    packet = failed_fixture(
+        decision_id="failed-1", request_id="module-identity:ev-1",
+        provider_status="failed", evidence_hash="ev-1", error_code="FIXTURE_FAILURE",
+    )
+    provider = FixtureDecisionProvider({"module-identity:ev-1": packet})
+    before = db.query(SystemInventoryRevisionRecord).count()
+    proposal = resolve_module_identity(
+        db, evidence_id="ev-1", provider=provider, policy=_policy(),
+        enabled=True, idempotency_key="idem",
+    )
+    assert proposal.policy.disposition.value == "ESCALATE"
+    assert db.query(DecisionReceiptRecord).one().provider_status == "failed"
+    assert db.query(SystemInventoryRevisionRecord).count() == before == 0
+
+
+def test_repeated_resolution_is_idempotent_and_never_mints_inventory() -> None:
+    db = _db()
+    _seed(db)
+
+    class StableProvider:
+        def choose(self, request):
+            return DecisionPacket(
+                decision_id="stable-decision", request_id=request.request_id,
+                provider="fixture", provider_version="1",
+                evidence_hash=request.evidence_hash, answer_type="choice",
+                selected_choice="module-a",
+                probabilities={"module-a": 0.95, "none_of_above": 0.05},
+                confidence=0.95, candidate_set_hash=request.candidate_set_hash(),
+                created_at=datetime(2026, 9, 25, tzinfo=timezone.utc),
+            )
+        def score(self, request): raise AssertionError
+        def probability(self, request): raise AssertionError
+
+    for _ in range(2):
+        resolve_module_identity(
+            db, evidence_id="ev-1", provider=StableProvider(), policy=_policy(),
+            enabled=True, idempotency_key="same-idem",
+        )
+    assert db.query(DecisionReceiptRecord).count() == 1
+    assert db.query(SystemInventoryRevisionRecord).count() == 0
