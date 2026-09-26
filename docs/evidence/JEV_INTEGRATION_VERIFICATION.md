@@ -61,3 +61,19 @@ Before controlled staging enablement:
 - [ ] baseline/Jev receipt retained;
 - [ ] operator threshold approval recorded;
 - [ ] feature remains disabled in production.
+
+
+## 2026-09-26 controlled protocol preflight
+
+A credentialed synthetic-state preflight succeeded against pinned model `jev-1.13.0`.
+
+- HTTP status: 200
+- Answer shape: valid
+- Latency: 210.791 ms
+- Canonical authority: false
+- Decision Intelligence feature enabled: false
+- Receipt: `docs/evidence/receipts/T070-JEV-PREFLIGHT-2026-09-26.json`
+- Workflow run: `36222430963`
+- Source SHA: `5b14034c204c93e56da8230efbe37b39790c9fd4`
+
+Interpretation: **PROTOCOL_COMPATIBILITY_ONLY**. This confirms the authorized credential, pinned model, endpoint contract, and response shape work together. It does **not** complete T061, T062, or production T070 enablement. Production thresholds remain **NOT_COMPUTABLE** until the governed reviewed corpus and retained evaluation receipt exist.
