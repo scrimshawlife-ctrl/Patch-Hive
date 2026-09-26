@@ -21,6 +21,27 @@ def _sha(value: object) -> str:
     return "sha256:" + hashlib.sha256(raw).hexdigest()
 
 
+def _normalized_hash(row: dict) -> str | None:
+    value = (
+        row.get("evidence_sha256")
+        or row.get("sha256")
+        or row.get("image_sha256")
+        or row.get("content_sha256")
+    )
+    if not value:
+        return None
+    value = str(value)
+    return value if value.startswith("sha256:") else "sha256:" + value
+
+
+def _linked_identity_refs(row: dict) -> list[str]:
+    refs = row.get("linked_record_ids")
+    if isinstance(refs, list):
+        return sorted({str(ref) for ref in refs if ref})
+    legacy = row.get("record_id") or row.get("module_id") or row.get("candidate_id")
+    return [str(legacy)] if legacy else []
+
+
 def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
     module_by_id = {
         str(row.get("record_id") or row.get("module_id") or row.get("candidate_id")): row
@@ -29,16 +50,19 @@ def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
     }
     items = []
     for row in discovery:
+        # The retained pilot manifest contains source_page/robots/not_fetched rows too.
+        # Promotion is asset-level, so only image evidence may enter this queue.
+        if row.get("kind") not in (None, "image_asset"):
+            continue
         rights = row.get("rights_status") or row.get("rights_and_consent", {}).get("rights_status")
         if rights != "RIGHTS_CONFIRMED":
             continue
-        asset_hash = row.get("sha256") or row.get("image_sha256") or row.get("content_sha256")
-        if asset_hash and not str(asset_hash).startswith("sha256:"):
-            asset_hash = "sha256:" + str(asset_hash)
-        identity_ref = str(
-            row.get("record_id") or row.get("module_id") or row.get("candidate_id") or ""
-        )
-        module = module_by_id.get(identity_ref, {})
+
+        asset_hash = _normalized_hash(row)
+        identity_refs = _linked_identity_refs(row)
+        # A scalar identity_ref is safe only when the manifest gives exactly one link.
+        identity_ref = identity_refs[0] if len(identity_refs) == 1 else None
+        module = module_by_id.get(identity_ref, {}) if identity_ref else {}
         proposed_identity = (
             module.get("canonical_identity")
             or module.get("expected_choice")
@@ -50,12 +74,18 @@ def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
             "queue_id": _sha({
                 "asset_hash": asset_hash,
                 "source_url": source_url,
-                "identity_ref": identity_ref,
+                "identity_refs": identity_refs,
+                "discovery_id": row.get("discovery_id"),
             }),
             "asset_hash": asset_hash,
             "source_url": source_url,
-            "license": row.get("license") or row.get("rights_license"),
-            "identity_ref": identity_ref or None,
+            "license": (
+                row.get("stated_copyright_or_license")
+                or row.get("license")
+                or row.get("rights_license")
+            ),
+            "identity_ref": identity_ref,
+            "identity_refs": identity_refs,
             "proposed_identity": proposed_identity,
             "manufacturer": module.get("manufacturer") or row.get("manufacturer"),
             "revision": module.get("revision") or row.get("revision"),
