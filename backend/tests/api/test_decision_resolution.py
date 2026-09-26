@@ -92,3 +92,15 @@ def test_decision_resolution_endpoint_defaults_off(db_session, sample_rack_basic
     finally:
         settings.enable_decision_intelligence = old
         app.dependency_overrides.clear()
+
+
+def test_decision_provider_configuration_defaults_fail_closed() -> None:
+    assert settings.decision_provider in {"disabled", "jev"}
+    if settings.decision_provider == "disabled":
+        import evidence.routes as routes
+        try:
+            routes._configured_decision_provider()
+        except RuntimeError as exc:
+            assert str(exc) == "DECISION_PROVIDER_NOT_CONFIGURED"
+        else:
+            raise AssertionError("disabled provider must fail closed")
