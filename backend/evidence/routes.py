@@ -348,7 +348,10 @@ def _load_candidates_for_rack(db: Session, rack_id: int) -> list[dict]:
 
     rows = (
         db.query(ClassificationEvidenceRecord)
-        .join(ImageAssetRecord, ImageAssetRecord.id == ClassificationEvidenceRecord.image_asset_id)
+        .join(
+            ImageAssetRecord,
+            ImageAssetRecord.id == ClassificationEvidenceRecord.image_asset_id,
+        )
         .filter(
             ImageAssetRecord.rack_id == rack_id,
             ImageAssetRecord.deleted_at.is_(None),
@@ -705,6 +708,7 @@ def _configured_decision_provider():
     """Construct only an explicitly configured production provider."""
     if settings.decision_provider == "jev":
         from intelligence.jev_provider import JevDecisionProvider
+
         if not settings.typesafe_api_key:
             raise RuntimeError("JEV_API_KEY_NOT_CONFIGURED")
         return JevDecisionProvider(
