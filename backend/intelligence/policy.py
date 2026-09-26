@@ -48,6 +48,7 @@ class DecisionPolicy:
         self.thresholds = thresholds
 
     def evaluate(self, packet: DecisionPacket) -> PolicyResult:
+        binary_conclusion: bool | None = None
         if packet.schema_version != "patchhive.decision.v1":
             return self._result(DecisionDisposition.REJECT, "UNSUPPORTED_SCHEMA")
 
