@@ -46,7 +46,7 @@ jobs:
 
       - name: Black check (canon + evidence)
         working-directory: backend
-        run: python -m black --check canon evidence
+        run: python -m black --check --diff canon evidence
 
       - name: Apply migrations
         working-directory: backend
