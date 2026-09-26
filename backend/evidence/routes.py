@@ -348,7 +348,10 @@ def _load_candidates_for_rack(db: Session, rack_id: int) -> list[dict]:
 
     rows = (
         db.query(ClassificationEvidenceRecord)
-        .join(ImageAssetRecord, ImageAssetRecord.id == ClassificationEvidenceRecord.image_asset_id)
+        .join(
+            ImageAssetRecord,
+            ImageAssetRecord.id == ClassificationEvidenceRecord.image_asset_id,
+        )
         .filter(
             ImageAssetRecord.rack_id == rack_id,
             ImageAssetRecord.deleted_at.is_(None),
@@ -705,6 +708,7 @@ def _configured_decision_provider():
     """Construct only an explicitly configured production provider."""
     if settings.decision_provider == "jev":
         from intelligence.jev_provider import JevDecisionProvider
+
         if not settings.typesafe_api_key:
             raise RuntimeError("JEV_API_KEY_NOT_CONFIGURED")
         return JevDecisionProvider(
@@ -748,16 +752,17 @@ def resolve_rack_evidence_decision(
 
     try:
         provider = _configured_decision_provider()
+        thresholds = PolicyThresholds(
+            policy_version="decision-policy-v1",
+            auto_propose_at=settings.decision_auto_propose_at,
+            user_review_at=settings.decision_user_review_at,
+            probability_margin=settings.decision_probability_margin,
+        )
         proposal = resolve_module_identity(
             db,
             evidence_id=body.evidence_id,
             provider=provider,
-            policy=DecisionPolicy(PolicyThresholds(
-                policy_version="decision-policy-v1",
-                auto_propose_at=settings.decision_auto_propose_at,
-                user_review_at=settings.decision_user_review_at,
-                probability_margin=settings.decision_probability_margin,
-            )),
+            policy=DecisionPolicy(thresholds),
             enabled=True,
             idempotency_key=body.idempotency_key,
         )

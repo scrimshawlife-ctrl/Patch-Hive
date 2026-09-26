@@ -25,10 +25,11 @@ class FixtureDecisionProvider:
             raise ValueError("fixture answer_type does not match choice request")
         if packet.request_id != request.request_id or packet.evidence_hash != request.evidence_hash:
             raise ValueError("fixture packet provenance does not match request")
-        if packet.candidate_set_hash != request.candidate_set_hash():
-            raise ValueError("fixture candidate set does not match request")
-        if packet.selected_choice not in {choice.choice_id for choice in request.choices}:
-            raise ValueError("fixture choice is outside the server-authored candidate set")
+        if packet.provider_status == "succeeded":
+            if packet.candidate_set_hash != request.candidate_set_hash():
+                raise ValueError("fixture candidate set does not match request")
+            if packet.selected_choice not in {choice.choice_id for choice in request.choices}:
+                raise ValueError("fixture choice is outside the server-authored candidate set")
         return packet
 
     def score(self, request: ScoreRequest) -> DecisionPacket:

@@ -28,7 +28,7 @@ jobs:
         run: python -m mypy canon/contracts.py canon/compiler.py canon/runes.py canon/downloads.py evidence/images.py
       - name: Formatting gate
         working-directory: backend
-        run: python -m black --check canon evidence core/security.py tests/unit/test_canon_*.py tests/unit/test_image_evidence.py
+        run: python -m black --check --diff canon evidence core/security.py tests/unit/test_canon_*.py tests/unit/test_image_evidence.py
 
   frontend:
     runs-on: ubuntu-latest

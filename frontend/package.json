@@ -13,7 +13,9 @@
     "test:coverage": "vitest --coverage",
     "audit": "node --test scripts/audit-dependencies.node-test.mjs && node scripts/audit-dependencies.mjs",
     "type-check": "tsc --noEmit",
-    "test:e2e": "playwright test -c tests/ui/playwright.config.ts"
+    "test:e2e": "playwright test -c tests/ui/playwright.config.ts",
+    "format": "prettier . --write",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/**/*.{ts,tsx}\" \"*.{js,ts,json}\""
   },
   "dependencies": {
     "axios": "1.18.1",
@@ -42,6 +44,7 @@
     "jsdom": "23.2.0",
     "typescript": "5.9.3",
     "vite": "8.3.1",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "prettier": "3.9.9"
   }
 }

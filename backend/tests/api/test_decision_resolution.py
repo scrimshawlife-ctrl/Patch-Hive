@@ -75,22 +75,42 @@ def test_decision_resolution_endpoint_is_advisory_only(db_session, sample_rack_b
         monkeypatch.setattr(settings, "enable_decision_intelligence", False)
 
 
-def test_decision_resolution_endpoint_defaults_off(db_session, sample_rack_basic):
+def test_decision_resolution_endpoint_defaults_off(db_session, sample_rack_basic, monkeypatch):
+    now = datetime.now(timezone.utc)
+    asset = ImageAssetRecord(
+        id="img-di-off", rack_id=sample_rack_basic.id, user_id=sample_rack_basic.user_id,
+        content_sha256="b" * 64, media_type="image/jpeg", width=100, height=100,
+        byte_length=10, storage_path="/tmp/di-off.jpg", retention_days=30,
+        retention_expires_at=now + timedelta(days=30), consent_provider_processing=False,
+        created_at=now,
+    )
+    db_session.add(asset)
+    db_session.add(ClassificationEvidenceRecord(
+        id="ev-di-off", image_asset_id=asset.id, inventory_revision_id=None,
+        evidence_packet={"devices": []}, provider="fixture-vision",
+        pipeline_version="vision-v1", status="INFERRED", created_at=now,
+    ))
+    db_session.commit()
+
+    def provider_must_not_run():
+        raise AssertionError("provider construction occurred while feature was disabled")
+
+    import evidence.routes as routes
+    monkeypatch.setattr(routes, "_configured_decision_provider", provider_must_not_run)
+    monkeypatch.setattr(settings, "enable_decision_intelligence", False)
+
     def override_db():
         yield db_session
     app.dependency_overrides[get_db] = override_db
-    old = settings.enable_decision_intelligence
-    settings.enable_decision_intelligence = False
     try:
         response = TestClient(app).post(
             f"/api/racks/{sample_rack_basic.id}/evidence/decision-resolution",
-            json={"evidence_id": "missing", "idempotency_key": "off"},
+            json={"evidence_id": "ev-di-off", "idempotency_key": "off"},
         )
-        # Missing evidence is still not disclosed as resolvable; no provider call occurs.
-        assert response.status_code in {404, 409}
+        assert response.status_code == 409
+        assert response.json()["detail"] == "DECISION_INTELLIGENCE_DISABLED"
         assert db_session.query(DecisionReceiptRecord).count() == 0
     finally:
-        settings.enable_decision_intelligence = old
         app.dependency_overrides.clear()
 
 

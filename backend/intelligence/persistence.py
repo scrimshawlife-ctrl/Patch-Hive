@@ -23,7 +23,10 @@ def persist_decision_proposal(
 
     existing = (
         db.query(DecisionReceiptRecord)
-        .filter(DecisionReceiptRecord.packet_hash == packet_hash)
+        .filter(
+            (DecisionReceiptRecord.packet_hash == packet_hash)
+            | (DecisionReceiptRecord.id == packet.decision_id)
+        )
         .first()
     )
     if existing is not None:
