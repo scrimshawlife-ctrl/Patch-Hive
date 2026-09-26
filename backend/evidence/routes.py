@@ -769,6 +769,9 @@ def resolve_rack_evidence_decision(
         )
     except DecisionIntelligenceDisabled as exc:
         raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except JevProviderError as exc:
+        status_code = 504 if str(exc) == "JEV_TIMEOUT" else 502
+        raise HTTPException(status_code=status_code, detail=str(exc)) from exc
     except (EvidenceResolutionError, RuntimeError, ValueError) as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
 
