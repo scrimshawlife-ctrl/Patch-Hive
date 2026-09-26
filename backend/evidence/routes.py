@@ -439,9 +439,7 @@ def list_rack_evidence_candidates(
 
     candidates = []
     for item in items:
-        receipt = receipts_by_binding.get(
-            (item["candidate_id"], str(item["evidence_id"]))
-        )
+        receipt = receipts_by_binding.get((item["candidate_id"], str(item["evidence_id"])))
         advisory = None
         if receipt is not None:
             advisory = {
@@ -475,9 +473,7 @@ class ReconciliationResponse(BaseModel):
     response_model=ReconciliationResponse,
     name="reconcile_canon_rig_evidence",
 )
-def reconcile_rack_evidence(
-    rack_id: int, db: Session = Depends(get_db)
-) -> ReconciliationResponse:
+def reconcile_rack_evidence(rack_id: int, db: Session = Depends(get_db)) -> ReconciliationResponse:
     """Multi-photo fusion of untrusted candidates for one rack.
 
     Does not confirm inventory. Conflicts remain explicit for user resolution.
@@ -547,9 +543,7 @@ def list_rack_inventory_revisions(
             else len(row.unresolved_candidate_ids or [])
         )
         ready = (
-            inventory_ready_for_generation(inventory)
-            if inventory is not None
-            else confirmed > 0
+            inventory_ready_for_generation(inventory) if inventory is not None else confirmed > 0
         )
         summaries.append(
             InventoryRevisionSummary(
