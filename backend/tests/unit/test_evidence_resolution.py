@@ -157,3 +157,17 @@ def test_repeated_resolution_is_idempotent_and_never_mints_inventory() -> None:
         )
     assert db.query(DecisionReceiptRecord).count() == 1
     assert db.query(SystemInventoryRevisionRecord).count() == 0
+
+
+def test_malformed_bounded_candidate_fails_closed() -> None:
+    db = _db()
+    _seed(db)
+    evidence = db.get(ClassificationEvidenceRecord, "ev-1")
+    evidence.evidence_packet = {"devices": [{"candidate_id": "broken"}]}
+    db.flush()
+    with pytest.raises(EvidenceResolutionError, match="malformed candidate"):
+        resolve_module_identity(
+            db, evidence_id="ev-1", provider=FixtureDecisionProvider({}),
+            policy=_policy(), enabled=True, idempotency_key="idem",
+        )
+    assert db.query(DecisionReceiptRecord).count() == 0
