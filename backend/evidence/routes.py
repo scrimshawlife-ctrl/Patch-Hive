@@ -685,3 +685,93 @@ def confirm_rack_evidence_candidates(
         unresolved_candidate_ids=list(inventory.unresolved_candidate_ids),
         ready_for_generation=inventory_ready_for_generation(inventory),
     )
+
+
+class DecisionResolutionRequest(BaseModel):
+    evidence_id: str = Field(min_length=1)
+    idempotency_key: str = Field(min_length=1, max_length=128)
+
+
+class DecisionResolutionResponse(BaseModel):
+    evidence_id: str
+    selected_choice: str | None
+    disposition: str
+    provider: str
+    confidence: float | None
+    canonical_authority: bool = False
+
+
+def _configured_decision_provider():
+    """Construct only an explicitly configured production provider."""
+    if settings.decision_provider == "jev":
+        from intelligence.jev_provider import JevDecisionProvider
+        if not settings.typesafe_api_key:
+            raise RuntimeError("JEV_API_KEY_NOT_CONFIGURED")
+        return JevDecisionProvider(
+            api_key=settings.typesafe_api_key,
+            base_url=settings.jev_base_url,
+            model=settings.jev_model,
+        )
+    raise RuntimeError("DECISION_PROVIDER_NOT_CONFIGURED")
+
+
+@router.post(
+    "/racks/{rack_id}/evidence/decision-resolution",
+    response_model=DecisionResolutionResponse,
+)
+def resolve_rack_evidence_decision(
+    rack_id: int,
+    body: DecisionResolutionRequest,
+    db: Session = Depends(get_db),
+) -> DecisionResolutionResponse:
+    """Produce and retain one non-canonical identity advisory."""
+    from intelligence.evidence_resolution import (
+        DecisionIntelligenceDisabled,
+        EvidenceResolutionError,
+        resolve_module_identity,
+    )
+    from intelligence.policy import DecisionPolicy, PolicyThresholds
+
+    rack = db.get(Rack, rack_id)
+    if rack is None:
+        raise HTTPException(status_code=404, detail="Rack not found")
+
+    evidence = db.get(ClassificationEvidenceRecord, body.evidence_id)
+    if evidence is None:
+        raise HTTPException(status_code=404, detail="Evidence record not found")
+    asset = db.get(ImageAssetRecord, evidence.image_asset_id)
+    if asset is None or int(asset.rack_id) != rack_id or asset.deleted_at is not None:
+        raise HTTPException(status_code=400, detail="EVIDENCE_NOT_BOUND_TO_RACK")
+
+    if not settings.enable_decision_intelligence:
+        raise HTTPException(status_code=409, detail="DECISION_INTELLIGENCE_DISABLED")
+
+    try:
+        provider = _configured_decision_provider()
+        proposal = resolve_module_identity(
+            db,
+            evidence_id=body.evidence_id,
+            provider=provider,
+            policy=DecisionPolicy(PolicyThresholds(
+                policy_version="decision-policy-v1",
+                auto_propose_at=settings.decision_auto_propose_at,
+                user_review_at=settings.decision_user_review_at,
+                probability_margin=settings.decision_probability_margin,
+            )),
+            enabled=True,
+            idempotency_key=body.idempotency_key,
+        )
+    except DecisionIntelligenceDisabled as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    except (EvidenceResolutionError, RuntimeError, ValueError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    db.commit()
+    return DecisionResolutionResponse(
+        evidence_id=body.evidence_id,
+        selected_choice=proposal.packet.selected_choice,
+        disposition=proposal.policy.disposition.value,
+        provider=proposal.packet.provider,
+        confidence=proposal.packet.confidence,
+        canonical_authority=False,
+    )
