@@ -6,7 +6,8 @@ from intelligence.jev_provider import JevDecisionProvider
 
 def test_jev_choice_maps_wire_response_without_canonical_authority() -> None:
     def handler(request: httpx.Request) -> httpx.Response:
-        assert request.headers["Authorization"] == "Bearer test-key"\n        assert request.headers["Idempotency-Key"] == "idem"
+        assert request.headers["Authorization"] == "Bearer test-key"
+        assert request.headers["Idempotency-Key"] == "idem"
         payload = __import__("json").loads(request.content)
         assert payload["model"] == "jev-test"
         assert payload["questions"]["req-jev"]["criteria"]["none_of_above"] is None
