@@ -161,9 +161,20 @@ def test_repeated_resolution_is_idempotent_and_never_mints_inventory() -> None:
 
 def test_malformed_bounded_candidate_fails_closed() -> None:
     db = _db()
-    _seed(db)
-    evidence = db.get(ClassificationEvidenceRecord, "ev-1")
-    evidence.evidence_packet = {"devices": [{"candidate_id": "broken"}]}
+    now = datetime.now(timezone.utc)
+    db.add(ImageAssetRecord(
+        id="img-1", rack_id=1, user_id=1, content_sha256="a" * 64,
+        media_type="image/jpeg", width=100, height=100, byte_length=10,
+        storage_path="/tmp/none", retention_days=30,
+        retention_expires_at=now + timedelta(days=30),
+        consent_provider_processing=False, created_at=now,
+    ))
+    db.add(ClassificationEvidenceRecord(
+        id="ev-1", image_asset_id="img-1", inventory_revision_id=None,
+        evidence_packet={"devices": [{"candidate_id": "broken"}]},
+        provider="fixture-vision", pipeline_version="vision-v1",
+        status="INFERRED", created_at=now,
+    ))
     db.flush()
     with pytest.raises(EvidenceResolutionError, match="malformed candidate"):
         resolve_module_identity(
