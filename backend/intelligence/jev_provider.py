@@ -21,7 +21,13 @@ from intelligence.contracts import (
 )
 
 DEFAULT_BASE_URL = "https://api.typesafe.ai"
-DEFAULT_MODEL = "jev-latest"
+DEFAULT_MODEL = ""
+MOVING_MODEL_ALIASES = {"jev-latest", "jev-preview", "latest", "preview"}
+
+
+class JevProviderError(RuntimeError):
+    """Fail-closed provider boundary error with a stable public code."""
+
 
 
 class JevDecisionProvider:
@@ -47,9 +53,7 @@ class JevDecisionProvider:
             item.choice_id: item.description
             for item in request.choices
         }
-        answer, raw_hash = self._call(
-            state=request.context,
-            question_id=request.request_id,
+        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
             question={
                 "type": "choice",
                 "instructions": request.question,
@@ -73,9 +77,7 @@ class JevDecisionProvider:
         )
 
     def score(self, request: ScoreRequest) -> DecisionPacket:
-        answer, raw_hash = self._call(
-            state=request.context,
-            question_id=request.request_id,
+        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
             question={
                 "type": "score",
                 "instructions": request.question,
@@ -98,9 +100,7 @@ class JevDecisionProvider:
         )
 
     def probability(self, request: ProbabilityRequest) -> DecisionPacket:
-        answer, raw_hash = self._call(
-            state=request.context,
-            question_id=request.request_id,
+        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
             question={
                 "type": "noul",
                 "instructions": request.question,
@@ -130,7 +130,7 @@ class JevDecisionProvider:
         question: dict[str, Any],
     ) -> tuple[dict[str, Any], str]:
         payload = {"model": self._model, "state": state, "questions": {question_id: question}}
-        headers = {"Authorization": f"Bearer {self._api_key}", "Content-Type": "application/json"}
+        headers = {\n            "Authorization": f"Bearer {self._api_key}",\n            "Content-Type": "application/json",\n            "Idempotency-Key": idempotency_key,\n        }
         owns_client = self._client is None
         client = self._client or httpx.Client(timeout=self._timeout)
         try:
