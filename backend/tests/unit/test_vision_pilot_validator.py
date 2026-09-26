@@ -85,3 +85,11 @@ def test_expected_choice_must_match_verified_ground_truth() -> None:
     case["expected_choice"] = "different:module"
     result = validate(_manifest(case))
     assert "case-1:expected_choice_not_in_ground_truth" in result["errors"]
+
+
+def test_same_image_hash_cannot_cross_partitions() -> None:
+    first = _case("case-1", partition="development")
+    second = _case("case-2", partition="locked_test")
+    result = validate({"pilot_version": "test", "cases": [first, second]})
+    assert any("cross_partition_image_leakage" in error for error in result["errors"])
+    assert result["admission_status"] == "NOT_ADMITTED"

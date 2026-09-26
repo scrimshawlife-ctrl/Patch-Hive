@@ -48,8 +48,10 @@ def resolve_module_identity(
     for raw in raw_devices:
         try:
             candidate = ClassificationCandidate.model_validate(raw)
-        except Exception:
-            continue
+        except Exception as exc:
+            raise EvidenceResolutionError(
+                "malformed candidate in bounded evidence packet"
+            ) from exc
         if candidate.evidence_id != evidence_id:
             raise EvidenceResolutionError("candidate evidence binding does not match record")
         if candidate.entity_type not in {"device", "module"}:

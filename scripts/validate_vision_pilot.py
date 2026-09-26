@@ -36,6 +36,7 @@ def validate(manifest: dict) -> dict:
     partitions = Counter()
     cohorts = Counter()
     identities: set[str] = set()
+    image_hash_partition: dict[str, str] = {}
 
     for case in cases:
         cid = case.get("case_id")
@@ -75,6 +76,12 @@ def validate(manifest: dict) -> dict:
             errors.append(f"{cid}:image_hash_missing")
         elif any(not isinstance(value, str) or not SHA256_RE.fullmatch(value) for value in hashes):
             errors.append(f"{cid}:invalid_image_hash")
+        else:
+            for image_hash in hashes:
+                prior_partition = image_hash_partition.get(image_hash)
+                if prior_partition is not None and prior_partition != partition:
+                    errors.append(f"{cid}:cross_partition_image_leakage:{image_hash}")
+                image_hash_partition.setdefault(image_hash, partition)
         if partition == "unknown_open_set" and expected_choice != "none_of_above":
             errors.append(f"{cid}:open_set_must_expect_none_of_above")
         contamination = case.get("contamination")

@@ -48,6 +48,7 @@ class DecisionPolicy:
         self.thresholds = thresholds
 
     def evaluate(self, packet: DecisionPacket) -> PolicyResult:
+        binary_conclusion: bool | None = None
         if packet.schema_version != "patchhive.decision.v1":
             return self._result(DecisionDisposition.REJECT, "UNSUPPORTED_SCHEMA")
 
@@ -72,10 +73,10 @@ class DecisionPolicy:
         if certainty is None:
             return self._result(DecisionDisposition.UNRESOLVED, "NO_CONFIDENCE_SIGNAL")
         if certainty >= self.thresholds.auto_propose_at:
-            return self._result(DecisionDisposition.AUTO_PROPOSE, "CONFIDENCE_AUTO_PROPOSE", binary_conclusion=locals().get("binary_conclusion"))
+            return self._result(DecisionDisposition.AUTO_PROPOSE, "CONFIDENCE_AUTO_PROPOSE", binary_conclusion=binary_conclusion)
         if certainty >= self.thresholds.user_review_at:
-            return self._result(DecisionDisposition.USER_REVIEW, "CONFIDENCE_REVIEW", binary_conclusion=locals().get("binary_conclusion"))
-        return self._result(DecisionDisposition.UNRESOLVED, "CONFIDENCE_LOW", binary_conclusion=locals().get("binary_conclusion"))
+            return self._result(DecisionDisposition.USER_REVIEW, "CONFIDENCE_REVIEW", binary_conclusion=binary_conclusion)
+        return self._result(DecisionDisposition.UNRESOLVED, "CONFIDENCE_LOW", binary_conclusion=binary_conclusion)
 
     def _result(
         self,
