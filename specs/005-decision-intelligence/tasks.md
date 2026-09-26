@@ -20,7 +20,7 @@
   - [ ] T050c Invoke DecisionProvider from an evidence-resolution command path and persist append-only DecisionReceipt records.
     - [x] T050c1 Add idempotent append-only proposal persistence service.
     - [x] T050c2 Add flag-gated evidence-resolution orchestration using exact evidence + bounded candidates.
-    - [ ] T050c3 Add command/API tests for flag-off, provider failure, idempotency, and zero canonical mutation. (Service tests now cover flag-off, exact binding, advisory persistence; provider-failure and exposed command path remain.)
+    - [ ] T050c3 Expose the bounded resolution command/API and test it end-to-end. Service tests now cover flag-off, exact binding, provider failure, idempotency, advisory persistence, and zero canonical mutation.
 - [x] T060 Build evaluation harness and synthetic CI corpus contract.
 - [ ] T061 Define operator-approved thresholds from baseline results.
   - [x] T061a Add governed real-world pilot intake/schema/validator.
