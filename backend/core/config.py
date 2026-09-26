@@ -56,7 +56,7 @@ class Settings(BaseSettings):
 
     # Decision Intelligence. Provider integration remains fail-closed by default.
     enable_decision_intelligence: bool = False
-    decision_provider: str = "fixture"
+    decision_provider: str = "disabled"
     typesafe_api_key: str = ""
     jev_base_url: str = "https://api.typesafe.ai"
     jev_model: str = "jev-latest"
@@ -104,6 +104,14 @@ class Settings(BaseSettings):
 
     # Git tracking (optional, for provenance)
     git_commit: str = ""  # Set by environment or CI/CD
+
+    @field_validator("decision_provider")
+    @classmethod
+    def _validate_decision_provider(cls, value: str) -> str:
+        normalized = value.strip().lower()
+        if normalized not in {"disabled", "jev"}:
+            raise ValueError("decision_provider must be 'disabled' or 'jev'")
+        return normalized
 
     @field_validator("cors_origins", mode="before")
     @classmethod
