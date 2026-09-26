@@ -171,7 +171,7 @@ def test_malformed_bounded_candidate_fails_closed() -> None:
     ))
     db.add(ClassificationEvidenceRecord(
         id="ev-1", image_asset_id="img-1", inventory_revision_id=None,
-        evidence_packet={"devices": [{"candidate_id": "broken"}]},
+        evidence_packet={"devices": [{"candidate_id": "broken", "entity_type": "module", "manufacturer": "Make", "model": "Alpha", "confidence": 2.0, "confidence_method": "fixture", "classification_status": "INFERRED", "evidence_id": "ev-1"}]},
         provider="fixture-vision", pipeline_version="vision-v1",
         status="INFERRED", created_at=now,
     ))
