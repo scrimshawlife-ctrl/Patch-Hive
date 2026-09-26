@@ -29,7 +29,6 @@ class JevProviderError(RuntimeError):
     """Fail-closed provider boundary error with a stable public code."""
 
 
-
 class JevDecisionProvider:
     def __init__(
         self,
@@ -42,6 +41,15 @@ class JevDecisionProvider:
     ) -> None:
         if not api_key:
             raise ValueError("Jev API key is required")
+        normalized_model = model.strip().lower()
+        if not normalized_model:
+            raise ValueError("Jev model must be explicitly configured")
+        if (
+            normalized_model in MOVING_MODEL_ALIASES
+            or normalized_model.endswith("-latest")
+            or normalized_model.endswith("-preview")
+        ):
+            raise ValueError("Jev model must be pinned; moving aliases are not allowed")
         self._api_key = api_key
         self._base_url = base_url.rstrip("/")
         self._model = model
@@ -49,11 +57,11 @@ class JevDecisionProvider:
         self._client = client
 
     def choose(self, request: ChoiceRequest) -> DecisionPacket:
-        criteria = {
-            item.choice_id: item.description
-            for item in request.choices
-        }
-        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
+        criteria = {item.choice_id: item.description for item in request.choices}
+        answer, raw_hash = self._call(
+            state=request.context,
+            question_id=request.request_id,
+            idempotency_key=request.idempotency_key,
             question={
                 "type": "choice",
                 "instructions": request.question,
@@ -77,7 +85,10 @@ class JevDecisionProvider:
         )
 
     def score(self, request: ScoreRequest) -> DecisionPacket:
-        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
+        answer, raw_hash = self._call(
+            state=request.context,
+            question_id=request.request_id,
+            idempotency_key=request.idempotency_key,
             question={
                 "type": "score",
                 "instructions": request.question,
@@ -100,7 +111,10 @@ class JevDecisionProvider:
         )
 
     def probability(self, request: ProbabilityRequest) -> DecisionPacket:
-        answer, raw_hash = self._call(\n            state=request.context,\n            question_id=request.request_id,\n            idempotency_key=request.idempotency_key,
+        answer, raw_hash = self._call(
+            state=request.context,
+            question_id=request.request_id,
+            idempotency_key=request.idempotency_key,
             question={
                 "type": "noul",
                 "instructions": request.question,
@@ -127,21 +141,33 @@ class JevDecisionProvider:
         *,
         state: dict[str, Any],
         question_id: str,
+        idempotency_key: str,
         question: dict[str, Any],
     ) -> tuple[dict[str, Any], str]:
         payload = {"model": self._model, "state": state, "questions": {question_id: question}}
-        headers = {\n            "Authorization": f"Bearer {self._api_key}",\n            "Content-Type": "application/json",\n            "Idempotency-Key": idempotency_key,\n        }
+        headers = {
+            "Authorization": f"Bearer {self._api_key}",
+            "Content-Type": "application/json",
+            "Idempotency-Key": idempotency_key,
+        }
         owns_client = self._client is None
         client = self._client or httpx.Client(timeout=self._timeout)
         try:
-            response = client.post(
-                f"{self._base_url}/v1/systemone",
-                headers=headers,
-                json=payload,
-                timeout=self._timeout,
-            )
-            response.raise_for_status()
-            body = response.json()
+            try:
+                response = client.post(
+                    f"{self._base_url}/v1/systemone",
+                    headers=headers,
+                    json=payload,
+                    timeout=self._timeout,
+                )
+                response.raise_for_status()
+                body = response.json()
+            except httpx.TimeoutException as exc:
+                raise JevProviderError("JEV_TIMEOUT") from exc
+            except httpx.HTTPStatusError as exc:
+                raise JevProviderError("JEV_HTTP_ERROR") from exc
+            except httpx.HTTPError as exc:
+                raise JevProviderError("JEV_TRANSPORT_ERROR") from exc
         finally:
             if owns_client:
                 client.close()
