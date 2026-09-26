@@ -14,13 +14,13 @@
 - [x] T041 Implement hierarchical function/capability decisions.
 - [x] T042 Implement port-semantic decisions.
 - [x] T043 Implement evidence-conflict decisions.
-- [ ] T050 Integrate proposals into existing confirmation UI.
+- [x] T050 Integrate proposals into existing confirmation UI.
   - [x] T050a Project retained receipts into confirmation UI without canonical authority.
   - [x] T050b Bind advisory projection to exact candidate + evidence identity.
-  - [ ] T050c Invoke DecisionProvider from an evidence-resolution command path and persist append-only DecisionReceipt records.
+  - [x] T050c Invoke DecisionProvider from an evidence-resolution command path and persist append-only DecisionReceipt records.
     - [x] T050c1 Add idempotent append-only proposal persistence service.
     - [x] T050c2 Add flag-gated evidence-resolution orchestration using exact evidence + bounded candidates.
-    - [ ] T050c3 Expose the bounded resolution command/API and test it end-to-end. Service tests now cover flag-off, exact binding, provider failure, idempotency, advisory persistence, and zero canonical mutation.
+    - [x] T050c3 Expose the bounded resolution command/API and test it end-to-end. Service tests cover flag-off, exact binding, provider failure, idempotency, advisory persistence, and zero canonical mutation; API test covers request → receipt → advisory projection.
 - [x] T060 Build evaluation harness and synthetic CI corpus contract.
 - [ ] T061 Define operator-approved thresholds from baseline results.
   - [x] T061a Add governed real-world pilot intake/schema/validator.
