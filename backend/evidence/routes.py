@@ -758,18 +758,17 @@ def resolve_rack_evidence_decision(
 
     try:
         provider = _configured_decision_provider()
+        thresholds = PolicyThresholds(
+            policy_version="decision-policy-v1",
+            auto_propose_at=settings.decision_auto_propose_at,
+            user_review_at=settings.decision_user_review_at,
+            probability_margin=settings.decision_probability_margin,
+        )
         proposal = resolve_module_identity(
             db,
             evidence_id=body.evidence_id,
             provider=provider,
-            policy=DecisionPolicy(
-                PolicyThresholds(
-                    policy_version="decision-policy-v1",
-                    auto_propose_at=settings.decision_auto_propose_at,
-                    user_review_at=settings.decision_user_review_at,
-                    probability_margin=settings.decision_probability_margin,
-                )
-            ),
+            policy=DecisionPolicy(thresholds),
             enabled=True,
             idempotency_key=body.idempotency_key,
         )
