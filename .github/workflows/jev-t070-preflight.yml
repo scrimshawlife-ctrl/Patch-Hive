@@ -1,0 +1,56 @@
+name: Jev T070 Preflight
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    env:
+      TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+      JEV_MODEL: ${{ vars.JEV_MODEL }}
+      JEV_BASE_URL: https://api.typesafe.ai
+      JEV_RECEIPT_PATH: artifacts/jev-staging-preflight.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Validate credential presence without disclosure
+        shell: bash
+        run: |
+          test -n "$TYPESAFE_API_KEY"
+          test -n "$JEV_MODEL"
+      - name: Run bounded synthetic Jev preflight
+        run: python scripts/jev_staging_preflight.py
+      - name: Assert receipt is non-authoritative
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("artifacts/jev-staging-preflight.json")
+          receipt = json.loads(p.read_text())
+          assert receipt["canonical_authority"] is False
+          assert receipt["feature_enabled"] is False
+          assert receipt["request_hash"]
+          assert receipt["response_hash"]
+          print(json.dumps({
+              "status": receipt["status"],
+              "http_status": receipt["http_status"],
+              "canonical_authority": receipt["canonical_authority"],
+              "feature_enabled": receipt["feature_enabled"],
+              "request_hash": receipt["request_hash"],
+              "response_hash": receipt["response_hash"],
+          }, sort_keys=True))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jev-t070-preflight-receipt
+          path: artifacts/jev-staging-preflight.json
+          if-no-files-found: error
+          retention-days: 30
