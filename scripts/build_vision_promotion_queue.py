@@ -50,9 +50,8 @@ def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
     }
     items = []
     for row in discovery:
-        # The retained pilot manifest contains source_page/robots/not_fetched rows too.
-        # Promotion is asset-level, so only image evidence may enter this queue.
-        if row.get("kind") not in (None, "image_asset"):
+        # Promotion is asset-level and fail-closed: only explicit image evidence enters.
+        if row.get("kind") != "image_asset":
             continue
         rights = row.get("rights_status") or row.get("rights_and_consent", {}).get("rights_status")
         if rights != "RIGHTS_CONFIRMED":
@@ -60,7 +59,6 @@ def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
 
         asset_hash = _normalized_hash(row)
         identity_refs = _linked_identity_refs(row)
-        # A scalar identity_ref is safe only when the manifest gives exactly one link.
         identity_ref = identity_refs[0] if len(identity_refs) == 1 else None
         module = module_by_id.get(identity_ref, {}) if identity_ref else {}
         proposed_identity = (
@@ -77,6 +75,7 @@ def build_queue(discovery: list[dict], modules: list[dict]) -> dict:
                 "identity_refs": identity_refs,
                 "discovery_id": row.get("discovery_id"),
             }),
+            "discovery_id": row.get("discovery_id"),
             "asset_hash": asset_hash,
             "source_url": source_url,
             "license": (
