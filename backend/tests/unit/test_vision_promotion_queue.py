@@ -12,16 +12,29 @@ SPEC.loader.exec_module(module)
 def test_only_rights_confirmed_assets_enter_queue_and_unknowns_stay_unknown():
     discovery = [
         {
-            "record_id": "m1",
+            "kind": "image_asset",
+            "discovery_id": "d1",
+            "linked_record_ids": ["m1"],
             "rights_status": "RIGHTS_CONFIRMED",
-            "sha256": "a" * 64,
+            "evidence_sha256": "a" * 64,
             "source_url": "https://example.invalid/a",
+            "stated_copyright_or_license": "CC-BY-SA-3.0",
         },
         {
-            "record_id": "m2",
+            "kind": "image_asset",
+            "discovery_id": "d2",
+            "linked_record_ids": ["m2"],
             "rights_status": "RIGHTS_RESTRICTED",
-            "sha256": "b" * 64,
+            "evidence_sha256": "b" * 64,
             "source_url": "https://example.invalid/b",
+        },
+        {
+            "kind": "source_page",
+            "discovery_id": "d3",
+            "linked_record_ids": ["m1"],
+            "rights_status": "RIGHTS_CONFIRMED",
+            "evidence_sha256": "c" * 64,
+            "source_url": "https://example.invalid/page",
         },
     ]
     modules = [{"record_id": "m1", "manufacturer": "Maker", "model": "Module"}]
@@ -30,6 +43,10 @@ def test_only_rights_confirmed_assets_enter_queue_and_unknowns_stay_unknown():
     assert result["admitted"] == 0
     item = result["items"][0]
     assert item["asset_hash"] == "sha256:" + "a" * 64
+    assert item["identity_ref"] == "m1"
+    assert item["identity_refs"] == ["m1"]
+    assert item["proposed_identity"] == "Module"
+    assert item["license"] == "CC-BY-SA-3.0"
     assert item["ground_truth_status"] == "UNVERIFIED"
     assert item["annotation_status"] == "DISCOVERED"
     assert item["reviewer"] is None
@@ -37,11 +54,47 @@ def test_only_rights_confirmed_assets_enter_queue_and_unknowns_stay_unknown():
     assert result["thresholds"] == "NOT_COMPUTABLE"
 
 
+def test_multiple_identity_links_are_preserved_without_guessing_scalar_identity():
+    discovery = [{
+        "kind": "image_asset",
+        "discovery_id": "d1",
+        "linked_record_ids": ["m2", "m1"],
+        "rights_status": "RIGHTS_CONFIRMED",
+        "evidence_sha256": "a" * 64,
+        "source_url": "https://example.invalid/a",
+    }]
+    modules = [
+        {"record_id": "m1", "model": "One"},
+        {"record_id": "m2", "model": "Two"},
+    ]
+    item = module.build_queue(discovery, modules)["items"][0]
+    assert item["identity_refs"] == ["m1", "m2"]
+    assert item["identity_ref"] is None
+    assert item["proposed_identity"] is None
+
+
+def test_queue_ids_do_not_collide_for_distinct_discovery_records():
+    base = {
+        "kind": "image_asset",
+        "linked_record_ids": [],
+        "rights_status": "RIGHTS_CONFIRMED",
+        "source_url": "https://example.invalid/shared",
+    }
+    result = module.build_queue(
+        [{**base, "discovery_id": "d1"}, {**base, "discovery_id": "d2"}],
+        [],
+    )
+    assert len(result["items"]) == 2
+    assert len({item["queue_id"] for item in result["items"]}) == 2
+
+
 def test_queue_is_deterministic():
     discovery = [{
-        "record_id": "m1",
+        "kind": "image_asset",
+        "discovery_id": "d1",
+        "linked_record_ids": ["m1"],
         "rights_status": "RIGHTS_CONFIRMED",
-        "sha256": "a" * 64,
+        "evidence_sha256": "a" * 64,
         "source_url": "https://example.invalid/a",
     }]
     modules = [{"record_id": "m1", "model": "Module"}]
