@@ -40,3 +40,14 @@ class DecisionProvider(Protocol):
 3. Provider-specific metadata stays in adapter/diagnostic storage.
 4. Request and packet schemas are versioned.
 5. Identical packet + policy version yields identical disposition.
+
+## Evidence identity semantics (v1)
+
+The field name `evidence_hash` is retained for schema compatibility in `patchhive.decision.v1`, but its normative value is the immutable `ClassificationEvidenceRecord.id` for the exact evidence record being resolved.
+
+- It is an **evidence identity binding**, not a cryptographic content digest.
+- Providers and policy MUST echo the value unchanged.
+- Receipt lookup MUST bind advisory results to this evidence identity in addition to candidate identity.
+- Callers MUST NOT use `evidence_hash` as proof of byte integrity, packet integrity, or content equality.
+- Cryptographic integrity uses dedicated hashes such as image/content SHA, candidate-set hash, request/result hash, and raw-payload hash.
+- A future schema version MAY rename this field to `evidence_id`; such a rename MUST be versioned rather than silently changing v1 semantics.
