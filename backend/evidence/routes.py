@@ -734,7 +734,7 @@ def resolve_rack_evidence_decision(
         EvidenceResolutionError,
         resolve_module_identity,
     )
-    from intelligence.policy import DecisionPolicy, PolicyThresholds
+    from intelligence.policy import DecisionPolicy, PolicyThresholds\n    from intelligence.jev_provider import JevProviderError
 
     rack = db.get(Rack, rack_id)
     if rack is None:
