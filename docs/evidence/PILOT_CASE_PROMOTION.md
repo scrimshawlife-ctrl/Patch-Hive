@@ -63,3 +63,19 @@ T061c may be checked only when:
 - the corpus manifest SHA is frozen and retained.
 
 Production thresholds remain NOT_COMPUTABLE at that point. T061d must still compare baseline and Jev-assisted conditions.
+
+
+## Deterministic promotion workbench
+
+When the retained acquisition bundle is available locally, build a review queue without promoting any unresolved field:
+
+```bash
+python scripts/build_vision_promotion_queue.py \
+  --discovery deliverables/patchhive-corpus/pilot-2026-09-25/discovery-manifest.jsonl \
+  --modules deliverables/patchhive-corpus/pilot-2026-09-25/module-records.jsonl \
+  --output work/vision-pilot-promotion-queue.json
+```
+
+The queue imports only `RIGHTS_CONFIRMED` assets. It deliberately leaves ground truth, reviewer, cohort, contamination, candidate-set hash, and expected choice unresolved. An operator must resolve those fields from retained evidence before conversion into a pilot case.
+
+For a clean locked-test partition, prefer newly collected operator-owned photographs using `fixtures/vision_eval/operator-shot-intake-template.json`. Public manufacturer/Commons imagery may remain useful for development and validation, but public-web pretraining exposure makes it a weak basis for a clean locked test.
