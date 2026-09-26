@@ -1,9 +1,6 @@
 name: T070 Jev Staging Preflight
 
 on:
-  push:
-    branches:
-      - ops/t070-jev-preflight
   workflow_dispatch:
 
 permissions:
